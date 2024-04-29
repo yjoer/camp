@@ -3,6 +3,15 @@ import numpy as np
 
 
 # %%
+def rgb_to_cmy(pixel: list | tuple):
+    return 1 - np.array(pixel) / 255
+
+
+# %%
+rgb_to_cmy((100, 100, 100))
+
+
+# %%
 def rgb_to_hsi(pixel: list | tuple):
     R, G, B = pixel
 
