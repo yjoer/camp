@@ -1,5 +1,5 @@
 [lint]
-ignore = ["E741"]
+ignore = ["E731", "E741"]
 
 [lint.isort]
 force-single-line = true
