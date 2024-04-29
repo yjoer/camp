@@ -3,12 +3,63 @@ import numpy as np
 
 
 # %%
-def rgb_to_cmy(pixel: list | tuple):
-    return 1 - np.array(pixel) / 255
+def rgb_to_cmy(pixel: list | tuple, normalize: bool = False):
+    pixel_np = np.array(pixel)
+
+    if normalize:
+        pixel_np = pixel_np / 255
+
+    return tuple(1 - pixel_np)
 
 
 # %%
-rgb_to_cmy((100, 100, 100))
+cmy = rgb_to_cmy((100, 100, 100), normalize=True)
+cmy
+
+
+# %%
+def cmy_to_rgb(pixel: list | tuple):
+    return tuple(round(x) for x in tuple((1 - np.array(pixel)) * 255))
+
+
+# %%
+cmy_to_rgb(cmy)
+
+
+# %%
+def cmy_to_cmyk(pixel: list | tuple):
+    K = np.min(pixel)
+
+    if K == 1:
+        return 0, 0, 0, K
+
+    C, M, Y = pixel
+
+    C = (C - K) / (1 - K)
+    M = (M - K) / (1 - K)
+    Y = (Y - K) / (1 - K)
+
+    return C, M, Y, K
+
+
+# %%
+cmyk = cmy_to_cmyk(cmy)
+cmyk
+
+
+# %%
+def cmyk_to_cmy(pixel: list | tuple):
+    C, M, Y, K = pixel
+
+    C = C * (1 - K) + K
+    M = M * (1 - K) + K
+    Y = Y * (1 - K) + K
+
+    return C, M, Y
+
+
+# %%
+cmyk_to_cmy(cmyk)
 
 
 # %%
