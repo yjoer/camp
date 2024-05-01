@@ -30,6 +30,10 @@ dt = DecisionTreeClassifier(random_state=12345)
 dt.fit(X_train, y_train)
 
 # %%
+X_sample = [[5, 5.5, 4, 4.5]]
+dt.predict(X_sample), dt.predict_proba(X_sample)
+
+# %%
 y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
 
