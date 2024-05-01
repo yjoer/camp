@@ -12,6 +12,9 @@ dependencies = [
 ]
 requires-python = ">= 3.8"
 
+[tool.mypy]
+ignore_missing_imports = true
+
 [tool.rye]
 managed = true
 virtual = true
