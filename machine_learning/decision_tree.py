@@ -18,6 +18,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     iris.target,
     test_size=0.2,
     random_state=12345,
+    stratify=iris.target,
 )
 
 # %% [markdown]
@@ -32,7 +33,7 @@ y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
 
 # %%
-fig = plt.figure(figsize=(10, 8))
+fig = plt.figure(figsize=(12, 8.8))
 ax = fig.gca()
 
 plot_tree(
@@ -58,7 +59,7 @@ y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
 
 # %%
-fig = plt.figure(figsize=(6, 6))
+fig = plt.figure(figsize=(8, 4.8))
 ax = fig.gca()
 
 plot_tree(
@@ -84,7 +85,7 @@ y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
 
 # %%
-fig = plt.figure(figsize=(7.2, 7.2))
+fig = plt.figure(figsize=(8, 5.6))
 ax = fig.gca()
 
 plot_tree(
