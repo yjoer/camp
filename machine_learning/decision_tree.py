@@ -1,6 +1,7 @@
 # %%
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
+from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -31,6 +32,19 @@ dt.fit(X_train, y_train)
 # %%
 y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
+
+# %%
+fig = plt.figure(figsize=(4, 4))
+ax = plt.gca()
+
+ConfusionMatrixDisplay.from_predictions(
+    y_test,
+    y_pred,
+    display_labels=iris.target_names,
+    ax=ax,
+)
+
+plt.show()
 
 # %%
 fig = plt.figure(figsize=(12, 8.8))
