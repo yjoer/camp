@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from mpl_toolkits.mplot3d import Axes3D
 from scipy import stats
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
@@ -107,6 +108,26 @@ lr.predict(X_sample)
 
 # %%
 np.sum(np.multiply(X_sample, lr.coef_)) + lr.intercept_
+
+# %%
+X1_range = np.min(X[:, 0]), np.max(X[:, 0])
+X2_range = np.min(X[:, 1]), np.max(X[:, 1])
+X1_mesh, X2_mesh = np.meshgrid(X1_range, X2_range)
+
+X_mesh = np.hstack((X1_mesh.reshape(-1, 1), X2_mesh.reshape(-1, 1)))
+y_pred_mesh = lr.predict(X_mesh).reshape(X1_mesh.shape)
+
+fig = plt.figure()
+ax: Axes3D = fig.add_subplot(projection="3d")
+
+ax.scatter(X[:, 0], X[:, 1], y)
+ax.plot_surface(X1_mesh, X2_mesh, y_pred_mesh, alpha=0.1)
+
+ax.set_zlabel("CO2", rotation=90)
+ax.set_ylabel("Volume")
+ax.set_xlabel("Weight")
+ax.view_init(elev=30, azim=135)
+plt.show()
 
 # %% [markdown]
 # ## Polynomial Regression
