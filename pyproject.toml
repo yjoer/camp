@@ -15,6 +15,7 @@ requires-python = ">= 3.8"
 
 [tool.mypy]
 ignore_missing_imports = true
+allow_redefinition = true
 
 [tool.rye]
 managed = true
