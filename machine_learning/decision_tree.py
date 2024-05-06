@@ -1,5 +1,7 @@
 # %%
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score
@@ -9,6 +11,67 @@ from sklearn.tree import plot_tree
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
+
+# %% [markdown]
+# ## Tennis
+
+# %%
+entropy = lambda p: -np.sum(p * np.log2(p[p > 0]))
+
+positive_probabilities = np.linspace(0, 1, 50)
+negative_probabilities = 1 - positive_probabilities
+distributions = np.column_stack((positive_probabilities, negative_probabilities))
+
+plt.plot(positive_probabilities, list(map(entropy, distributions)))
+plt.ylabel("Entropy")
+plt.xlabel("Proportion of Positive Samples")
+plt.show()
+
+# %%
+df_tennis = pd.read_csv("../datasets/play_tennis.csv")
+
+# %%
+play = df_tennis["play"] == "Yes"
+n_total = df_tennis.shape[0]
+p_positive = df_tennis[play].shape[0] / n_total
+p_negative = df_tennis[~play].shape[0] / n_total
+
+p_positive, p_negative
+
+# %%
+h = entropy(np.array([p_positive, p_negative]))
+h
+
+# %%
+wind_wk = df_tennis["wind"] == "Weak"
+wind_st = df_tennis["wind"] == "Strong"
+
+n_wind_wk_total = df_tennis[wind_wk].shape[0]
+p_wind_wk_positive = df_tennis[wind_wk & play].shape[0] / n_wind_wk_total
+p_wind_wk_negative = df_tennis[wind_wk & ~play].shape[0] / n_wind_wk_total
+
+n_wind_st_total = df_tennis[wind_st].shape[0]
+p_wind_st_positive = df_tennis[wind_st & play].shape[0] / n_wind_st_total
+p_wind_st_negative = df_tennis[wind_st & ~play].shape[0] / n_wind_st_total
+
+print(p_wind_wk_positive, p_wind_wk_negative)
+print(p_wind_st_positive, p_wind_st_negative)
+
+# %%
+h_wind_wk = entropy(np.array([p_wind_wk_positive, p_wind_wk_negative]))
+h_wind_st = entropy(np.array([p_wind_st_positive, p_wind_st_negative]))
+
+h_wind_wk, h_wind_st
+
+# %%
+h_wind_wk_weighted = n_wind_wk_total / n_total * h_wind_wk
+h_wind_st_weighted = n_wind_st_total / n_total * h_wind_st
+
+ig_wind = h - h_wind_wk_weighted - h_wind_st_weighted
+ig_wind
+
+# %% [markdown]
+# ## Iris
 
 # %%
 iris = load_iris()
@@ -66,7 +129,10 @@ plot_tree(
 plt.show()
 
 # %% [markdown]
-# **Max Depth = 3**
+# ### Hyperparameter Tuning
+
+# %% [markdown]
+# #### Max Depth = 3
 
 # %%
 dt = DecisionTreeClassifier(max_depth=3, random_state=12345)
@@ -92,7 +158,7 @@ plot_tree(
 plt.show()
 
 # %% [markdown]
-# **Min Samples Leaf = 3**
+# #### Min Samples Leaf = 3
 
 # %%
 dt = DecisionTreeClassifier(min_samples_leaf=3, random_state=12345)
