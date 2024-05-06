@@ -1,13 +1,21 @@
 # %%
+import altair as alt
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from mpl_toolkits.mplot3d import Axes3D
 from scipy import stats
 from sklearn.datasets import load_iris
+from sklearn.datasets import make_moons
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import f1_score
+from sklearn.metrics import precision_score
 from sklearn.metrics import r2_score
+from sklearn.metrics import recall_score
 from sklearn.model_selection import train_test_split
 
 # %matplotlib inline
@@ -180,6 +188,64 @@ r2_score(df_tollbooth["speed"], pr(df_tollbooth["hours"]))
 
 # %% [markdown]
 # ## Logistic Regression
+
+# %% [markdown]
+# ### Moons
+
+# %%
+X, y = make_moons(n_samples=500, noise=0.30, random_state=12345)
+
+# %%
+df = pd.concat(
+    objs=(
+        pd.DataFrame(X, columns=["X1", "X2"]),
+        pd.DataFrame(y, columns=["y"]),
+    ),
+    axis=1,
+)
+
+# %%
+alt.Chart(df).mark_point().encode(
+    x="X1:Q",
+    y="X2:Q",
+    color="y:N",
+    tooltip=["X1", "X2", "y"],
+)
+
+# %%
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=12345,
+    stratify=y,
+)
+
+# %%
+logreg = LogisticRegression(random_state=12345)
+logreg.fit(X_train, y_train)
+
+# %%
+y_pred = logreg.predict(X_test)
+cm = confusion_matrix(y_test, y_pred)
+cm
+
+# %%
+fig = plt.figure(figsize=(4, 4))
+ax = fig.gca()
+
+ConfusionMatrixDisplay(cm).plot(ax=ax)
+
+plt.show()
+
+# %%
+accuracy_score(y_test, y_pred)
+
+# %%
+precision_score(y_test, y_pred), recall_score(y_test, y_pred), f1_score(y_test, y_pred)
+
+# %% [markdown]
+# ### Iris
 
 # %%
 iris = load_iris()
