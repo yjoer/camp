@@ -4,8 +4,11 @@ import numpy as np
 import pandas as pd
 from mpl_toolkits.mplot3d import Axes3D
 from scipy import stats
+from sklearn.datasets import load_iris
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -174,5 +177,38 @@ plt.show()
 
 # %%
 r2_score(df_tollbooth["speed"], pr(df_tollbooth["hours"]))
+
+# %% [markdown]
+# ## Logistic Regression
+
+# %%
+iris = load_iris()
+
+# %%
+X_train, X_test, y_train, y_test = train_test_split(
+    iris.data,
+    iris.target,
+    test_size=0.2,
+    random_state=12345,
+    stratify=iris.target,
+)
+
+# %%
+logreg = LogisticRegression(random_state=12345)
+logreg.fit(X_train, y_train)
+
+# %%
+X_sample = np.array([[5, 5.5, 4, 4.5]])
+logreg.predict(X_sample), logreg.predict_proba(X_sample)
+
+# %%
+logreg.coef_
+
+# %%
+logreg.intercept_
+
+# %%
+softmax = lambda x: np.exp(x) / np.exp(x).sum(axis=0)
+softmax((np.matmul(X_sample, logreg.coef_.T) + logreg.intercept_).reshape(-1))
 
 # %%
