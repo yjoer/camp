@@ -137,6 +137,35 @@ plt.show()
 # ### Hyperparameter Tuning
 
 # %% [markdown]
+# #### Criterion = Entropy
+
+# %%
+dt = DecisionTreeClassifier(criterion="entropy", random_state=12345)
+dt.fit(X_train, y_train)
+
+# %%
+y_pred = dt.predict(X_test)
+accuracy_score(y_test, y_pred)
+
+# %%
+print(classification_report(y_test, y_pred))
+
+# %%
+fig = plt.figure(figsize=(10, 7.2))
+ax = fig.gca()
+
+plot_tree(
+    dt,
+    feature_names=iris.feature_names,
+    class_names=iris.target_names,
+    filled=True,
+    rounded=True,
+    ax=ax,
+)
+
+plt.show()
+
+# %% [markdown]
 # #### Max Depth = 3
 
 # %%
