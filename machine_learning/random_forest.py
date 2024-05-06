@@ -1,11 +1,16 @@
 # %%
 import altair as alt
+import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.datasets import make_moons
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
+from sklearn.tree import plot_tree
+
+# %matplotlib inline
+# %config InlineBackend.figure_formats = ['retina']
 
 # %%
 X, y = make_moons(n_samples=500, noise=0.30, random_state=12345)
@@ -46,6 +51,20 @@ rf.fit(X_train, y_train)
 # %%
 y_pred = rf.predict(X_test)
 accuracy_score(y_test, y_pred)
+
+# %%
+fig = plt.figure(figsize=(10, 6.4))
+ax = fig.gca()
+
+plot_tree(
+    rf.estimators_[0],
+    feature_names=["X1", "X2"],
+    filled=True,
+    rounded=True,
+    ax=ax,
+)
+
+plt.show()
 
 # %% [markdown]
 # **Grid Search**
