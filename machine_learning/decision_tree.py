@@ -6,6 +6,7 @@ from sklearn.datasets import load_iris
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import plot_tree
@@ -192,5 +193,29 @@ plot_tree(
 )
 
 plt.show()
+
+# %% [markdown]
+# ### Grid Search
+
+# %%
+parameters = {
+    "criterion": ["gini", "entropy", "log_loss"],
+    "splitter": ["best", "random"],
+    "max_depth": [1, 2, 3, 4, 5],
+    "max_features": [None, "sqrt", "log2"],
+}
+
+
+dt = DecisionTreeClassifier()
+gs = GridSearchCV(dt, param_grid=parameters, n_jobs=-1, cv=5, scoring="accuracy")
+gs.fit(X_train, y_train)
+gs.best_params_
+
+# %%
+y_pred = gs.predict(X_test)
+accuracy_score(y_test, y_pred)
+
+# %%
+print(classification_report(y_test, y_pred))
 
 # %%
