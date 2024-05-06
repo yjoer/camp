@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.datasets import load_iris
 from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import plot_tree
@@ -101,6 +102,9 @@ y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
 
 # %%
+print(classification_report(y_test, y_pred))
+
+# %%
 fig = plt.figure(figsize=(4, 4))
 ax = plt.gca()
 
@@ -143,6 +147,9 @@ y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
 
 # %%
+print(classification_report(y_test, y_pred))
+
+# %%
 fig = plt.figure(figsize=(8, 4.8))
 ax = fig.gca()
 
@@ -167,6 +174,9 @@ dt.fit(X_train, y_train)
 # %%
 y_pred = dt.predict(X_test)
 accuracy_score(y_test, y_pred)
+
+# %%
+print(classification_report(y_test, y_pred))
 
 # %%
 fig = plt.figure(figsize=(8, 5.6))
