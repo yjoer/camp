@@ -2,16 +2,23 @@
 name = "camp"
 dependencies = [
     "altair[all]>=5.3.0",
-    "matplotlib>=3.8.4",
+    "matplotlib>=3.9.0",
     "numpy>=1.26.4",
     "pandas>=2.2.2",
-    "scikit-learn>=1.4.2",
-    "scipy>=1.13.0",
+    "scikit-learn>=1.5.0",
+    "scipy>=1.13.1",
     "seaborn>=0.13.2",
     "tensorflow>=2.16.1",
     "xgboost>=2.0.3",
 ]
 requires-python = ">= 3.8"
+
+[build-system]
+requires = ["maturin>=1,<2"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -25,10 +32,12 @@ dev-dependencies = [
     "isort>=5.13.2",
     "jedi-language-server>=0.41.4",
     "jupyterlab-code-formatter>=2.2.1",
-    "jupyterlab-git>=0.50.0",
+    "jupyterlab-git>=0.50.1",
     "jupyterlab-lsp>=5.1.0",
-    "jupyterlab>=4.1.8",
-    "jupytext>=1.16.1",
+    "jupyterlab>=4.2.1",
+    "jupytext>=1.16.2",
+    "maturin>=1.5.1",
     "mypy>=1.10.0",
-    "ruff>=0.4.2",
+    "pip>=24.0",
+    "ruff>=0.4.6",
 ]

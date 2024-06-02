@@ -5,4 +5,8 @@ module.exports = {
     'rye run ruff format --check',
     'rye run mypy',
   ],
+  '*.rs': [
+    () => 'cargo clippy -- --deny warnings', //
+    () => 'cargo fmt --check',
+  ],
 };
