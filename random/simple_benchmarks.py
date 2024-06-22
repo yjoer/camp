@@ -43,3 +43,6 @@ fibonacci(50)
 camp.fibonacci(50)
 
 # %%
+camp.collatz_repeat(1_000_000_000)
+
+# %%
