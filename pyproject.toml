@@ -17,12 +17,22 @@ requires-python = ">= 3.8"
 requires = ["maturin>=1,<2"]
 build-backend = "maturin"
 
+[tool.jupytext]
+formats = "py:percent"
+notebook_metadata_filter = "-all"
+
 [tool.maturin]
 features = ["pyo3/extension-module"]
 
 [tool.mypy]
 ignore_missing_imports = true
 allow_redefinition = true
+
+[tool.ruff.lint]
+ignore = ["E731", "E741"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
 
 [tool.rye]
 managed = true
