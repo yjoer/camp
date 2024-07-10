@@ -3,4 +3,6 @@
 node_modules/
 target/
 
-*.lock
+pnpm-lock.yaml
+requirements.lock
+requirements-dev.lock
