@@ -1,6 +1,8 @@
 use pyo3::prelude::*;
 use std::time::Instant;
 
+mod graph;
+
 #[pyfunction]
 fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
     Ok((a + b).to_string())
@@ -68,6 +70,9 @@ fn camp(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(fibonacci, m)?)?;
     m.add_function(wrap_pyfunction!(collatz_repeat, m)?)?;
+
+    m.add_class::<graph::GraphString>()?;
+    m.add_function(wrap_pyfunction!(graph::dijkstra_string, m)?)?;
 
     Ok(())
 }
