@@ -23,6 +23,7 @@ notebook_metadata_filter = "-all"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+module-name = "camp.rs"
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -36,7 +37,6 @@ force-single-line = true
 
 [tool.rye]
 managed = true
-virtual = true
 dev-dependencies = [
     "black>=24.4.2",
     "isort>=5.13.2",

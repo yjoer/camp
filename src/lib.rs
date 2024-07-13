@@ -66,7 +66,7 @@ fn collatz_repeat(n: u32) {
 }
 
 #[pymodule]
-fn camp(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
     m.add_function(wrap_pyfunction!(fibonacci, m)?)?;
     m.add_function(wrap_pyfunction!(collatz_repeat, m)?)?;

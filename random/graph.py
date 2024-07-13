@@ -1,6 +1,6 @@
 # %%
-from camp import GraphString
-from camp import dijkstra
+from camp.rs import GraphString
+from camp.rs import dijkstra
 
 # %%
 graph = GraphString()

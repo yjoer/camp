@@ -1,8 +1,11 @@
+__pycache__/
 .ipynb_checkpoints/
 .virtual_documents/
 node_modules/
 target/
 
+*.pyd
+Cargo.lock
 pnpm-lock.yaml
 requirements.lock
 requirements-dev.lock

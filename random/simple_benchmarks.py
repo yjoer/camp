@@ -1,6 +1,7 @@
 # %%
-import camp
 import numpy as np
+
+import camp.rs
 
 # %%
 # %%timeit
@@ -40,9 +41,9 @@ fibonacci(50)
 
 # %%
 # %%timeit
-camp.fibonacci(50)
+camp.rs.fibonacci(50)
 
 # %%
-camp.collatz_repeat(1_000_000_000)
+camp.rs.collatz_repeat(1_000_000_000)
 
 # %%
