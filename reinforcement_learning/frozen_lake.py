@@ -51,7 +51,6 @@ render_images(images)
 
 # %%
 env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="rgb_array")
-state, info = env.reset(seed=26)
 
 # %%
 lake_map = cast(Any, env.unwrapped).desc
@@ -163,19 +162,127 @@ policy, V, Q = iterate_policy()
 print(f"V: {V}")
 print(f"Q: {Q}")
 
-# %%
-images = [cast(np.ndarray, env.render())]
-terminated = False
-
-while not terminated:
-    action = policy[state]
-    state, reward, terminated, __, _ = env.step(action)
-    images.append(cast(np.ndarray, env.render()))
-
-    if terminated:
-        print("You reached the goal!")
 
 # %%
+def simulate_policy(policy):
+    state, info = env.reset(seed=26)
+
+    images = [cast(np.ndarray, env.render())]
+    terminated = False
+
+    for i in range(8):
+        action = policy[state]
+        state, reward, terminated, _, _ = env.step(action)
+        images.append(cast(np.ndarray, env.render()))
+
+        if terminated:
+            print("You reached the goal!")
+            break
+
+    return images
+
+
+# %%
+images = simulate_policy(policy)
+render_images(images)
+
+
+# %% [markdown]
+# ## Model-Free
+
+# %% [markdown]
+# ### Monte Carlo
+
+
+# %%
+def generate_episode(i):
+    state, info = env.reset(seed=26)
+    episode = []
+
+    j = 0
+    terminated = False
+
+    while not terminated:
+        env.action_space.seed(int(str(i) + str(j)))
+        action = env.action_space.sample()
+        next_state, reward, terminated, truncated, info = env.step(action)
+        episode.append((state, action, reward))
+
+        j += 1
+        state = next_state
+
+    return episode
+
+
+# %%
+def first_visit_mc(n_episodes):
+    n_states = env.observation_space.n
+    n_actions = env.action_space.n
+
+    returns_sum = np.zeros((n_states, n_actions))
+    returns_count = np.zeros((n_states, n_actions))
+
+    for i in range(n_episodes):
+        episode = generate_episode(i)
+        visited_states_actions = set()
+
+        for j, (state, action, reward) in enumerate(episode):
+            if (state, action) in visited_states_actions:
+                continue
+
+            returns_sum[state, action] += sum(x[2] for x in episode[j:])
+            returns_count[state, action] += 1
+            visited_states_actions.add((state, action))
+
+    nonzero_counts = returns_count != 0
+
+    Q = np.zeros((n_states, n_actions))
+    Q[nonzero_counts] = returns_sum[nonzero_counts] / returns_count[nonzero_counts]
+
+    return Q
+
+
+# %%
+def every_visit_mc(n_episodes):
+    n_states = env.observation_space.n
+    n_actions = env.action_space.n
+
+    returns_sum = np.zeros((n_states, n_actions))
+    returns_count = np.zeros((n_states, n_actions))
+
+    for i in range(n_episodes):
+        episode = generate_episode(i)
+
+        for j, (state, action, reward) in enumerate(episode):
+            returns_sum[state, action] += sum(x[2] for x in episode[j:])
+            returns_count[state, action] += 1
+
+    nonzero_counts = returns_count != 0
+
+    Q = np.zeros((n_states, n_actions))
+    Q[nonzero_counts] = returns_sum[nonzero_counts] / returns_count[nonzero_counts]
+
+    return Q
+
+
+# %%
+def get_policy(Q):
+    n_states = env.observation_space.n
+    return {state: np.argmax(Q[state]) for state in range(n_states)}
+
+
+# %%
+Q = first_visit_mc(1155)
+policy_first_visit = get_policy(Q)
+
+images = simulate_policy(policy_first_visit)
+render_images(images)
+
+# %%
+Q = every_visit_mc(915)
+policy_every_visit = get_policy(Q)
+
+images = simulate_policy(policy_every_visit)
 render_images(images)
 
 # %%
