@@ -188,7 +188,7 @@ render_images(images)
 
 
 # %% [markdown]
-# ## Model-Free
+# ## Model-Free Learning
 
 # %% [markdown]
 # ### Monte Carlo
@@ -196,7 +196,7 @@ render_images(images)
 
 # %%
 def generate_episode(i):
-    state, info = env.reset(seed=26)
+    state, info = env.reset(seed=i)
     episode = []
 
     j = 0
@@ -283,6 +283,120 @@ Q = every_visit_mc(915)
 policy_every_visit = get_policy(Q)
 
 images = simulate_policy(policy_every_visit)
+render_images(images)
+
+
+# %% [markdown]
+# ### Temporal Difference Learning
+
+# %% [markdown]
+# #### SARSA
+
+
+# %%
+def update_q_table(Q, state, action, reward, next_state, next_action, alpha, gamma):
+    old_value = Q[state, action]
+    next_value = Q[next_state, next_action]
+
+    Q[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_value)
+
+
+# %%
+def sarsa(n_episodes):
+    n_states = env.observation_space.n
+    n_actions = env.action_space.n
+
+    Q = np.zeros((n_states, n_actions))
+
+    alpha = 0.1
+    gamma = 1
+
+    for i in range(n_episodes):
+        state, info = env.reset(seed=i)
+
+        env.action_space.seed(i)
+        action = env.action_space.sample()
+
+        j = 0
+        terminated = False
+
+        while not terminated:
+            next_state, reward, terminated, truncated, info = env.step(action)
+
+            env.action_space.seed(int(str(i) + str(j)))
+            next_action = env.action_space.sample()
+
+            update_q_table(
+                Q,
+                state,
+                action,
+                reward,
+                next_state,
+                next_action,
+                alpha,
+                gamma,
+            )
+
+            j += 1
+            state, action = next_state, next_action
+
+    return Q
+
+
+# %%
+Q = sarsa(150)
+policy_sarsa = get_policy(Q)
+
+images = simulate_policy(policy_sarsa)
+render_images(images)
+
+
+# %% [markdown]
+# #### Q-Learning
+
+
+# %%
+def update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma):
+    old_value = Q[state, action]
+    next_max = max(Q[next_state])
+
+    Q[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_max)
+
+
+# %%
+def q_learning(n_episodes):
+    n_states = env.observation_space.n
+    n_actions = env.action_space.n
+
+    Q = np.zeros((n_states, n_actions))
+
+    alpha = 0.1
+    gamma = 1
+
+    for i in range(n_episodes):
+        state, info = env.reset(seed=i)
+
+        j = 0
+        terminated = False
+
+        while not terminated:
+            env.action_space.seed(int(str(i) + str(j)))
+            action = env.action_space.sample()
+            next_state, reward, terminated, truncated, info = env.step(action)
+
+            update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma)
+
+            j += 1
+            state = next_state
+
+    return Q
+
+
+# %%
+Q = q_learning(65)
+policy_q = get_policy(Q)
+
+images = simulate_policy(policy_q)
 render_images(images)
 
 # %%
