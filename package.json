@@ -1,7 +1,7 @@
 {
   "name": "@base/camp",
   "scripts": {
-    "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD rye run jupyter lab"
+    "jupyter": "cross-env-shell JP_LSP_VIRTUAL_DIR=.venv/.virtual_documents PYTHONPATH=$INIT_CWD rye run jupyter lab"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
