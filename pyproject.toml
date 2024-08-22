@@ -22,8 +22,8 @@ tensorflow = [
 torch = [
     "deepspeed @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/deepspeed-0.14.4+d254d75e-py3-none-any.whl",
     "safetensors>=0.4.3",
-    "torch>=2.4.0",
-    "torchmetrics>=1.4.0.post0",
+    "torch==2.4.0+cu124",
+    "torchmetrics>=1.4.1",
 ]
 tree = [
     "catboost>=1.2.5",
@@ -37,7 +37,7 @@ vision = [
     "pillow>=10.4.0",
     "supervision>=0.22.0",
     "timm>=1.0.7",
-    "torchvision>=0.19.0",
+    "torchvision==0.19.0+cu124",
     "ultralytics>=8.2.67",
 ]
 
@@ -88,3 +88,7 @@ dev-dependencies = [
     "pytest>=8.3.1",
     "ruff>=0.5.1",
 ]
+
+[[tool.rye.sources]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu124"
