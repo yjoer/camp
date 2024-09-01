@@ -1,7 +1,9 @@
+from typing import Callable
+from typing import Optional
+
 import fsspec
 import numpy as np
 import torch
-import torchvision.transforms.v2.functional as tvf
 from PIL import Image
 from torch.utils.data import Dataset
 
@@ -43,7 +45,13 @@ class IKCESTDetectionDataset(Dataset):
     the player detection task.
     """
 
-    def __init__(self, path: str, subset: str, storage_options={}):
+    def __init__(
+        self,
+        path: str,
+        subset: str,
+        storage_options={},
+        transforms: Optional[Callable] = None,
+    ):
         frames, annotations_dict = IKCEST.load(path, subset, storage_options)
 
         self.path = path
@@ -51,6 +59,7 @@ class IKCESTDetectionDataset(Dataset):
         self.storage_options = storage_options
         self.frames = frames
         self.annotations_dict = annotations_dict
+        self.transforms = transforms
 
     def __len__(self):
         return len(self.frames)
@@ -61,13 +70,15 @@ class IKCESTDetectionDataset(Dataset):
 
         with fsspec.open(frame_path, **self.storage_options) as f:
             frame = Image.open(f).convert("RGB")
-            frame = tvf.to_image(frame)
-            frame = tvf.to_dtype(frame, dtype=torch.float32, scale=True)
 
         annotations = self.annotations_dict[video_name]
-        annotation = annotations[annotations[:, 0] == idx + 1]
+        annotation = annotations[annotations[:, 0] == (idx % 750) + 1]
         boxes = torch.from_numpy(annotation[:, 2:6])
 
-        labels = torch.ones((len(boxes)))
+        labels = torch.zeros((len(boxes)))
 
-        return frame, {"labels": labels, "boxes": boxes}
+        if self.transforms is not None:
+            target = {"labels": labels, "boxes": boxes}
+            frame, target = self.transforms(frame, target)
+
+        return frame, target

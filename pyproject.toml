@@ -38,7 +38,7 @@ vision = [
     "supervision>=0.22.0",
     "timm>=1.0.7",
     "torchvision==0.19.0+cu124",
-    "ultralytics>=8.2.67",
+    "ultralytics>=8.2.85",
 ]
 
 [build-system]
@@ -60,7 +60,10 @@ ignore_missing_imports = true
 allow_redefinition = true
 
 [tool.pytest.ini_options]
+addopts = "-n auto"
 cache_dir = ".venv/.pytest_cache"
+python_files = "*.py"
+testpaths = ["camp"]
 
 [tool.ruff]
 cache-dir = ".venv/.ruff_cache"
@@ -77,7 +80,8 @@ dev-dependencies = [
     "black>=24.4.2",
     "isort>=5.13.2",
     "jedi-language-server>=0.41.4",
-    "jupyterlab-code-formatter>=2.2.1",
+    "jupyter-collaboration>=2.1.2",
+    "jupyterlab-code-formatter>=3.0.2",
     "jupyterlab-git>=0.50.1",
     "jupyterlab-lsp>=5.1.0",
     "jupyterlab>=4.2.3",
@@ -85,6 +89,7 @@ dev-dependencies = [
     "maturin>=1.7.0",
     "mypy>=1.10.1",
     "pip>=24.1.2",
+    "pytest-xdist>=3.6.1",
     "pytest>=8.3.1",
     "ruff>=0.5.1",
 ]
