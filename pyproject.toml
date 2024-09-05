@@ -22,7 +22,7 @@ tensorflow = [
 torch = [
     "deepspeed @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
     "safetensors>=0.4.3",
-    "torch==2.4.0+cu124",
+    "torch==2.4.1+cu124",
     "torchmetrics>=1.4.1",
 ]
 tree = [
@@ -37,7 +37,7 @@ vision = [
     "pillow>=10.4.0",
     "supervision>=0.22.0",
     "timm>=1.0.7",
-    "torchvision==0.19.0+cu124",
+    "torchvision==0.19.1+cu124",
     "ultralytics>=8.2.85",
 ]
 

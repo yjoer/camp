@@ -1,4 +1,5 @@
 import torch
+from ultralytics.nn.modules.head import Detect
 from ultralytics.utils.tal import dist2bbox
 
 
@@ -61,7 +62,22 @@ def decode_boxes(pred_dist: torch.Tensor, anchor_points: torch.Tensor, reg_max: 
     pred_dist = pred_dist.matmul(projection)
 
     # (b, hw, 4)
-    return dist2bbox(pred_dist, anchor_points)
+    return dist2bbox(pred_dist, anchor_points, xywh=False)
+
+
+def decode_boxes_eval(
+    head: Detect,
+    pred_dist: torch.Tensor,
+    anchor_points: torch.Tensor,
+    stride_tensors: torch.Tensor,
+):
+    # https://github.com/ultralytics/ultralytics/blob/v8.2.87/ultralytics/nn/modules/head.py#L87
+    boxes_dist = head.dfl(pred_dist)
+
+    boxes = dist2bbox(boxes_dist, anchor_points.unsqueeze(0), xywh=True, dim=1)
+    boxes_scaled = boxes * stride_tensors
+
+    return boxes_scaled
 
 
 def preprocess_targets(targets: tuple[dict]):
@@ -126,6 +142,35 @@ class TestYOLOUtils:
         boxes = decode_boxes(pred_dist, anchor_points, reg_max=16)
 
         assert boxes.shape == (3, 5040, 4)
+
+    @staticmethod
+    def test_decode_boxes_eval():
+        feat_maps = [
+            torch.zeros((3, 144, 48, 80)),
+            torch.zeros((3, 144, 24, 40)),
+            torch.zeros((3, 144, 12, 20)),
+        ]
+
+        head = Detect(nc=80, ch=(64, 128, 256))
+        strides = torch.tensor([8, 16, 32])
+
+        reg_max = 16
+        n_classes = 80
+        pred_dist, _ = decode_feature_maps(feat_maps, reg_max, n_classes)
+        pred_dist = pred_dist.permute(0, 2, 1)
+
+        anchor_points, stride_tensors = make_anchors(
+            feat_maps,
+            strides,
+            grid_cell_offset=0.5,
+        )
+
+        anchor_points = anchor_points.permute(1, 0)
+        stride_tensors = stride_tensors.permute(1, 0)
+
+        pred_boxes = decode_boxes_eval(head, pred_dist, anchor_points, stride_tensors)
+
+        assert pred_boxes.shape == (3, 4, 5040)
 
     @staticmethod
     def test_preprocess_targets():

@@ -4,6 +4,8 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
+from typing import cast
+
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,6 +14,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.transforms.v2.functional as tvf
 from torch.utils.data import DataLoader
+from torch.utils.data import Subset
 from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
@@ -26,12 +29,22 @@ from camp.models.yolo.yolo_utils import decode_boxes
 from camp.models.yolo.yolo_utils import decode_feature_maps
 from camp.models.yolo.yolo_utils import make_anchors
 from camp.models.yolo.yolo_utils import preprocess_targets
+from camp.utils.torch_utils import save_checkpoint
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
 
 # %load_ext autoreload
 # %autoreload 2
+
+# %%
+OVERFITTING_TEST = False
+
+TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
+CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
+
+if OVERFITTING_TEST:
+    CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
 
 # %%
 storage_options = {
@@ -58,11 +71,14 @@ def transforms(image, target):
 
 # %%
 train_dataset = IKCESTDetectionDataset(
-    path="s3://datasets/ikcest_2024",
+    path=TRAIN_DATASET_PATH,
     subset="train",
     storage_options=storage_options,
     transforms=transforms,
 )
+
+if OVERFITTING_TEST:
+    train_dataset = cast(IKCESTDetectionDataset, Subset(train_dataset, indices=[0]))
 
 # %%
 train_image, train_target = train_dataset[0]
@@ -90,6 +106,7 @@ yolo.model.model[-1] = Detect(nc=1, ch=(64, 128, 256))
 yolo.model.model[-1].i = i
 yolo.model.model[-1].f = f
 yolo.model.model[-1].type = t
+yolo.model.model[-1].stride = yolo_head.stride
 
 reg_max = yolo.model.model[-1].reg_max
 n_coords = reg_max * 4
@@ -102,8 +119,18 @@ strides = yolo.model.model[-1].stride
 batch_size = 8
 n_batches = np.ceil(len(train_dataset) / batch_size).astype(np.int32)
 
-n_epochs = 20
+n_epochs = 100
 epochs = 0
+save_epochs = 5
+
+# https://github.com/ultralytics/ultralytics/blob/v8.2.87/ultralytics/cfg/default.yaml#L97
+cls_gain = 0.5
+box_gain = 7.5
+dfl_gain = 1.5
+
+if OVERFITTING_TEST:
+    n_epochs = 50
+    save_epochs = 50
 
 
 # %%
@@ -178,12 +205,12 @@ for i in range(n_epochs):
 
         losses = torch.zeros(3)
         target_scores_sum = max(target_scores.sum(), 1)
-        losses[1] = bce(pred_scores, target_scores).sum() / target_scores_sum
+        losses[0] = bce(pred_scores, target_scores).sum() / target_scores_sum
 
         if fg_mask.sum():
             target_boxes /= stride_tensors
 
-            losses[0], losses[2] = bbox_loss(
+            losses[1], losses[2] = bbox_loss(
                 pred_dist,
                 pred_boxes,
                 anchor_points,
@@ -193,14 +220,37 @@ for i in range(n_epochs):
                 fg_mask,
             )
 
-        pbar.update(steps, values=[("loss", losses.detach().sum())])
+        losses[0] *= cls_gain
+        losses[1] *= box_gain
+        losses[2] *= dfl_gain
+
+        pbar.update(
+            current=steps,
+            values=[
+                ("cls_loss", losses[0].item()),
+                ("box_loss", losses[1].item()),
+                ("dfl_loss", losses[2].item()),
+            ],
+        )
 
         optimizer.zero_grad()
         losses.sum().backward()
+
+        nn.utils.clip_grad_norm_(params, max_norm=10.0)
         optimizer.step()
 
         ema.update(yolo.model)
         steps += 1
+
+    if ((epochs + 1) % save_epochs) == 0:
+        save_checkpoint(
+            path=CHECKPOINT_PATH,
+            epoch=epochs,
+            model=yolo.model,
+            optimizer=optimizer,
+            scheduler=lr_scheduler,
+            storage_options=storage_options,
+        )
 
     lr_scheduler.step()
     epochs += 1
