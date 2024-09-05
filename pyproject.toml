@@ -77,21 +77,21 @@ force-single-line = true
 [tool.rye]
 managed = true
 dev-dependencies = [
-    "black>=24.4.2",
+    "black>=24.8.0",
     "isort>=5.13.2",
     "jedi-language-server>=0.41.4",
     "jupyter-collaboration>=2.1.2",
     "jupyterlab-code-formatter>=3.0.2",
     "jupyterlab-git>=0.50.1",
     "jupyterlab-lsp>=5.1.0",
-    "jupyterlab>=4.2.3",
-    "jupytext>=1.16.2",
-    "maturin>=1.7.0",
-    "mypy>=1.10.1",
-    "pip>=24.1.2",
+    "jupyterlab>=4.2.5",
+    "jupytext>=1.16.4",
+    "maturin>=1.7.1",
+    "mypy>=1.11.2",
+    "pip>=24.2",
     "pytest-xdist>=3.6.1",
-    "pytest>=8.3.1",
-    "ruff>=0.5.1",
+    "pytest>=8.3.2",
+    "ruff>=0.6.3",
 ]
 
 [[tool.rye.sources]]

@@ -4,7 +4,7 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
-from typing import cast
+from typing import Union
 
 import keras
 import matplotlib.pyplot as plt
@@ -19,16 +19,11 @@ from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
 from ultralytics.nn.modules.head import Detect
-from ultralytics.utils.loss import BboxLoss
-from ultralytics.utils.tal import TaskAlignedAssigner
 from ultralytics.utils.torch_utils import ModelEMA
 
 from camp.datasets.ikcest import IKCESTDetectionDataset
 from camp.datasets.utils import resize_image_and_boxes
-from camp.models.yolo.yolo_utils import decode_boxes
-from camp.models.yolo.yolo_utils import decode_feature_maps
-from camp.models.yolo.yolo_utils import make_anchors
-from camp.models.yolo.yolo_utils import preprocess_targets
+from camp.models.yolo.yolo_utils import YOLOv8DetectionLoss
 from camp.utils.torch_utils import save_checkpoint
 
 # %matplotlib inline
@@ -39,6 +34,7 @@ from camp.utils.torch_utils import save_checkpoint
 
 # %%
 OVERFITTING_TEST = False
+VALIDATION_SPLIT = False
 
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
@@ -70,7 +66,7 @@ def transforms(image, target):
 
 
 # %%
-train_dataset = IKCESTDetectionDataset(
+train_dataset: Union[IKCESTDetectionDataset, Subset] = IKCESTDetectionDataset(
     path=TRAIN_DATASET_PATH,
     subset="train",
     storage_options=storage_options,
@@ -78,7 +74,16 @@ train_dataset = IKCESTDetectionDataset(
 )
 
 if OVERFITTING_TEST:
-    train_dataset = cast(IKCESTDetectionDataset, Subset(train_dataset, indices=[0]))
+    train_dataset = Subset(train_dataset, indices=[0])
+
+if VALIDATION_SPLIT:
+    n_images = len(train_dataset)
+    split_point = int(0.8 * n_images)
+    train_idx = list(range(split_point))
+    val_idx = list(range(split_point, n_images))
+
+    train_dataset = Subset(train_dataset, indices=train_idx)
+    val_dataset = Subset(train_dataset, indices=val_idx)
 
 # %%
 train_image, train_target = train_dataset[0]
@@ -86,7 +91,7 @@ train_image, train_target = train_dataset[0]
 train_image_preview = draw_bounding_boxes(
     image=train_image,
     boxes=train_target["boxes"],
-    labels=[str(x.item()) for x in train_target["labels"]],
+    labels=[str(x.int().item()) for x in train_target["labels"]],
     colors="lime",
 )
 
@@ -109,11 +114,7 @@ yolo.model.model[-1].type = t
 yolo.model.model[-1].stride = yolo_head.stride
 
 reg_max = yolo.model.model[-1].reg_max
-n_coords = reg_max * 4
 n_classes = yolo.model.model[-1].nc
-n_total = n_coords + n_classes
-
-tal_top_k = 10
 strides = yolo.model.model[-1].stride
 
 batch_size = 8
@@ -122,6 +123,8 @@ n_batches = np.ceil(len(train_dataset) / batch_size).astype(np.int32)
 n_epochs = 100
 epochs = 0
 save_epochs = 5
+
+tal_top_k = 10
 
 # https://github.com/ultralytics/ultralytics/blob/v8.2.87/ultralytics/cfg/default.yaml#L97
 cls_gain = 0.5
@@ -145,12 +148,8 @@ train_dataloader = DataLoader(
     collate_fn=collate_fn,
 )
 
-# %%
-assigner = TaskAlignedAssigner(tal_top_k, n_classes, alpha=0.5, beta=6.0)
-
-# %%
-bce = nn.BCEWithLogitsLoss(reduction="none")
-bbox_loss = BboxLoss(reg_max)
+if VALIDATION_SPLIT:
+    val_dataloader = DataLoader(val_dataset, batch_size, collate_fn=collate_fn)
 
 # %%
 for param in yolo.model.parameters():
@@ -168,6 +167,16 @@ lr_scheduler = optim.lr_scheduler.LinearLR(
 
 ema = ModelEMA(yolo.model, decay=0.9999)
 
+criterion = YOLOv8DetectionLoss(
+    reg_max,
+    n_classes,
+    strides,
+    tal_top_k,
+    cls_gain,
+    box_gain,
+    dfl_gain,
+)
+
 # %%
 yolo.model.train()
 
@@ -181,48 +190,7 @@ for i in range(n_epochs):
         images = torch.stack(images, dim=0)
         feat_maps = yolo.model(images)
 
-        pred_dist, pred_scores = decode_feature_maps(feat_maps, reg_max, n_classes)
-
-        anchor_points, stride_tensors = make_anchors(
-            feat_maps,
-            strides,
-            grid_cell_offset=0.5,
-        )
-
-        pred_boxes = decode_boxes(pred_dist, anchor_points, reg_max)
-
-        target_labels, target_boxes = preprocess_targets(targets)
-        mask = target_boxes.sum(dim=2, keepdim=True).gt_(0.0)
-
-        _, target_boxes, target_scores, fg_mask, _ = assigner(
-            pred_scores.detach().sigmoid(),
-            pred_boxes.detach() * stride_tensors,
-            anchor_points * stride_tensors,
-            target_labels,
-            target_boxes,
-            mask,
-        )
-
-        losses = torch.zeros(3)
-        target_scores_sum = max(target_scores.sum(), 1)
-        losses[0] = bce(pred_scores, target_scores).sum() / target_scores_sum
-
-        if fg_mask.sum():
-            target_boxes /= stride_tensors
-
-            losses[1], losses[2] = bbox_loss(
-                pred_dist,
-                pred_boxes,
-                anchor_points,
-                target_boxes,
-                target_scores,
-                target_scores_sum,
-                fg_mask,
-            )
-
-        losses[0] *= cls_gain
-        losses[1] *= box_gain
-        losses[2] *= dfl_gain
+        losses = criterion(feat_maps, targets)
 
         pbar.update(
             current=steps,

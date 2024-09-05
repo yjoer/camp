@@ -1,5 +1,9 @@
 import torch
+import torch.nn as nn
 from ultralytics.nn.modules.head import Detect
+from ultralytics.utils.loss import BboxLoss
+from ultralytics.utils.ops import non_max_suppression
+from ultralytics.utils.tal import TaskAlignedAssigner
 from ultralytics.utils.tal import dist2bbox
 
 
@@ -19,9 +23,6 @@ def decode_feature_maps(
     )
 
     pred_dist, pred_scores = feat_maps_cat.split((n_coords, n_classes), dim=1)
-
-    pred_dist = pred_dist.permute(0, 2, 1).contiguous()
-    pred_scores = pred_scores.permute(0, 2, 1).contiguous()
 
     return pred_dist, pred_scores
 
@@ -99,6 +100,137 @@ def preprocess_targets(targets: tuple[dict]):
     return labels, boxes
 
 
+class YOLOv8DetectionLoss:
+    def __init__(
+        self,
+        reg_max: int,
+        n_classes: int,
+        strides: torch.Tensor,
+        tal_top_k: int,
+        cls_gain: float,
+        box_gain: float,
+        dfl_gain: float,
+    ):
+        self.reg_max = reg_max
+        self.n_classes = n_classes
+        self.strides = strides
+        self.cls_gain = cls_gain
+        self.box_gain = box_gain
+        self.dfl_gain = dfl_gain
+
+        self.assigner = TaskAlignedAssigner(tal_top_k, n_classes, alpha=0.5, beta=6.0)
+
+        self.bce = nn.BCEWithLogitsLoss(reduction="none")
+        self.bbox_loss = BboxLoss(reg_max)
+
+    def __call__(self, feat_maps: list[torch.Tensor], targets: tuple[dict]):
+        pred_dist, pred_scores = decode_feature_maps(
+            feat_maps,
+            self.reg_max,
+            self.n_classes,
+        )
+
+        # Permute the dimension here as the preceding transformer is shared with the
+        # inference pipeline.
+        pred_dist = pred_dist.permute(0, 2, 1).contiguous()
+        pred_scores = pred_scores.permute(0, 2, 1).contiguous()
+
+        anchor_points, stride_tensors = make_anchors(
+            feat_maps,
+            self.strides,
+            grid_cell_offset=0.5,
+        )
+
+        pred_boxes = decode_boxes(pred_dist, anchor_points, self.reg_max)
+
+        target_labels, target_boxes = preprocess_targets(targets)
+        mask = target_boxes.sum(dim=2, keepdim=True).gt_(0.0)
+
+        _, target_boxes, target_scores, fg_mask, _ = self.assigner(
+            pred_scores.detach().sigmoid(),
+            pred_boxes.detach() * stride_tensors,
+            anchor_points * stride_tensors,
+            target_labels,
+            target_boxes,
+            mask,
+        )
+
+        losses = torch.zeros(3)
+        target_scores_sum = max(target_scores.sum(), 1)
+        losses[0] = self.bce(pred_scores, target_scores).sum() / target_scores_sum
+
+        if fg_mask.sum():
+            target_boxes /= stride_tensors
+
+            losses[1], losses[2] = self.bbox_loss(
+                pred_dist,
+                pred_boxes,
+                anchor_points,
+                target_boxes,
+                target_scores,
+                target_scores_sum,
+                fg_mask,
+            )
+
+        losses[0] *= self.cls_gain
+        losses[1] *= self.box_gain
+        losses[2] *= self.dfl_gain
+
+        return losses
+
+
+class YOLOv8DetectionPredictor:
+    def __init__(
+        self,
+        model: nn.Module,
+        reg_max: int,
+        n_classes: int,
+        strides: torch.Tensor,
+        confidence_threshold: float,
+        iou_threshold: float,
+    ):
+        self.model = model
+        self.reg_max = reg_max
+        self.n_classes = n_classes
+        self.strides = strides
+        self.confidence_threshold = confidence_threshold
+        self.iou_threshold = iou_threshold
+
+    def __call__(self, feat_maps: list[torch.Tensor]):
+        pred_dist, pred_scores = decode_feature_maps(
+            feat_maps,
+            self.reg_max,
+            self.n_classes,
+        )
+
+        anchor_points, stride_tensors = make_anchors(
+            feat_maps,
+            self.strides,
+            grid_cell_offset=0.5,
+        )
+
+        pred_boxes = decode_boxes_eval(
+            self.model.model[-1],
+            pred_dist,
+            anchor_points.permute(1, 0),
+            stride_tensors.permute(1, 0),
+        )
+
+        pred = torch.cat((pred_boxes, pred_scores.sigmoid()), dim=1)
+
+        pred_nms = non_max_suppression(
+            pred,
+            conf_thres=self.confidence_threshold,
+            iou_thres=self.iou_threshold,
+            agnostic=False,
+            max_det=300,
+            classes=None,
+            in_place=False,
+        )
+
+        return pred_nms
+
+
 class TestYOLOUtils:
     @staticmethod
     def test_decode_feature_maps():
@@ -112,8 +244,8 @@ class TestYOLOUtils:
         n_classes = 80
         pred_dist, pred_scores = decode_feature_maps(feat_maps, reg_max, n_classes)
 
-        assert pred_dist.shape == (3, 5040, 64)
-        assert pred_scores.shape == (3, 5040, 80)
+        assert pred_dist.shape == (3, 64, 5040)
+        assert pred_scores.shape == (3, 80, 5040)
 
     @staticmethod
     def test_make_anchors():
@@ -157,7 +289,6 @@ class TestYOLOUtils:
         reg_max = 16
         n_classes = 80
         pred_dist, _ = decode_feature_maps(feat_maps, reg_max, n_classes)
-        pred_dist = pred_dist.permute(0, 2, 1)
 
         anchor_points, stride_tensors = make_anchors(
             feat_maps,

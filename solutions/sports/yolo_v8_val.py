@@ -8,13 +8,10 @@ from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
 from ultralytics.nn.modules.head import Detect
-from ultralytics.utils.ops import non_max_suppression
 
 from camp.datasets.ikcest import IKCESTDetectionDataset
 from camp.datasets.utils import resize_image_and_boxes
-from camp.models.yolo.yolo_utils import decode_boxes_eval
-from camp.models.yolo.yolo_utils import decode_feature_maps
-from camp.models.yolo.yolo_utils import make_anchors
+from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import load_model
 
 # %matplotlib inline
@@ -79,10 +76,7 @@ yolo.model.model[-1].type = t
 yolo.model.model[-1].stride = yolo_head.stride
 
 reg_max = yolo.model.model[-1].reg_max
-n_coords = reg_max * 4
 n_classes = yolo.model.model[-1].nc
-n_total = n_coords + n_classes
-
 strides = yolo.model.model[-1].stride
 
 epochs = 0
@@ -94,36 +88,21 @@ if OVERFITTING_TEST:
 load_model(CHECKPOINT_PATH, epochs, yolo.model, storage_options)
 
 # %%
+predictor = YOLOv8DetectionPredictor(
+    yolo.model,
+    reg_max,
+    n_classes,
+    strides,
+    confidence_threshold=0.25,
+    iou_threshold=0.7,
+)
+
+# %%
 yolo.model.eval()
 yolo.model.model[-1].training = True
 
 feat_maps = yolo.model(train_image.unsqueeze(0))
-pred_dist, pred_scores = decode_feature_maps(feat_maps, reg_max, n_classes)
-
-anchor_points, stride_tensors = make_anchors(feat_maps, strides, grid_cell_offset=0.5)
-
-pred_dist = pred_dist.permute(0, 2, 1)
-pred_scores = pred_scores.permute(0, 2, 1)
-
-pred_boxes = decode_boxes_eval(
-    yolo.model.model[-1],
-    pred_dist,
-    anchor_points.permute(1, 0),
-    stride_tensors.permute(1, 0),
-)
-
-# %%
-pred = torch.cat((pred_boxes, pred_scores.sigmoid()), dim=1)
-
-pred_nms = non_max_suppression(
-    pred,
-    conf_thres=0.25,
-    iou_thres=0.7,
-    agnostic=False,
-    max_det=300,
-    classes=None,
-    in_place=False,
-)
+pred_nms = predictor(feat_maps)
 
 # %%
 test_image_preview = draw_bounding_boxes(
