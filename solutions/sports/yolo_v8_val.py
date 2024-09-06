@@ -1,7 +1,11 @@
 # %%
+import json
 import os
 
+import altair as alt
+import fsspec
 import matplotlib.pyplot as plt
+import pandas as pd
 import torch
 import torchvision.transforms.v2.functional as tvf
 from torchvision.ops import box_convert
@@ -24,6 +28,7 @@ from camp.utils.torch_utils import load_model
 OVERFITTING_TEST = False
 
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
+TRAIN_STARTED_AT = ""
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
 
 if OVERFITTING_TEST:
@@ -35,6 +40,77 @@ storage_options = {
     "key": os.getenv("S3_ACCESS_KEY_ID"),
     "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
+
+# %%
+history_path = f"{CHECKPOINT_PATH}/{TRAIN_STARTED_AT}/history.json"
+
+with fsspec.open(history_path, **storage_options) as f:
+    history = json.load(f)
+
+# %%
+df_train_loss = pd.DataFrame(history["train"])
+df_train_loss["sum"] = df_train_loss.sum(axis=1)
+df_train_loss["epoch"] = df_train_loss.index
+df_train_loss["subset"] = "train"
+
+df_val_loss = pd.DataFrame(history["val"])
+df_val_loss["sum"] = df_val_loss.sum(axis=1)
+df_val_loss["epoch"] = df_val_loss.index
+df_val_loss["subset"] = "validation"
+
+df_loss = pd.concat((df_train_loss, df_val_loss), axis=0)
+
+# %%
+chart_nearest = alt.selection_point(
+    nearest=True,
+    on="pointerover",
+    fields=["epoch"],
+    empty=False,
+)
+
+chart_rules = (
+    alt.Chart(df_loss)
+    .mark_rule(color="gray")
+    .encode(
+        x="epoch:Q",
+        opacity=alt.condition(chart_nearest, alt.value(0.2), alt.value(0)),
+        tooltip=["epoch", "cls", "box", "dfl", "sum"],
+    )
+    .add_params(chart_nearest)
+)
+
+chart_loss = (
+    alt.Chart(df_loss)
+    .mark_line()
+    .encode(x="epoch:Q", y=alt.Y("sum:Q").scale(type="log"), color="subset:N")
+    .properties(width=640, height=320)
+)
+
+chart_loss + chart_rules
+
+# %%
+df_val_map = pd.DataFrame(history["val_metric"])
+df_val_map["epoch"] = df_val_map.index
+
+chart_rules = (
+    alt.Chart(df_val_map)
+    .mark_rule(color="gray")
+    .encode(
+        x="epoch:Q",
+        opacity=alt.condition(chart_nearest, alt.value(0.2), alt.value(0)),
+        tooltip=["epoch", "map", "map_50", "map_75"],
+    )
+    .add_params(chart_nearest)
+)
+
+chart_map = (
+    alt.Chart(df_val_map)
+    .mark_line()
+    .encode(x="epoch:Q", y=alt.Y("map:Q"))
+    .properties(width=640, height=320)
+)
+
+chart_map + chart_rules
 
 
 # %%
