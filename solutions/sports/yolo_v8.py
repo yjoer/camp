@@ -4,8 +4,12 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
+import json
+from datetime import datetime
+from typing import Any
 from typing import Union
 
+import fsspec
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,6 +19,7 @@ import torch.optim as optim
 import torchvision.transforms.v2.functional as tvf
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
+from torchmetrics.detection.mean_ap import MeanAveragePrecision
 from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
@@ -24,6 +29,7 @@ from ultralytics.utils.torch_utils import ModelEMA
 from camp.datasets.ikcest import IKCESTDetectionDataset
 from camp.datasets.utils import resize_image_and_boxes
 from camp.models.yolo.yolo_utils import YOLOv8DetectionLoss
+from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import save_checkpoint
 
 # %matplotlib inline
@@ -35,6 +41,7 @@ from camp.utils.torch_utils import save_checkpoint
 # %%
 OVERFITTING_TEST = False
 VALIDATION_SPLIT = False
+VALIDATION_SPLIT_TEST = False
 
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
@@ -76,14 +83,17 @@ train_dataset: Union[IKCESTDetectionDataset, Subset] = IKCESTDetectionDataset(
 if OVERFITTING_TEST:
     train_dataset = Subset(train_dataset, indices=[0])
 
+if VALIDATION_SPLIT_TEST:
+    train_dataset = Subset(train_dataset, indices=list(range(20)))
+
 if VALIDATION_SPLIT:
     n_images = len(train_dataset)
     split_point = int(0.8 * n_images)
     train_idx = list(range(split_point))
     val_idx = list(range(split_point, n_images))
 
-    train_dataset = Subset(train_dataset, indices=train_idx)
     val_dataset = Subset(train_dataset, indices=val_idx)
+    train_dataset = Subset(train_dataset, indices=train_idx)
 
 # %%
 train_image, train_target = train_dataset[0]
@@ -177,8 +187,71 @@ criterion = YOLOv8DetectionLoss(
     dfl_gain,
 )
 
+predictor = YOLOv8DetectionPredictor(
+    yolo.model,
+    reg_max,
+    n_classes,
+    strides,
+    confidence_threshold=0.25,
+    iou_threshold=0.7,
+)
+
+
+# %%
+def validation_loop():
+    metric = MeanAveragePrecision(box_format="xyxy")
+    metric.warn_on_many_detections = False
+
+    yolo.model.eval()
+    yolo.model.model[-1].training = True
+
+    steps = 1
+    pbar = keras.utils.Progbar(len(val_dataloader))
+
+    with torch.no_grad():
+        for images, targets in val_dataloader:
+            images = torch.stack(images, dim=0)
+            feat_maps = yolo.model(images)
+
+            losses = criterion(feat_maps, targets)
+            pred_nms = predictor(feat_maps)
+
+            preds = [
+                {"boxes": p[:, :4], "scores": p[:, 4], "labels": p[:, 5].int()}
+                for p in pred_nms
+            ]
+
+            targets = [
+                {"boxes": t["boxes"], "labels": t["labels"].int()} for t in targets
+            ]
+
+            map_dict = metric.forward(preds, targets)
+
+            pbar.update(
+                current=steps,
+                values=[
+                    ("cls_loss", losses[0].item()),
+                    ("box_loss", losses[1].item()),
+                    ("dfl_loss", losses[2].item()),
+                    *list(map_dict.items()),
+                ],
+            )
+
+            steps += 1
+
+    loss = {}
+    loss["cls"] = pbar._values["cls_loss"][0]
+    loss["box"] = pbar._values["box_loss"][0]
+    loss["dfl"] = pbar._values["dfl_loss"][0]
+
+    return loss, metric.compute()
+
+
 # %%
 yolo.model.train()
+
+train_started_at = datetime.now().isoformat(timespec="seconds")
+history: dict[str, list[Any]] = dict(train=[], val=[], val_metric=[])
 
 for i in range(n_epochs):
     print(f"Epoch: {i + 1}/{n_epochs}, Learning Rate: {lr_scheduler.get_last_lr()}")
@@ -210,9 +283,15 @@ for i in range(n_epochs):
         ema.update(yolo.model)
         steps += 1
 
+    train_loss = {}
+    train_loss["cls"] = pbar._values["cls_loss"][0]
+    train_loss["box"] = pbar._values["box_loss"][0]
+    train_loss["dfl"] = pbar._values["dfl_loss"][0]
+    history["train"].append(train_loss)
+
     if ((epochs + 1) % save_epochs) == 0:
         save_checkpoint(
-            path=CHECKPOINT_PATH,
+            path=f"{CHECKPOINT_PATH}/{train_started_at}",
             epoch=epochs,
             model=yolo.model,
             optimizer=optimizer,
@@ -220,7 +299,25 @@ for i in range(n_epochs):
             storage_options=storage_options,
         )
 
+    if VALIDATION_SPLIT:
+        loss_dict, map_dict = validation_loop()
+        history["val"].append(loss_dict)
+        history["val_metric"].append(map_dict)
+
+        yolo.model.train()
+
     lr_scheduler.step()
     epochs += 1
+
+# %%
+history_path = f"{CHECKPOINT_PATH}/{train_started_at}/history.json"
+
+for metric in history["val_metric"]:
+    for k, v in metric.items():
+        if torch.is_tensor(v):
+            metric[k] = v.item()
+
+with fsspec.open(history_path, "w", **storage_options) as f:
+    json.dump(history, f, indent=2)
 
 # %%
