@@ -51,6 +51,10 @@ if OVERFITTING_TEST:
     CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
 
 # %%
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Running on CPU.") if device.type == "cpu" else print("Running on GPU.")
+
+# %%
 storage_options = {
     "endpoint_url": os.getenv("S3_ENDPOINT"),
     "key": os.getenv("S3_ACCESS_KEY_ID"),
@@ -124,6 +128,8 @@ yolo.model.model[-1].f = f
 yolo.model.model[-1].type = t
 yolo.model.model[-1].stride = yolo_head.stride
 
+yolo.model = yolo.model.to(device)
+
 train_started_at = datetime.now().isoformat(timespec="seconds")
 train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
 
@@ -191,6 +197,7 @@ criterion = YOLOv8DetectionLoss(
     cls_gain,
     box_gain,
     dfl_gain,
+    device,
 )
 
 predictor = YOLOv8DetectionPredictor(
@@ -265,7 +272,7 @@ for i in range(n_epochs):
     pbar = keras.utils.Progbar(n_batches)
 
     for images, targets in train_dataloader:
-        images = torch.stack(images, dim=0)
+        images = torch.stack(images, dim=0).to(device)
         feat_maps = yolo.model(images)
 
         losses = criterion(feat_maps, targets)

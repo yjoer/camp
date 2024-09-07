@@ -110,6 +110,7 @@ class YOLOv8DetectionLoss:
         cls_gain: float,
         box_gain: float,
         dfl_gain: float,
+        device: torch.device,
     ):
         self.reg_max = reg_max
         self.n_classes = n_classes
@@ -117,6 +118,7 @@ class YOLOv8DetectionLoss:
         self.cls_gain = cls_gain
         self.box_gain = box_gain
         self.dfl_gain = dfl_gain
+        self.device = device
 
         self.assigner = TaskAlignedAssigner(tal_top_k, n_classes, alpha=0.5, beta=6.0)
 
@@ -144,6 +146,9 @@ class YOLOv8DetectionLoss:
         pred_boxes = decode_boxes(pred_dist, anchor_points, self.reg_max)
 
         target_labels, target_boxes = preprocess_targets(targets)
+        target_labels = target_labels.to(self.device)
+        target_boxes = target_boxes.to(self.device)
+
         mask = target_boxes.sum(dim=2, keepdim=True).gt_(0.0)
 
         _, target_boxes, target_scores, fg_mask, _ = self.assigner(
@@ -155,7 +160,7 @@ class YOLOv8DetectionLoss:
             mask,
         )
 
-        losses = torch.zeros(3)
+        losses = torch.zeros(3, device=self.device)
         target_scores_sum = max(target_scores.sum(), 1)
         losses[0] = self.bce(pred_scores, target_scores).sum() / target_scores_sum
 
