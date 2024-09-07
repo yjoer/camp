@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import torch
 import torchvision.transforms.v2.functional as tvf
+from IPython.display import display
 from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
@@ -26,6 +27,7 @@ from camp.utils.torch_utils import load_model
 
 # %%
 OVERFITTING_TEST = False
+VALIDATION_SPLIT = False
 
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 TRAIN_STARTED_AT = ""
@@ -40,6 +42,9 @@ storage_options = {
     "key": os.getenv("S3_ACCESS_KEY_ID"),
     "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
+
+if not os.getenv("S3_ENDPOINT"):
+    storage_options = {}
 
 # %%
 history_path = f"{CHECKPOINT_PATH}/{TRAIN_STARTED_AT}/history.json"
@@ -89,28 +94,29 @@ chart_loss = (
 chart_loss + chart_rules
 
 # %%
-df_val_map = pd.DataFrame(history["val_metric"])
-df_val_map["epoch"] = df_val_map.index
+if VALIDATION_SPLIT:
+    df_val_map = pd.DataFrame(history["val_metric"])
+    df_val_map["epoch"] = df_val_map.index
 
-chart_rules = (
-    alt.Chart(df_val_map)
-    .mark_rule(color="gray")
-    .encode(
-        x="epoch:Q",
-        opacity=alt.condition(chart_nearest, alt.value(0.2), alt.value(0)),
-        tooltip=["epoch", "map", "map_50", "map_75"],
+    chart_rules = (
+        alt.Chart(df_val_map)
+        .mark_rule(color="gray")
+        .encode(
+            x="epoch:Q",
+            opacity=alt.condition(chart_nearest, alt.value(0.2), alt.value(0)),
+            tooltip=["epoch", "map", "map_50", "map_75"],
+        )
+        .add_params(chart_nearest)
     )
-    .add_params(chart_nearest)
-)
 
-chart_map = (
-    alt.Chart(df_val_map)
-    .mark_line()
-    .encode(x="epoch:Q", y=alt.Y("map:Q"))
-    .properties(width=640, height=320)
-)
+    chart_map = (
+        alt.Chart(df_val_map)
+        .mark_line()
+        .encode(x="epoch:Q", y=alt.Y("map:Q"))
+        .properties(width=640, height=320)
+    )
 
-chart_map + chart_rules
+    display(chart_map + chart_rules)
 
 
 # %%
