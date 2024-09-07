@@ -30,6 +30,7 @@ from camp.datasets.ikcest import IKCESTDetectionDataset
 from camp.datasets.utils import resize_image_and_boxes
 from camp.models.yolo.yolo_utils import YOLOv8DetectionLoss
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
+from camp.utils.jupyter_utils import is_notebook
 from camp.utils.torch_utils import save_checkpoint
 from camp.utils.torch_utils import save_initial_weights
 
@@ -101,18 +102,19 @@ if VALIDATION_SPLIT:
     train_dataset = Subset(train_dataset, indices=train_idx)
 
 # %%
-train_image, train_target = train_dataset[0]
+if is_notebook():
+    train_image, train_target = train_dataset[0]
 
-train_image_preview = draw_bounding_boxes(
-    image=train_image,
-    boxes=train_target["boxes"],
-    labels=[str(x.int().item()) for x in train_target["labels"]],
-    colors="lime",
-)
+    train_image_preview = draw_bounding_boxes(
+        image=train_image,
+        boxes=train_target["boxes"],
+        labels=[str(x.int().item()) for x in train_target["labels"]],
+        colors="lime",
+    )
 
-plt.figure(figsize=(6.4, 4.8))
-plt.imshow(train_image_preview.permute(1, 2, 0))
-plt.show()
+    plt.figure(figsize=(6.4, 4.8))
+    plt.imshow(train_image_preview.permute(1, 2, 0))
+    plt.show()
 
 # %%
 yolo = YOLO("yolov8n.pt")
