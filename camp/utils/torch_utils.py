@@ -10,6 +10,20 @@ from torch.optim.lr_scheduler import LRScheduler
 from torch.optim.optimizer import Optimizer
 
 
+def save_initial_weights(path: str, model: nn.Module, storage_options={}):
+    filepath = f"{path}/initial_weights.safetensors"
+
+    with fsspec.open(filepath, "wb", **storage_options) as f:
+        f.write(save(model.state_dict()))
+
+
+def load_initial_weights(path: str, model: nn.Module, storage_options={}):
+    filepath = f"{path}/initial_weights.safetensors"
+
+    with fsspec.open(filepath, "rb", **storage_options) as f:
+        model.load_state_dict(load(f.read()))
+
+
 def save_checkpoint(
     path: str,
     epoch: int,
@@ -58,6 +72,19 @@ def load_model(path: str, epoch: int, model: nn.Module, storage_options={}):
 
 
 class TestTorchUtils:
+    @staticmethod
+    def test_save_load_initial_weights():
+        model = nn.Sequential(nn.Linear(8, 4), nn.Linear(4, 2))
+        model_t = nn.Sequential(nn.Linear(8, 4), nn.Linear(4, 2))
+
+        assert str(model_t.state_dict()) != str(model.state_dict())
+
+        with TemporaryDirectory() as temp_dir:
+            save_initial_weights(temp_dir, model)
+            load_initial_weights(temp_dir, model_t)
+
+        assert str(model_t.state_dict()) == str(model.state_dict())
+
     @staticmethod
     def test_save_load_checkpoint():
         epoch = 1

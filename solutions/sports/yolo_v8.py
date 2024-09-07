@@ -31,6 +31,7 @@ from camp.datasets.utils import resize_image_and_boxes
 from camp.models.yolo.yolo_utils import YOLOv8DetectionLoss
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import save_checkpoint
+from camp.utils.torch_utils import save_initial_weights
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -122,6 +123,11 @@ yolo.model.model[-1].i = i
 yolo.model.model[-1].f = f
 yolo.model.model[-1].type = t
 yolo.model.model[-1].stride = yolo_head.stride
+
+train_started_at = datetime.now().isoformat(timespec="seconds")
+train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
+
+save_initial_weights(train_storage_path, yolo.model, storage_options)
 
 reg_max = yolo.model.model[-1].reg_max
 n_classes = yolo.model.model[-1].nc
@@ -250,7 +256,6 @@ def validation_loop():
 # %%
 yolo.model.train()
 
-train_started_at = datetime.now().isoformat(timespec="seconds")
 history: dict[str, list[Any]] = dict(train=[], val=[], val_metric=[])
 
 for i in range(n_epochs):
@@ -291,7 +296,7 @@ for i in range(n_epochs):
 
     if ((epochs + 1) % save_epochs) == 0:
         save_checkpoint(
-            path=f"{CHECKPOINT_PATH}/{train_started_at}",
+            path=train_storage_path,
             epoch=epochs,
             model=yolo.model,
             optimizer=optimizer,
