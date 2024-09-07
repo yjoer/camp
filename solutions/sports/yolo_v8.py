@@ -62,6 +62,9 @@ storage_options = {
     "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
+if not os.getenv("S3_ENDPOINT"):
+    storage_options = {}
+
 
 # %%
 def transforms(image, target):
