@@ -180,11 +180,12 @@ for param in yolo.model.parameters():
 params = [p for p in yolo.model.parameters() if p.requires_grad]
 optimizer = optim.SGD(params, lr=0.01, momentum=0.937, weight_decay=0.0005)
 
+# Reduce the learning rate to 0.01x the initial value linearly for 100 epochs.
 lr_scheduler = optim.lr_scheduler.LinearLR(
     optimizer,
     start_factor=1.0,
     end_factor=0.01,
-    total_iters=n_epochs,
+    total_iters=100,
 )
 
 ema = ModelEMA(yolo.model, decay=0.9999)
