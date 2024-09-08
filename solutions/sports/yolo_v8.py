@@ -13,6 +13,7 @@ import fsspec
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
+import psutil
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -47,6 +48,7 @@ VALIDATION_SPLIT_TEST = False
 
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
+DATALOADER_WORKERS = psutil.cpu_count(logical=False)
 
 if OVERFITTING_TEST:
     CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
@@ -88,6 +90,12 @@ train_dataset: Union[IKCESTDetectionDataset, Subset] = IKCESTDetectionDataset(
     storage_options=storage_options,
     transforms=transforms,
 )
+
+# When multiple workers are initialized, the lock in the parent process is copied into
+# the child process causing the data loader to wait endlessly for the lock to become
+# available.
+if hasattr(os, "register_at_fork"):
+    os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
 
 if OVERFITTING_TEST:
     train_dataset = Subset(train_dataset, indices=[0])
@@ -172,6 +180,7 @@ train_dataloader = DataLoader(
     train_dataset,
     batch_size,
     shuffle=True,
+    num_workers=DATALOADER_WORKERS,
     collate_fn=collate_fn,
 )
 
