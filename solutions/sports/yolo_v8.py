@@ -134,8 +134,6 @@ yolo.model = yolo.model.to(device)
 train_started_at = datetime.now().isoformat(timespec="seconds")
 train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
 
-save_initial_weights(train_storage_path, yolo.model, storage_options)
-
 reg_max = yolo.model.model[-1].reg_max
 n_classes = yolo.model.model[-1].nc
 strides = yolo.model.model[-1].stride
@@ -157,6 +155,9 @@ dfl_gain = 1.5
 if OVERFITTING_TEST:
     n_epochs = 50
     save_epochs = 50
+
+if RESUME_EPOCH == 0:
+    save_initial_weights(train_storage_path, yolo.model, storage_options)
 
 if RESUME_EPOCH > 0:
     train_storage_path = f"{CHECKPOINT_PATH}/{RESUME_TRAIN_STARTED_AT}"
