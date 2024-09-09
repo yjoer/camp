@@ -17,18 +17,15 @@ import psutil
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torchvision.transforms.v2.functional as tvf
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
-from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
 from ultralytics.nn.modules.head import Detect
 from ultralytics.utils.torch_utils import ModelEMA
 
 from camp.datasets.ikcest import IKCESTDetectionDataset
-from camp.datasets.utils import resize_image_and_boxes
 from camp.models.yolo.yolo_utils import YOLOv8DetectionLoss
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.jupyter_utils import is_notebook
@@ -36,6 +33,8 @@ from camp.utils.torch_utils import load_checkpoint
 from camp.utils.torch_utils import load_initial_weights
 from camp.utils.torch_utils import save_checkpoint
 from camp.utils.torch_utils import save_initial_weights
+from solutions.sports.yolo_v8_pipeline import collate_fn
+from solutions.sports.yolo_v8_pipeline import transforms
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -71,22 +70,6 @@ storage_options = {
 
 if not os.getenv("S3_ENDPOINT"):
     storage_options = {}
-
-
-# %%
-def transforms(image, target):
-    boxes = box_convert(target["boxes"], "xywh", "xyxy")
-    max_size = 640
-    output_size = (384, 640)
-
-    image, boxes = resize_image_and_boxes(image, boxes, max_size, output_size)
-    target["boxes"] = boxes
-
-    image = tvf.to_image(image)
-    image = tvf.to_dtype(image, dtype=torch.float32, scale=True)
-
-    return image, target
-
 
 # %%
 train_dataset: Union[IKCESTDetectionDataset, Subset] = IKCESTDetectionDataset(
@@ -183,12 +166,7 @@ if RESUME_EPOCH > 0:
 
     epochs = RESUME_EPOCH + 1
 
-
 # %%
-def collate_fn(batch):
-    return tuple(zip(*batch))
-
-
 train_dataloader = DataLoader(
     train_dataset,
     batch_size,
