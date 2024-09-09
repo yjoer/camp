@@ -32,6 +32,8 @@ from camp.datasets.utils import resize_image_and_boxes
 from camp.models.yolo.yolo_utils import YOLOv8DetectionLoss
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.jupyter_utils import is_notebook
+from camp.utils.torch_utils import load_checkpoint
+from camp.utils.torch_utils import load_initial_weights
 from camp.utils.torch_utils import save_checkpoint
 from camp.utils.torch_utils import save_initial_weights
 
@@ -49,6 +51,9 @@ VALIDATION_SPLIT_TEST = False
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
 DATALOADER_WORKERS = psutil.cpu_count(logical=False)
+
+RESUME_TRAIN_STARTED_AT = ""
+RESUME_EPOCH = 0
 
 if OVERFITTING_TEST:
     CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
@@ -170,6 +175,16 @@ if OVERFITTING_TEST:
     n_epochs = 50
     save_epochs = 50
 
+if RESUME_EPOCH > 0:
+    # The initial weights must be restored before EMA is instantiated.
+    load_initial_weights(
+        f"{CHECKPOINT_PATH}/{RESUME_TRAIN_STARTED_AT}",
+        yolo.model,
+        storage_options,
+    )
+
+    epochs = RESUME_EPOCH + 1
+
 
 # %%
 def collate_fn(batch):
@@ -223,6 +238,16 @@ predictor = YOLOv8DetectionPredictor(
     confidence_threshold=0.25,
     iou_threshold=0.7,
 )
+
+if RESUME_EPOCH > 0:
+    load_checkpoint(
+        f"{CHECKPOINT_PATH}/{RESUME_TRAIN_STARTED_AT}",
+        RESUME_EPOCH,
+        yolo.model,
+        optimizer,
+        lr_scheduler,
+        storage_options,
+    )
 
 
 # %%
@@ -280,7 +305,7 @@ yolo.model.train()
 
 history: dict[str, list[Any]] = dict(train=[], val=[], val_metric=[])
 
-for i in range(n_epochs):
+for i in range(epochs, n_epochs):
     print(f"Epoch: {i + 1}/{n_epochs}, Learning Rate: {lr_scheduler.get_last_lr()}")
 
     steps = 1
