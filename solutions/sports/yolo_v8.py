@@ -195,6 +195,7 @@ train_dataloader = DataLoader(
     shuffle=True,
     num_workers=DATALOADER_WORKERS,
     collate_fn=collate_fn,
+    persistent_workers=True,
 )
 
 if VALIDATION_SPLIT:
