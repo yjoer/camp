@@ -176,12 +176,10 @@ if OVERFITTING_TEST:
     save_epochs = 50
 
 if RESUME_EPOCH > 0:
+    train_storage_path = f"{CHECKPOINT_PATH}/{RESUME_TRAIN_STARTED_AT}"
+
     # The initial weights must be restored before EMA is instantiated.
-    load_initial_weights(
-        f"{CHECKPOINT_PATH}/{RESUME_TRAIN_STARTED_AT}",
-        yolo.model,
-        storage_options,
-    )
+    load_initial_weights(train_storage_path, yolo.model, storage_options)
 
     epochs = RESUME_EPOCH + 1
 
@@ -241,7 +239,7 @@ predictor = YOLOv8DetectionPredictor(
 
 if RESUME_EPOCH > 0:
     load_checkpoint(
-        f"{CHECKPOINT_PATH}/{RESUME_TRAIN_STARTED_AT}",
+        train_storage_path,
         RESUME_EPOCH,
         yolo.model,
         optimizer,
@@ -362,7 +360,7 @@ for i in range(epochs, n_epochs):
     epochs += 1
 
 # %%
-history_path = f"{CHECKPOINT_PATH}/{train_started_at}/history.json"
+history_path = f"{train_storage_path}/history.json"
 
 for metric in history["val_metric"]:
     for k, v in metric.items():
