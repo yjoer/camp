@@ -216,7 +216,7 @@ lr_scheduler = optim.lr_scheduler.LinearLR(
     total_iters=100,
 )
 
-ema = ModelEMA(yolo.model, decay=0.9999)
+ema = ModelEMA(yolo.model, decay=0.9999, updates=epochs)
 
 criterion = YOLOv8DetectionLoss(
     reg_max,
