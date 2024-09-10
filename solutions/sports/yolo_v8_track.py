@@ -79,6 +79,11 @@ test_dataset: IKCESTDetectionTestDataset | Subset = IKCESTDetectionTestDataset(
     transforms=transforms_test,
 )
 
+test_dataset_raw: IKCESTDetectionTestDataset | Subset = IKCESTDetectionTestDataset(
+    path=TRAIN_DATASET_PATH,
+    storage_options=storage_options,
+)
+
 if OVERFITTING_VIDEO_TEST:
     train_dataset = Subset(train_dataset, list(range(750)))
 
@@ -232,6 +237,7 @@ with torch.no_grad():
 
 # %%
 video_name = "0"
+frame_offset = 0
 
 tracklets_seq = load_tracking_arrays(
     train_storage_path,
@@ -270,7 +276,12 @@ for i, tracklets in enumerate(tqdm(tracklets_seq)):
         color_lookup=sv.ColorLookup.TRACK,
     )
 
-    frame = tvf.to_image(train_dataset_raw[i][0])
+    frame = test_dataset_raw[i + frame_offset][0]
+
+    if OVERFITTING_VIDEO_TEST:
+        frame = train_dataset_raw[i][0]
+
+    frame = tvf.to_image(frame)
     frame = frame.permute(1, 2, 0).numpy()
 
     annotated_frame = box_annotator.annotate(frame, detections)
