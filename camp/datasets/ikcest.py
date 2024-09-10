@@ -9,6 +9,10 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 
+class UnexpectedRoleException(Exception):
+    pass
+
+
 class IKCEST:
     def __init__(self):
         pass
@@ -50,7 +54,7 @@ class IKCEST:
         return subset_frames, subset_seq_metadata
 
     @staticmethod
-    def load(path: str, subset: str, storage_options={}):
+    def load(path: str, storage_options={}):
         """
         Retrieve the list of images and load all associated annotations into memory,
         considering their small size. Organize these annotations in a dictionary where
@@ -58,13 +62,15 @@ class IKCEST:
         containing the set of annotations related to that video.
         """
         protocol = fsspec.utils.get_protocol(path)
+        subset_path = f"{path}/train"
 
         fs = fsspec.filesystem(protocol, **storage_options)
-        videos = fs.ls(f"{path}/{subset}")
+        videos = fs.ls(subset_path)
         videos = [fs.unstrip_protocol(v) for v in videos]
         videos = sorted(videos)
 
         subset_frames = []
+        subset_tracklet_labels: list[np.ndarray] = []
 
         for video in videos:
             frames = fs.ls(f"{video}/img1")
@@ -72,15 +78,43 @@ class IKCEST:
             frames = sorted(frames)
             subset_frames.extend(frames)
 
+            with fsspec.open(f"{video}/gameinfo.ini", "r", **storage_options) as f:
+                config = ConfigParser()
+                config.read_file(f)
+
+                n_tracklets = config["Sequence"]["num_tracklets"]
+                tracklet_labels = []
+
+                for i in range(int(n_tracklets)):
+                    role = config["Sequence"][f"trackletID_{i + 1}"]
+
+                    if role.startswith("player"):
+                        label = 0
+                    elif role.startswith("goalkeeper"):
+                        label = 1
+                    elif role.startswith("referee"):
+                        label = 2
+                    elif role.startswith("other"):
+                        label = 3
+                    elif role.startswith("ball"):
+                        label = 4
+                    else:
+                        raise UnexpectedRoleException()
+
+                    tracklet_labels.append(label)
+
+                tracklet_labels = np.array(tracklet_labels, dtype=np.int32)
+                subset_tracklet_labels.append(tracklet_labels)
+
         annotations = [f"{v}/gt/gt.txt" for v in videos]
-        annotations_dict = {}
+        annotations_dict: dict[str, np.ndarray] = {}
 
         with fsspec.open_files(annotations, **storage_options) as files:
             for video, f in zip(videos, files):
                 video_name = video.split("/")[-1]
                 annotations_dict[video_name] = np.loadtxt(f, delimiter=",")
 
-        return subset_frames, annotations_dict
+        return subset_frames, subset_tracklet_labels, annotations_dict
 
 
 class IKCESTDetectionDataset(Dataset):
@@ -97,13 +131,12 @@ class IKCESTDetectionDataset(Dataset):
         storage_options={},
         transforms: Optional[Callable] = None,
     ):
-        frames, annotations_dict = IKCEST.load(path, subset, storage_options)
+        frames, tracklet_labels, annotations_dict = IKCEST.load(path, storage_options)
 
-        self.path = path
-        self.subset = subset
         self.storage_options = storage_options
         self.frames = frames
         self.annotations_dict = annotations_dict
+        self.tracklet_labels = tracklet_labels
         self.transforms = transforms
 
     def __len__(self):
@@ -118,9 +151,12 @@ class IKCESTDetectionDataset(Dataset):
 
         annotations = self.annotations_dict[video_name]
         annotation = annotations[annotations[:, 0] == (idx % 750) + 1]
-        boxes = torch.from_numpy(annotation[:, 2:6])
 
-        labels = torch.zeros((len(boxes)))
+        tracklets = annotation[:, 1].astype(np.int32)
+        labels = self.tracklet_labels[idx // 750][tracklets - 1]
+        labels = torch.from_numpy(labels)
+
+        boxes = torch.from_numpy(annotation[:, 2:6])
 
         if self.transforms is not None:
             target = {"labels": labels, "boxes": boxes}
