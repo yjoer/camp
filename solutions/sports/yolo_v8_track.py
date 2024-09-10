@@ -9,6 +9,7 @@ import numpy as np
 import psutil
 import supervision as sv
 import torch
+import torchvision.transforms.v2.functional as tvf
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
 from tqdm.auto import tqdm
@@ -22,6 +23,7 @@ from camp.datasets.ikcest import IKCESTDetectionTestDataset
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import load_model
 from solutions.sports.yolo_v8_pipeline import collate_fn
+from solutions.sports.yolo_v8_pipeline import inverse_transforms
 from solutions.sports.yolo_v8_pipeline import transforms
 from solutions.sports.yolo_v8_pipeline import transforms_test
 
@@ -63,6 +65,12 @@ train_dataset: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
     subset="train",
     storage_options=storage_options,
     transforms=transforms,
+)
+
+train_dataset_raw: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
+    path=TRAIN_DATASET_PATH,
+    subset="train",
+    storage_options=storage_options,
 )
 
 test_dataset: IKCESTDetectionTestDataset | Subset = IKCESTDetectionTestDataset(
@@ -123,10 +131,13 @@ test_dataloader = DataLoader(
 if hasattr(os, "register_at_fork"):
     os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
 
+dataloader = test_dataloader
+
 if OVERFITTING_VIDEO_TEST:
     dataloader = train_dataloader
 
-dataloader = test_dataloader
+if TEST_VIDEOS_TEST:
+    dataloader = test_dataloader
 
 # %%
 predictor = YOLOv8DetectionPredictor(
@@ -233,13 +244,17 @@ video_writer = cv2.VideoWriter(
     filename=f"{video_name}.mkv",
     fourcc=cv2.VideoWriter.fourcc(*"VP80"),
     fps=25,
-    frameSize=(640, 384),
+    frameSize=(1920, 1080),
 )
 
 # %%
 for i, tracklets in enumerate(tqdm(tracklets_seq)):
+    boxes = torch.from_numpy(tracklets[:, :4])
+    boxes = inverse_transforms(boxes)
+    boxes = boxes.numpy()
+
     detections = sv.Detections(
-        xyxy=tracklets[:, :4],
+        xyxy=boxes,
         confidence=tracklets[:, 5],
         class_id=tracklets[:, 6].astype(int),
         tracker_id=tracklets[:, 4].astype(int),
@@ -255,16 +270,12 @@ for i, tracklets in enumerate(tqdm(tracklets_seq)):
         color_lookup=sv.ColorLookup.TRACK,
     )
 
-    annotated_frame = box_annotator.annotate(
-        scene=train_dataset[i][0].permute(1, 2, 0).numpy() * 255,
-        detections=detections,
-    )
+    frame = tvf.to_image(train_dataset_raw[i][0])
+    frame = frame.permute(1, 2, 0).numpy()
 
-    annotated_frame = label_annotator.annotate(
-        scene=annotated_frame,
-        detections=detections,
-        labels=labels,
-    )
+    annotated_frame = box_annotator.annotate(frame, detections)
+
+    annotated_frame = label_annotator.annotate(annotated_frame, detections, labels)
 
     annotated_frame = cv2.cvtColor(annotated_frame, cv2.COLOR_RGB2BGR)
     annotated_frame = annotated_frame.astype(np.uint8)

@@ -158,8 +158,9 @@ class IKCESTDetectionDataset(Dataset):
 
         boxes = torch.from_numpy(annotation[:, 2:6])
 
+        target = {"labels": labels, "boxes": boxes}
+
         if self.transforms is not None:
-            target = {"labels": labels, "boxes": boxes}
             frame, target = self.transforms(frame, target)
 
         return frame, target

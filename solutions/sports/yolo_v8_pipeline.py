@@ -37,5 +37,30 @@ def transforms_test(image):
     return image
 
 
+def inverse_transforms(boxes: torch.Tensor):
+    size = (384, 640)
+    output_size = (360, 640)
+
+    height, width = size
+    output_height, output_width = output_size
+
+    left = (output_width - width) // 2
+    top = (output_height - height) // 2
+
+    boxes[:, [0, 2]] += left
+    boxes[:, [1, 3]] += top
+
+    max_size = 1920
+
+    if output_width > output_height:
+        scale_factor = max_size / output_width
+    else:
+        scale_factor = max_size / output_height
+
+    boxes = torch.mul(boxes, scale_factor)
+
+    return boxes
+
+
 def collate_fn(batch):
     return tuple(zip(*batch))
