@@ -197,7 +197,7 @@ with torch.no_grad():
                 if video_name.isdigit() and frame_counter != 0:
                     video_name = str(int(video_name) + 1)
 
-                tracker = BYTETracker(args, frame_rate=30)
+                tracker = BYTETracker(args, frame_rate=25)
 
             boxes = Boxes(pred, orig_shape=())
             tracklets = tracker.update(boxes)
@@ -232,7 +232,7 @@ tracklets_seq = load_tracking_arrays(
 video_writer = cv2.VideoWriter(
     filename=f"{video_name}.mkv",
     fourcc=cv2.VideoWriter.fourcc(*"VP80"),
-    fps=30,
+    fps=25,
     frameSize=(640, 384),
 )
 
