@@ -18,16 +18,22 @@ from ultralytics.nn.modules.head import Detect
 from ultralytics.trackers.byte_tracker import BYTETracker
 
 from camp.datasets.ikcest import IKCESTDetectionDataset
+from camp.datasets.ikcest import IKCESTDetectionTestDataset
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import load_model
 from solutions.sports.yolo_v8_pipeline import collate_fn
 from solutions.sports.yolo_v8_pipeline import transforms
+from solutions.sports.yolo_v8_pipeline import transforms_test
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
 
+# %load_ext autoreload
+# %autoreload 2
+
 # %%
 OVERFITTING_VIDEO_TEST = False
+TEST_VIDEOS_TEST = False
 
 TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
@@ -59,8 +65,17 @@ train_dataset: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
     transforms=transforms,
 )
 
+test_dataset: IKCESTDetectionTestDataset | Subset = IKCESTDetectionTestDataset(
+    path=TRAIN_DATASET_PATH,
+    storage_options=storage_options,
+    transforms=transforms_test,
+)
+
 if OVERFITTING_VIDEO_TEST:
     train_dataset = Subset(train_dataset, list(range(750)))
+
+if TEST_VIDEOS_TEST:
+    test_dataset = Subset(test_dataset, list(range(2250)))
 
 # %%
 yolo = YOLO("yolov8n.pt")
@@ -97,8 +112,21 @@ train_dataloader = DataLoader(
     persistent_workers=True,
 )
 
+test_dataloader = DataLoader(
+    test_dataset,
+    batch_size,
+    num_workers=DATALOADER_WORKERS,
+    collate_fn=collate_fn,
+    persistent_workers=True,
+)
+
 if hasattr(os, "register_at_fork"):
     os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
+
+if OVERFITTING_VIDEO_TEST:
+    dataloader = train_dataloader
+
+dataloader = test_dataloader
 
 # %%
 predictor = YOLOv8DetectionPredictor(
@@ -123,18 +151,18 @@ args.fuse_score = True
 def save_tracking_arrays(
     path: str,
     epoch: int,
-    video_id: int,
+    video_name: str,
     tracklets_seq: list[np.ndarray],
     storage_options={},
 ):
-    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_id}.npz"
+    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
 
     with fsspec.open(tracking_path, "wb", **storage_options) as f:
         np.savez(f, *tracklets_seq)
 
 
-def load_tracking_arrays(path: str, epoch: int, video_id: int, storage_options={}):
-    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_id}.npz"
+def load_tracking_arrays(path: str, epoch: int, video_name: str, storage_options={}):
+    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
 
     with fsspec.open(tracking_path, **storage_options) as f:
         tracklets_seq = np.load(f)
@@ -149,18 +177,26 @@ yolo.model.model[-1].training = True
 
 with torch.no_grad():
     frame_counter = 0
-    video_id = 0
+    video_name = "0"
     tracklets_seq = []
 
-    for images, targets in tqdm(train_dataloader):
+    pbar = tqdm(total=len(dataloader))
+
+    for images, metadata in dataloader:
         images = torch.stack(images, dim=0).to(device)
         feat_maps = yolo.model(images)
 
         pred_nms = predictor(feat_maps)
 
-        for pred in pred_nms:
+        for idx, pred in enumerate(pred_nms):
             # Run on every first frame.
             if (frame_counter % 750) == 0:
+                if "seq" in metadata[idx]:
+                    video_name = metadata[idx]["seq"]["name"]
+
+                if video_name.isdigit() and frame_counter != 0:
+                    video_name = str(int(video_name) + 1)
+
                 tracker = BYTETracker(args, frame_rate=30)
 
             boxes = Boxes(pred, orig_shape=())
@@ -172,28 +208,29 @@ with torch.no_grad():
                 save_tracking_arrays(
                     train_storage_path,
                     epochs,
-                    video_id,
+                    video_name,
                     tracklets_seq,
                     storage_options,
                 )
 
-                video_id += 1
                 tracklets_seq = []
 
             frame_counter += 1
 
+        pbar.update()
+
 # %%
-video_id = 0
+video_name = "0"
 
 tracklets_seq = load_tracking_arrays(
     train_storage_path,
     epochs,
-    video_id,
+    video_name,
     storage_options,
 )
 
 video_writer = cv2.VideoWriter(
-    filename="output.mkv",
+    filename=f"{video_name}.mkv",
     fourcc=cv2.VideoWriter.fourcc(*"VP80"),
     fps=30,
     frameSize=(640, 384),

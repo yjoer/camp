@@ -1,3 +1,4 @@
+from configparser import ConfigParser
 from typing import Callable
 from typing import Optional
 
@@ -11,6 +12,42 @@ from torch.utils.data import Dataset
 class IKCEST:
     def __init__(self):
         pass
+
+    @staticmethod
+    def load_test(path: str, storage_options={}):
+        protocol = fsspec.utils.get_protocol(path)
+        subset_path = f"{path}/test"
+
+        fs = fsspec.filesystem(protocol, **storage_options)
+        videos = fs.ls(subset_path)
+        videos = [fs.unstrip_protocol(v) for v in videos]
+        videos = sorted(videos)
+
+        subset_frames = []
+        subset_seq_metadata = []
+
+        for video in videos:
+            frames = fs.ls(f"{video}/img1")
+            frames = [fs.unstrip_protocol(f) for f in frames]
+            frames = sorted(frames)
+            subset_frames.extend(frames)
+
+            with fsspec.open(f"{video}/seqinfo.ini", "r", **storage_options) as f:
+                config = ConfigParser()
+                config.read_file(f)
+
+                seq_metadata = {
+                    "name": config["Sequence"]["name"],
+                    "frame_rate": config["Sequence"]["frameRate"],
+                    "sequence_length": config["Sequence"]["seqLength"],
+                    "image_width": config["Sequence"]["imWidth"],
+                    "image_height": config["Sequence"]["imHeight"],
+                    "image_extension": config["Sequence"]["imExt"],
+                }
+
+                subset_seq_metadata.append(seq_metadata)
+
+        return subset_frames, subset_seq_metadata
 
     @staticmethod
     def load(path: str, subset: str, storage_options={}):
@@ -82,3 +119,35 @@ class IKCESTDetectionDataset(Dataset):
             frame, target = self.transforms(frame, target)
 
         return frame, target
+
+
+class IKCESTDetectionTestDataset(Dataset):
+    def __init__(
+        self,
+        path: str,
+        storage_options={},
+        transforms: Optional[Callable] = None,
+    ):
+        frames, seq_metadata = IKCEST.load_test(path, storage_options)
+
+        self.frames = frames
+        self.seq_metadata = seq_metadata
+        self.storage_options = storage_options
+        self.transforms = transforms
+
+    def __len__(self):
+        return len(self.frames)
+
+    def __getitem__(self, idx: int):
+        frame_path = self.frames[idx]
+
+        with fsspec.open(frame_path, **self.storage_options) as f:
+            frame = Image.open(f).convert("RGB")
+
+        if self.transforms is not None:
+            frame = self.transforms(frame)
+
+        metadata = {}
+        metadata["seq"] = self.seq_metadata[idx // 750]
+
+        return frame, metadata
