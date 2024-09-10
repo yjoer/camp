@@ -281,6 +281,9 @@ for i, tracklets in enumerate(tqdm(tracklets_seq)):
     if OVERFITTING_VIDEO_TEST:
         frame = train_dataset_raw[i][0]
 
+    if TEST_VIDEOS_TEST:
+        frame = test_dataset_raw[i + frame_offset][0]
+
     frame = tvf.to_image(frame)
     frame = frame.permute(1, 2, 0).numpy()
 
