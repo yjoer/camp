@@ -61,10 +61,18 @@ class IKCEST:
 
         fs = fsspec.filesystem(protocol, **storage_options)
         videos = fs.ls(f"{path}/{subset}")
-        frames = fs.glob(f"{path}/{subset}/**/img1/*.jpg")
-        frames = [fs.unstrip_protocol(f) for f in frames]
+        videos = [fs.unstrip_protocol(v) for v in videos]
+        videos = sorted(videos)
 
-        annotations = [fs.unstrip_protocol(f"{v}/gt/gt.txt") for v in videos]
+        subset_frames = []
+
+        for video in videos:
+            frames = fs.ls(f"{video}/img1")
+            frames = [fs.unstrip_protocol(f) for f in frames]
+            frames = sorted(frames)
+            subset_frames.extend(frames)
+
+        annotations = [f"{v}/gt/gt.txt" for v in videos]
         annotations_dict = {}
 
         with fsspec.open_files(annotations, **storage_options) as files:
@@ -72,7 +80,7 @@ class IKCEST:
                 video_name = video.split("/")[-1]
                 annotations_dict[video_name] = np.loadtxt(f, delimiter=",")
 
-        return frames, annotations_dict
+        return subset_frames, annotations_dict
 
 
 class IKCESTDetectionDataset(Dataset):
