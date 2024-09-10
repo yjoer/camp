@@ -255,6 +255,22 @@ video_writer = cv2.VideoWriter(
 
 # %%
 for i, tracklets in enumerate(tqdm(tracklets_seq)):
+    if tracklets.size == 0:
+        frame = test_dataset_raw[i + frame_offset][0]
+
+        if OVERFITTING_VIDEO_TEST:
+            frame = train_dataset_raw[i][0]
+
+        if TEST_VIDEOS_TEST:
+            frame = test_dataset_raw[i + frame_offset][0]
+
+        frame = tvf.to_image(frame)
+        frame = frame.permute(1, 2, 0).numpy()
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        video_writer.write(frame)
+
+        continue
+
     boxes = torch.from_numpy(tracklets[:, :4])
     boxes = inverse_transforms(boxes)
     boxes = boxes.numpy()
@@ -288,11 +304,8 @@ for i, tracklets in enumerate(tqdm(tracklets_seq)):
     frame = frame.permute(1, 2, 0).numpy()
 
     annotated_frame = box_annotator.annotate(frame, detections)
-
     annotated_frame = label_annotator.annotate(annotated_frame, detections, labels)
-
     annotated_frame = cv2.cvtColor(annotated_frame, cv2.COLOR_RGB2BGR)
-    annotated_frame = annotated_frame.astype(np.uint8)
 
     video_writer.write(annotated_frame)
 
