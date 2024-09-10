@@ -201,7 +201,7 @@ class YOLOv8DetectionPredictor:
         self.confidence_threshold = confidence_threshold
         self.iou_threshold = iou_threshold
 
-    def __call__(self, feat_maps: list[torch.Tensor]):
+    def __call__(self, feat_maps: list[torch.Tensor]) -> list[torch.Tensor]:
         pred_dist, pred_scores = decode_feature_maps(
             feat_maps,
             self.reg_max,

@@ -44,6 +44,7 @@ from solutions.sports.yolo_v8_pipeline import transforms
 
 # %%
 OVERFITTING_TEST = False
+OVERFITTING_VIDEO_TEST = False
 VALIDATION_SPLIT = False
 VALIDATION_SPLIT_TEST = False
 
@@ -54,7 +55,7 @@ DATALOADER_WORKERS = psutil.cpu_count(logical=False)
 RESUME_TRAIN_STARTED_AT = ""
 RESUME_EPOCH = 0
 
-if OVERFITTING_TEST:
+if OVERFITTING_TEST or OVERFITTING_VIDEO_TEST or VALIDATION_SPLIT_TEST:
     CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
 
 # %%
@@ -87,6 +88,9 @@ if hasattr(os, "register_at_fork"):
 
 if OVERFITTING_TEST:
     train_dataset = Subset(train_dataset, indices=[0])
+
+if OVERFITTING_VIDEO_TEST:
+    train_dataset = Subset(train_dataset, indices=list(range(750)))
 
 if VALIDATION_SPLIT_TEST:
     train_dataset = Subset(train_dataset, indices=list(range(20)))
