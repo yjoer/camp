@@ -2,9 +2,12 @@
 import os
 from argparse import Namespace
 
+import cv2
 import fsspec
+import matplotlib.pyplot as plt
 import numpy as np
 import psutil
+import supervision as sv
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
@@ -19,6 +22,9 @@ from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import load_model
 from solutions.sports.yolo_v8_pipeline import collate_fn
 from solutions.sports.yolo_v8_pipeline import transforms
+
+# %matplotlib inline
+# %config InlineBackend.figure_formats = ['retina']
 
 # %%
 OVERFITTING_VIDEO_TEST = False
@@ -127,6 +133,16 @@ def save_tracking_arrays(
         np.savez(f, *tracklets_seq)
 
 
+def load_tracking_arrays(path: str, epoch: int, video_id: int, storage_options={}):
+    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_id}.npz"
+
+    with fsspec.open(tracking_path, **storage_options) as f:
+        tracklets_seq = np.load(f)
+        tracklets_seq = [tracklets_seq[key] for key in tracklets_seq]
+
+    return tracklets_seq
+
+
 # %%
 yolo.model.eval()
 yolo.model.model[-1].training = True
@@ -165,5 +181,64 @@ with torch.no_grad():
                 tracklets_seq = []
 
             frame_counter += 1
+
+# %%
+video_id = 0
+
+tracklets_seq = load_tracking_arrays(
+    train_storage_path,
+    epochs,
+    video_id,
+    storage_options,
+)
+
+video_writer = cv2.VideoWriter(
+    filename="output.mkv",
+    fourcc=cv2.VideoWriter.fourcc(*"VP80"),
+    fps=30,
+    frameSize=(640, 384),
+)
+
+# %%
+for i, tracklets in enumerate(tqdm(tracklets_seq)):
+    detections = sv.Detections(
+        xyxy=tracklets[:, :4],
+        confidence=tracklets[:, 5],
+        class_id=tracklets[:, 6].astype(int),
+        tracker_id=tracklets[:, 4].astype(int),
+    )
+
+    labels = [str(tracker_id) for tracker_id in detections.tracker_id]
+
+    box_annotator = sv.BoxAnnotator(thickness=1)
+
+    label_annotator = sv.LabelAnnotator(
+        text_scale=0.5,
+        text_padding=2,
+        color_lookup=sv.ColorLookup.TRACK,
+    )
+
+    annotated_frame = box_annotator.annotate(
+        scene=train_dataset[i][0].permute(1, 2, 0).numpy() * 255,
+        detections=detections,
+    )
+
+    annotated_frame = label_annotator.annotate(
+        scene=annotated_frame,
+        detections=detections,
+        labels=labels,
+    )
+
+    annotated_frame = cv2.cvtColor(annotated_frame, cv2.COLOR_RGB2BGR)
+    annotated_frame = annotated_frame.astype(np.uint8)
+
+    video_writer.write(annotated_frame)
+
+video_writer.release()
+
+# %%
+annotated_frame = cv2.cvtColor(annotated_frame, cv2.COLOR_BGR2RGB)
+plt.imshow(annotated_frame / 255)
+plt.show()
 
 # %%
