@@ -6,12 +6,14 @@ import cv2
 import fsspec
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import psutil
 import supervision as sv
 import torch
 import torchvision.transforms.v2.functional as tvf
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
+from torchvision.ops import box_convert
 from tqdm.auto import tqdm
 from ultralytics import YOLO
 from ultralytics.engine.results import Boxes
@@ -194,7 +196,7 @@ yolo.model.model[-1].training = True
 with torch.no_grad():
     frame_counter = 0
     video_name = "0"
-    tracklets_seq = []
+    tracklets_seq: list[np.ndarray] = []
 
     pbar = tqdm(total=len(dataloader))
 
@@ -234,6 +236,58 @@ with torch.no_grad():
             frame_counter += 1
 
         pbar.update()
+
+# %%
+tracking_path = f"{train_storage_path}/checkpoint-{epochs}-tracking"
+tracking_sub_path = f"{train_storage_path}/checkpoint-{epochs}-sub"
+
+protocol = fsspec.utils.get_protocol(tracking_path)
+fs = fsspec.filesystem(protocol, **storage_options)
+tracklets_npzs = fs.ls(tracking_path)
+tracklets_npzs = [fs.unstrip_protocol(t) for t in tracklets_npzs]
+
+for tracklets_npz in tqdm(tracklets_npzs):
+    with fsspec.open(tracklets_npz, **storage_options) as f:
+        tracklets_seq = np.load(f)
+        tracklets_seq = [tracklets_seq[key] for key in tracklets_seq]
+
+    tracklets_seq_df = []
+
+    # Convert the detections to align with the submission format one frame at a time.
+    for i, tracklets in enumerate(tracklets_seq):
+        n_tracklets = tracklets.shape[0]
+
+        # Skip the iteration if the frame has no tracklets.
+        if n_tracklets == 0:
+            continue
+
+        frame_id = np.full((n_tracklets, 1), i + 1, dtype=np.int32)
+        tracker_id = tracklets[:, [4]].astype(np.int32)
+
+        boxes = torch.from_numpy(tracklets[:, :4])
+        boxes = inverse_transforms(boxes)
+        boxes = box_convert(boxes, in_fmt="xyxy", out_fmt="xywh")
+        boxes = boxes.numpy()
+
+        confidence = tracklets[:, [5]]
+
+        class_id = tracklets[:, [6]].astype(np.int32)
+        extras = np.full((n_tracklets, 2), -1, dtype=np.int32)
+
+        tracklets_df = [
+            pd.DataFrame(x)
+            for x in [frame_id, tracker_id, boxes, confidence, class_id, extras]
+        ]
+
+        tracklets_df = pd.concat(tracklets_df, axis=1)
+        tracklets_seq_df.append(tracklets_df)
+
+    tracklets_seq_df = pd.concat(tracklets_seq_df, axis=0)
+    video_name = tracklets_npz.split("/")[-1].split(".")[0]
+    video_sub_file = f"{tracking_sub_path}/{video_name}.txt"
+
+    with fsspec.open(video_sub_file, "wb", **storage_options) as f:
+        tracklets_seq_df.to_csv(f, header=False, index=False)
 
 # %%
 video_name = "0"
