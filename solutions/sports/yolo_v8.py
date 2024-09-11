@@ -52,6 +52,8 @@ TRAIN_DATASET_PATH = "s3://datasets/ikcest_2024"
 CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
 DATALOADER_WORKERS = psutil.cpu_count(logical=False)
 
+USE_AMP = False
+
 RESUME_TRAIN_STARTED_AT = ""
 RESUME_EPOCH = 0
 
@@ -221,6 +223,8 @@ predictor = YOLOv8DetectionPredictor(
     iou_threshold=0.7,
 )
 
+scaler = torch.GradScaler(device.type, enabled=USE_AMP)
+
 if RESUME_EPOCH > 0:
     load_checkpoint(
         train_storage_path,
@@ -295,9 +299,11 @@ for i in range(epochs, n_epochs):
 
     for images, targets in train_dataloader:
         images = torch.stack(images, dim=0).to(device)
-        feat_maps = yolo.model(images)
 
-        losses = criterion(feat_maps, targets)
+        with torch.autocast(device.type, torch.float16, enabled=USE_AMP):
+            feat_maps = yolo.model(images)
+
+            losses = criterion(feat_maps, targets)
 
         pbar.update(
             current=steps,
@@ -308,11 +314,14 @@ for i in range(epochs, n_epochs):
             ],
         )
 
-        optimizer.zero_grad()
-        losses.sum().backward()
+        scaler.scale(losses.sum()).backward()
 
+        scaler.unscale_(optimizer)
         nn.utils.clip_grad_norm_(params, max_norm=10.0)
-        optimizer.step()
+
+        scaler.step(optimizer)
+        scaler.update()
+        optimizer.zero_grad()
 
         ema.update(yolo.model)
         steps += 1

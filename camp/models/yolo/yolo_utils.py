@@ -146,8 +146,8 @@ class YOLOv8DetectionLoss:
         pred_boxes = decode_boxes(pred_dist, anchor_points, self.reg_max)
 
         target_labels, target_boxes = preprocess_targets(targets)
-        target_labels = target_labels.to(self.device)
-        target_boxes = target_boxes.to(self.device)
+        target_labels = target_labels.to(device=self.device, dtype=pred_scores.dtype)
+        target_boxes = target_boxes.to(device=self.device, dtype=pred_dist.dtype)
 
         mask = target_boxes.sum(dim=2, keepdim=True).gt_(0.0)
 
