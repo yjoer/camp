@@ -207,6 +207,7 @@ with torch.no_grad():
         pred_nms = predictor(feat_maps)
 
         for idx, pred in enumerate(pred_nms):
+            pred = pred.cpu().numpy()
             # Run on every first frame.
             if (frame_counter % 750) == 0:
                 if "seq" in metadata[idx]:

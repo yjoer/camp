@@ -129,7 +129,7 @@ i, f, t = yolo_head.i, yolo_head.f, yolo_head.type
 
 # https://github.com/ultralytics/ultralytics/blob/v8.2.85/ultralytics/nn/modules/head.py#L21
 # https://github.com/ultralytics/ultralytics/blob/v8.2.85/ultralytics/nn/tasks.py#L990
-yolo.model.model[-1] = Detect(nc=1, ch=(64, 128, 256))
+yolo.model.model[-1] = Detect(nc=5, ch=(64, 128, 256))
 yolo.model.model[-1].i = i
 yolo.model.model[-1].f = f
 yolo.model.model[-1].type = t
@@ -137,7 +137,7 @@ yolo.model.model[-1].stride = yolo_head.stride
 
 yolo.model = yolo.model.to(device)
 
-train_started_at = datetime.now().isoformat(timespec="seconds")
+train_started_at = datetime.now().isoformat(timespec="seconds").replace(":", "-")
 train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
 
 reg_max = yolo.model.model[-1].reg_max
@@ -232,6 +232,7 @@ if RESUME_EPOCH > 0:
         yolo.model,
         optimizer,
         lr_scheduler,
+        scaler,
         storage_options,
     )
 
@@ -249,7 +250,7 @@ def validation_loop():
 
     with torch.no_grad():
         for images, targets in val_dataloader:
-            images = torch.stack(images, dim=0)
+            images = torch.stack(images, dim=0).to(device)
             feat_maps = yolo.model(images)
 
             losses = criterion(feat_maps, targets)
@@ -261,7 +262,8 @@ def validation_loop():
             ]
 
             targets = [
-                {"boxes": t["boxes"], "labels": t["labels"].int()} for t in targets
+                {"boxes": t["boxes"].to(device), "labels": t["labels"].to(device).int()}
+                for t in targets
             ]
 
             map_dict = metric.forward(preds, targets)
@@ -339,6 +341,7 @@ for i in range(epochs, n_epochs):
             model=yolo.model,
             optimizer=optimizer,
             scheduler=lr_scheduler,
+            scaler=scaler,
             storage_options=storage_options,
         )
 
