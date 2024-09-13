@@ -98,7 +98,7 @@ yolo = YOLO("yolov8n.pt")
 yolo_head = yolo.model.model[-1]
 i, f, t = yolo_head.i, yolo_head.f, yolo_head.type
 
-yolo.model.model[-1] = Detect(nc=1, ch=(64, 128, 256))
+yolo.model.model[-1] = Detect(nc=5, ch=(64, 128, 256))
 yolo.model.model[-1].i = i
 yolo.model.model[-1].f = f
 yolo.model.model[-1].type = t
@@ -207,7 +207,8 @@ with torch.no_grad():
         pred_nms = predictor(feat_maps)
 
         for idx, pred in enumerate(pred_nms):
-            pred = pred.cpu().numpy()
+            pred_np = pred.cpu().numpy()
+
             # Run on every first frame.
             if (frame_counter % 750) == 0:
                 if "seq" in metadata[idx]:
@@ -218,7 +219,7 @@ with torch.no_grad():
 
                 tracker = BYTETracker(args, frame_rate=25)
 
-            boxes = Boxes(pred, orig_shape=())
+            boxes = Boxes(pred_np, orig_shape=())
             tracklets = tracker.update(boxes)
             tracklets_seq.append(tracklets)
 
@@ -337,7 +338,7 @@ for i, tracklets in enumerate(tqdm(tracklets_seq)):
         tracker_id=tracklets[:, 4].astype(int),
     )
 
-    labels = [str(tracker_id) for tracker_id in detections.tracker_id]
+    labels = [f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id)]
 
     box_annotator = sv.BoxAnnotator(thickness=1)
 
