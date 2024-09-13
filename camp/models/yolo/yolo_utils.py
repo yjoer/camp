@@ -146,14 +146,18 @@ class YOLOv8DetectionLoss:
         pred_boxes = decode_boxes(pred_dist, anchor_points, self.reg_max)
 
         target_labels, target_boxes = preprocess_targets(targets)
-        target_labels = target_labels.to(device=self.device, dtype=pred_scores.dtype)
-        target_boxes = target_boxes.to(device=self.device, dtype=pred_dist.dtype)
+        target_labels = target_labels.to(device=self.device)
+        target_boxes = target_boxes.to(device=self.device)
 
         mask = target_boxes.sum(dim=2, keepdim=True).gt_(0.0)
 
+        # When autocast is enabled, the type of pred_boxes and stride_tensors might be
+        # float16. We need to convert them to the same type as target_boxes so that the
+        # resulting tensor from the IoU calculation has the same type as the overlaps
+        # tensor.
         _, target_boxes, target_scores, fg_mask, _ = self.assigner(
             pred_scores.detach().sigmoid(),
-            pred_boxes.detach() * stride_tensors,
+            (pred_boxes.detach() * stride_tensors).to(dtype=target_boxes.dtype),
             anchor_points * stride_tensors,
             target_labels,
             target_boxes,
