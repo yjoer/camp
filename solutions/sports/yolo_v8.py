@@ -53,6 +53,7 @@ CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8"
 DATALOADER_WORKERS = psutil.cpu_count(logical=False)
 
 USE_AMP = False
+SAMPLING_PERIOD = 25
 
 RESUME_TRAIN_STARTED_AT = ""
 RESUME_EPOCH = 0
@@ -93,6 +94,12 @@ if OVERFITTING_TEST:
 
 if OVERFITTING_VIDEO_TEST:
     train_dataset = Subset(train_dataset, indices=list(range(750)))
+
+if SAMPLING_PERIOD > 0:
+    train_dataset = Subset(
+        train_dataset,
+        indices=list(range(0, len(train_dataset), SAMPLING_PERIOD)),
+    )
 
 if VALIDATION_SPLIT_TEST:
     train_dataset = Subset(train_dataset, indices=list(range(20)))
