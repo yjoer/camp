@@ -200,4 +200,20 @@ with fsspec.open_files(annotations, **storage_options) as files:
     for future in as_completed(futures):
         results_np.append(future.result())
 
+# %% [markdown]
+# ## Multiple Files Multithreaded Ordered
+
+# %%
+# %%timeit
+pool = ThreadPoolExecutor()
+read_options = csv.ReadOptions(autogenerate_column_names=True)
+
+
+def pa_read_csv_ord(f):
+    return csv.read_csv(f, read_options).to_pandas().to_numpy()
+
+
+with fsspec.open_files(annotations, **storage_options) as files:
+    results_pa = [x for x in pool.map(pa_read_csv_ord, files)]
+
 # %%
