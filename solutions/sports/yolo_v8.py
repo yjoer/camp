@@ -88,7 +88,7 @@ n_images = len(train_dataset)
 # When multiple workers are initialized, the lock in the parent process is copied into
 # the child process causing the data loader to wait endlessly for the lock to become
 # available.
-if hasattr(os, "register_at_fork"):
+if hasattr(os, "register_at_fork") and hasattr(fsspec, "asyn"):
     os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
 
 if OVERFITTING_TEST:

@@ -135,7 +135,7 @@ test_dataloader = DataLoader(
     persistent_workers=True,
 )
 
-if hasattr(os, "register_at_fork"):
+if hasattr(os, "register_at_fork") and hasattr(fsspec, "asyn"):
     os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
 
 dataloader = test_dataloader
