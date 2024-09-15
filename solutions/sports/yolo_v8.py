@@ -83,6 +83,8 @@ train_dataset: Union[IKCESTDetectionDataset, Subset] = IKCESTDetectionDataset(
     transforms=transforms,
 )
 
+n_images = len(train_dataset)
+
 # When multiple workers are initialized, the lock in the parent process is copied into
 # the child process causing the data loader to wait endlessly for the lock to become
 # available.
@@ -96,22 +98,24 @@ if OVERFITTING_VIDEO_TEST:
     train_dataset = Subset(train_dataset, indices=list(range(750)))
 
 if SAMPLING_PERIOD > 0:
-    train_dataset = Subset(
-        train_dataset,
-        indices=list(range(0, len(train_dataset), SAMPLING_PERIOD)),
-    )
+    sample_idx = list(range(0, n_images, SAMPLING_PERIOD))
+    train_dataset = Subset(train_dataset, indices=sample_idx)
 
 if VALIDATION_SPLIT_TEST:
     train_dataset = Subset(train_dataset, indices=list(range(20)))
 
-if VALIDATION_SPLIT:
-    n_images = len(train_dataset)
-    split_point = int(0.8 * n_images)
-    train_idx = list(range(split_point))
-    val_idx = list(range(split_point, n_images))
+if VALIDATION_SPLIT and SAMPLING_PERIOD == 0:
+    n_videos = n_images // 750
+    split_point = int(0.8 * n_videos)
+    train_idx = list(range(split_point * 750))
+    val_idx = list(range(split_point * 750, n_images))
 
     val_dataset = Subset(train_dataset, indices=val_idx)
     train_dataset = Subset(train_dataset, indices=train_idx)
+
+if VALIDATION_SPLIT and SAMPLING_PERIOD > 0:
+    val_idx = [i for i in range(n_images) if i % SAMPLING_PERIOD != 0]
+    val_dataset = Subset(train_dataset, indices=val_idx)
 
 # %%
 if is_notebook():
