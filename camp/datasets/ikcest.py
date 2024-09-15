@@ -1,4 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
 from configparser import ConfigParser
+from typing import IO
 from typing import Callable
 from typing import Optional
 
@@ -6,7 +8,20 @@ import fsspec
 import numpy as np
 import torch
 from PIL import Image
+from pyarrow import csv
 from torch.utils.data import Dataset
+
+
+def read_csv_multi(files: list[IO[bytes]]):
+    pool = ThreadPoolExecutor()
+    read_options = csv.ReadOptions(autogenerate_column_names=True)
+
+    def read_csv(f):
+        return csv.read_csv(f, read_options).to_pandas().to_numpy()
+
+    results = [x for x in pool.map(read_csv, files)]
+
+    return results
 
 
 class UnexpectedRoleException(Exception):
@@ -110,9 +125,11 @@ class IKCEST:
         annotations_dict: dict[str, np.ndarray] = {}
 
         with fsspec.open_files(annotations, **storage_options) as files:
-            for video, f in zip(videos, files):
+            annotations_list = read_csv_multi(files)
+
+            for video, annotations_np in zip(videos, annotations_list):
                 video_name = video.split("/")[-1]
-                annotations_dict[video_name] = np.loadtxt(f, delimiter=",")
+                annotations_dict[video_name] = annotations_np
 
         return subset_frames, subset_tracklet_labels, annotations_dict
 
