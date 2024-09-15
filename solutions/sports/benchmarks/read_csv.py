@@ -7,6 +7,7 @@ from concurrent.futures import as_completed
 import fsspec
 import numpy as np
 import pandas as pd
+import polars as pl
 from pyarrow import csv
 
 # %%
@@ -58,6 +59,11 @@ np_pa = csv.read_csv(x, read_options).to_pandas().to_numpy()
 # %%
 # %%timeit
 x.seek(0)
+np_pl = pl.read_csv(x, has_header=False).to_numpy()
+
+# %%
+# %%timeit
+x.seek(0)
 np_lt = np.loadtxt(x, delimiter=",")
 
 # %% [markdown]
@@ -74,6 +80,11 @@ read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
     np_pa = csv.read_csv(f, read_options).to_pandas().to_numpy()
+
+# %%
+# %%timeit
+with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
+    np_pl = pl.read_csv(f.read(), has_header=False).to_numpy()
 
 # %%
 # %%timeit
@@ -96,6 +107,12 @@ read_options = csv.ReadOptions(autogenerate_column_names=True)
 with fsspec.open_files(annotations, **storage_options) as files:
     for f in files:
         np_pa = csv.read_csv(f, read_options).to_pandas().to_numpy()
+
+# %%
+# %%timeit
+with fsspec.open_files(annotations, **storage_options) as files:
+    for f in files:
+        np_pl = pl.read_csv(f.read(), has_header=False).to_numpy()
 
 # %%
 # %%timeit
@@ -144,6 +161,25 @@ with fsspec.open_files(annotations, **storage_options) as files:
 
     for future in as_completed(futures):
         results_pa.append(future.result())
+
+# %%
+# %%timeit
+pool = ThreadPoolExecutor()
+
+
+def pl_read_csv(f):
+    return pl.read_csv(f.read(), has_header=False).to_numpy()
+
+
+with fsspec.open_files(annotations, **storage_options) as files:
+    futures = []
+    results_pl = []
+
+    for f in files:
+        futures.append(pool.submit(pl_read_csv, f))
+
+    for future in as_completed(futures):
+        results_pl.append(future.result())
 
 # %%
 # %%timeit
