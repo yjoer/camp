@@ -9,9 +9,13 @@ import torchvision.transforms.v2.functional as tvf
 from torchvision.ops import box_convert
 
 from camp.datasets.ikcest import IKCESTDetectionTestDataset
+from solutions.sports.yolo_v8_pipeline import evaluate_tracking
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
+
+# %load_ext autoreload
+# %autoreload 2
 
 # %%
 OVERFITTING_TEST = False
@@ -88,5 +92,20 @@ test_image = label_annotator.annotate(test_image, detections, labels)
 plt.figure(figsize=(8, 6))
 plt.imshow(test_image)
 plt.show()
+
+# %% [markdown]
+# ## Evaluation
+
+# %%
+df_metrics = evaluate_tracking(
+    TRAIN_DATASET_PATH,
+    CHECKPOINT_PATH,
+    TRAIN_STARTED_AT,
+    EPOCH,
+    storage_options,
+)
+
+# %%
+df_metrics
 
 # %%
