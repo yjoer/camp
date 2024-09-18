@@ -17,6 +17,7 @@ def respond(text: str):
 
     st.session_state["messages"].append({"role": "user", "content": text})
 
+    text = text.strip()
     response = replace_do_you_questions(text)
 
     def stream_response():
