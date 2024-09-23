@@ -4,6 +4,8 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
+from datetime import datetime
+
 import fsspec
 import keras
 import matplotlib.pyplot as plt
@@ -19,6 +21,7 @@ from torchvision.models import resnet50
 
 from camp.datasets.soccernet import SoccerNetLegibilityDataset
 from camp.utils.jupyter_utils import is_notebook
+from camp.utils.torch_utils import save_checkpoint
 from solutions.sports.numbers.resnet_pipeline import collate_fn
 from solutions.sports.numbers.resnet_pipeline import transforms
 
@@ -32,9 +35,13 @@ from solutions.sports.numbers.resnet_pipeline import transforms
 OVERFITTING_TEST = False
 
 DATASET_PATH = "s3://datasets/soccernet_legibility"
+CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50"
 DATALOADER_WORKERS = psutil.cpu_count(logical=False)
 
 USE_AMP = False
+
+if OVERFITTING_TEST:
+    CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50_test"
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -80,9 +87,17 @@ resnet.fc = nn.Linear(fc_in_features, n_classes)
 
 resnet = resnet.to(device)
 
+train_started_at = datetime.now().isoformat(timespec="seconds").replace(":", "-")
+train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
+
 batch_size = 16
 n_epochs = 30
 epoch = 0
+save_epochs = 5
+
+if OVERFITTING_TEST:
+    n_epochs = 10
+    save_epochs = 10
 
 # %%
 train_dataloader = DataLoader(
@@ -130,6 +145,16 @@ for i in range(n_epochs):
         optimizer.zero_grad()
 
         step += 1
+
+    if ((epoch + 1) % save_epochs) == 0:
+        save_checkpoint(
+            path=train_storage_path,
+            epoch=epoch,
+            model=resnet,
+            optimizer=optimizer,
+            scaler=scaler,
+            storage_options=storage_options,
+        )
 
     epoch += 1
 

@@ -1,4 +1,5 @@
 from tempfile import TemporaryDirectory
+from typing import Optional
 
 import fsspec
 import torch
@@ -29,8 +30,8 @@ def save_checkpoint(
     epoch: int,
     model: nn.Module,
     optimizer: Optimizer,
-    scheduler: LRScheduler,
-    scaler: torch.GradScaler,
+    scheduler: Optional[LRScheduler] = None,
+    scaler: Optional[torch.GradScaler] = None,
     storage_options={},
 ):
     cp_path = f"{path}/checkpoint-{epoch}"
@@ -41,11 +42,13 @@ def save_checkpoint(
     with fsspec.open(f"{cp_path}/optimizer.pt", "wb", **storage_options) as f:
         torch.save(optimizer.state_dict(), f)
 
-    with fsspec.open(f"{cp_path}/scheduler.pt", "wb", **storage_options) as f:
-        torch.save(scheduler.state_dict(), f)
+    if scheduler is not None:
+        with fsspec.open(f"{cp_path}/scheduler.pt", "wb", **storage_options) as f:
+            torch.save(scheduler.state_dict(), f)
 
-    with fsspec.open(f"{cp_path}/scaler.pt", "wb", **storage_options) as f:
-        torch.save(scaler.state_dict(), f)
+    if scaler is not None:
+        with fsspec.open(f"{cp_path}/scaler.pt", "wb", **storage_options) as f:
+            torch.save(scaler.state_dict(), f)
 
 
 def load_checkpoint(
