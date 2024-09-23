@@ -19,6 +19,7 @@ from torchvision.models import resnet50
 
 from camp.datasets.soccernet import SoccerNetLegibilityDataset
 from camp.utils.jupyter_utils import is_notebook
+from solutions.sports.numbers.resnet_pipeline import collate_fn
 from solutions.sports.numbers.resnet_pipeline import transforms
 
 # %matplotlib inline
@@ -82,12 +83,6 @@ resnet = resnet.to(device)
 batch_size = 16
 n_epochs = 30
 epoch = 0
-
-
-# %%
-def collate_fn(batch):
-    return tuple(zip(*batch))
-
 
 # %%
 train_dataloader = DataLoader(

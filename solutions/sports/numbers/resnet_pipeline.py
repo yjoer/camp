@@ -15,3 +15,7 @@ def transforms(image, target):
     target = torch.tensor(target)
 
     return image, target
+
+
+def collate_fn(batch):
+    return tuple(zip(*batch))
