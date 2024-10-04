@@ -24,6 +24,7 @@ from camp.utils.jupyter_utils import is_notebook
 from camp.utils.torch_utils import save_checkpoint
 from solutions.sports.numbers.resnet_pipeline import collate_fn
 from solutions.sports.numbers.resnet_pipeline import transforms
+from solutions.sports.numbers.resnet_pipeline import validation_loop
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -33,6 +34,8 @@ from solutions.sports.numbers.resnet_pipeline import transforms
 
 # %%
 OVERFITTING_TEST = False
+VALIDATION_SPLIT = False
+VALIDATION_SPLIT_TEST = False
 
 DATASET_PATH = "s3://datasets/soccernet_legibility"
 CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50"
@@ -42,6 +45,12 @@ USE_AMP = False
 
 if OVERFITTING_TEST:
     CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50_test"
+
+if VALIDATION_SPLIT:
+    CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50_val"
+
+if VALIDATION_SPLIT_TEST:
+    CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50_val_test"
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -64,11 +73,24 @@ train_dataset: SoccerNetLegibilityDataset | Subset = SoccerNetLegibilityDataset(
     transforms=transforms,
 )
 
+if hasattr(os, "register_at_fork") and hasattr(fsspec, "asyn"):
+    os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
+
 if OVERFITTING_TEST:
     train_dataset = Subset(train_dataset, indices=[0])
 
-if hasattr(os, "register_at_fork") and hasattr(fsspec, "asyn"):
-    os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
+if VALIDATION_SPLIT_TEST:
+    train_dataset = Subset(train_dataset, indices=list(range(100)))
+
+n_images = len(train_dataset)
+
+if VALIDATION_SPLIT:
+    split_point = int(0.8 * n_images)
+    train_idx = list(range(split_point))
+    val_idx = list(range(split_point, n_images))
+
+    val_dataset = Subset(train_dataset, indices=val_idx)
+    train_dataset = Subset(train_dataset, indices=train_idx)
 
 # %%
 if is_notebook():
@@ -99,6 +121,10 @@ if OVERFITTING_TEST:
     n_epochs = 10
     save_epochs = 10
 
+if VALIDATION_SPLIT_TEST:
+    n_epochs = 5
+    save_epochs = 5
+
 # %%
 train_dataloader = DataLoader(
     train_dataset,
@@ -108,6 +134,15 @@ train_dataloader = DataLoader(
     collate_fn=collate_fn,
     persistent_workers=True,
 )
+
+if VALIDATION_SPLIT:
+    val_dataloader = DataLoader(
+        val_dataset,
+        batch_size,
+        num_workers=DATALOADER_WORKERS,
+        collate_fn=collate_fn,
+        persistent_workers=True,
+    )
 
 # %%
 params = [p for p in resnet.parameters() if p.requires_grad]
@@ -155,6 +190,9 @@ for i in range(n_epochs):
             scaler=scaler,
             storage_options=storage_options,
         )
+
+    if VALIDATION_SPLIT:
+        metrics_dict = validation_loop(resnet, val_dataloader, device)
 
     epoch += 1
 
