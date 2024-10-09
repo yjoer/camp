@@ -90,6 +90,7 @@ dev-dependencies = [
     "jupyterlab-code-formatter>=3.0.2",
     "jupyterlab-git>=0.50.1",
     "jupyterlab-lsp>=5.1.0",
+    "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/jupyterlab_quickopen-2.0.0-py3-none-any.whl",
     "jupyterlab>=4.2.5",
     "jupytext>=1.16.4",
     "maturin>=1.7.1",
