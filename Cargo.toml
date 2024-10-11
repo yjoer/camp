@@ -1,10 +1,28 @@
 [package]
 name = "camp"
 edition = "2021"
+default-run = "camp"
 
 [lib]
 crate-type = ["cdylib", "lib"]
 
+[[bin]]
+name = "camp"
+path = "src/main.rs"
+
+[[bin]]
+name = "camp-nw"
+path = "src/main.rs"
+required-features = ["windows_subsystem"]
+
+[features]
+windows_subsystem = []
+
 [dependencies]
-clap = { version = "4.5.4", features = ["derive"] }
+clap = { version = "4.5.20", features = ["derive"] }
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
+regex = "1.11.0"
+
+[dependencies.windows]
+version = "0.57"
+features = ["Win32_Foundation", "Win32_System_Console", "Win32_UI_WindowsAndMessaging"]
