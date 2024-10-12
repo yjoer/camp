@@ -11,7 +11,15 @@ use windows::Win32::UI::WindowsAndMessaging::ShowWindow;
 use windows::Win32::UI::WindowsAndMessaging::SW_HIDE;
 
 #[cfg(target_os = "windows")]
-use std::os::windows::process::CommandExt;
+mod windows_imports {
+    pub use std::env::current_exe;
+    pub use std::os::windows::process::CommandExt;
+    pub use which::which;
+    pub use windows_registry::CLASSES_ROOT;
+}
+
+#[cfg(target_os = "windows")]
+use windows_imports::*;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -34,6 +42,9 @@ enum Commands {
 
 #[derive(Subcommand, Debug)]
 enum CodeSubcommands {
+    #[clap(about = "Install the integrations.")]
+    Install,
+
     #[clap(about = "Launch Visual Studio Code for files or folders within WSL.")]
     Launch { path: String },
 }
@@ -59,6 +70,43 @@ fn main() {
 
     match cli.command {
         Some(Commands::Code { subcommand }) => match subcommand {
+            Some(CodeSubcommands::Install) => {
+                #[cfg(target_os = "windows")]
+                {
+                    let menu_text = "Open with Code (WSL)";
+                    let code_path = which("code")
+                        .unwrap()
+                        .parent()
+                        .and_then(|p| p.parent())
+                        .map(|p| p.join("Code.exe"))
+                        .unwrap();
+                    let code_path_str = code_path.to_str().unwrap();
+                    let exe_path = current_exe()
+                        .unwrap()
+                        .parent()
+                        .map(|p| p.join("camp-nw.exe"))
+                        .unwrap();
+                    let exe_path_str = exe_path.to_str().unwrap();
+
+                    let f_path = "*\\shell\\VSCode WSL";
+                    let f_key = CLASSES_ROOT.create(f_path).unwrap();
+                    f_key.set_string("", menu_text).unwrap();
+                    f_key.set_string("Icon", code_path_str).unwrap();
+
+                    let f_cmd_key = f_key.create("command").unwrap();
+                    let f_cmd = format!("\"{exe_path_str}\" code launch \"%1\"");
+                    f_cmd_key.set_string("", f_cmd.as_str()).unwrap();
+
+                    let bg_path = "Directory\\Background\\shell\\VSCode WSL";
+                    let bg_key = CLASSES_ROOT.create(bg_path).unwrap();
+                    bg_key.set_string("", menu_text).unwrap();
+                    bg_key.set_string("Icon", code_path_str).unwrap();
+
+                    let bg_cmd_key = bg_key.create("command").unwrap();
+                    let bg_cmd = format!("\"{exe_path_str}\" code launch \"%V\"");
+                    bg_cmd_key.set_string("", bg_cmd.as_str()).unwrap();
+                }
+            }
             Some(CodeSubcommands::Launch { path }) => {
                 if !path.starts_with("\\\\wsl$") {
                     return;
