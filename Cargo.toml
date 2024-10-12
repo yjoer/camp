@@ -22,6 +22,8 @@ windows_subsystem = []
 clap = { version = "4.5.20", features = ["derive"] }
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
 regex = "1.11.0"
+which = "6.0.3"
+windows-registry = "0.3.0"
 
 [dependencies.windows]
 version = "0.57"
