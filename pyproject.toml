@@ -74,6 +74,9 @@ testpaths = ["camp"]
 [tool.ruff]
 cache-dir = ".venv/.ruff_cache"
 
+[tool.ruff.format]
+line-ending = "lf"
+
 [tool.ruff.lint]
 ignore = ["E731", "E741"]
 

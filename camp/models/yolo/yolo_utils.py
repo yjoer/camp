@@ -205,27 +205,34 @@ class YOLOv8DetectionPredictor:
         self.confidence_threshold = confidence_threshold
         self.iou_threshold = iou_threshold
 
-    def __call__(self, feat_maps: list[torch.Tensor]) -> list[torch.Tensor]:
+    def decode(self, feat_maps: list[torch.Tensor]):
         pred_dist, pred_scores = decode_feature_maps(
             feat_maps,
             self.reg_max,
             self.n_classes,
         )
 
-        anchor_points, stride_tensors = make_anchors(
+        # Propagate the anchor and stride tensors to the pose predictor.
+        self.anchor_points, self.stride_tensors = make_anchors(
             feat_maps,
             self.strides,
             grid_cell_offset=0.5,
         )
 
+        self.anchor_points = self.anchor_points.permute(1, 0)
+        self.stride_tensors = self.stride_tensors.permute(1, 0)
+
         pred_boxes = decode_boxes_eval(
             self.model.model[-1],
             pred_dist,
-            anchor_points.permute(1, 0),
-            stride_tensors.permute(1, 0),
+            self.anchor_points,
+            self.stride_tensors,
         )
 
-        pred = torch.cat((pred_boxes, pred_scores.sigmoid()), dim=1)
+        return torch.cat((pred_boxes, pred_scores.sigmoid()), dim=1)
+
+    def __call__(self, feat_maps: list[torch.Tensor]) -> list[torch.Tensor]:
+        pred = self.decode(feat_maps)
 
         pred_nms = non_max_suppression(
             pred,
@@ -234,7 +241,76 @@ class YOLOv8DetectionPredictor:
             agnostic=False,
             max_det=300,
             classes=None,
-            in_place=False,
+        )
+
+        return pred_nms
+
+
+class YOLOv8PosePredictor:
+    def __init__(
+        self,
+        model: nn.Module,
+        reg_max: int,
+        n_classes: int,
+        strides: torch.Tensor,
+        keypoint_shape: tuple[int, int],
+        confidence_threshold: float,
+        iou_threshold: float,
+    ):
+        self.n_classes = n_classes
+        # n_keypoints, n_dims ((x, y) or (x, y, visible))
+        self.keypoint_shape = keypoint_shape
+        self.confidence_threshold = confidence_threshold
+        self.iou_threshold = iou_threshold
+
+        # Inheritance requires the signature for __call__ methods in the supertype and
+        # subtype to be the same. We use composition instead of inheritance to avoid
+        # this restriction.
+        self.detection_predictor = YOLOv8DetectionPredictor(
+            model,
+            reg_max,
+            n_classes,
+            strides,
+            confidence_threshold,
+            iou_threshold,
+        )
+
+    # https://github.com/ultralytics/ultralytics/blob/v8.3.12/ultralytics/nn/modules/head.py#L241
+    def __call__(
+        self,
+        feat_maps: list[torch.Tensor],
+        keypoints: torch.Tensor,
+    ) -> list[torch.Tensor]:
+        x = self.detection_predictor.decode(feat_maps)
+        anchor_points = self.detection_predictor.anchor_points
+        stride_tensors = self.detection_predictor.stride_tensors
+
+        dim = self.keypoint_shape[1]
+
+        # b, n_keypoints ∗ n_dims, hw
+        if dim == 3:
+            # Normalize every third tensor in the second dimension, visibility in the
+            # (x, y, visibility) tuple with a sigmoid function.
+            keypoints[:, 2::3] = keypoints[:, 2::3].sigmoid()
+
+        keypoints[:, 0::dim] = (
+            keypoints[:, 0::dim] * 2.0 + (anchor_points[0] - 0.5)
+        ) * stride_tensors
+
+        keypoints[:, 1::dim] = (
+            keypoints[:, 1::dim] * 2.0 + (anchor_points[1] - 0.5)
+        ) * stride_tensors
+
+        pred = torch.cat((x, keypoints), dim=1)
+
+        pred_nms = non_max_suppression(
+            pred,
+            conf_thres=self.confidence_threshold,
+            iou_thres=self.iou_threshold,
+            agnostic=False,
+            max_det=300,
+            nc=self.n_classes,
+            classes=None,
         )
 
         return pred_nms
