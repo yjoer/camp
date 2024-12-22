@@ -16,6 +16,9 @@ dependencies = [
     "scikit-learn>=1.5.1",
     "scipy>=1.14.0",
     "seaborn>=0.13.2",
+    "statsmodels>=0.14.4",
+    "streamlit>=1.41.1",
+    "sympy>=1.13.3",
 ]
 requires-python = ">= 3.8"
 
@@ -71,7 +74,7 @@ allow_redefinition = true
 addopts = "-n auto"
 cache_dir = ".venv/.pytest_cache"
 python_files = "*.py"
-testpaths = ["camp"]
+testpaths = ["camp", "solutions"]
 
 [tool.ruff]
 cache-dir = ".venv/.ruff_cache"
@@ -90,14 +93,14 @@ managed = true
 dev-dependencies = [
     "black>=24.8.0",
     "isort>=5.13.2",
-    "jedi-language-server>=0.41.4",
-    "jupyter-collaboration>=2.1.2",
+    "jedi-language-server>=0.42.0",
+    "jupyter-collaboration==3.1.0",
     "jupyterlab-code-formatter>=3.0.2",
-    "jupyterlab-git>=0.50.1",
+    "jupyterlab-git>=0.50.2",
     "jupyterlab-lsp>=5.1.0",
     "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
-    "jupyterlab>=4.2.5",
-    "jupytext>=1.16.4",
+    "jupyterlab==4.3.4",
+    "jupytext==1.16.6",
     "maturin>=1.7.1",
     "mypy>=1.11.2",
     "pip>=24.2",
