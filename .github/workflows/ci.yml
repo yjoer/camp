@@ -49,6 +49,8 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      KERAS_BACKEND: torch
     steps:
       - name: Checkout
         uses: actions/checkout@v4
