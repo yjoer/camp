@@ -16,6 +16,7 @@ mod windows_imports {
     pub use std::os::windows::process::CommandExt;
     pub use which::which;
     pub use windows_registry::CLASSES_ROOT;
+    pub use windows_registry::CURRENT_USER;
 }
 
 #[cfg(target_os = "windows")]
@@ -33,11 +34,25 @@ struct Args {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
+    #[clap(about = "Work with the context menu.")]
+    ContextMenu {
+        #[command(subcommand)]
+        subcommand: Option<ContextMenuSubcommands>,
+    },
     #[clap(about = "Work with Visual Studio Code.")]
     Code {
         #[command(subcommand)]
         subcommand: Option<CodeSubcommands>,
     },
+}
+
+#[derive(Subcommand, Debug)]
+enum ContextMenuSubcommands {
+    #[clap(about = "Clean up the context menu.")]
+    Clean,
+
+    #[clap(about = "Use the legacy context menu.")]
+    Legacy,
 }
 
 #[derive(Subcommand, Debug)]
@@ -69,6 +84,60 @@ fn main() {
     }
 
     match cli.command {
+        Some(Commands::ContextMenu { subcommand }) => match subcommand {
+            Some(ContextMenuSubcommands::Clean) => {
+                #[cfg(target_os = "windows")]
+                {
+                    // Add to Favorites
+                    let key = CLASSES_ROOT.create("*\\shell\\pintohomefile").unwrap();
+                    key.set_string("ProgrammaticAccessOnly", "").unwrap();
+
+                    #[rustfmt::skip]
+                    let key = CURRENT_USER.create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced").unwrap();
+                    key.set_u32("MaxUndoItems", 0).unwrap();
+
+                    let key = CURRENT_USER.create("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked").unwrap();
+
+                    // Move to OneDrive
+                    key.set_string("{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}", "")
+                        .unwrap();
+
+                    // OneDrive
+                    key.set_string("{5250E46F-BB09-D602-5891-F476DC89B700}", "")
+                        .unwrap();
+
+                    // Scan with Microsoft Defender
+                    key.set_string("{09A47860-11B0-4DA5-AFA5-26D86198A780}", "")
+                        .unwrap();
+
+                    // Share with Skype
+                    key.set_string("{776DBC8D-7347-478C-8D71-791E12EF49D8}", "")
+                        .unwrap();
+
+                    // Adobe Acrobat
+                    key.set_string("{A6595CD1-BF77-430A-A452-18696685F7C7}", "")
+                        .unwrap();
+
+                    // Upload to MEGA
+                    key.set_string("{0229E5E7-09E9-45CF-9228-0228EC7D5F17}", "")
+                        .unwrap();
+                }
+            }
+            Some(ContextMenuSubcommands::Legacy) => {
+                #[cfg(target_os = "windows")]
+                {
+                    let key = CURRENT_USER.create("Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32").unwrap();
+                    key.set_string("", "").unwrap();
+                }
+            }
+            None => {
+                Args::command()
+                    .find_subcommand_mut("context-menu")
+                    .unwrap()
+                    .print_help()
+                    .unwrap();
+            }
+        },
         Some(Commands::Code { subcommand }) => match subcommand {
             Some(CodeSubcommands::Install) => {
                 #[cfg(target_os = "windows")]
