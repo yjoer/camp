@@ -1,9 +1,12 @@
 [project]
 name = "camp"
+version = "2024.0.0"
+requires-python = ">= 3.11"
 dependencies = [
     "altair[all]>=5.3.0",
     "fsspec>=2024.6.1",
     "keras>=3.4.1",
+    "manim>=0.18.1",
     "matplotlib>=3.9.1",
     "minio>=7.2.9",
     "numpy>=1.26.4",
@@ -20,7 +23,6 @@ dependencies = [
     "streamlit>=1.41.1",
     "sympy>=1.13.3",
 ]
-requires-python = ">= 3.8"
 
 [project.optional-dependencies]
 gym = [
@@ -105,8 +107,8 @@ dev-dependencies = [
     "mypy>=1.11.2",
     "pip>=24.2",
     "pytest-xdist>=3.6.1",
-    "pytest>=8.3.3",
-    "ruff>=0.6.5",
+    "pytest==8.3.4",
+    "ruff==0.8.4",
     "scalene>=1.5.44.1",
 ]
 
