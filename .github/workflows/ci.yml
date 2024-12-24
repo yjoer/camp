@@ -64,6 +64,8 @@ jobs:
         uses: eifinger/setup-rye@v4
       - name: Setup Environment Variables
         run: cp .env.example .env
+      - name: Install Pango
+        run: sudo apt-get install libpango1.0-dev
       - name: Install Dependencies
         run: rye --env-file .env sync --features torch,vision
       - name: Test
