@@ -53,6 +53,9 @@ vision = [
     "torchvision==0.19.1+cu124",
     "ultralytics>=8.2.85",
 ]
+text = [
+    "gensim>=4.3.3",
+]
 
 [build-system]
 requires = ["maturin>=1,<2"]
@@ -90,7 +93,7 @@ ignore = ["E731", "E741"]
 [tool.ruff.lint.isort]
 force-single-line = true
 
-[tool.rye]
+[tool.uv]
 managed = true
 dev-dependencies = [
     "black>=24.8.0",
@@ -112,6 +115,16 @@ dev-dependencies = [
     "scalene>=1.5.44.1",
 ]
 
-[[tool.rye.sources]]
+[[tool.uv.dependency-metadata]]
+name = "gensim"
+version = "4.3.3"
+requires-dist = ["scipy>=1.14.0", "smart-open>=1.8.1"]
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
+
+[[tool.uv.index]]
 name = "pytorch"
 url = "https://download.pytorch.org/whl/cu124"
+explicit = true
