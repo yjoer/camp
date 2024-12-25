@@ -1,9 +1,9 @@
 module.exports = {
   '*.py': [
-    'rye run ruff check',
-    'rye run ruff check --select I',
-    'rye run ruff format --check',
-    'rye run mypy',
+    'uv run ruff check',
+    'uv run ruff check --select I',
+    'uv run ruff format --check',
+    'uv run mypy',
   ],
   '*.rs': [
     () => 'cargo clippy -- --deny warnings', //
