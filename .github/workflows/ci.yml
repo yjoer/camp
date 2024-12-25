@@ -60,13 +60,13 @@ jobs:
           python-version: "3.11"
       - name: Setup Rust
         run: rustup install 1.81.0
-      - name: Setup Rye
-        uses: eifinger/setup-rye@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
       - name: Setup Environment Variables
         run: cp .env.example .env
       - name: Install Pango
         run: sudo apt-get install libpango1.0-dev
       - name: Install Dependencies
-        run: rye --env-file .env sync --features torch,vision
+        run: uv sync --extra torch --extra vision
       - name: Test
-        run: rye run pytest
+        run: uv run pytest
