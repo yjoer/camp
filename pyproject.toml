@@ -29,7 +29,7 @@ gym = [
     "gymnasium[atari,box2d,classic-control,mujoco,toy-text]>=0.29.1",
 ]
 tensorflow = [
-    "tensorflow>=2.17.0",
+    "tensorflow-cpu>=2.18.0",
 ]
 torch = [
     "deepspeed @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
