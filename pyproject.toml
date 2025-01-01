@@ -5,7 +5,7 @@ requires-python = ">= 3.11"
 dependencies = [
     "altair[all]>=5.3.0",
     "fsspec>=2024.6.1",
-    "keras>=3.4.1",
+    "keras>=3.7.0",
     "manim>=0.18.1",
     "matplotlib>=3.9.1",
     "minio>=7.2.9",
