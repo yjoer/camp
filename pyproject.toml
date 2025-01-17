@@ -25,6 +25,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+distributed = [
+    "pyspark>=3.5.4",
+]
 gym = [
     "gymnasium[atari,box2d,classic-control,mujoco,toy-text]>=0.29.1",
 ]
