@@ -13,6 +13,13 @@ import pandas as pd
 import pyspark.sql.functions as F
 from pyspark.sql import Row
 from pyspark.sql import SparkSession
+from pyspark.sql.types import DateType
+from pyspark.sql.types import FloatType
+from pyspark.sql.types import IntegerType
+from pyspark.sql.types import StringType
+from pyspark.sql.types import StructField
+from pyspark.sql.types import StructType
+from pyspark.sql.types import TimestampType
 
 # %%
 spark = (
@@ -28,14 +35,35 @@ spark = (
 # Create a PySpark DataFrame from a list of rows.
 
 # %%
-df = spark.createDataFrame(
+rows = [
+    Row(a=1, b=1.1, c="a", d=date(2023, 1, 1), e=datetime(2023, 1, 1, 12, 0, 0)),
+    Row(a=2, b=2.2, c="b", d=date(2024, 1, 1), e=datetime(2024, 1, 1, 12, 0, 0)),
+    Row(a=3, b=3.3, c="c", d=date(2025, 1, 1), e=datetime(2025, 1, 1, 12, 0, 0)),
+]
+
+df = spark.createDataFrame(rows)
+df
+
+# %% [markdown]
+# Create a PySpark DataFrame with an explicit schema.
+
+# %%
+schema = "a int, b float, c string, d date, e timestamp"
+df = spark.createDataFrame(rows, schema=schema)
+df
+
+# %%
+schema = StructType(
     [
-        Row(a=1, b=1.1, c="a", d=date(2023, 1, 1), e=datetime(2023, 1, 1, 12, 0, 0)),
-        Row(a=2, b=2.2, c="b", d=date(2024, 1, 1), e=datetime(2024, 1, 1, 12, 0, 0)),
-        Row(a=3, b=3.3, c="c", d=date(2025, 1, 1), e=datetime(2025, 1, 1, 12, 0, 0)),
+        StructField("a", IntegerType()),
+        StructField("b", FloatType()),
+        StructField("c", StringType()),
+        StructField("d", DateType()),
+        StructField("e", TimestampType()),
     ]
 )
 
+df = spark.createDataFrame(rows, schema=schema)
 df
 
 # %% [markdown]
