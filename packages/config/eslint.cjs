@@ -69,4 +69,14 @@ module.exports = {
     'unicorn/prefer-string-replace-all': 'off',
     'unicorn/prevent-abbreviations': 'off',
   },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: [
+          'core/tsconfig.json', //
+          'web/tsconfig.json',
+        ],
+      },
+    },
+  },
 };
