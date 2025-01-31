@@ -1,11 +1,13 @@
 {
-  "name": "@base/camp",
+  "name": "camp",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
+    "@camp/config": "file:./packages/config",
     "cross-env": "^7.0.3",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2"
