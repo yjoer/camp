@@ -41,6 +41,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-plusplus': 'off',
     'no-restricted-exports': ['error', { restrictedNamedExports: ['then'] }],
+    'no-use-before-define': 'off',
     'no-useless-constructor': 'off',
     'import/extensions': [
       'error',
@@ -56,10 +57,6 @@ module.exports = {
       },
     ],
     'import/prefer-default-export': 'off',
-    'react/function-component-definition': [
-      'error',
-      { namedComponents: 'arrow-function', unnamedComponents: 'arrow-function' },
-    ],
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/filename-case': 'off',
