@@ -1,10 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
+const config = require('@camp/config/lint-staged.cjs');
+
 module.exports = {
-  '*.py': [
-    'uv run ruff check',
-    'uv run ruff check --select I',
-    'uv run ruff format --check',
-    'uv run mypy',
-  ],
+  ...config,
   '*.rs': [
     () => 'cargo clippy -- --deny warnings', //
     () => 'cargo fmt --check',
