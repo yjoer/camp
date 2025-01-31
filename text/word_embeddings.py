@@ -34,7 +34,7 @@ U, sigma, Vt = np.linalg.svd(X, full_matrices=False)
 plt.axis((-1, 1, -1, 1))
 
 for i in range(len(words)):
-    print(f"{U[i,0]:>7.4f}, {U[i, 1]:>7.4f} {words[i]}")
+    print(f"{U[i, 0]:>7.4f}, {U[i, 1]:>7.4f} {words[i]}")
     plt.text(U[i, 0], U[i, 1], words[i])
 
 # %% [markdown]
