@@ -1,0 +1,47 @@
+on:
+  workflow_call:
+
+jobs:
+  format-js:
+    name: Format JS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+      - name: Install the Latest npm
+        run: npm install -g npm@latest
+      - name: Install Dependencies
+        run: |
+          if [ ${{ github.repository }} = "yjoer/camp" ]; then
+            npm i --workspace @camp/config --include-workspace-root true
+          else
+            npm i --workspaces false --include-workspace-root true
+          fi
+      - name: Format
+        run: npm exec -- prettier --ignore-path .gitignore --check .
+
+  lint-js:
+    name: Lint JS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+      - name: Install the Latest npm
+        run: npm install -g npm@latest
+      - name: Install Dependencies
+        run: |
+          if [ ${{ github.repository }} = "yjoer/camp" ]; then
+            npm i --workspace @camp/config --include-workspace-root true
+          else
+            npm i --workspaces false --include-workspace-root true
+          fi
+      - name: Lint
+        run: npm exec -- eslint --ext js,cjs,mjs,jsx,ts,tsx --ignore-path .gitignore --max-warnings 0 .
