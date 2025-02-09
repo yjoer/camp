@@ -29,6 +29,7 @@ module.exports = {
       plugins: ['@typescript-eslint'],
       rules: {
         '@typescript-eslint/member-ordering': 'error',
+        '@typescript-eslint/no-explicit-any': 'off',
       },
     },
   ],
