@@ -25,6 +25,7 @@ module.exports = {
     },
   ],
   rules: {
+    'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'source', 'utility', 'variant'] }],
     'function-no-unknown': [true, { ignoreFunctions: ['theme'] }],
     'import-notation': 'string',
     'selector-class-pattern': undefined,
