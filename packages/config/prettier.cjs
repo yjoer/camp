@@ -8,5 +8,5 @@ module.exports = {
   printWidth: 100,
   quoteProps: 'consistent',
   singleQuote: true,
-  tailwindFunctions: ['clsx'],
+  tailwindFunctions: ['clsx', 'cva'],
 };
