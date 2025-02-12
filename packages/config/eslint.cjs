@@ -59,6 +59,7 @@ module.exports = {
     ],
     'import/prefer-default-export': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
+    'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': ['error', { functions: 'defaultArguments' }],
     'unicorn/consistent-function-scoping': 'off',
     'unicorn/filename-case': 'off',
