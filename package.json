@@ -1,7 +1,8 @@
 {
   "name": "camp",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/webpack/*"
   ],
   "scripts": {
     "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab"

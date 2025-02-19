@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["webpack/module"],
+
+    "noEmit": true,
+
+    "target": "ES2024"
+  }
+}
