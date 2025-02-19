@@ -47,7 +47,7 @@ module.exports = {
     'import/extensions': [
       'error',
       'ignorePackages',
-      { js: 'never', jsx: 'never', ts: 'never', tsx: 'never' },
+      { js: 'always', jsx: 'never', ts: 'always', tsx: 'never' },
     ],
     'import/order': [
       'error',
