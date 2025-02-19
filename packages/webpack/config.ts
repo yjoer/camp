@@ -11,12 +11,18 @@ import type { Configuration } from 'webpack';
 const require = createRequire(import.meta.url);
 
 interface Options {
+  entry?: string[];
   projectPath: string;
   configPath: string;
   transpilePackages?: (string | RegExp)[];
 }
 
-export const getServerConfig = ({ projectPath, configPath, transpilePackages = [] }: Options) => {
+export const getServerConfig = ({
+  entry = [],
+  projectPath,
+  configPath,
+  transpilePackages = [],
+}: Options) => {
   // Convert strings into regular expressions for exact matches.
   for (let i = 0; i < transpilePackages.length; i++) {
     if (typeof transpilePackages[i] === 'string') {
@@ -25,7 +31,7 @@ export const getServerConfig = ({ projectPath, configPath, transpilePackages = [
   }
 
   const config = {
-    entry: ['webpack/hot/poll?100', './server.ts'],
+    entry: ['webpack/hot/poll?100', ...entry],
     mode: 'development',
     output: {
       path: path.join(projectPath, 'node_modules', '.camp', 'build'),
