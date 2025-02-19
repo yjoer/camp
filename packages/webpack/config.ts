@@ -17,7 +17,7 @@ interface Options {
   transpilePackages?: (string | RegExp)[];
 }
 
-const getServerConfig = ({ projectPath, configPath, transpilePackages = [] }: Options) => {
+export const getServerConfig = ({ projectPath, configPath, transpilePackages = [] }: Options) => {
   // Convert strings into regular expressions for exact matches.
   for (let i = 0; i < transpilePackages.length; i++) {
     if (typeof transpilePackages[i] === 'string') {
@@ -83,5 +83,3 @@ const getServerConfig = ({ projectPath, configPath, transpilePackages = [] }: Op
 
   return config;
 };
-
-export default getServerConfig;
