@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { createRequire } from 'node:module';
 import path from 'node:path';
 

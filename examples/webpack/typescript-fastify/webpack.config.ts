@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 /* eslint-disable import/no-extraneous-dependencies */
 import { getServerConfig } from '@camp/webpack/config.ts';
 
