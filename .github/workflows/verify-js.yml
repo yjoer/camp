@@ -37,11 +37,12 @@ jobs:
       - name: Install the Latest npm
         run: npm install -g npm@latest
       - name: Install Dependencies
-        run: |
-          if [ ${{ github.repository }} = "yjoer/camp" ]; then
-            npm i --workspace @camp/config --include-workspace-root true
-          else
-            npm i --workspaces false --include-workspace-root true
-          fi
+        # run: |
+        #   if [ ${{ github.repository }} = "yjoer/camp" ]; then
+        #     npm i --workspace @camp/config --include-workspace-root true
+        #   else
+        #     npm i --workspaces false --include-workspace-root true
+        #   fi
+        run: npm i
       - name: Lint
         run: npm exec -- eslint --ext js,cjs,mjs,jsx,ts,tsx --ignore-path .gitignore --max-warnings 0 .
