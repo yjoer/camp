@@ -11,5 +11,7 @@ module.exports = {
   quoteProps: 'consistent',
   singleQuote: true,
   tailwindFunctions: ['clsx', 'cva'],
+  customFunctions: ['clsx', 'cva'],
+  endingPosition: 'absolute-with-indent',
   experimentalOptimization: true,
 };
