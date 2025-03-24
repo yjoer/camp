@@ -39,6 +39,11 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<ContextMenuSubcommands>,
     },
+    #[clap(about = "Configure Windows Search settings.")]
+    Search {
+        #[command(subcommand)]
+        subcommand: Option<SearchSubcommands>,
+    },
     #[clap(about = "Work with Visual Studio Code.")]
     Code {
         #[command(subcommand)]
@@ -53,6 +58,12 @@ enum ContextMenuSubcommands {
 
     #[clap(about = "Use the legacy context menu.")]
     Legacy,
+}
+
+#[derive(Subcommand, Debug)]
+enum SearchSubcommands {
+    #[clap(about = "Disable web search in Windows Search.")]
+    DisableWebSearch,
 }
 
 #[derive(Subcommand, Debug)]
@@ -133,6 +144,16 @@ fn main() {
             None => {
                 Args::command()
                     .find_subcommand_mut("context-menu")
+                    .unwrap()
+                    .print_help()
+                    .unwrap();
+            }
+        },
+        Some(Commands::Search { subcommand }) => match subcommand {
+            Some(SearchSubcommands::DisableWebSearch) => disable_web_search(),
+            None => {
+                Args::command()
+                    .find_subcommand_mut("search")
                     .unwrap()
                     .print_help()
                     .unwrap();
@@ -236,5 +257,14 @@ fn main() {
         None => {
             Args::command().print_help().unwrap();
         }
+    }
+}
+
+fn disable_web_search() {
+    #[cfg(target_os = "windows")]
+    {
+        #[rustfmt::skip]
+        let key = CURRENT_USER.create("Software\\Policies\\Microsoft\\Windows\\Explorer").unwrap();
+        key.set_u32("DisableSearchBoxSuggestions", 1).unwrap();
     }
 }
