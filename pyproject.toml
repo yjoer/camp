@@ -99,6 +99,7 @@ force-single-line = true
 
 [tool.uv]
 managed = true
+build-constraint-dependencies = ["setuptools==77.0.3"]
 dev-dependencies = [
     "black>=24.8.0",
     "isort>=5.13.2",
