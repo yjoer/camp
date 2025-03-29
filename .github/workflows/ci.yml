@@ -16,6 +16,9 @@ jobs:
   verify-py:
     uses: ./.github/workflows/verify-py.yml
 
+  verify-rs:
+    uses: ./.github/workflows/verify-rs.yml
+
   test:
     name: Test
     runs-on: ubuntu-latest
