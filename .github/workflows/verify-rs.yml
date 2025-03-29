@@ -1,0 +1,12 @@
+on:
+  workflow_call:
+
+jobs:
+  format-rs:
+    name: Format Rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Check Formatting
+        run: cargo fmt --all --check
