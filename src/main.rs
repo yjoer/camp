@@ -22,6 +22,9 @@ mod windows_imports {
 #[cfg(target_os = "windows")]
 use windows_imports::*;
 
+mod doctor;
+use crate::doctor::doctor;
+
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
@@ -49,6 +52,8 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<CodeSubcommands>,
     },
+    #[clap(about = "Check installation status and diagnose possible problems.")]
+    Doctor,
 }
 
 #[derive(Subcommand, Debug)]
@@ -254,6 +259,7 @@ fn main() {
                     .unwrap();
             }
         },
+        Some(Commands::Doctor) => doctor(),
         None => {
             Args::command().print_help().unwrap();
         }
