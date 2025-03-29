@@ -20,6 +20,8 @@ windows_subsystem = []
 
 [dependencies]
 clap = { version = "4.5.20", features = ["derive"] }
+indexmap = "2.8.0"
+owo-colors = "4.2.0"
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
 regex = "1.11.0"
 which = "6.0.3"
