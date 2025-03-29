@@ -1,5 +1,6 @@
 use indexmap::IndexMap;
 use owo_colors::OwoColorize;
+use std::process::Command;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
@@ -29,7 +30,17 @@ pub fn doctor() {
             println!("  {}: {}", k, v);
         }
     }
+
+    println!("\n{}", "Git Aliases:".bold());
+    for (k, v) in git_aliases().iter() {
+        println!("  {}: {}", k, v);
+    }
 }
+
+#[rustfmt::skip]
+pub const GIT_ALIASES: [(&str, &str); 1] = [
+    ("sync", "!git fetch --prune && git rebase origin/master --autostash")
+];
 
 #[cfg(target_os = "windows")]
 fn context_menu() -> IndexMap<String, String> {
@@ -133,6 +144,30 @@ fn code() -> IndexMap<String, String> {
             "Not Installed".to_string(),
         ),
     };
+
+    map
+}
+
+fn git_aliases() -> IndexMap<String, String> {
+    let mut map = IndexMap::<String, String>::new();
+
+    for (k, v) in &GIT_ALIASES {
+        let output = Command::new("git")
+            .arg("config")
+            .arg("--global")
+            .arg(format!("alias.{}", k))
+            .output()
+            .expect("Failed to execute command");
+
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stdout = stdout.trim();
+
+        if stdout == *v {
+            map.insert(k.to_string(), format!("Enabled ({stdout})"));
+        } else {
+            map.insert(k.to_string(), format!("Disabled ({stdout})"));
+        }
+    }
 
     map
 }

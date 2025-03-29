@@ -24,6 +24,7 @@ use windows_imports::*;
 
 mod doctor;
 use crate::doctor::doctor;
+use crate::doctor::GIT_ALIASES;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -52,6 +53,11 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<CodeSubcommands>,
     },
+    #[clap(about = "Configure and customize Git settings and aliases.")]
+    Git {
+        #[command(subcommand)]
+        subcommand: Option<GitSubcommands>,
+    },
     #[clap(about = "Check installation status and diagnose possible problems.")]
     Doctor,
 }
@@ -78,6 +84,12 @@ enum CodeSubcommands {
 
     #[clap(about = "Launch Visual Studio Code for files or folders within WSL.")]
     Launch { path: String },
+}
+
+#[derive(Subcommand, Debug)]
+enum GitSubcommands {
+    #[clap(about = "Set up useful Git aliases for common operations")]
+    Alias,
 }
 
 fn hide_console_window() {
@@ -261,6 +273,16 @@ fn main() {
                     .unwrap();
             }
         },
+        Some(Commands::Git { subcommand }) => match subcommand {
+            Some(GitSubcommands::Alias) => setup_git_aliases(),
+            None => {
+                Args::command()
+                    .find_subcommand_mut("git")
+                    .unwrap()
+                    .print_help()
+                    .unwrap();
+            }
+        },
         Some(Commands::Doctor) => doctor(),
         None => {
             Args::command().print_help().unwrap();
@@ -271,8 +293,23 @@ fn main() {
 fn disable_web_search() {
     #[cfg(target_os = "windows")]
     {
-        #[rustfmt::skip]
-        let key = CURRENT_USER.create("Software\\Policies\\Microsoft\\Windows\\Explorer").unwrap();
-        key.set_u32("DisableSearchBoxSuggestions", 1).unwrap();
+        CURRENT_USER
+            .create("Software\\Policies\\Microsoft\\Windows\\Explorer")
+            .and_then(|k| k.set_u32("DisableSearchBoxSuggestions", 1))
+            .unwrap();
+    }
+}
+
+fn setup_git_aliases() {
+    for (k, v) in &GIT_ALIASES {
+        Command::new("git")
+            .arg("config")
+            .arg("--global")
+            .arg(format!("alias.{}", k))
+            .arg(v)
+            .spawn()
+            .unwrap()
+            .wait()
+            .unwrap();
     }
 }
