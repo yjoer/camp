@@ -24,7 +24,7 @@ pub fn doctor() {
             println!("  {}: {}", k, v);
         }
 
-        println!("\n{}", "Visual Studio Code".bold());
+        println!("\n{}", "Visual Studio Code:".bold());
         for (k, v) in code().iter() {
             println!("  {}: {}", k, v);
         }
