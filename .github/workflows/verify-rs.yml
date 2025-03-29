@@ -8,5 +8,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Cargo Version
+        run: cargo --version
       - name: Check Formatting
         run: cargo fmt --all --check
