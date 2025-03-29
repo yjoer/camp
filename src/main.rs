@@ -239,7 +239,9 @@ fn main() {
                             .arg(&new_path)
                             .creation_flags(CREATE_NO_WINDOW)
                             .spawn()
-                            .expect("");
+                            .unwrap()
+                            .wait()
+                            .unwrap();
                     }
 
                     #[cfg(not(target_os = "windows"))]
