@@ -65,6 +65,15 @@ fn context_menu() -> IndexMap<String, String> {
         Err(_) => map.insert("Add to Favorites".to_string(), "Enabled".to_string()),
     };
 
+    let result = CLASSES_ROOT
+        .open("Folder\\shell\\pintohome")
+        .and_then(|k| k.get_string("ProgrammaticAccessOnly"));
+
+    match result {
+        Ok(_) => map.insert("Pin to Quick Access".to_string(), "Disabled".to_string()),
+        Err(_) => map.insert("Pin to Quick Access".to_string(), "Enabled".to_string()),
+    };
+
     let result = CURRENT_USER
         .open("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
         .and_then(|k| k.get_u32("MaxUndoItems"));
@@ -79,6 +88,7 @@ fn context_menu() -> IndexMap<String, String> {
     let mut blocked_items = IndexMap::<&str, &str>::new();
     blocked_items.insert("Move to OneDrive", "{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}");
     blocked_items.insert("OneDrive", "{5250E46F-BB09-D602-5891-F476DC89B700}");
+    blocked_items.insert("Pin to Start", "{470C0EBD-5D73-4d58-9CED-E91E22E23282}");
     #[rustfmt::skip]
     blocked_items.insert("Scan with Microsoft Defender", "{09A47860-11B0-4DA5-AFA5-26D86198A780}");
     blocked_items.insert("Share with Skype", "{776DBC8D-7347-478C-8D71-791E12EF49D8}");

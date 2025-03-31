@@ -120,6 +120,10 @@ fn main() {
                     let key = CLASSES_ROOT.create("*\\shell\\pintohomefile").unwrap();
                     key.set_string("ProgrammaticAccessOnly", "").unwrap();
 
+                    // Pin to Quick Access
+                    let key = CLASSES_ROOT.create("Folder\\shell\\pintohome").unwrap();
+                    key.set_string("ProgrammaticAccessOnly", "").unwrap();
+
                     #[rustfmt::skip]
                     let key = CURRENT_USER.create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced").unwrap();
                     key.set_u32("MaxUndoItems", 0).unwrap();
@@ -132,6 +136,10 @@ fn main() {
 
                     // OneDrive
                     key.set_string("{5250E46F-BB09-D602-5891-F476DC89B700}", "")
+                        .unwrap();
+
+                    // Pin to Start
+                    key.set_string("{470C0EBD-5D73-4d58-9CED-E91E22E23282}", "")
                         .unwrap();
 
                     // Scan with Microsoft Defender
