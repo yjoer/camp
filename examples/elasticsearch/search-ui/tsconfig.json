@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "allowImportingTsExtensions": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noUncheckedSideEffectImports": true,
+
+    "jsx": "react-jsx",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "moduleDetection": "force",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+
+    "noEmit": true,
+
+    "isolatedModules": true,
+
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+
+    "skipLibCheck": true
+  }
+}
