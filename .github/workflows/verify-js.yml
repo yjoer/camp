@@ -12,17 +12,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23
-      - name: Install the Latest npm
-        run: npm install -g npm@latest
+      - name: Install the Latest pnpm
+        run: npm install -g pnpm@latest-10
       - name: Install Dependencies
         run: |
-          if [ ${{ github.repository }} = "yjoer/camp" ]; then
-            npm i --workspace @camp/config --include-workspace-root true
-          else
-            npm i --workspaces false --include-workspace-root true
-          fi
+          pnpm config set recursive-install false
+          pnpm i
       - name: Format
-        run: npm exec -- prettier --ignore-path .gitignore --check .
+        run: pnpm prettier --ignore-path .gitignore --check .
 
   lint-js:
     name: Lint JS
@@ -34,8 +31,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 23
-      - name: Install the Latest npm
-        run: npm install -g npm@latest
+      - name: Install the Latest pnpm
+        run: npm install -g pnpm@latest-10
       - name: Install Dependencies
         # run: |
         #   if [ ${{ github.repository }} = "yjoer/camp" ]; then
@@ -43,6 +40,6 @@ jobs:
         #   else
         #     npm i --workspaces false --include-workspace-root true
         #   fi
-        run: npm i
+        run: pnpm i
       - name: Lint
-        run: npm exec -- eslint --ext js,cjs,mjs,jsx,ts,tsx --ignore-path .gitignore --max-warnings 0 .
+        run: pnpm eslint --ext js,cjs,mjs,jsx,ts,tsx --ignore-path .gitignore --max-warnings 0 .

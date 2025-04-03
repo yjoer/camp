@@ -9,7 +9,7 @@ module.exports = {
   'package.json': [
     'sort-package-json --check', //
   ],
-  '*.{js,cjs,mjs,jsx,ts,tsx,json,html,css,scss,md,mdx}': [
+  '*.{js,cjs,mjs,jsx,ts,tsx,json,html,css,scss,md,mdx,yml,yaml}': [
     'prettier --check', //
   ],
   '*.py': [

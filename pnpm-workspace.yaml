@@ -1,0 +1,13 @@
+packages:
+  - packages/*
+  - examples/elasticsearch/*
+  - examples/webpack/*
+
+publicHoistPattern:
+  - '*commitlint*'
+  - '*eslint*'
+  - '*postcss*'
+  - '*prettier*'
+  - '*stylelint*'
+  - lint-staged
+  - sort-package-json

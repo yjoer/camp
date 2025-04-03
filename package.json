@@ -1,15 +1,16 @@
 {
   "name": "camp",
-  "workspaces": [
-    "packages/*",
-    "examples/webpack/*"
-  ],
   "scripts": {
     "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab"
   },
   "devDependencies": {
-    "@camp/config": "file:./packages/config",
-    "cross-env": "^7.0.3",
-    "husky": "^9.0.11"
+    "@camp/config": "workspace:*",
+    "cross-env": "7.0.3",
+    "husky": "9.1.7"
+  },
+  "dependenciesMeta": {
+    "@camp/config": {
+      "injected": true
+    }
   }
 }
