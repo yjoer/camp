@@ -32,7 +32,7 @@ const config = {
       url: { raw: {} },
     },
     facets: {
-      'type.enum': { type: 'value' },
+      'type.keyword': { type: 'value' },
     },
   },
   autocompleteQuery: {
@@ -73,13 +73,14 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
       <Layout
         header={
           <SearchBox
-            debounceLength={0}
-            autocompleteResults={{
-              linkTarget: '_blank',
-              titleField: 'name',
-              urlField: 'url',
-            }}
-            autocompleteMinimumCharacters={3}
+            searchAsYouType
+            debounceLength={50}
+            // autocompleteResults={{
+            //   linkTarget: '_blank',
+            //   titleField: 'name',
+            //   urlField: 'url',
+            // }}
+            // autocompleteMinimumCharacters={3}
           />
         }
         sideContent={
@@ -93,7 +94,7 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
                 ]}
               />
             )}
-            <Facet key="1" field="type.enum" label="Type" />
+            <Facet key="1" field="type.keyword" label="Type" />
           </div>
         }
         bodyContent={<Results titleField="name" urlField="url" />}
