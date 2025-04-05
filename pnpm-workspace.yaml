@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - examples/elasticsearch/*
+  - examples/hatchet/*
   - examples/webpack/*
 
 publicHoistPattern:

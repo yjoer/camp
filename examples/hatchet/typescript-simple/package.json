@@ -1,0 +1,15 @@
+{
+  "name": "@camp/examples-hatchet-typescript-simple",
+  "type": "module",
+  "scripts": {
+    "start:worker": "node --env-file-if-exists .env worker.ts"
+  },
+  "dependencies": {
+    "@hatchet-dev/typescript-sdk": "1.1.2"
+  },
+  "devDependencies": {
+    "dotenv": "16.4.7",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.2"
+  }
+}
