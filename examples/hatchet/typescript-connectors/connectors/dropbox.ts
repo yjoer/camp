@@ -9,7 +9,7 @@ export const dropbox = hatchet.workflow({
   name: 'dropbox',
   onCrons: ['*/5 * * * *'],
   concurrency: {
-    expression: 'dropbox',
+    expression: "'dropbox'",
     maxRuns: 1,
     limitStrategy: ConcurrencyLimitStrategy.CANCEL_NEWEST,
   },
