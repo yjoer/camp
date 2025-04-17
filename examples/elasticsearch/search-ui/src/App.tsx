@@ -29,10 +29,12 @@ const config = {
     result_fields: {
       name: { snippet: {} },
       body: { snippet: { size: 100, fallback: true } },
+      revision: { raw: {} },
+      updated_at: { raw: {} },
       url: { raw: {} },
     },
     facets: {
-      'type.keyword': { type: 'value' },
+      type: { type: 'value' },
     },
   },
   autocompleteQuery: {
@@ -90,11 +92,12 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
                 label="Sort by"
                 sortOptions={[
                   { name: 'Relevance', value: '', direction: '' },
-                  { name: 'Date', value: '_timestamp', direction: 'asc' },
+                  { name: 'Oldest', value: 'updated_at', direction: 'asc' },
+                  { name: 'Newest', value: 'updated_at', direction: 'desc' },
                 ]}
               />
             )}
-            <Facet key="1" field="type.keyword" label="Type" />
+            <Facet key="1" field="type" label="Type" />
           </div>
         }
         bodyContent={<Results titleField="name" urlField="url" />}
