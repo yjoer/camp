@@ -1,0 +1,16 @@
+{
+  "name": "@camp/examples-hatchet-typescript-connectors",
+  "type": "module",
+  "scripts": {
+    "migrate": "node --env-file-if-exists .env mappings/dropbox.ts",
+    "start:worker": "node --env-file-if-exists .env worker.ts"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "9.0.0",
+    "@hatchet-dev/typescript-sdk": "1.3.1"
+  },
+  "devDependencies": {
+    "dotenv": "16.5.0",
+    "typescript": "5.8.3"
+  }
+}
