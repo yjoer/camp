@@ -147,6 +147,7 @@ const enrichEntries = dropbox.task({
 dropbox.task({
   name: 'export_and_index_paper_files',
   parents: [enrichEntries],
+  executionTimeout: '10m',
   fn: async (input, ctx) => {
     const token = await ctx.parentOutput(getAccessToken);
     const { entries } = await ctx.parentOutput(enrichEntries);
