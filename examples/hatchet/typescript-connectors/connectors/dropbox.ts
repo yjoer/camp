@@ -1,3 +1,5 @@
+import { ConcurrencyLimitStrategy } from '@hatchet-dev/typescript-sdk';
+
 import { es } from '../elasticsearch.ts';
 import { hatchet } from '../hatchet-client.ts';
 
@@ -6,6 +8,11 @@ const baseUrl = 'https://api.dropboxapi.com';
 export const dropbox = hatchet.workflow({
   name: 'dropbox',
   onCrons: ['*/5 * * * *'],
+  concurrency: {
+    expression: 'dropbox',
+    maxRuns: 1,
+    limitStrategy: ConcurrencyLimitStrategy.CANCEL_NEWEST,
+  },
 });
 
 const getAccessToken = dropbox.task({
