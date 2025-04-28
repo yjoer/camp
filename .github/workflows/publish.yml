@@ -17,5 +17,11 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+      - run: npm install -g pnpm@latest-10
+      - run: pnpm install
+      - run: |
+          pnpm config set recursive-install false
+          pnpm i
+        working-directory: ${{ github.event.inputs.package }}
       - run: npx jsr publish
         working-directory: ${{ github.event.inputs.package }}
