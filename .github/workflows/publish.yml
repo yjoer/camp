@@ -18,4 +18,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npx jsr publish
-        working_directory: ${{ github.event.inputs.package }}
+        working-directory: ${{ github.event.inputs.package }}
