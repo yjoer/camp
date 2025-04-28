@@ -22,7 +22,7 @@ export const getServerConfig = ({
   projectPath,
   configPath,
   transpilePackages = [],
-}: Options) => {
+}: Options): Configuration => {
   // Convert strings into regular expressions for exact matches.
   for (let i = 0; i < transpilePackages.length; i++) {
     if (typeof transpilePackages[i] === 'string') {
