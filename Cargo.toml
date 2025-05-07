@@ -32,4 +32,4 @@ version = "0.57"
 features = ["Win32_Foundation", "Win32_System_Console", "Win32_UI_WindowsAndMessaging"]
 
 [workspace]
-members = ["examples/ratatui/counter", "examples/ratatui/json-editor"]
+members = ["examples/ratatui/counter", "examples/ratatui/counter-elm", "examples/ratatui/json-editor"]
