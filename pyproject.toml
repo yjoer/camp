@@ -69,6 +69,10 @@ build-backend = "maturin"
 formats = "py:percent"
 notebook_metadata_filter = "-all"
 
+[tool.marimo.display]
+custom_css = ["random/marimo.css"]
+code_editor_font_size = 16
+
 [tool.maturin]
 features = ["pyo3/extension-module"]
 module-name = "camp.rs"
@@ -111,6 +115,7 @@ dev-dependencies = [
     "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
     "jupyterlab==4.3.4",
     "jupytext==1.16.6",
+    "marimo>=0.13.6",
     "maturin>=1.7.1",
     "mypy>=1.11.2",
     "pip>=24.2",
