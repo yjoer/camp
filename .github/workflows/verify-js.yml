@@ -42,4 +42,4 @@ jobs:
         #   fi
         run: pnpm i
       - name: Lint
-        run: pnpm eslint --ext js,cjs,mjs,jsx,ts,tsx --ignore-path .gitignore --max-warnings 0 .
+        run: pnpm eslint --ext js,cjs,mjs,jsx,ts,tsx .

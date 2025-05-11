@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const config = require('@camp/config/lint-staged.cjs');
 
 module.exports = {

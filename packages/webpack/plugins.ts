@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import cp from 'node:child_process';
 import path from 'node:path';
 
