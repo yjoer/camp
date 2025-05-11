@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 // @ts-expect-error jiti
 import pkg from '@camp/webpack/config.ts';
 

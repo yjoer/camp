@@ -1,5 +1,6 @@
 {
   "name": "camp",
+  "type": "module",
   "scripts": {
     "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab"
   },
