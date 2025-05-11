@@ -12,3 +12,5 @@ publicHoistPattern:
   - '*stylelint*'
   - lint-staged
   - sort-package-json
+
+dangerouslyAllowAllBuilds: true
