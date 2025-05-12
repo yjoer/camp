@@ -135,11 +135,15 @@ export default defineConfig([
       'perfectionist/sort-jsx-props': [
         'warn',
         {
-          groups: ['key', 'unknown'],
+          groups: ['key', 'ref', 'unknown'],
           customGroups: [
             {
               groupName: 'key',
               elementNamePattern: 'key',
+            },
+            {
+              groupName: 'ref',
+              elementNamePattern: 'ref',
             },
           ],
         },
