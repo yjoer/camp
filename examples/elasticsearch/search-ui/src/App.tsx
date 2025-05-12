@@ -1,12 +1,12 @@
 import {
   ErrorBoundary,
   Facet,
-  SearchProvider,
-  SearchBox,
-  Results,
-  PagingInfo,
-  ResultsPerPage,
   Paging,
+  PagingInfo,
+  Results,
+  ResultsPerPage,
+  SearchBox,
+  SearchProvider,
   Sorting,
   withSearch,
 } from '@elastic/react-search-ui';
@@ -73,10 +73,18 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
   return (
     <ErrorBoundary>
       <Layout
+        bodyContent={<Results titleField="name" urlField="url" />}
+        bodyFooter={<Paging />}
+        bodyHeader={
+          <>
+            {!!wasSearched && <PagingInfo />}
+            {!!wasSearched && <ResultsPerPage />}
+          </>
+        }
         header={
           <SearchBox
-            searchAsYouType
             debounceLength={50}
+            searchAsYouType
             // autocompleteResults={{
             //   linkTarget: '_blank',
             //   titleField: 'name',
@@ -100,14 +108,6 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
             <Facet key="1" field="type" label="Type" />
           </div>
         }
-        bodyContent={<Results titleField="name" urlField="url" />}
-        bodyHeader={
-          <>
-            {!!wasSearched && <PagingInfo />}
-            {!!wasSearched && <ResultsPerPage />}
-          </>
-        }
-        bodyFooter={<Paging />}
       />
     </ErrorBoundary>
   );
