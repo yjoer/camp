@@ -1,10 +1,12 @@
 import path from 'node:path';
 
+import compat from '@cmpx/eslint-plugin-compat';
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import prettier from 'eslint-config-prettier/flat';
-import imp from 'eslint-plugin-import';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import * as imp from 'eslint-plugin-import-x';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import react from 'eslint-plugin-react';
 import * as reactHooks from 'eslint-plugin-react-hooks';
@@ -33,12 +35,12 @@ export default defineConfig([
     name: 'import/recommended',
     extends: [imp.flatConfigs.recommended],
     rules: {
-      'import/default': 'off',
-      'import/extensions': [
+      'import-x/default': 'off',
+      'import-x/extensions': [
         'error',
         { js: 'ignorePackages', jsx: 'never', ts: 'ignorePackages', tsx: 'never' },
       ],
-      'import/no-extraneous-dependencies': [
+      'import-x/no-extraneous-dependencies': [
         'error',
         {
           devDependencies: [
@@ -53,9 +55,9 @@ export default defineConfig([
           ],
         },
       ],
-      'import/no-named-as-default': 'off',
-      'import/no-named-as-default-member': 'off',
-      'import/order': [
+      'import-x/no-named-as-default': 'off',
+      'import-x/no-named-as-default-member': 'off',
+      'import-x/order': [
         'error',
         {
           'alphabetize': { order: 'asc' },
@@ -65,14 +67,7 @@ export default defineConfig([
       ],
     },
     settings: {
-      'import/resolver': {
-        typescript: {
-          project: [
-            'server/tsconfig.json', //
-            'web/tsconfig.json',
-          ],
-        },
-      },
+      'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
   },
   {
@@ -127,6 +122,10 @@ export default defineConfig([
     extends: [prettier],
   },
   {
+    name: 'compat/recommended',
+    extends: [compat.configs['flat/recommended']],
+  },
+  {
     files: ['**/*.{js,cjs,mjs,ts,cts,mts}'],
     languageOptions: {
       globals: { ...globals.node },
@@ -154,3 +153,17 @@ export default defineConfig([
     },
   },
 ]);
+
+export function defineImportResolver(pkgs, options = {}) {
+  return pkgs.map((pkg) => ({
+    files: [`./${pkg}/**/*`],
+    settings: {
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver({
+          ...options,
+          project: pkg,
+        }),
+      ],
+    },
+  }));
+}

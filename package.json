@@ -4,6 +4,7 @@
   "scripts": {
     "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab"
   },
+  "browserslist": "defaults and not op_mini all",
   "devDependencies": {
     "@camp/config": "workspace:*",
     "cross-env": "7.0.3",
