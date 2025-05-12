@@ -8,6 +8,7 @@ import prettier from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import * as imp from 'eslint-plugin-import-x';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import perfectionist from 'eslint-plugin-perfectionist';
 import react from 'eslint-plugin-react';
 import * as reactHooks from 'eslint-plugin-react-hooks';
 import unicorn from 'eslint-plugin-unicorn';
@@ -121,6 +122,42 @@ export default defineConfig([
   {
     name: 'prettier/config',
     extends: [prettier],
+  },
+  {
+    name: 'perfectionist',
+    plugins: { perfectionist },
+    rules: {
+      'perfectionist/sort-array-includes': 'warn',
+      'perfectionist/sort-enums': 'warn',
+      'perfectionist/sort-heritage-clauses': 'warn',
+      'perfectionist/sort-interfaces': 'warn',
+      'perfectionist/sort-intersection-types': 'warn',
+      'perfectionist/sort-jsx-props': [
+        'warn',
+        {
+          groups: ['key', 'unknown'],
+          customGroups: [
+            {
+              groupName: 'key',
+              elementNamePattern: 'key',
+            },
+          ],
+        },
+      ],
+      'perfectionist/sort-maps': 'warn',
+      'perfectionist/sort-named-exports': 'warn',
+      'perfectionist/sort-named-imports': 'warn',
+      'perfectionist/sort-object-types': 'warn',
+      'perfectionist/sort-sets': 'warn',
+      'perfectionist/sort-switch-case': 'warn',
+      'perfectionist/sort-union-types': 'warn',
+    },
+    settings: {
+      perfectionist: {
+        type: 'natural',
+        ignoreCase: false,
+      },
+    },
   },
   {
     name: 'compat/recommended',

@@ -11,10 +11,10 @@ import type { Configuration } from 'webpack';
 const require = createRequire(import.meta.url);
 
 interface Options {
+  configPath: string;
   entry?: string[];
   projectPath: string;
-  configPath: string;
-  transpilePackages?: (string | RegExp)[];
+  transpilePackages?: (RegExp | string)[];
 }
 
 export const getServerConfig = ({
