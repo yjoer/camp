@@ -3,9 +3,9 @@ import path from 'node:path';
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
+import prettier from 'eslint-config-prettier/flat';
 import imp from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
-import prettier from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import * as reactHooks from 'eslint-plugin-react-hooks';
 import unicorn from 'eslint-plugin-unicorn';
@@ -123,7 +123,7 @@ export default defineConfig([
     },
   },
   {
-    name: 'prettier/recommended',
+    name: 'prettier/config',
     extends: [prettier],
   },
   {
