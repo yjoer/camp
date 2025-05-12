@@ -87,7 +87,7 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
         }
         sideContent={
           <div>
-            {wasSearched && (
+            {!!wasSearched && (
               <Sorting
                 label="Sort by"
                 sortOptions={[
@@ -103,8 +103,8 @@ function SearchPageCore({ wasSearched }: SearchPageCoreProps) {
         bodyContent={<Results titleField="name" urlField="url" />}
         bodyHeader={
           <>
-            {wasSearched && <PagingInfo />}
-            {wasSearched && <ResultsPerPage />}
+            {!!wasSearched && <PagingInfo />}
+            {!!wasSearched && <ResultsPerPage />}
           </>
         }
         bodyFooter={<Paging />}
