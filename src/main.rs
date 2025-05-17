@@ -4,7 +4,9 @@ use clap::CommandFactory;
 use clap::Parser;
 use clap::Subcommand;
 use git2::Config;
+use git2::Repository;
 use regex::Regex;
+use std::error::Error;
 use std::process::Command;
 use windows::Win32::Foundation::HWND;
 use windows::Win32::System::Console::GetConsoleWindow;
@@ -59,6 +61,8 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<GitSubcommands>,
     },
+    #[clap(about = "Apply a patch to the latest non-fixup commit automatically.")]
+    Fixup,
     #[clap(about = "Check installation status and diagnose possible problems.")]
     Doctor,
 }
@@ -292,6 +296,7 @@ fn main() {
                     .unwrap();
             }
         },
+        Some(Commands::Fixup) => fixup().unwrap(),
         Some(Commands::Doctor) => doctor(),
         None => {
             Args::command().print_help().unwrap();
@@ -315,4 +320,54 @@ fn setup_git_aliases() {
     for (k, v) in &GIT_ALIASES {
         cfg_default.set_str(&format!("alias.{}", k), v).unwrap();
     }
+}
+
+fn fixup() -> Result<(), Box<dyn Error>> {
+    let cwd = std::env::current_dir()?;
+    let repo = Repository::discover(&cwd)?;
+    let mut revwalk = repo.revwalk()?;
+
+    let head_oid = repo.refname_to_id("HEAD")?;
+    revwalk.push(head_oid)?;
+
+    if let Ok(tail_oid) = repo.refname_to_id("refs/remotes/origin/master") {
+        revwalk.hide(tail_oid)?;
+    };
+
+    for rev in revwalk {
+        let oid = rev?;
+        let commit = repo.find_commit(oid)?;
+        let message = commit.message().unwrap_or("");
+
+        if !message.starts_with("fixup!") {
+            let sig = repo.signature()?;
+            let head_commit = repo.find_commit(head_oid)?;
+            let head_tree = head_commit.tree()?;
+
+            let mut index = repo.index()?;
+            let tree_oid = index.write_tree()?;
+            let tree = repo.find_tree(tree_oid)?;
+
+            if head_tree.id() == tree.id() {
+                println!("No changes to commit.");
+                break;
+            }
+
+            let commit_oid = repo.commit(
+                Some("HEAD"),
+                &sig,
+                &sig,
+                &format!("fixup! {}", message),
+                &tree,
+                &vec![&head_commit],
+            )?;
+
+            let commit = repo.find_commit(commit_oid)?;
+            let summary = commit.summary().unwrap_or("");
+            println!("{}", summary);
+            break;
+        }
+    }
+
+    Ok(())
 }
