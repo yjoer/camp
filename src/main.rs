@@ -63,6 +63,8 @@ enum Commands {
     },
     #[clap(about = "Apply a patch to the latest non-fixup commit automatically.")]
     Fixup,
+    #[clap(about = "Squash fixup commits into their targets.")]
+    Squash,
     #[clap(about = "Check installation status and diagnose possible problems.")]
     Doctor,
 }
@@ -297,6 +299,7 @@ fn main() {
             }
         },
         Some(Commands::Fixup) => fixup().unwrap(),
+        Some(Commands::Squash) => squash().unwrap(),
         Some(Commands::Doctor) => doctor(),
         None => {
             Args::command().print_help().unwrap();
@@ -365,6 +368,45 @@ fn fixup() -> Result<(), Box<dyn Error>> {
             let commit = repo.find_commit(commit_oid)?;
             let summary = commit.summary().unwrap_or("");
             println!("{}", summary);
+            break;
+        }
+    }
+
+    Ok(())
+}
+
+fn squash() -> Result<(), Box<dyn Error>> {
+    let cwd = std::env::current_dir()?;
+    let repo = Repository::discover(cwd)?;
+
+    let mut cmd = Command::new("git");
+    cmd.arg("rebase").arg("--autosquash").arg("--autostash");
+
+    if let Ok(_) = repo.refname_to_id("refs/remotes/origin/master") {
+        cmd.arg("--onto").arg("origin/master");
+    } else {
+        cmd.arg("--root");
+    };
+
+    let output = cmd.output()?;
+    let mut success = output.status.success();
+    let mut stderr = String::from_utf8_lossy(&output.stderr).to_string();
+
+    // If a fixup to a commit results in the same commit as the previous one, the commit will be
+    // empty. In this case, a manual override is needed to continue.
+    while !success {
+        if stderr.contains("--allow-empty") {
+            println!("Empty commit detected. Continuing...");
+
+            let mut cmd = Command::new("git");
+            cmd.env("GIT_EDITOR", "true")
+                .arg("rebase")
+                .arg("--continue");
+
+            let output = cmd.output()?;
+            success = output.status.success();
+            stderr = String::from_utf8_lossy(&output.stderr).to_string();
+        } else {
             break;
         }
     }
