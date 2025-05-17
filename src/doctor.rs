@@ -1,6 +1,6 @@
+use git2::Config;
 use indexmap::IndexMap;
 use owo_colors::OwoColorize;
-use std::process::Command;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
@@ -160,22 +160,15 @@ fn code() -> IndexMap<String, String> {
 
 fn git_aliases() -> IndexMap<String, String> {
     let mut map = IndexMap::<String, String>::new();
+    let cfg_default = Config::open_default().unwrap().snapshot().unwrap();
 
     for (k, v) in &GIT_ALIASES {
-        let output = Command::new("git")
-            .arg("config")
-            .arg("--global")
-            .arg(format!("alias.{}", k))
-            .output()
-            .expect("Failed to execute command");
+        let output = cfg_default.get_str(&format!("alias.{}", k)).unwrap();
 
-        let stdout = String::from_utf8_lossy(&output.stdout);
-        let stdout = stdout.trim();
-
-        if stdout == *v {
-            map.insert(k.to_string(), format!("Enabled ({stdout})"));
+        if output == *v {
+            map.insert(k.to_string(), format!("Enabled ({output})"));
         } else {
-            map.insert(k.to_string(), format!("Disabled ({stdout})"));
+            map.insert(k.to_string(), format!("Disabled ({output})"));
         }
     }
 

@@ -3,6 +3,7 @@
 use clap::CommandFactory;
 use clap::Parser;
 use clap::Subcommand;
+use git2::Config;
 use regex::Regex;
 use std::process::Command;
 use windows::Win32::Foundation::HWND;
@@ -309,15 +310,9 @@ fn disable_web_search() {
 }
 
 fn setup_git_aliases() {
+    let mut cfg_default = Config::open_default().unwrap();
+
     for (k, v) in &GIT_ALIASES {
-        Command::new("git")
-            .arg("config")
-            .arg("--global")
-            .arg(format!("alias.{}", k))
-            .arg(v)
-            .spawn()
-            .unwrap()
-            .wait()
-            .unwrap();
+        cfg_default.set_str(&format!("alias.{}", k), v).unwrap();
     }
 }
