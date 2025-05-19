@@ -383,7 +383,9 @@ fn squash() -> Result<(), Box<dyn Error>> {
     cmd.arg("rebase").arg("--autosquash").arg("--autostash");
 
     if let Ok(_) = repo.refname_to_id("refs/remotes/origin/master") {
-        cmd.arg("--onto").arg("origin/master");
+        cmd.arg("origin/master");
+    } else if let Ok(_) = repo.refname_to_id("refs/remotes/origin/main") {
+        cmd.arg("origin/main");
     } else {
         cmd.arg("--root");
     };
@@ -407,6 +409,7 @@ fn squash() -> Result<(), Box<dyn Error>> {
             success = output.status.success();
             stderr = String::from_utf8_lossy(&output.stderr).to_string();
         } else {
+            eprintln!("{}", stderr);
             break;
         }
     }
