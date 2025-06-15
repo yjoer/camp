@@ -57,7 +57,7 @@ export const getServerConfig = ({
           },
           exclude: [
             {
-              and: [/node_modules/],
+              and: [path.resolve(projectPath, 'node_modules')],
               not: transpilePackages,
             },
           ],
