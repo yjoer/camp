@@ -3,21 +3,21 @@ name = "camp"
 version = "2024.0.0"
 requires-python = ">= 3.11"
 dependencies = [
-    "altair[all]>=5.3.0",
+    "altair[all]==5.5.0",
     "fsspec>=2024.6.1",
     "keras>=3.7.0",
-    "manim>=0.18.1",
-    "matplotlib>=3.9.1",
-    "minio>=7.2.9",
-    "numpy>=1.26.4",
-    "pandas>=2.2.2",
-    "polars>=1.7.1",
+    "manim==0.19.0",
+    "matplotlib==3.10.3",
+    "minio==7.2.15",
+    "numpy==2.3.0",
+    "pandas==2.3.0",
+    "polars==1.31.0",
     "psutil>=6.0.0",
     "pyarrow>=17.0.0",
     "rich[jupyter]>=13.9.2",
     "s3fs>=2024.6.1",
     "scikit-learn>=1.5.1",
-    "scipy==1.14.1",
+    "scipy==1.15.3",
     "seaborn>=0.13.2",
     "statsmodels>=0.14.4",
     "streamlit>=1.41.1",
@@ -26,16 +26,13 @@ dependencies = [
 
 [project.optional-dependencies]
 distributed = [
-    "pyspark>=3.5.4",
+    "pyspark==4.0.0",
 ]
 gym = [
-    "gymnasium[atari,box2d,classic-control,mujoco,toy-text]>=0.29.1",
-]
-tensorflow = [
-    "tensorflow-cpu>=2.18.0",
+    "gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.1.1",
 ]
 torch = [
-    "deepspeed @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
+    "deepspeed @ https://github.com/yjoer/camp/releases/download/v2025.6.0/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
     "safetensors>=0.4.3",
     "torch==2.4.1+cu124",
     "torchmetrics>=1.4.1",
@@ -58,7 +55,7 @@ vision = [
 ]
 text = [
     "gensim>=4.3.3",
-    "nltk>=3.9.1",
+    "nltk==3.9.1",
 ]
 
 [build-system]
@@ -72,6 +69,9 @@ notebook_metadata_filter = "-all"
 [tool.marimo.display]
 custom_css = ["random/marimo.css"]
 code_editor_font_size = 16
+
+[tool.marimo.runtime]
+pythonpath = ["."]
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
@@ -105,24 +105,25 @@ force-single-line = true
 managed = true
 build-constraint-dependencies = ["setuptools==77.0.3"]
 dev-dependencies = [
-    "black>=24.8.0",
-    "isort>=5.13.2",
-    "jedi-language-server>=0.42.0",
-    "jupyter-collaboration==3.1.0",
-    "jupyterlab-code-formatter>=3.0.2",
-    "jupyterlab-git>=0.50.2",
-    "jupyterlab-lsp>=5.1.0",
-    "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/deepspeed-v0.14.4/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
-    "jupyterlab==4.3.4",
-    "jupytext==1.16.6",
-    "marimo>=0.13.6",
-    "maturin>=1.7.1",
-    "mypy>=1.11.2",
+    "black==25.1.0",
+    "isort==6.0.1",
+    "jedi-language-server==0.45.1",
+    "jupyter-collaboration==4.0.2",
+    "jupyterlab-code-formatter==3.0.2",
+    "jupyterlab-git==0.51.2",
+    "jupyterlab-lsp==5.1.1",
+    "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
+    "jupyterlab==4.4.3",
+    "jupytext==1.17.2",
+    "marimo==0.14.0",
+    "maturin==1.8.7",
+    "mypy==1.16.1",
+    "notebook-intelligence==2.2.4",
     "pip>=24.2",
-    "pytest-xdist>=3.6.1",
-    "pytest==8.3.4",
-    "ruff==0.11.4",
-    "scalene>=1.5.44.1",
+    "pytest-xdist==3.7.0",
+    "pytest==8.4.1",
+    "ruff==0.12.0",
+    "scalene==1.5.51",
 ]
 
 [tool.uv.workspace]

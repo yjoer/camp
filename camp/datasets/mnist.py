@@ -4,7 +4,11 @@ from typing import Literal
 
 import fsspec
 import numpy as np
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None  # type: ignore
 
 TensorType = Literal["np", "pt"]
 
@@ -59,6 +63,10 @@ class FashionMNIST:
         return arrays
 
     def _to_tensor(self, arrays: dict[str, np.ndarray]):
+        if torch is None:
+            print("cannot convert to tensors because torch is not installed.")
+            return
+
         tensors = {}
 
         for k, v in arrays.items():
