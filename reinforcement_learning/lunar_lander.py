@@ -24,7 +24,7 @@ from IPython.display import Image
 # %config InlineBackend.figure_formats = ['retina']
 
 # %%
-env = gym.make("LunarLander-v2", render_mode="rgb_array")
+env = gym.make("LunarLander-v3", render_mode="rgb_array")
 
 
 # %%
