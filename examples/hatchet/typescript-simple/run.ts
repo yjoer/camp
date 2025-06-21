@@ -4,5 +4,5 @@ const res = await hello.run({
   message: 'Hello, World!',
 });
 
-// eslint-disable-next-line no-console
+// oxlint-disable-next-line no-console
 console.log(res.transformedMessage);

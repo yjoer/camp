@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import App from './App';
 
-// eslint-disable-next-line unicorn/prefer-query-selector
+// oxlint-disable-next-line prefer-query-selector
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

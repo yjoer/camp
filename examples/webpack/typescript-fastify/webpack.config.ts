@@ -1,10 +1,11 @@
-// @ts-expect-error jiti
-import pkg from '@camp/webpack/config.ts';
+import * as pkg from '@camp/webpack/config.ts';
 
 import type { getServerConfig as GSC } from '@camp/webpack/config.ts';
 import type { Configuration } from 'webpack';
 
-const { getServerConfig } = pkg as { getServerConfig: typeof GSC };
+// @ts-expect-error jiti
+// oxlint-disable-next-line namespace
+const { getServerConfig } = pkg.default as { getServerConfig: typeof GSC };
 
 const config = getServerConfig({
   entry: ['./server.ts'],
