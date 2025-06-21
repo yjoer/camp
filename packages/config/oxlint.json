@@ -1,0 +1,36 @@
+{
+  "plugins": ["import", "jsx-a11y", "react"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "import/named": "error",
+    "import/no-duplicates": "warn",
+    "import/no-named-as-default-member": "warn",
+    "import/no-named-as-default": "warn",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/no-unescaped-entities": "error",
+    "react/no-unknown-property": "error",
+    "react/no-unsafe": "error",
+    "react/require-render-return": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-namespace": "error",
+    "typescript/no-require-imports": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "typescript/no-unsafe-function-type": "error",
+    "typescript/prefer-namespace-keyword": "error",
+    "no-array-constructor": "error",
+    "no-case-declarations": "error",
+    "no-empty": "error",
+    "no-fallthrough": "error",
+    "no-prototype-builtins": "error",
+    "no-redeclare": "error",
+    "no-regex-spaces": "error",
+    "no-unexpected-multiline": "error",
+    "no-unused-expressions": "error",
+    //
+    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }]
+  }
+}
