@@ -14,13 +14,15 @@ import { Layout } from '@elastic/react-search-ui-views';
 import ElasticsearchAPIConnector from '@elastic/search-ui-elasticsearch-connector';
 import '@elastic/react-search-ui-views/lib/styles/styles.css';
 
+import type { SearchDriverOptions } from '@elastic/search-ui';
+
 const connector = new ElasticsearchAPIConnector({
   host: import.meta.env.VITE_ELASTICSEARCH_HOST,
   apiKey: import.meta.env.VITE_ELASTICSEARCH_API_KEY,
   index: import.meta.env.VITE_ELASTICSEARCH_INDEX,
 });
 
-const config = {
+const config: SearchDriverOptions = {
   searchQuery: {
     search_fields: {
       name: { weight: 2 },
@@ -36,6 +38,7 @@ const config = {
     facets: {
       type: { type: 'value' },
     },
+    fuzziness: true,
   },
   autocompleteQuery: {
     results: {
