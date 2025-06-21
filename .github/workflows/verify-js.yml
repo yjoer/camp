@@ -41,5 +41,7 @@ jobs:
         #     npm i --workspaces false --include-workspace-root true
         #   fi
         run: pnpm i
-      - name: Lint
+      - name: Oxlint
+        run: pnpm oxlint
+      - name: ESLint
         run: pnpm eslint --ext js,cjs,mjs,jsx,ts,tsx .

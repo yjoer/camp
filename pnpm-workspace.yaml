@@ -12,6 +12,7 @@ publicHoistPattern:
   - '*prettier*'
   - '*stylelint*'
   - lint-staged
+  - oxlint
   - sort-package-json
 
 dangerouslyAllowAllBuilds: true
