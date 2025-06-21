@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
-/* eslint-disable unicorn/no-process-exit */
+// oxlint-disable no-console
+// oxlint-disable no-process-exit
 import { Client, Connection } from '@temporalio/client';
 
 import { getLocationFromIP } from './workflows.ts';

@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
-/* eslint-disable unicorn/no-process-exit */
+// oxlint-disable no-console
+// oxlint-disable no-process-exit
 import { fileURLToPath } from 'node:url';
 
 import { NativeConnection, Worker } from '@temporalio/worker';

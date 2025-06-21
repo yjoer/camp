@@ -2,7 +2,6 @@ import path from 'node:path';
 
 import compat from '@cmpx/eslint-plugin-compat';
 import { includeIgnoreFile } from '@eslint/compat';
-import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import prettier from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
@@ -30,13 +29,22 @@ const getImportGroups = () => [
 
 export default defineConfig([
   includeIgnoreFile(gitignorePath),
-  js.configs.recommended,
-  ts.configs.recommended,
+  {
+    rules: {
+      'constructor-super': 'error',
+      'getter-return': 'error', // nursery
+      'no-dupe-args': 'error', // x
+      'no-misleading-character-class': 'error',
+      'no-octal': 'error', // x
+      'no-undef': 'error', // nursery
+      'no-unreachable': 'error', // nursery
+    },
+  },
   {
     name: 'import/recommended',
-    extends: [imp.flatConfigs.recommended],
+    plugins: { 'import-x': imp.importX },
     rules: {
-      'import-x/default': 'off',
+      'import-x/export': 'error', // nursery
       'import-x/extensions': [
         'error',
         { js: 'ignorePackages', jsx: 'never', ts: 'ignorePackages', tsx: 'never' },
@@ -56,8 +64,7 @@ export default defineConfig([
           ],
         },
       ],
-      'import-x/no-named-as-default': 'off',
-      'import-x/no-named-as-default-member': 'off',
+      'import-x/no-unresolved': 'error', // x
       'import-x/order': [
         'error',
         {
@@ -73,24 +80,30 @@ export default defineConfig([
   },
   {
     name: 'typescript',
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx,cts,mts}'],
+    plugins: { '@typescript-eslint': ts.plugin },
     extends: [imp.flatConfigs.typescript],
+    languageOptions: {
+      parser: ts.parser,
+    },
     rules: {
       '@typescript-eslint/member-ordering': 'error',
-      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
     name: 'react/recommended',
     files: ['**/*.{js,jsx,ts,tsx}'],
-    extends: [react.configs.flat.recommended, react.configs.flat['jsx-runtime']],
+    extends: [react.configs.flat['jsx-runtime']],
     languageOptions: {
       globals: { ...globals.browser, ...globals.serviceworker },
     },
     rules: {
-      'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
+      'react/display-name': 'error',
+      'react/jsx-uses-vars': 'error',
+      'react/no-deprecated': 'error',
+      'react/prop-types': 'error',
+      //
       'react/jsx-no-leaked-render': 'error',
-      'react/jsx-props-no-spreading': 'off',
       'react/require-default-props': ['error', { functions: 'defaultArguments' }],
     },
   },
@@ -100,22 +113,85 @@ export default defineConfig([
   },
   {
     name: 'jsx-a11y/recommended',
-    extends: [jsxA11y.flatConfigs.recommended],
+    plugins: { 'jsx-a11y': jsxA11y },
+    rules: {
+      'jsx-a11y/aria-proptypes': 'error',
+      'jsx-a11y/interactive-supports-focus': [
+        'error',
+        {
+          tabbable: ['button', 'checkbox', 'link', 'searchbox', 'spinbutton', 'switch', 'textbox'],
+        },
+      ],
+      'jsx-a11y/no-interactive-element-to-noninteractive-role': [
+        'error',
+        {
+          tr: ['none', 'presentation'],
+          canvas: ['img'],
+        },
+      ],
+      'jsx-a11y/no-noninteractive-element-interactions': [
+        'error',
+        {
+          handlers: [
+            'onClick',
+            'onError',
+            'onLoad',
+            'onMouseDown',
+            'onMouseUp',
+            'onKeyPress',
+            'onKeyDown',
+            'onKeyUp',
+          ],
+          alert: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
+          body: ['onError', 'onLoad'],
+          dialog: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
+          iframe: ['onError', 'onLoad'],
+          img: ['onError', 'onLoad'],
+        },
+      ],
+      'jsx-a11y/no-noninteractive-element-to-interactive-role': [
+        'error',
+        {
+          ul: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
+          ol: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
+          li: ['menuitem', 'menuitemradio', 'menuitemcheckbox', 'option', 'row', 'tab', 'treeitem'],
+          table: ['grid'],
+          td: ['gridcell'],
+          fieldset: ['radiogroup', 'presentation'],
+        },
+      ],
+      'jsx-a11y/no-static-element-interactions': [
+        'error',
+        {
+          allowExpressionValues: true,
+          handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
+        },
+      ],
+    },
   },
   {
     name: 'unicorn/recommended',
     plugins: { unicorn },
     rules: {
-      ...unicorn.configs.recommended.rules,
-      'unicorn/consistent-function-scoping': 'off',
-      'unicorn/filename-case': 'off',
-      'unicorn/no-array-for-each': 'off',
-      'unicorn/no-for-loop': 'off',
-      'unicorn/no-null': 'off',
-      'unicorn/no-useless-switch-case': 'off',
-      'unicorn/no-useless-undefined': 'off',
-      'unicorn/prefer-at': 'off',
-      'unicorn/prefer-string-replace-all': 'off',
+      'unicorn/expiring-todo-comments': 'error',
+      'unicorn/import-style': 'error',
+      'unicorn/no-array-callback-reference': 'error',
+      'unicorn/no-named-default': 'error',
+      'unicorn/no-unnecessary-array-splice-count': 'error',
+      'unicorn/no-unnecessary-polyfills': 'error',
+      'unicorn/prefer-at': 'error',
+      'unicorn/prefer-default-parameters': 'error',
+      'unicorn/prefer-export-from': 'error',
+      'unicorn/prefer-keyboard-event-key': 'error',
+      'unicorn/prefer-module': 'error',
+      'unicorn/prefer-single-call': 'error',
+      'unicorn/prefer-switch': 'error',
+      'unicorn/prefer-ternary': 'error',
+      'unicorn/prefer-top-level-await': 'error',
+      'unicorn/relative-url-style': 'error',
+      'unicorn/template-indent': 'error',
+      //
+      'unicorn/no-for-loop': 'off', // x
       'unicorn/prevent-abbreviations': 'off',
     },
   },
@@ -171,27 +247,6 @@ export default defineConfig([
     files: ['**/*.{js,cjs,mjs,ts,cts,mts}'],
     languageOptions: {
       globals: { ...globals.node },
-    },
-  },
-  {
-    files: ['**.{cjs,cts}'],
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
-  {
-    rules: {
-      'arrow-body-style': 'off',
-      'class-methods-use-this': 'off',
-      'no-await-in-loop': 'off',
-      'no-console': 'warn',
-      'no-continue': 'off',
-      'no-empty-function': ['error', { allow: ['arrowFunctions', 'constructors'] }],
-      'no-param-reassign': 'off',
-      'no-plusplus': 'off',
-      'no-restricted-exports': ['error', { restrictedNamedExports: ['then'] }],
-      'no-use-before-define': 'off',
-      'no-useless-constructor': 'off',
     },
   },
 ]);

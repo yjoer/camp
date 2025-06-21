@@ -1,6 +1,6 @@
-const config = require('@camp/config/lint-staged.cjs');
+import config from '@camp/config/lint-staged.js';
 
-module.exports = {
+export default {
   ...config,
   '*.rs': [
     () => 'cargo clippy -- --deny warnings', //

@@ -1,5 +1,5 @@
-/* eslint-disable unicorn/no-process-exit */
 /* eslint-disable unicorn/prefer-top-level-await */
+// oxlint-disable no-process-exit
 import { Readable } from 'node:stream';
 
 import Fastify from 'fastify';

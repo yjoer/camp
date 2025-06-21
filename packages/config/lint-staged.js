@@ -1,5 +1,5 @@
 /** @type {import('lint-staged').Configuration} */
-module.exports = {
+export default {
   '*.{js,cjs,mjs,jsx,ts,tsx}': [
     'eslint --cache --cache-location node_modules/.cache/.eslintcache --max-warnings 0',
   ],
