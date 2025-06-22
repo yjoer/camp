@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+
+jobs:
+  lint-commit-msg:
+    name: Lint Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: $(( ${{ github.event.pull_request.commits }} + 1 ))
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install the Latest pnpm
+        run: npm install -g pnpm@latest-10
+      - name: Install Dependencies
+        run: |
+          pnpm config set recursive-install false
+          pnpm i
+      - name: Lint Push
+        if: github.event_name == 'push'
+        run: pnpm commitlint --last --verbose
+      - name: Lint PR
+        if: github.event_name == 'pull_request'
+        run: pnpm commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
