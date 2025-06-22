@@ -8,12 +8,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install the Latest pnpm
-        run: npm install -g pnpm@latest-10
+          cache: pnpm
+          cache-dependency-path: '**/package.json'
       - name: Install Dependencies
         run: |
           pnpm config set recursive-install false
@@ -27,12 +31,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install the Latest pnpm
-        run: npm install -g pnpm@latest-10
+          cache: pnpm
+          cache-dependency-path: '**/package.json'
       - name: Install Dependencies
         # run: |
         #   if [ ${{ github.repository }} = "yjoer/camp" ]; then
