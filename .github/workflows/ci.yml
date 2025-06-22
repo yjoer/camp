@@ -36,8 +36,10 @@ jobs:
           python-version: '3.11'
       - name: Setup Rust
         run: rustup install 1.81.0
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
       - name: Setup Environment Variables
         run: cp .env.example .env
       - name: Install Pango
