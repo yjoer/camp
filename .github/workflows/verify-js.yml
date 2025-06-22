@@ -11,7 +11,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 23
+          node-version: 24
       - name: Install the Latest pnpm
         run: npm install -g pnpm@latest-10
       - name: Install Dependencies
@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 23
+          node-version: 24
       - name: Install the Latest pnpm
         run: npm install -g pnpm@latest-10
       - name: Install Dependencies
