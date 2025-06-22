@@ -104,7 +104,7 @@ export default defineConfig([
       'react/prop-types': 'error',
       //
       'react/jsx-no-leaked-render': 'error',
-      'react/require-default-props': ['error', { functions: 'defaultArguments' }],
+      'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }], // prettier-ignore
     },
   },
   {
