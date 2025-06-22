@@ -120,7 +120,7 @@
     //
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "typescript/no-explicit-any": "off",
-    "unicorn/filename-case": ["error", { "cases": { "kebabCase": true, "pascalCase": true } }],
+    "unicorn/filename-case": ["off", { "cases": { "kebabCase": true, "pascalCase": true } }],
     "no-console": "warn"
   },
   "overrides": [
