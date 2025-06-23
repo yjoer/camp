@@ -46,7 +46,7 @@ vision = [
     "mmcv>=2.2.0",
     "mmdet>=3.3.0",
     "mmengine>=0.10.4",
-    "motmetrics @ git+https://github.com/cheind/py-motmetrics@9a468b8",
+    "motmetrics @ git+https://github.com/cheind/py-motmetrics@057504b",
     "pillow>=10.4.0",
     "supervision>=0.22.0",
     "timm>=1.0.7",

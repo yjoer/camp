@@ -8,16 +8,16 @@ use git2::Repository;
 use regex::Regex;
 use std::error::Error;
 use std::process::Command;
-use windows::Win32::Foundation::HWND;
-use windows::Win32::System::Console::GetConsoleWindow;
-use windows::Win32::UI::WindowsAndMessaging::ShowWindow;
-use windows::Win32::UI::WindowsAndMessaging::SW_HIDE;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
     pub use std::env::current_exe;
     pub use std::os::windows::process::CommandExt;
     pub use which::which;
+    pub use windows::Win32::Foundation::HWND;
+    pub use windows::Win32::System::Console::GetConsoleWindow;
+    pub use windows::Win32::UI::WindowsAndMessaging::ShowWindow;
+    pub use windows::Win32::UI::WindowsAndMessaging::SW_HIDE;
     pub use windows_registry::CLASSES_ROOT;
     pub use windows_registry::CURRENT_USER;
 }
@@ -26,7 +26,6 @@ mod windows_imports {
 use windows_imports::*;
 
 mod doctor;
-use crate::doctor::doctor;
 use crate::doctor::GIT_ALIASES;
 
 #[derive(Parser, Debug)]
@@ -99,10 +98,11 @@ enum GitSubcommands {
     Alias,
 }
 
+#[cfg(target_os = "windows")]
 fn hide_console_window() {
     let window = unsafe { GetConsoleWindow() };
 
-    if window == HWND(0) {
+    if window == HWND::default() {
         return;
     }
 
@@ -114,7 +114,8 @@ fn hide_console_window() {
 fn main() {
     let cli = Args::parse();
 
-    if cli.hide_console && cfg!(target_os = "windows") {
+    if cli.hide_console {
+        #[cfg(target_os = "windows")]
         hide_console_window();
     }
 
@@ -300,7 +301,7 @@ fn main() {
         },
         Some(Commands::Fixup) => fixup().unwrap(),
         Some(Commands::Squash) => squash().unwrap(),
-        Some(Commands::Doctor) => doctor(),
+        Some(Commands::Doctor) => doctor::doctor(),
         None => {
             Args::command().print_help().unwrap();
         }

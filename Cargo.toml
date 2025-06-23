@@ -19,17 +19,17 @@ required-features = ["windows_subsystem"]
 windows_subsystem = []
 
 [dependencies]
-clap = { version = "4.5.20", features = ["derive"] }
+clap = { version = "4.5.40", features = ["derive"] }
 git2 = "0.20.2"
 indexmap = "2.8.0"
 owo-colors = "4.2.0"
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
 regex = "1.11.0"
-which = "6.0.3"
-windows-registry = "0.3.0"
+which = "8.0.0"
+windows-registry = "0.5.2"
 
-[dependencies.windows]
-version = "0.57"
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.61.3"
 features = ["Win32_Foundation", "Win32_System_Console", "Win32_UI_WindowsAndMessaging"]
 
 [workspace]
