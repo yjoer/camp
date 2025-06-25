@@ -7,6 +7,7 @@ import { defineConfig } from 'vite';
 
 const routes = rootRoute('_app/root.tsx', [
   route('/', 'src/Gallery.tsx'),
+  route('/stale-closures', 'src/StaleClosures.tsx'),
   route('/transition-use-state', 'src/TransitionUseState.tsx'),
   route('/transition-use-context-selector', 'src/TransitionUseContextSelector.tsx'),
   route('/transition-use-search', 'src/TransitionUseSearch.tsx'),

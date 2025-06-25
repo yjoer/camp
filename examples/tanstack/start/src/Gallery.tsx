@@ -6,6 +6,12 @@ export const Route = createFileRoute({
 
 const sections = [
   {
+    label: 'Managing State',
+    children: [
+      { to: '/stale-closures', label: 'Stale Closures' }, //
+    ],
+  },
+  {
     label: 'Concurrent Rendering',
     children: [
       { to: '/transition-use-state', label: 'useTransition with useState' },
