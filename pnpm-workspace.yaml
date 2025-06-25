@@ -2,6 +2,7 @@ packages:
   - packages/*
   - examples/elasticsearch/*
   - examples/hatchet/*
+  - examples/tanstack/*
   - examples/temporal/*
   - examples/webpack/*
 
@@ -11,6 +12,7 @@ publicHoistPattern:
   - '*postcss*'
   - '*prettier*'
   - '*stylelint*'
+  - '*tailwind*'
   - lint-staged
   - oxlint
   - sort-package-json
