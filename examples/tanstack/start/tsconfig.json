@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "strict": true,
+
+    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "@/lib/*": ["lib/*"],
+      "@/state/*": ["state/*"]
+    },
+
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "target": "ES2022",
+
+    "skipLibCheck": true
+  }
+}

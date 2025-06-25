@@ -250,6 +250,12 @@ export default defineConfig([
       globals: { ...globals.node },
     },
   },
+  {
+    files: ['**/router.tsx'],
+    linterOptions: {
+      reportUnusedDisableDirectives: false,
+    },
+  },
 ]);
 
 export function defineImportResolver(pkgs, options = {}) {

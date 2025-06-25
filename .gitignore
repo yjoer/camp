@@ -1,13 +1,16 @@
 __pycache__/
 .ipynb_checkpoints/
+.nitro/
+.output/
+.tanstack/
 .venv/
 .virtual_documents/
 node_modules/
 target/
 
 .env
+*.gen.ts
 *.pyd
 Cargo.lock
 pnpm-lock.yaml
-requirements.lock
-requirements-dev.lock
+uv.lock
