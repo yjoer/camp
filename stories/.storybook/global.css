@@ -1,0 +1,7 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/noto-sans-sc';
+@import 'tailwindcss';
+
+@utility mask-clip-* {
+  mask-clip: --value([*]);
+}

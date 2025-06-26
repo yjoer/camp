@@ -5,6 +5,7 @@ packages:
   - examples/tanstack/*
   - examples/temporal/*
   - examples/webpack/*
+  - stories
 
 publicHoistPattern:
   - '*commitlint*'
