@@ -22,6 +22,8 @@ jobs:
         run: |
           pnpm config set recursive-install false
           pnpm i
+          pnpm add tailwindcss -w
+          git restore .
       - name: Format
         run: pnpm prettier --ignore-path .gitignore --check .
 
