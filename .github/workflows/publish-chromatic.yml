@@ -36,4 +36,3 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: ${{ github.event.inputs.package }}
           buildScriptName: build
-          skip: true
