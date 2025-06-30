@@ -2,17 +2,17 @@
 // oxlint-disable no-process-exit
 import { Readable } from 'node:stream';
 
-import Fastify from 'fastify';
+import { fastify } from 'fastify';
 
-const fastify = Fastify({
+const app = fastify({
   logger: true,
 });
 
-fastify.get('/', (request, reply) => {
+app.get('/', (request, reply) => {
   reply.send({ hello: 'world' });
 });
 
-fastify.get('/chunked', async (request, reply) => {
+app.get('/chunked', async (request, reply) => {
   reply.raw.write('<div>First</div>');
   await sleep(1000);
 
@@ -24,7 +24,7 @@ fastify.get('/chunked', async (request, reply) => {
   reply.raw.end();
 });
 
-fastify.get('/stream', (request, reply) => {
+app.get('/stream', (request, reply) => {
   async function* generate() {
     yield '<div>First</div>';
     await sleep(1000);
@@ -39,12 +39,19 @@ fastify.get('/stream', (request, reply) => {
   reply.send(Readable.from(generate()));
 });
 
+app.get('/missing-packages', async (request, reply) => {
+  // @ts-expect-error missing package
+  // eslint-disable-next-line import-x/no-unresolved
+  await import('missing-package');
+  reply.send({});
+});
+
 (async () => {
   try {
-    const address = await fastify.listen({ port: 3000 });
-    fastify.log.info(`Server is now listening on ${address}`);
+    const address = await app.listen({ port: 3000 });
+    app.log.info(`Server is now listening on ${address}`);
   } catch (error) {
-    fastify.log.error(error);
+    app.log.error(error);
     process.exit(1);
   }
 })();
@@ -53,7 +60,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept();
-  import.meta.webpackHot.dispose(() => fastify.close());
+  import.meta.webpackHot.dispose(() => app.close());
 
   import.meta.webpackHot.addStatusHandler((status) => {
     if (status === 'fail') process.exit();
