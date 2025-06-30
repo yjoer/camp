@@ -6,7 +6,7 @@ import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import nodeExternals from 'webpack-node-externals';
 
-import { AssetRelocatorCachePlugin, RunScriptPlugin } from './plugins.ts';
+import { AssetRelocatorCachePlugin, OptionalModulesPlugin, RunScriptPlugin } from './plugins.ts';
 
 import type { Configuration } from 'webpack';
 
@@ -69,6 +69,7 @@ export const getServerConfig = ({
     plugins: [
       new webpack.ProgressPlugin(), //
       new AssetRelocatorCachePlugin(),
+      new OptionalModulesPlugin(),
     ],
     target: 'node',
   };
