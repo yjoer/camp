@@ -2,7 +2,8 @@
   "name": "@camp/examples-webpack-typescript-fastify",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --watch"
+    "dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch",
+    "dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch"
   },
   "dependencies": {
     "fastify": "5.4.0"
@@ -11,6 +12,7 @@
     "@camp/webpack": "workspace:*",
     "cross-env": "7.0.3",
     "jiti": "2.4.2",
+    "tsx": "4.20.3",
     "typescript": "5.8.3",
     "webpack": "5.99.9",
     "webpack-cli": "6.0.1"
