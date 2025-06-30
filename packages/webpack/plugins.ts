@@ -17,13 +17,20 @@ export class RunScriptPlugin {
   subprocess?: cp.ChildProcess;
 
   apply(compiler: Compiler) {
-    compiler.hooks.afterEmit.tap('RunScriptPlugin', () => {
+    compiler.hooks.afterEmit.tap('RunScriptPlugin', (compilation) => {
       if (this.subprocess?.connected) return;
 
-      const { path: outputPath, filename } = compiler.options.output;
+      // find the asset of the first entry file.
+      const entry = compilation.entrypoints.keys().next().value;
+      const assets = compilation.getAssets();
+      const asset = assets.find((asset) => asset.name === `${entry}.js`);
+      if (!asset) return;
+
+      // const { filename } = compiler.options.output;
+      const { path: outputPath } = compiler.options.output;
       if (!outputPath) return;
 
-      const entrypoint = path.join(outputPath, filename as string);
+      const entrypoint = path.join(outputPath, asset.name);
       this.subprocess = cp.fork(entrypoint);
     });
   }
