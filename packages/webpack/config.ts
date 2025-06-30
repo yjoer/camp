@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import webpack from 'webpack';
+import { merge } from 'webpack-merge';
 import nodeExternals from 'webpack-node-externals';
 
 import { AssetRelocatorCachePlugin, RunScriptPlugin } from './plugins.ts';
@@ -14,12 +15,14 @@ const require = createRequire(import.meta.url);
 interface Options {
   configPath: string;
   entry?: string[];
+  mode: 'development' | 'production';
   projectPath: string;
   transpilePackages?: (RegExp | string)[];
 }
 
 export const getServerConfig = ({
   entry = [],
+  mode,
   projectPath,
   configPath,
   transpilePackages = [],
@@ -31,14 +34,9 @@ export const getServerConfig = ({
     }
   }
 
-  const config = {
-    entry: ['webpack/hot/poll?100', ...entry],
-    mode: 'development',
-    output: {
-      path: path.join(projectPath, 'node_modules', '.camp', 'build'),
-      filename: 'server.js',
-      clean: true,
-    },
+  const commonConfig: Configuration = {
+    entry,
+    mode,
     module: {
       rules: [
         {
@@ -69,8 +67,21 @@ export const getServerConfig = ({
       extensions: ['.js', '.ts'],
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
+      new webpack.ProgressPlugin(), //
       new AssetRelocatorCachePlugin(),
+    ],
+    target: 'node',
+  };
+
+  const developmentConfig: Configuration = {
+    entry: ['webpack/hot/poll?100'],
+    output: {
+      path: path.join(projectPath, 'node_modules', '.camp', 'build'),
+      filename: '[name].js',
+      clean: true,
+    },
+    plugins: [
+      new webpack.HotModuleReplacementPlugin(), //
       new RunScriptPlugin(),
     ],
     cache: {
@@ -79,13 +90,29 @@ export const getServerConfig = ({
       },
       type: 'filesystem',
     },
-    target: 'node',
     externals: [
       nodeExternals({
         allowlist: ['webpack/hot/poll?100', ...transpilePackages],
       }),
     ],
-  } satisfies Configuration;
+  };
 
-  return config;
+  const productionConfig: Configuration = {
+    output: {
+      path: path.join(projectPath, '.camp', 'build'),
+      filename: '[name].js',
+      clean: true,
+    },
+    experiments: {
+      outputModule: true,
+    },
+  };
+
+  if (mode === 'development') {
+    return merge(commonConfig, developmentConfig);
+  } else if (mode === 'production') {
+    return merge(commonConfig, productionConfig);
+  }
+
+  return {};
 };

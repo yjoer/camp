@@ -2,6 +2,7 @@
   "name": "@camp/examples-webpack-typescript-fastify",
   "type": "module",
   "scripts": {
+    "build": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' webpack --disable-interpret",
     "dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch",
     "dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch"
   },
