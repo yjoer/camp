@@ -1,5 +1,6 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
@@ -74,7 +75,7 @@ export const getServerConfig = ({
     ],
     cache: {
       buildDependencies: {
-        config: [import.meta.filename, configPath],
+        config: [fileURLToPath(import.meta.url), configPath],
       },
       type: 'filesystem',
     },
