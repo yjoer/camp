@@ -2,6 +2,7 @@
   "name": "@camp/webpack",
   "type": "module",
   "dependencies": {
+    "@rspack/core": "^1",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
     "ts-loader": "9.5.2",
     "webpack": "^5",
@@ -12,6 +13,7 @@
     "@types/webpack-node-externals": "3.0.4"
   },
   "peerDependencies": {
+    "@rspack/core": "^1",
     "webpack": "^5",
     "webpack-merge": "^6"
   }

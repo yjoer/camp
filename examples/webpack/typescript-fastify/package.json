@@ -3,14 +3,18 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' webpack --disable-interpret",
+    "build:rspack": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' rspack build",
     "dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch",
-    "dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch"
+    "dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch",
+    "dev:rspack": "cross-env NODE_OPTIONS='--import=tsx' rspack --watch"
   },
   "dependencies": {
     "fastify": "5.4.0"
   },
   "devDependencies": {
     "@camp/webpack": "workspace:*",
+    "@rspack/cli": "1.4.2",
+    "@rspack/core": "1.4.2",
     "cross-env": "7.0.3",
     "jiti": "2.4.2",
     "tsx": "4.20.3",

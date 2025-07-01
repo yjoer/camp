@@ -40,9 +40,15 @@ app.get('/stream', (request, reply) => {
 });
 
 app.get('/missing-packages', async (request, reply) => {
-  // @ts-expect-error missing package
-  // eslint-disable-next-line import-x/no-unresolved
-  await import('missing-package');
+  try {
+    // @ts-expect-error missing package
+    // eslint-disable-next-line import-x/no-unresolved
+    await import('missing-package');
+  } catch (error) {
+    reply.code(500).send({ error: error.message });
+    return;
+  }
+
   reply.send({});
 });
 
