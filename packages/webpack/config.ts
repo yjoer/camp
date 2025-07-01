@@ -44,6 +44,9 @@ export const getServerConfig = ({
           parser: { amd: false },
           use: {
             loader: require.resolve('@vercel/webpack-asset-relocator-loader'),
+            options: {
+              outputAssetBase: 'assets',
+            },
           },
         },
         {

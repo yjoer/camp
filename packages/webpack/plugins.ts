@@ -12,8 +12,10 @@ import type { Compiler, Resolver } from 'webpack';
 
 export class AssetRelocatorCachePlugin {
   apply(compiler: Compiler) {
+    const outputAssetBase = 'assets';
+
     compiler.hooks.compilation.tap('AssetRelocatorCachePlugin', (compilation) => {
-      relocateLoader.initAssetCache(compilation);
+      relocateLoader.initAssetCache(compilation, outputAssetBase);
     });
   }
 }
