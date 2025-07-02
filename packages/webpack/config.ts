@@ -14,7 +14,8 @@ const require = createRequire(import.meta.url);
 
 interface Options {
   configPath: string;
-  entry?: string[];
+  entry: string[];
+  minimize?: boolean;
   mode: 'development' | 'production';
   projectPath: string;
   transpilePackages?: (RegExp | string)[];
@@ -26,6 +27,7 @@ export const getServerConfig = ({
   projectPath,
   configPath,
   transpilePackages = [],
+  minimize = false,
 }: Options): Configuration => {
   // Convert strings into regular expressions for exact matches.
   for (let i = 0; i < transpilePackages.length; i++) {
@@ -106,6 +108,9 @@ export const getServerConfig = ({
       path: path.join(projectPath, '.camp', 'build'),
       filename: '[name].js',
       clean: true,
+    },
+    optimization: {
+      minimize,
     },
     experiments: {
       outputModule: true,
