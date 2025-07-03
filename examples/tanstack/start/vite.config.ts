@@ -27,6 +27,7 @@ export default defineConfig({
   },
   plugins: [
     tanstackStart({
+      target: process.env.TSS_TARGET,
       tsr: {
         virtualRouteConfig: routes,
         verboseFileRoutes: false,
