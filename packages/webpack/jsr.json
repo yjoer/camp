@@ -1,8 +1,9 @@
 {
   "name": "@camp/webpack",
-  "version": "2025.7.4",
+  "version": "2025.7.5",
   "license": "MPL-2.0",
   "exports": {
-    "./config": "./config.ts"
+    "./config": "./config.ts",
+    "./rspack-config": "./rspack-config.ts"
   }
 }
