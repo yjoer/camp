@@ -6,7 +6,7 @@ import { rspack } from '@rspack/core';
 import { merge } from 'webpack-merge';
 // import nodeExternals from 'webpack-node-externals';
 
-import { RunScriptPlugin } from './plugins.ts';
+import { AssetRelocatorCachePlugin, RunScriptPlugin } from './plugins.ts';
 
 import type { Configuration } from '@rspack/core';
 
@@ -14,7 +14,8 @@ const require = createRequire(import.meta.url);
 
 interface Options {
   configPath: string;
-  entry?: string[];
+  entry: string[];
+  minimize?: boolean;
   mode: 'development' | 'production';
   projectPath: string;
   transpilePackages?: (RegExp | string)[];
@@ -26,7 +27,8 @@ export const getServerConfig = ({
   projectPath,
   // configPath,
   transpilePackages = [],
-}: Options) => {
+  minimize = false,
+}: Options): Configuration => {
   // Convert strings into regular expressions for exact matches.
   for (let i = 0; i < transpilePackages.length; i++) {
     if (typeof transpilePackages[i] === 'string') {
@@ -39,16 +41,16 @@ export const getServerConfig = ({
     mode,
     module: {
       rules: [
-        // {
-        //   test: /\.(js|ts|node)$/,
-        //   parser: { amd: false },
-        //   use: {
-        //     loader: require.resolve('@vercel/webpack-asset-relocator-loader'),
-        //     options: {
-        //       outputAssetBase: 'assets',
-        //     },
-        //   },
-        // },
+        {
+          test: /\.(js|ts|node)$/,
+          parser: { amd: false },
+          use: {
+            loader: require.resolve('@vercel/webpack-asset-relocator-loader'),
+            options: {
+              outputAssetBase: 'assets',
+            },
+          },
+        },
         {
           test: /\.ts$/,
           use: {
@@ -71,7 +73,7 @@ export const getServerConfig = ({
     },
     plugins: [
       new rspack.ProgressPlugin(), //
-      // new AssetRelocatorCachePlugin(),
+      new AssetRelocatorCachePlugin(),
     ],
     target: 'node',
   };
@@ -105,6 +107,9 @@ export const getServerConfig = ({
       path: path.join(projectPath, '.camp', 'build'),
       filename: '[name].js',
       clean: true,
+    },
+    optimization: {
+      minimize,
     },
     experiments: {
       outputModule: true,
