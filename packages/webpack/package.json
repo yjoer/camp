@@ -3,7 +3,7 @@
   "type": "module",
   "dependencies": {
     "@rspack/core": "^1",
-    "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "@vercel/webpack-asset-relocator-loader": "1.8.0",
     "ts-loader": "9.5.2",
     "webpack": "^5",
     "webpack-merge": "^6",
