@@ -2,11 +2,17 @@
 // oxlint-disable no-process-exit
 import { Readable } from 'node:stream';
 
+import bcrypt from 'bcrypt';
 import { fastify } from 'fastify';
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 
 const app = fastify({
   logger: true,
-});
+}).withTypeProvider<ZodTypeProvider>();
+
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 
 app.get('/', (request, reply) => {
   reply.send({ hello: 'world' });
@@ -51,6 +57,23 @@ app.get('/missing-packages', async (request, reply) => {
 
   reply.send({});
 });
+
+app.get(
+  '/bcrypt',
+  {
+    schema: {
+      querystring: z.object({
+        password: z.string(),
+      }),
+    },
+  },
+  async (request, reply) => {
+    const { password } = request.query;
+
+    const hash = await bcrypt.hash(password, 10);
+    reply.send({ hash });
+  },
+);
 
 (async () => {
   try {
