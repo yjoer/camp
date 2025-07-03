@@ -1,7 +1,9 @@
 __pycache__/
+.camp/
 .ipynb_checkpoints/
 .nitro/
 .output/
+.storybook-static/
 .tanstack/
 .venv/
 .virtual_documents/
@@ -14,3 +16,7 @@ target/
 Cargo.lock
 pnpm-lock.yaml
 uv.lock
+
+**/.vercel/**
+!**/.vercel/output/
+!**/.vercel/output/config.json
