@@ -6,21 +6,26 @@
     "build:rspack": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' rspack build",
     "dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch",
     "dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch",
-    "dev:rspack": "cross-env NODE_OPTIONS='--import=tsx' rspack --watch"
+    "dev:rspack": "cross-env NODE_ENV='development' NODE_OPTIONS='--import=tsx' rspack --watch"
   },
   "dependencies": {
-    "fastify": "5.4.0"
+    "bcrypt": "5.1.1",
+    "fastify": "5.4.0",
+    "fastify-type-provider-zod": "5.0.1",
+    "zod": "3.25.71"
   },
   "devDependencies": {
     "@camp/webpack": "workspace:*",
     "@rspack/cli": "1.4.2",
     "@rspack/core": "1.4.2",
+    "@types/bcrypt": "5.0.2",
     "cross-env": "7.0.3",
     "jiti": "2.4.2",
     "tsx": "4.20.3",
     "typescript": "5.8.3",
     "webpack": "5.99.9",
-    "webpack-cli": "6.0.1"
+    "webpack-cli": "6.0.1",
+    "webpack-merge": "6.0.1"
   },
   "dependenciesMeta": {
     "@camp/webpack": {
