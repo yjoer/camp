@@ -9,15 +9,15 @@
     "dev:rspack": "cross-env NODE_ENV='development' NODE_OPTIONS='--import=tsx' rspack --watch"
   },
   "dependencies": {
-    "bcrypt": "5.1.1",
+    "bcrypt": "6.0.0",
     "fastify": "5.4.0",
     "fastify-type-provider-zod": "5.0.1",
-    "zod": "3.25.71"
+    "zod": "3.25.72"
   },
   "devDependencies": {
     "@camp/webpack": "workspace:*",
-    "@rspack/cli": "1.4.2",
-    "@rspack/core": "1.4.2",
+    "@rspack/cli": "1.4.3",
+    "@rspack/core": "1.4.3",
     "@types/bcrypt": "5.0.2",
     "cross-env": "7.0.3",
     "jiti": "2.4.2",
