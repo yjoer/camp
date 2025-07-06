@@ -1,0 +1,21 @@
+{
+  "name": "@camp/examples-webpack-typescript-http",
+  "type": "module",
+  "scripts": {
+    "build": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' webpack",
+    "dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch"
+  },
+  "devDependencies": {
+    "@camp/webpack": "workspace:*",
+    "cross-env": "7.0.3",
+    "tsx": "4.20.3",
+    "typescript": "5.8.3",
+    "webpack": "5.99.9",
+    "webpack-cli": "6.0.1"
+  },
+  "dependenciesMeta": {
+    "@camp/webpack": {
+      "injected": true
+    }
+  }
+}
