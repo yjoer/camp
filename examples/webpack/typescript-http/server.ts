@@ -14,10 +14,10 @@ if (enabled && import.meta.webpackHot) {
   import.meta.webpackHot.accept('./router.ts', async () => {
     console.log('♻️ HMR: Hot-Reloading');
 
-    const mod = await import('./router.ts');
+    // const mod = await import('./router.ts');
     // app.removeListener('request', router);
     app.removeAllListeners('request');
-    app.on('request', mod.router);
+    app.on('request', router);
     console.log('listeners', app.listenerCount('request'));
   });
 }
