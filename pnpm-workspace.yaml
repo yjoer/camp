@@ -2,6 +2,7 @@ packages:
   - packages/*
   - examples/elasticsearch/*
   - examples/hatchet/*
+  - examples/node/*
   - examples/tanstack/*
   - examples/temporal/*
   - examples/webpack/*

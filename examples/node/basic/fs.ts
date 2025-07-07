@@ -4,17 +4,33 @@ import { mkdir, open, readFile, unlink } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
+import * as asciichart from 'asciichart';
+
 const fp = path.join(os.tmpdir(), 'camp', 'examples-node-basic', 'test.bin');
 
 async function main() {
-  const interval = setInterval(() => {
-    console.log(process.memoryUsage());
-  }, 1000);
-
   const args = process.argv.slice(2);
   if (args.length === 0) return;
 
   switch (args[0]) {
+    case 'bench': {
+      const [u1] = await measure(usingReadFile);
+      const [u2] = await measure(usingReadStream);
+      const [u3] = await measure(usingSharedBuffer);
+
+      const t1 = u1.map((u) => u.arrayBuffers / 1_000_000);
+      const t2 = u2.map((u) => u.arrayBuffers / 1_000_000);
+      const t3 = u3.map((u) => u.arrayBuffers / 1_000_000);
+
+      console.log(
+        asciichart.plot([t1, t2, t3], {
+          colors: [asciichart.lightblue, asciichart.lightgreen, asciichart.lightmagenta],
+          height: 10,
+        }),
+      );
+
+      break;
+    }
     case 'clean': {
       await clean();
       break;
@@ -36,20 +52,42 @@ async function main() {
       break;
     }
   }
-
-  setTimeout(() => {
-    if (!globalThis.gc) return;
-
-    console.log('forcing garbage collection');
-    globalThis.gc();
-  }, 1000);
-
-  setTimeout(() => {
-    clearInterval(interval);
-  }, 3000);
 }
 
 await main();
+
+async function measure(callback: () => Promise<void>) {
+  let gc = false;
+  const usages: any[] = [];
+  const usagesGC: any[] = [];
+
+  const interval = setInterval(() => {
+    if (gc) {
+      usagesGC.push(process.memoryUsage());
+    } else {
+      usages.push(process.memoryUsage());
+    }
+  }, 50);
+
+  await Promise.resolve(callback());
+
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      if (!globalThis.gc) return;
+
+      console.log('forcing garbage collection');
+      globalThis.gc();
+      gc = true;
+    }, 1000);
+
+    setTimeout(() => {
+      resolve();
+      clearInterval(interval);
+    }, 3000);
+  });
+
+  return [usages, usagesGC];
+}
 
 async function prepare() {
   const buf = Buffer.alloc(1 * 1024 * 1024);
