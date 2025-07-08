@@ -1,6 +1,7 @@
 import { Readable } from 'node:stream';
 
 import bcrypt from 'bcrypt';
+import { z } from 'zod/v4';
 
 import type { FastifyReply, FastifyRequest } from 'fastify';
 
@@ -48,9 +49,20 @@ export async function missingPackages(request: FastifyRequest, reply: FastifyRep
   reply.send({});
 }
 
-export async function bcryptHash(password: string) {
+const BcryptHashInput = z.object({
+  query: z.object({
+    password: z.string().nonempty(),
+  }),
+});
+
+export async function bcryptHash(request: FastifyRequest, reply: FastifyReply) {
+  const result = BcryptHashInput.safeParse(request);
+  if (!result.success) return reply.code(400).send(result.error.issues);
+
+  const { password } = result.data.query;
   const hash = await bcrypt.hash(password, 10);
-  return hash;
+
+  reply.send({ hash });
 }
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
