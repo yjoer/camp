@@ -9,15 +9,19 @@ app.listen(3000, '::', () => {
   console.log(`server is now listening on port 3000`);
 });
 
-const enabled = false;
+const enabled = true;
 if (enabled && import.meta.webpackHot) {
+  let oldRouter = router;
+
   import.meta.webpackHot.accept('./router.ts', async () => {
     console.log('♻️ HMR: Hot-Reloading');
 
     // const mod = await import('./router.ts');
-    // app.removeListener('request', router);
-    app.removeAllListeners('request');
+    // app.removeAllListeners('request');
+    app.removeListener('request', oldRouter);
     app.on('request', router);
+    oldRouter = router;
+
     console.log('listeners', app.listenerCount('request'));
   });
 }
