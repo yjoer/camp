@@ -1,5 +1,3 @@
-import { z } from 'zod/v4';
-
 import { bcryptHash, chunked, hello, missingPackages, stream } from '../mods/handlers.ts';
 
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
@@ -21,22 +19,9 @@ export const router: FastifyPluginAsyncZod = async (app, _opts) => {
     missingPackages(request, reply);
   });
 
-  app.get(
-    '/bcrypt',
-    {
-      schema: {
-        querystring: z.object({
-          password: z.string(),
-        }),
-      },
-    },
-    async (request, reply) => {
-      const { password } = request.query;
-      const hash = await bcryptHash(password);
-
-      reply.send({ hash });
-    },
-  );
+  app.get('/bcrypt', (request, reply) => {
+    bcryptHash(request, reply);
+  });
 };
 
 if (import.meta.webpackHot) {
