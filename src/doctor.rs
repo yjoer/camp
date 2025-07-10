@@ -31,8 +31,8 @@ pub fn doctor() {
         }
     }
 
-    println!("\n{}", "Git Aliases:".bold());
-    for (k, v) in git_aliases().iter() {
+    println!("\n{}", "Git Config:".bold());
+    for (k, v) in git_config().iter() {
         println!("  {}: {}", k, v);
     }
 }
@@ -158,9 +158,32 @@ fn code() -> IndexMap<String, String> {
     map
 }
 
-fn git_aliases() -> IndexMap<String, String> {
+fn git_config() -> IndexMap<String, String> {
     let mut map = IndexMap::<String, String>::new();
     let cfg_default = Config::open_default().unwrap().snapshot().unwrap();
+
+    let output = cfg_default.get_str("user.name").unwrap_or("N/A");
+    map.insert("user.name".to_string(), output.to_string());
+
+    let output = cfg_default.get_str("user.email").unwrap_or("N/A");
+    map.insert("user.email".to_string(), output.to_string());
+
+    let output = cfg_default.get_str("core.eol").unwrap_or("N/A");
+    map.insert("core.eol".to_string(), output.to_string());
+
+    let output = cfg_default.get_bool("core.safecrlf").unwrap_or(false);
+    map.insert("core.safecrlf".to_string(), output.to_string());
+
+    let output = cfg_default.get_str("core.autocrlf").unwrap_or("N/A");
+    map.insert("core.autocrlf".to_string(), output.to_string());
+
+    let output = cfg_default.get_bool("core.longpaths").unwrap_or(false);
+    map.insert("core.longpaths".to_string(), output.to_string());
+
+    let output = cfg_default
+        .get_bool("absorb.oneFixupPerCommit")
+        .unwrap_or(false);
+    map.insert("absorb.oneFixupPerCommit".to_string(), output.to_string());
 
     for (k, v) in &GIT_ALIASES {
         let output = cfg_default.get_str(&format!("alias.{}", k)).unwrap();
