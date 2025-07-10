@@ -3,7 +3,6 @@
 use clap::CommandFactory;
 use clap::Parser;
 use clap::Subcommand;
-use git2::Config;
 use git2::Repository;
 use regex::Regex;
 use std::error::Error;
@@ -26,7 +25,7 @@ mod windows_imports {
 use windows_imports::*;
 
 mod doctor;
-use crate::doctor::GIT_ALIASES;
+mod git;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -94,8 +93,8 @@ enum CodeSubcommands {
 
 #[derive(Subcommand, Debug)]
 enum GitSubcommands {
-    #[clap(about = "Set up useful Git aliases for common operations")]
-    Alias,
+    #[clap(about = "Set up common Git config and useful aliases for common operations.")]
+    Setup,
 }
 
 #[cfg(target_os = "windows")]
@@ -290,7 +289,7 @@ fn main() {
             }
         },
         Some(Commands::Git { subcommand }) => match subcommand {
-            Some(GitSubcommands::Alias) => setup_git_aliases(),
+            Some(GitSubcommands::Setup) => git::setup().unwrap(),
             None => {
                 Args::command()
                     .find_subcommand_mut("git")
@@ -315,14 +314,6 @@ fn disable_web_search() {
             .create("Software\\Policies\\Microsoft\\Windows\\Explorer")
             .and_then(|k| k.set_u32("DisableSearchBoxSuggestions", 1))
             .unwrap();
-    }
-}
-
-fn setup_git_aliases() {
-    let mut cfg_default = Config::open_default().unwrap();
-
-    for (k, v) in &GIT_ALIASES {
-        cfg_default.set_str(&format!("alias.{}", k), v).unwrap();
     }
 }
 
