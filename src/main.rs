@@ -327,6 +327,8 @@ fn fixup() -> Result<(), Box<dyn Error>> {
 
     if let Ok(tail_oid) = repo.refname_to_id("refs/remotes/origin/master") {
         revwalk.hide(tail_oid)?;
+    } else if let Ok(tail_oid) = repo.refname_to_id("refs/remotes/origin/main") {
+        revwalk.hide(tail_oid)?;
     };
 
     for rev in revwalk {

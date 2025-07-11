@@ -177,8 +177,22 @@ fn git_config() -> IndexMap<String, String> {
     let output = cfg_default.get_str("core.autocrlf").unwrap_or("N/A");
     map.insert("core.autocrlf".to_string(), output.to_string());
 
+    let output = cfg_default.get_str("core.attributesFile").unwrap_or("N/A");
+    map.insert("core.attributesFile".to_string(), output.to_string());
+
     let output = cfg_default.get_bool("core.longpaths").unwrap_or(false);
     map.insert("core.longpaths".to_string(), output.to_string());
+
+    let output = cfg_default.get_str("merge.conflictStyle").unwrap_or("N/A");
+    map.insert("merge.conflictStyle".to_string(), output.to_string());
+
+    let output = cfg_default.get_str("merge.mergiraf.name").unwrap_or("N/A");
+    map.insert("merge.mergiraf.name".to_string(), output.to_string());
+
+    let output = cfg_default
+        .get_str("merge.mergiraf.driver")
+        .unwrap_or("N/A");
+    map.insert("merge.mergiraf.driver".to_string(), output.to_string());
 
     let output = cfg_default
         .get_bool("absorb.oneFixupPerCommit")
