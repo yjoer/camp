@@ -25,7 +25,7 @@ mod windows_imports {
 use windows_imports::*;
 
 mod doctor;
-mod git;
+mod setup;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -54,10 +54,10 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<CodeSubcommands>,
     },
-    #[clap(about = "Configure and customize Git settings and aliases.")]
-    Git {
+    #[clap(about = "Set up Git config, aliases, and Jupyter kernels.")]
+    Setup {
         #[command(subcommand)]
-        subcommand: Option<GitSubcommands>,
+        subcommand: Option<SetupSubcommands>,
     },
     #[clap(about = "Apply a patch to the latest non-fixup commit automatically.")]
     Fixup,
@@ -92,9 +92,12 @@ enum CodeSubcommands {
 }
 
 #[derive(Subcommand, Debug)]
-enum GitSubcommands {
+enum SetupSubcommands {
     #[clap(about = "Set up common Git config and useful aliases for common operations.")]
-    Setup,
+    Git,
+
+    #[clap(about = "Set up Jupyter kernels.")]
+    Jupyter,
 }
 
 #[cfg(target_os = "windows")]
@@ -288,11 +291,12 @@ fn main() {
                     .unwrap();
             }
         },
-        Some(Commands::Git { subcommand }) => match subcommand {
-            Some(GitSubcommands::Setup) => git::setup().unwrap(),
+        Some(Commands::Setup { subcommand }) => match subcommand {
+            Some(SetupSubcommands::Git) => setup::setup_git().unwrap(),
+            Some(SetupSubcommands::Jupyter) => setup::setup_jupyter().unwrap(),
             None => {
                 Args::command()
-                    .find_subcommand_mut("git")
+                    .find_subcommand_mut("setup")
                     .unwrap()
                     .print_help()
                     .unwrap();
