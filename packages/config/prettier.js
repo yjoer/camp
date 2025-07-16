@@ -1,6 +1,7 @@
 /** @type {import("prettier").Config} */
 export default {
   plugins: [
+    // '@prettier/plugin-oxc',
     'prettier-plugin-packagejson',
     'prettier-plugin-tailwindcss',
     'prettier-plugin-classnames',
@@ -12,6 +13,5 @@ export default {
   singleQuote: true,
   tailwindFunctions: ['clsx', 'cva'],
   customFunctions: ['clsx', 'cva'],
-  endingPosition: 'absolute-with-indent',
-  experimentalOptimization: true,
+  endingPosition: 'absolute',
 };
