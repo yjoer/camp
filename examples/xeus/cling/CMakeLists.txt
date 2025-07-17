@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 4.0)
+project(xcling)
 set(EXECUTABLE_NAME xcling)
 
 # Configuration
@@ -31,8 +33,8 @@ endif()
 
 # Target
 set(XCLING_SRC
-    src/custom_interpreter.cpp
-    src/custom_interpreter.hpp
+    src/xinterpreter.cpp
+    src/xinterpreter.hpp
 )
 
 add_executable(${EXECUTABLE_NAME} src/main.cpp ${XCLING_SRC})
@@ -46,7 +48,7 @@ install(TARGETS ${EXECUTABLE_NAME}
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 set(JUPYTER_DATA_DIR "share/jupyter" CACHE STRING "jupyter data directory")
-set(XCLING_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/share/jupyter/kernels)
+set(XCLING_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/kernels)
 
 install(DIRECTORY ${XCLING_DATA_DIR}
         DESTINATION ${JUPYTER_DATA_DIR}
