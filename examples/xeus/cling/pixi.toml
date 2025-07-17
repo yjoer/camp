@@ -1,0 +1,40 @@
+[workspace]
+channels = ["conda-forge"]
+name = "xcling"
+platforms = ["win-64"]
+version = "2025.7.0"
+
+[tasks.configure]
+cmd = [
+  "cmake",
+  "-G",
+  "Ninja",
+  "-DCMAKE_INSTALL_PREFIX=.build/install",
+  "-DCMAKE_BUILD_TYPE=Release",
+  "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+  "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+  "-DOPENSSL_ROOT_DIR=$CONDA_PREFIX/Library",
+  "-S",
+  ".",
+  "-B",
+  ".build",
+]
+
+[tasks.build]
+cmd = ["ninja", "-C", ".build"]
+depends-on = ["configure"]
+
+[tasks.install]
+cmd = ["ninja", "-C", ".build", "install"]
+depends-on = ["build"]
+
+[tasks.start]
+cmd = "./.build/install/bin/xcling"
+
+[dependencies]
+cppzmq = "==4.10.0"
+libboost-devel = "==1.88.0"
+nlohmann_json = "==3.12.0"
+openssl = "==3.5.1"
+xeus = "==5.2.3"
+xeus-zmq = "==3.1.0"
