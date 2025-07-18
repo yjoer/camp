@@ -53,6 +53,7 @@ endif()
 
 # Target
 set(XCLING_SRC
+    src/xbuffer.hpp
     src/xinterpreter.cpp
     src/xinterpreter.hpp
 )

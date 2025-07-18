@@ -4,8 +4,10 @@
 #include "cling/Interpreter/Exception.h"
 #include "cling/Interpreter/Interpreter.h"
 #include "cling/Interpreter/Value.h"
-#include "llvm/Support/raw_ostream.h"
 #include "xeus/xinterpreter.hpp"
+#include "llvm/Support/raw_ostream.h"
+
+#include "xbuffer.hpp"
 
 namespace xcling {
 class xinterpreter : public xeus::xinterpreter {
@@ -31,6 +33,11 @@ private:
   void shutdown_request_impl() override;
 
   cling::Interpreter m_cling;
+
+  std::streambuf *m_cout_sbuff;
+  std::streambuf *m_cerr_sbuff;
+  xoutput_buffer m_cout_buff;
+  xoutput_buffer m_cerr_buff;
 };
 } // namespace xcling
 

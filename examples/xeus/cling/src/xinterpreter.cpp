@@ -5,7 +5,18 @@
 
 namespace xcling {
 xinterpreter::xinterpreter(int argc, const char *const *argv, const char *llvm_dir)
-    : m_cling(argc, argv, llvm_dir) {}
+    : m_cling(argc, argv, llvm_dir),
+      m_cout_buff("stdout", std::cout.rdbuf(), true,
+                  std::bind(&xeus::xinterpreter::publish_stream, this, std::placeholders::_1,
+                            std::placeholders::_2)),
+      m_cerr_buff("stderr", std::cerr.rdbuf(), true,
+                  std::bind(&xeus::xinterpreter::publish_stream, this, std::placeholders::_1,
+                            std::placeholders::_2)) {
+  m_cout_sbuff = std::cout.rdbuf();
+  m_cerr_sbuff = std::cerr.rdbuf();
+  std::cout.rdbuf(&m_cout_buff);
+  std::cerr.rdbuf(&m_cerr_buff);
+}
 
 void xinterpreter::configure_impl() {
   //
