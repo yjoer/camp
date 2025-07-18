@@ -4,6 +4,9 @@
 #include "xinterpreter.hpp"
 
 namespace xcling {
+interpreter::interpreter(int argc, const char *const *argv, const char *llvm_dir)
+    : m_interpreter(argc, argv, llvm_dir) {}
+
 void interpreter::configure_impl() {
   //
 }

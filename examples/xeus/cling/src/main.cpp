@@ -1,11 +1,14 @@
 #include <iostream>
 
+#include "boost/process/environment.hpp"
 #include "xeus-zmq/xserver_zmq.hpp"
 #include "xeus-zmq/xzmq_context.hpp"
 #include "xeus/xkernel.hpp"
 #include "xeus/xkernel_configuration.hpp"
 
 #include "xinterpreter.hpp"
+
+using namespace boost::process;
 
 using interpreter_ptr = std::unique_ptr<xcling::interpreter>;
 interpreter_ptr create_interpreter();
@@ -67,10 +70,27 @@ interpreter_ptr create_interpreter() {
   std::string std = "-std=c++20";
   argv[1] = std.c_str();
 
-  std::string include_dir = "-I" + std::string(CLING_ROOT_DIR) + "/include";
-  argv[2] = include_dir.c_str();
+  auto cling_path = environment::find_executable("cling");
+  if (cling_path.empty()) {
+    std::cerr << "Error: Could not find the cling executable in the PATH.\n";
+    exit(EXIT_FAILURE);
+  }
 
-  interpreter_ptr interpreter = interpreter_ptr(new xcling::interpreter(argc, argv));
+  auto cling_root_path = cling_path.parent_path().parent_path();
+
+  std::string include_dir = (cling_root_path / "include").string();
+  std::string include_path = "-I" + include_dir;
+  argv[2] = include_path.c_str();
+
+  std::string cling_root_dir = cling_root_path.string();
+  std::cout << "Cling executable detected.\n"
+            << "Root directory for Cling: " << cling_root_dir << "\n"
+            << "Using standard: " << std << "\n"
+            << "Including headers from: " << include_dir << "\n\n";
+
+  interpreter_ptr interpreter =
+      interpreter_ptr(new xcling::interpreter(argc, argv, cling_root_dir.c_str()));
+
   delete[] argv;
   return interpreter;
 }

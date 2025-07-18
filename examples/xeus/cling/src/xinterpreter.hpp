@@ -7,7 +7,7 @@
 namespace xcling {
 class interpreter : public xeus::xinterpreter {
 public:
-  interpreter(int argc, const char *const *argv);
+  interpreter(int argc, const char *const *argv, const char *llvm_dir);
   virtual ~interpreter() = default;
 
 private:

@@ -33,6 +33,7 @@ cmd = "./.build/install/bin/xcling"
 
 [dependencies]
 cppzmq = "==4.10.0"
+libboost-devel = "==1.88.0"
 nlohmann_json = "==3.12.0"
 openssl = "==3.5.1"
 xeus = "==5.2.3"
