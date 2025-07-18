@@ -18,9 +18,7 @@ xinterpreter::xinterpreter(int argc, const char *const *argv, const char *llvm_d
   std::cerr.rdbuf(&m_cerr_buff);
 }
 
-void xinterpreter::configure_impl() {
-  //
-}
+void xinterpreter::configure_impl() {}
 
 void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback cb,
                                         int execution_counter, const std::string &code,
@@ -55,7 +53,7 @@ void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback 
 
   if (!output.isValid()) {
     nl::json data;
-    data["text/plain"] = "Invalid Output";
+    data["text/plain"] = "(invalid)";
     publish_execution_result(execution_counter, data, nl::json::object());
     cb(xeus::create_successful_reply());
     return;

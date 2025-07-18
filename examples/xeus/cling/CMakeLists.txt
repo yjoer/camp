@@ -78,7 +78,7 @@ if (MSVC)
 
     foreach(SYMBOL ${CLING_SYMBOLS})
         set(CLING_EXPORTS "${CLING_EXPORTS} /EXPORT:${SYMBOL}")
-    endforeach(symbol ${CLING_SYMBOLS})
+    endforeach(SYMBOL ${CLING_SYMBOLS})
 
     set_property(TARGET ${EXECUTABLE_NAME} APPEND_STRING PROPERTY LINK_FLAGS ${CLING_EXPORTS})
 endif ()
