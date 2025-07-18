@@ -21,9 +21,18 @@ find_package(Boost REQUIRED COMPONENTS process)
 find_package(Cling REQUIRED)
 find_package(Threads)
 
+message(STATUS "Looking for cling executable...")
+find_program(CLING_EXECUTABLE cling REQUIRED)
+if (CLING_EXECUTABLE)
+    message(STATUS "Found cling: ${CLING_EXECUTABLE}")
+else ()
+    message(WARNING "Cling was not found in PATH.")
+endif ()
+
+get_filename_component(CLING_BIN_DIR ${CLING_EXECUTABLE} DIRECTORY)
+get_filename_component(CLING_ROOT_DIR ${CLING_BIN_DIR} DIRECTORY)
 include_directories(${CLING_ROOT_DIR}/include)
 link_directories(${CLING_ROOT_DIR}/lib)
-add_definitions(-DCLING_ROOT_DIR="${CLING_ROOT_DIR}")
 
 # Flags
 include(CheckCXXCompilerFlag)
@@ -52,6 +61,7 @@ target_link_libraries(${EXECUTABLE_NAME} PRIVATE
     clingInterpreter
     cppzmq
     ${xeus-zmq_target}
+    Boost::process
     Threads::Threads
 )
 set_target_properties(${EXECUTABLE_NAME} PROPERTIES
