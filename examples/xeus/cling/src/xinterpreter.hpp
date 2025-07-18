@@ -3,11 +3,8 @@
 
 #include "xeus/xinterpreter.hpp"
 
-using namespace xeus;
-using xeus::xinterpreter;
-
 namespace xcling {
-class interpreter : public xinterpreter {
+class interpreter : public xeus::xinterpreter {
 public:
   interpreter() = default;
   virtual ~interpreter() = default;
@@ -15,8 +12,9 @@ public:
 private:
   void configure_impl() override;
 
-  void execute_request_impl(send_reply_callback cb, int execution_counter, const std::string &code,
-                            execute_request_config config, nl::json user_expressions) override;
+  void execute_request_impl(xeus::xinterpreter::send_reply_callback cb, int execution_counter,
+                            const std::string &code, xeus::execute_request_config config,
+                            nl::json user_expressions) override;
 
   nl::json complete_request_impl(const std::string &code, int cursor_pos) override;
 

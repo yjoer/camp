@@ -8,8 +8,9 @@ void interpreter::configure_impl() {
   //
 }
 
-void interpreter::execute_request_impl(send_reply_callback cb, int execution_counter,
-                                       const std::string &code, execute_request_config config,
+void interpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback cb,
+                                       int execution_counter, const std::string &code,
+                                       xeus::execute_request_config config,
                                        nl::json user_expressions) {
   nl::json pub_data;
   pub_data["text/plain"] = "hello world!";
