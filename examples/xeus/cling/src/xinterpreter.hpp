@@ -1,7 +1,10 @@
 #ifndef XCLING_INTERPRETER_HPP
 #define XCLING_INTERPRETER_HPP
 
+#include "cling/Interpreter/Exception.h"
 #include "cling/Interpreter/Interpreter.h"
+#include "cling/Interpreter/Value.h"
+#include "llvm/Support/raw_ostream.h"
 #include "xeus/xinterpreter.hpp"
 
 namespace xcling {

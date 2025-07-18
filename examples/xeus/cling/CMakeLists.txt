@@ -18,6 +18,7 @@ set(xeus-zmq_REQUIRED_VERSION 1.0.2)
 find_package(cppzmq REQUIRED)
 find_package(xeus-zmq ${xeus-zmq_REQUIRED_VERSION} REQUIRED)
 find_package(Boost REQUIRED COMPONENTS process)
+find_package(Clang REQUIRED)
 find_package(Cling REQUIRED)
 find_package(Threads)
 
@@ -67,6 +68,19 @@ target_link_libraries(${EXECUTABLE_NAME} PRIVATE
 set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
+
+if (MSVC)
+    set(CLING_SYMBOLS
+        ??_7type_info@@6B@ # std::cout
+        ??3@YAXPEAX_K@Z # std::cout
+    )
+
+    foreach(SYMBOL ${CLING_SYMBOLS})
+        set(CLING_EXPORTS "${CLING_EXPORTS} /EXPORT:${SYMBOL}")
+    endforeach(symbol ${CLING_SYMBOLS})
+
+    set_property(TARGET ${EXECUTABLE_NAME} APPEND_STRING PROPERTY LINK_FLAGS ${CLING_EXPORTS})
+endif ()
 
 # Installation
 install(TARGETS ${EXECUTABLE_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

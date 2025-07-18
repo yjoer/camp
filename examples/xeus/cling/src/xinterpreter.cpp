@@ -15,10 +15,49 @@ void interpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback c
                                        int execution_counter, const std::string &code,
                                        xeus::execute_request_config config,
                                        nl::json user_expressions) {
-  nl::json pub_data;
-  pub_data["text/plain"] = "hello world!";
-  publish_execution_result(execution_counter, std::move(pub_data), nl::json::object());
-  publish_execution_error("TypeError", "123", {"!@$!@", "*(*"});
+  std::string ename;
+  std::string evalue;
+  cling::Value output;
+  cling::Interpreter::CompilationResult result;
+  try {
+    result = m_interpreter.process(code, &output, nullptr, true);
+  } catch (cling::InterpreterException &e) {
+    ename = "Interpreter Exception";
+    evalue = e.what();
+  } catch (std::exception &e) {
+    ename = "Standard Exception";
+    evalue = e.what();
+  } catch (...) {
+    ename = "Unknown Exception";
+  }
+
+  if (result != cling::Interpreter::kSuccess) {
+    ename = "Interpreter Error";
+  }
+
+  if (!ename.empty()) {
+    std::vector<std::string> traceback({ename + ": " + evalue});
+    publish_execution_error(ename, evalue, traceback);
+    cb(xeus::create_error_reply());
+    return;
+  }
+
+  if (!output.isValid()) {
+    nl::json data;
+    data["text/plain"] = "Invalid Output";
+    publish_execution_result(execution_counter, data, nl::json::object());
+    cb(xeus::create_successful_reply());
+    return;
+  }
+
+  std::string output_str;
+  llvm::raw_string_ostream os(output_str);
+  output.print(os);
+
+  nl::json data;
+  data["text/plain"] = output_str;
+  publish_execution_result(execution_counter, data, nl::json::object());
+
 
   cb(xeus::create_successful_reply());
 }
