@@ -26,7 +26,7 @@ find_program(CLING_EXECUTABLE cling REQUIRED)
 if (CLING_EXECUTABLE)
     message(STATUS "Found cling: ${CLING_EXECUTABLE}")
 else ()
-    message(WARNING "Cling was not found in PATH.")
+    message(FATAL_ERROR "Cling was not found in PATH.")
 endif ()
 
 get_filename_component(CLING_BIN_DIR ${CLING_EXECUTABLE} DIRECTORY)
