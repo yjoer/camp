@@ -67,7 +67,6 @@ void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback 
   data["text/plain"] = output_str;
   publish_execution_result(execution_counter, data, nl::json::object());
 
-
   cb(xeus::create_successful_reply());
 }
 

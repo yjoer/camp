@@ -72,6 +72,9 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 
 if (MSVC)
     set(CLING_SYMBOLS
+        __std_find_trivial_1 # std::cin
+        __std_reverse_trivially_swappable_1 # std::cin
+        ?_Facet_Register@std@@YAXPEAV_Facet_base@1@@Z # std::cin
         ??_7type_info@@6B@ # std::cout
         ??3@YAXPEAX_K@Z # std::cout
     )
