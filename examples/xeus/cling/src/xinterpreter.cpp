@@ -1,3 +1,4 @@
+#include "boost/tokenizer.hpp"
 #include "nlohmann/json.hpp"
 #include "xeus/xhelper.hpp"
 
@@ -71,7 +72,20 @@ void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback 
 }
 
 nl::json xinterpreter::complete_request_impl(const std::string &code, int cursor_pos) {
-  return nl::json::object();
+  std::size_t _cursor_pos = cursor_pos;
+  std::vector<std::string> completions;
+  cling::Interpreter::CompilationResult result;
+
+  boost::tokenizer<> tok(code.substr(0, cursor_pos + 1));
+  std::string last_token;
+  for (boost::tokenizer<>::iterator begin = tok.begin(); begin != tok.end(); ++begin) {
+    last_token = *begin;
+  }
+
+  result = m_cling.codeComplete(code, _cursor_pos, completions);
+
+  return xeus::create_complete_reply(completions, cursor_pos - last_token.length(), cursor_pos,
+                                     nl::json::object());
 };
 
 nl::json xinterpreter::inspect_request_impl(const std::string &code, int cursor_pos,
