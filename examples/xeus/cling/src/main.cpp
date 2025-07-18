@@ -7,11 +7,13 @@
 
 #include "xinterpreter.hpp"
 
+using interpreter_ptr = std::unique_ptr<xcling::interpreter>;
+interpreter_ptr create_interpreter();
+
 int main(int argc, char *argv[]) {
   std::unique_ptr<xeus::xcontext> context = xeus::make_zmq_context();
 
-  using interpreter_ptr = std::unique_ptr<xcling::interpreter>;
-  interpreter_ptr interpreter = interpreter_ptr(new xcling::interpreter());
+  interpreter_ptr interpreter = create_interpreter();
 
   if (argc > 1) {
     std::string filename = argv[2];
@@ -55,4 +57,20 @@ int main(int argc, char *argv[]) {
   kernel.start();
 
   return 0;
+}
+
+interpreter_ptr create_interpreter() {
+  int argc = 3;
+  const char **argv = new const char *[argc];
+  argv[0] = "xcling";
+
+  std::string std = "-std=c++20";
+  argv[1] = std.c_str();
+
+  std::string include_dir = "-I" + std::string(CLING_ROOT_DIR) + "/include";
+  argv[2] = include_dir.c_str();
+
+  interpreter_ptr interpreter = interpreter_ptr(new xcling::interpreter(argc, argv));
+  delete[] argv;
+  return interpreter;
 }

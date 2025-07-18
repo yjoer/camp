@@ -17,7 +17,12 @@ set(xeus-zmq_REQUIRED_VERSION 1.0.2)
 
 find_package(cppzmq REQUIRED)
 find_package(xeus-zmq ${xeus-zmq_REQUIRED_VERSION} REQUIRED)
+find_package(Cling REQUIRED)
 find_package(Threads)
+
+include_directories(${CLING_ROOT_DIR}/include)
+link_directories(${CLING_ROOT_DIR}/lib)
+add_definitions(-DCLING_ROOT_DIR="${CLING_ROOT_DIR}")
 
 # Flags
 include(CheckCXXCompilerFlag)
@@ -43,6 +48,7 @@ set(XCLING_SRC
 
 add_executable(${EXECUTABLE_NAME} src/main.cpp ${XCLING_SRC})
 target_link_libraries(${EXECUTABLE_NAME} PRIVATE
+    clingInterpreter
     cppzmq
     ${xeus-zmq_target}
     Threads::Threads

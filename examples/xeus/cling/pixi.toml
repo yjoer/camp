@@ -29,7 +29,7 @@ cmd = [ "ninja", "-C", ".build", "install" ]
 depends-on = [ "build" ]
 
 [tasks.start]
-cmd = "./.build/install/xcling"
+cmd = "./.build/install/bin/xcling"
 
 [dependencies]
 cppzmq = "==4.10.0"

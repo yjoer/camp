@@ -1,12 +1,13 @@
 #ifndef XCLING_INTERPRETER_HPP
 #define XCLING_INTERPRETER_HPP
 
+#include "cling/Interpreter/Interpreter.h"
 #include "xeus/xinterpreter.hpp"
 
 namespace xcling {
 class interpreter : public xeus::xinterpreter {
 public:
-  interpreter() = default;
+  interpreter(int argc, const char *const *argv);
   virtual ~interpreter() = default;
 
 private:
@@ -25,6 +26,8 @@ private:
   nl::json kernel_info_request_impl() override;
 
   void shutdown_request_impl() override;
+
+  cling::Interpreter m_interpreter;
 };
 } // namespace xcling
 
