@@ -4,23 +4,23 @@
 #include "xinterpreter.hpp"
 
 namespace xcling {
-interpreter::interpreter(int argc, const char *const *argv, const char *llvm_dir)
-    : m_interpreter(argc, argv, llvm_dir) {}
+xinterpreter::xinterpreter(int argc, const char *const *argv, const char *llvm_dir)
+    : m_cling(argc, argv, llvm_dir) {}
 
-void interpreter::configure_impl() {
+void xinterpreter::configure_impl() {
   //
 }
 
-void interpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback cb,
-                                       int execution_counter, const std::string &code,
-                                       xeus::execute_request_config config,
-                                       nl::json user_expressions) {
+void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback cb,
+                                        int execution_counter, const std::string &code,
+                                        xeus::execute_request_config config,
+                                        nl::json user_expressions) {
   std::string ename;
   std::string evalue;
   cling::Value output;
   cling::Interpreter::CompilationResult result;
   try {
-    result = m_interpreter.process(code, &output, nullptr, true);
+    result = m_cling.process(code, &output, nullptr, true);
   } catch (cling::InterpreterException &e) {
     ename = "Interpreter Exception";
     evalue = e.what();
@@ -62,20 +62,22 @@ void interpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback c
   cb(xeus::create_successful_reply());
 }
 
-nl::json interpreter::complete_request_impl(const std::string &code, int cursor_pos) {
+nl::json xinterpreter::complete_request_impl(const std::string &code, int cursor_pos) {
   return nl::json::object();
 };
 
-nl::json interpreter::inspect_request_impl(const std::string &code, int cursor_pos,
-                                           int detail_level) {
+nl::json xinterpreter::inspect_request_impl(const std::string &code, int cursor_pos,
+                                            int detail_level) {
   return nl::json::object();
 };
 
-nl::json interpreter::is_complete_request_impl(const std::string &code) {
+nl::json xinterpreter::is_complete_request_impl(const std::string &code) {
   return nl::json::object();
 };
 
-nl::json interpreter::kernel_info_request_impl() { return nl::json::object(); };
+nl::json xinterpreter::kernel_info_request_impl() {
+  return xeus::create_info_reply("", "xcling", "2025.7.0", "c++", "20", "text/x-python", ".py");
+};
 
-void interpreter::shutdown_request_impl() {};
+void xinterpreter::shutdown_request_impl() {};
 } // namespace xcling

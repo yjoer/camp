@@ -10,7 +10,7 @@
 
 using namespace boost::process;
 
-using interpreter_ptr = std::unique_ptr<xcling::interpreter>;
+using interpreter_ptr = std::unique_ptr<xcling::xinterpreter>;
 interpreter_ptr create_interpreter();
 
 int main(int argc, char *argv[]) {
@@ -89,7 +89,7 @@ interpreter_ptr create_interpreter() {
             << "Including headers from: " << include_dir << "\n\n";
 
   interpreter_ptr interpreter =
-      interpreter_ptr(new xcling::interpreter(argc, argv, cling_root_dir.c_str()));
+      interpreter_ptr(new xcling::xinterpreter(argc, argv, cling_root_dir.c_str()));
 
   delete[] argv;
   return interpreter;

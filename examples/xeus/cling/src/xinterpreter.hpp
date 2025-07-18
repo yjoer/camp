@@ -8,10 +8,10 @@
 #include "xeus/xinterpreter.hpp"
 
 namespace xcling {
-class interpreter : public xeus::xinterpreter {
+class xinterpreter : public xeus::xinterpreter {
 public:
-  interpreter(int argc, const char *const *argv, const char *llvm_dir);
-  virtual ~interpreter() = default;
+  xinterpreter(int argc, const char *const *argv, const char *llvm_dir);
+  virtual ~xinterpreter() = default;
 
 private:
   void configure_impl() override;
@@ -30,7 +30,7 @@ private:
 
   void shutdown_request_impl() override;
 
-  cling::Interpreter m_interpreter;
+  cling::Interpreter m_cling;
 };
 } // namespace xcling
 
