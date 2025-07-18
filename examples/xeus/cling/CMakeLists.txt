@@ -15,6 +15,7 @@ endif ()
 # Dependencies
 set(xeus-zmq_REQUIRED_VERSION 1.0.2)
 
+find_package(cppzmq REQUIRED)
 find_package(xeus-zmq ${xeus-zmq_REQUIRED_VERSION} REQUIRED)
 find_package(Threads)
 
@@ -22,13 +23,16 @@ find_package(Threads)
 include(CheckCXXCompilerFlag)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Intel")
-    CHECK_CXX_COMPILER_FLAG("-std=c++14" HAS_CPP14_FLAG)
+    CHECK_CXX_COMPILER_FLAG("-std=c++17" HAS_CPP17_FLAG)
 
-    if (HAS_CPP14_FLAG)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    if (HAS_CPP17_FLAG)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
     else ()
-        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++14 support!")
+        message(FATAL_ERROR "Unsupported compiler -- xeus requires C++17 support!")
     endif()
+else ()
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
 # Target
@@ -38,18 +42,36 @@ set(XCLING_SRC
 )
 
 add_executable(${EXECUTABLE_NAME} src/main.cpp ${XCLING_SRC})
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE ${xeus-zmq_target} Threads::Threads)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE
+    cppzmq
+    ${xeus-zmq_target}
+    Threads::Threads
+)
 set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     INSTALL_RPATH_USE_LINK_PATH TRUE
 )
 
 # Installation
-install(TARGETS ${EXECUTABLE_NAME}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ${EXECUTABLE_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+# install(FILES $<TARGET_RUNTIME_DLLS:${EXECUTABLE_NAME}> TYPE BIN)
+
+string(REPLACE "\\" "/" CONDA_PREFIX $ENV{CONDA_PREFIX})
+install(DIRECTORY "${CONDA_PREFIX}/Library/bin/"
+        TYPE BIN
+        COMPONENT Runtime
+        FILES_MATCHING
+        PATTERN "*.dll"
+        PATTERN "*.dylib"
+        PATTERN "*.so"
+        PATTERN "api-*" EXCLUDE
+        PATTERN "msvc*" EXCLUDE
+        PATTERN "vc*" EXCLUDE
+)
 
 set(JUPYTER_DATA_DIR "share/jupyter" CACHE STRING "jupyter data directory")
 set(XCLING_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/kernels)
 
 install(DIRECTORY ${XCLING_DATA_DIR}
         DESTINATION ${JUPYTER_DATA_DIR}
-        PATTERN "*.in" EXCLUDE)
+        PATTERN "*.in" EXCLUDE
+)

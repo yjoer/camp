@@ -18,4 +18,21 @@ void interpreter::execute_request_impl(send_reply_callback cb, int execution_cou
 
   cb(xeus::create_successful_reply());
 }
+
+nl::json interpreter::complete_request_impl(const std::string &code, int cursor_pos) {
+  return nl::json::object();
+};
+
+nl::json interpreter::inspect_request_impl(const std::string &code, int cursor_pos,
+                                           int detail_level) {
+  return nl::json::object();
+};
+
+nl::json interpreter::is_complete_request_impl(const std::string &code) {
+  return nl::json::object();
+};
+
+nl::json interpreter::kernel_info_request_impl() { return nl::json::object(); };
+
+void interpreter::shutdown_request_impl() {};
 } // namespace xcling

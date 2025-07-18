@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   interpreter_ptr interpreter = interpreter_ptr(new xcling::interpreter());
 
   if (argc > 1) {
-    std::string filename = argc == 1 ? "connection.json" : argv[2];
+    std::string filename = argv[2];
     xeus::xconfiguration config = xeus::load_configuration(filename);
 
     xeus::xkernel kernel(config, xeus::get_user_name(), std::move(context), std::move(interpreter),

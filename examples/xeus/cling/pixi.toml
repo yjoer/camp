@@ -9,6 +9,8 @@ cmd = [
   "cmake",
   "-G",
   "Ninja",
+  "-DCMAKE_INSTALL_PREFIX=.build/install",
+  "-DCMAKE_BUILD_TYPE=Release",
   "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
   "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
   "-DOPENSSL_ROOT_DIR=$CONDA_PREFIX/Library",
@@ -22,10 +24,15 @@ cmd = [
 cmd = [ "ninja", "-C", ".build" ]
 depends-on = [ "configure" ]
 
+[tasks.install]
+cmd = [ "ninja", "-C", ".build", "install" ]
+depends-on = [ "build" ]
+
 [tasks.start]
-cmd = "./.build/xcling"
+cmd = "./.build/install/xcling"
 
 [dependencies]
+cppzmq = "==4.10.0"
 nlohmann_json = "==3.12.0"
 openssl = "==3.5.1"
 xeus = "==5.2.3"
