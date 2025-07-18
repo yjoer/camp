@@ -1,3 +1,5 @@
+#include <regex>
+
 #include "boost/tokenizer.hpp"
 #include "nlohmann/json.hpp"
 #include "xeus/xhelper.hpp"
@@ -76,13 +78,25 @@ nl::json xinterpreter::complete_request_impl(const std::string &code, int cursor
   std::vector<std::string> completions;
   cling::Interpreter::CompilationResult result;
 
+  result = m_cling.codeComplete(code, _cursor_pos, completions);
+
   boost::tokenizer<> tok(code.substr(0, cursor_pos + 1));
   std::string last_token;
   for (boost::tokenizer<>::iterator begin = tok.begin(); begin != tok.end(); ++begin) {
     last_token = *begin;
   }
 
-  result = m_cling.codeComplete(code, _cursor_pos, completions);
+  for (auto &c : completions) {
+    // remove the type at the beginning, [#int#]
+    c = std::regex_replace(c, std::regex("\\[\\#.*\\#\\]"), "");
+
+    // remove the variable name in <#type name#>
+    c = std::regex_replace(c, std::regex("(\\ |\\*)+(\\w+)(\\#\\>)"), "$1$3");
+    // remove unnecessary space at the end of <#type   #>
+    c = std::regex_replace(c, std::regex("\\ *(\\#\\>)"), "$1");
+    // remove <# #> to keep only the type
+    c = std::regex_replace(c, std::regex("\\<\\#([^#>]*)\\#\\>"), "$1");
+  }
 
   return xeus::create_complete_reply(completions, cursor_pos - last_token.length(), cursor_pos,
                                      nl::json::object());
