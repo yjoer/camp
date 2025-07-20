@@ -13,6 +13,9 @@ jobs:
   verify-commit-msg:
     uses: ./.github/workflows/verify-commit-msg.yml
 
+  verify-cpp:
+    uses: ./.github/workflows/verify-cpp.yml
+
   verify-js:
     uses: ./.github/workflows/verify-js.yml
 
