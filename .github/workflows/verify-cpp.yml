@@ -1,0 +1,21 @@
+on:
+  workflow_call:
+
+jobs:
+  format-cpp:
+    name: Format C++
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Clang Format
+        run: |
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+          echo "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-20 main" | sudo tee /etc/apt/sources.list.d/llvm20.list
+          echo "deb-src http://apt.llvm.org/noble/ llvm-toolchain-noble-20 main" | sudo tee -a /etc/apt/sources.list.d/llvm20.list
+          sudo apt-get update
+          sudo apt-get install clang-format-20
+      - name: Format
+        run: |
+          shopt -s globstar
+          clang-format-20 --Werror --dry-run --style=file **/*.cpp **/*.hpp
