@@ -62,6 +62,29 @@ protected:
   std::mutex m_mutex;
   std::string m_buffer;
 };
+
+class xinput_buffer : public std::streambuf {
+public:
+  using callback_type = std::function<void(std::string &)>;
+
+  xinput_buffer(callback_type callback) : m_callback(std::move(callback)), m_buffer() {
+    char *buffer = static_cast<char *>(m_buffer.data());
+    setg(buffer, buffer, buffer);
+  }
+
+protected:
+  traits_type::int_type underflow() override {
+    m_callback(m_buffer);
+    m_buffer += '\n';
+    char *buffer = static_cast<char *>(m_buffer.data());
+    setg(buffer, buffer, buffer + m_buffer.size());
+
+    return traits_type::to_int_type(*gptr());
+  }
+
+  callback_type m_callback;
+  std::string m_buffer;
+};
 } // namespace xcling
 
 #endif
