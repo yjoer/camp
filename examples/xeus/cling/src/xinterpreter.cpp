@@ -4,6 +4,7 @@
 #include "nlohmann/json.hpp"
 #include "xeus/xhelper.hpp"
 
+#include "xinput.hpp"
 #include "xinterpreter.hpp"
 
 namespace xcling {
@@ -21,7 +22,11 @@ xinterpreter::xinterpreter(int argc, const char *const *argv, const char *llvm_d
   std::cerr.rdbuf(&m_cerr_buff);
 }
 
-void xinterpreter::configure_impl() {}
+void xinterpreter::configure_impl() {
+  // expose the interpreter to the xeus framework, allowing input requests (e.g.,
+  // blocking_input_request)
+  xeus::register_interpreter(this);
+}
 
 void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback cb,
                                         int execution_counter, const std::string &code,
@@ -31,6 +36,8 @@ void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback 
   std::string evalue;
   cling::Value output;
   cling::Interpreter::CompilationResult result;
+  auto input_guard = xinput();
+
   try {
     result = m_cling.process(code, &output, nullptr, true);
   } catch (cling::InterpreterException &e) {
