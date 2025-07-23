@@ -3,7 +3,10 @@ gClingOpts->AllowRedefinition = 1;
 
 // %%
 #include <deque>
+#include <fstream>
 #include <iostream>
+#include <unordered_map>
+#include <vector>
 
 // %% [markdown]
 // ## Expressions
@@ -265,5 +268,65 @@ std::cout << isdigit('a');
 // %%
 std::cout << isspace(' ') << std::endl;
 std::cout << isspace('1');
+
+// %% [markdown]
+// ## I/O
+
+// %% [markdown]
+// ### File I/O
+
+// %%
+char *filename = std::tmpnam(nullptr);
+std::ofstream out;
+out.open(filename);
+out << "00000" << "," << "00001" << "," << "99" << std::endl;
+out << "00001" << "," << "00002" << "," << "90" << std::endl;
+out << "00002" << "," << "00003" << "," << "81" << std::endl;
+out << "00003" << "," << "00004" << "," << "72" << std::endl;
+out << "00004" << "," << "00005" << "," << "63" << std::endl;
+out << "00005" << "," << "00006" << "," << "54" << std::endl;
+out << "00006" << "," << "00007" << "," << "45" << std::endl;
+out << "00007" << "," << "00008" << "," << "36" << std::endl;
+out << "00008" << "," << "00009" << "," << "27" << std::endl;
+out << "00009" << "," << "00000" << "," << "18" << std::endl;
+out.close();
+
+// %%
+std::ifstream in;
+in.open(filename);
+std::vector<std::string> from, to;
+std::vector<int> amount;
+
+while (!in.eof()) {
+  std::string line;
+  in >> line;
+
+  if (line.empty())
+    continue;
+
+  std::stringstream ss(line);
+  std::string value;
+
+  std::getline(ss, value, ',');
+  from.push_back(value);
+
+  std::getline(ss, value, ',');
+  to.push_back(value);
+
+  std::getline(ss, value, ',');
+  amount.push_back(std::stoi(value));
+}
+
+in.close();
+
+// %%
+std::unordered_map<std::string, int> balances;
+
+for (int i = 0; i < amount.size(); i++) {
+  balances[from[i]] -= amount[i];
+  balances[to[i]] += amount[i];
+}
+
+std::cout << balances["00000"];
 
 // %%
