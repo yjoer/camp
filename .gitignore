@@ -12,9 +12,11 @@ node_modules/
 target/
 
 .env
+.jupyter_ystore.db
 *.gen.ts
 *.pyd
 Cargo.lock
+pixi.lock
 pnpm-lock.yaml
 uv.lock
 

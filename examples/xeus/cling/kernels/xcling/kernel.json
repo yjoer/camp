@@ -1,0 +1,5 @@
+{
+  "display_name": "XCling 20",
+  "argv": ["{program}", "-f", "{connection_file}"],
+  "language": "C++"
+}
