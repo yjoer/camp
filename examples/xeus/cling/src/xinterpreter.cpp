@@ -26,6 +26,10 @@ void xinterpreter::configure_impl() {
   // expose the interpreter to the xeus framework, allowing input requests (e.g.,
   // blocking_input_request)
   xeus::register_interpreter(this);
+
+  m_cling.declare("#ifndef M_PI\n"
+                  "#define M_PI 3.14159265358979323846\n"
+                  "#endif");
 }
 
 void xinterpreter::execute_request_impl(xeus::xinterpreter::send_reply_callback cb,
