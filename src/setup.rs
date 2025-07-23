@@ -56,8 +56,9 @@ fn setup_git_aliases() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub fn setup_jupyter() -> Result<(), Box<dyn Error>> {
+pub fn setup_jupyter(xcling_path: Option<String>) -> Result<(), Box<dyn Error>> {
     setup_jupyter_cling_kernel()?;
+    setup_jupyter_xcling_kernel(xcling_path)?;
     Ok(())
 }
 
@@ -126,6 +127,49 @@ fn setup_jupyter_cling_kernel() -> Result<(), Box<dyn Error>> {
         .arg("--user")
         .arg("cling-cpp20")
         .current_dir(&repo_kernel_path);
+
+    let output = cmd.output()?;
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    let stderr = String::from_utf8_lossy(&output.stderr);
+
+    if output.status.success() {
+        println!("{}", stdout);
+    } else {
+        eprintln!("{}", stderr);
+    }
+
+    Ok(())
+}
+
+fn setup_jupyter_xcling_kernel(xcling_path: Option<String>) -> Result<(), Box<dyn Error>> {
+    if xcling_path.is_none() {
+        println!("XCling kernel setup was skipped because xcling-path was not provided.");
+        return Ok(());
+    }
+
+    const XCLING_KERNEL: &str = include_str!("../examples/xeus/cling/kernels/xcling/kernel.json");
+    let kernel = XCLING_KERNEL.replace("{program}", &xcling_path.unwrap());
+
+    let td = match env::temp_dir().join("jupyter-xcling") {
+        ref dir if dir.exists() => dir.clone(),
+        dir => {
+            fs::create_dir_all(&dir)?;
+            dir
+        }
+    };
+
+    if td.exists() {
+        fs::remove_dir_all(&td)?;
+    }
+
+    let kernel_dir = td.join("xcling");
+    fs::create_dir_all(&kernel_dir)?;
+
+    let kernel_path = kernel_dir.join("kernel.json");
+    fs::write(&kernel_path, kernel)?;
+
+    let mut cmd = Command::new("jupyter-kernelspec");
+    cmd.arg("install").arg("--user").arg(&kernel_dir);
 
     let output = cmd.output()?;
     let stdout = String::from_utf8_lossy(&output.stdout);

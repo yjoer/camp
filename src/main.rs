@@ -97,7 +97,14 @@ enum SetupSubcommands {
     Git,
 
     #[clap(about = "Set up Jupyter kernels.")]
-    Jupyter,
+    Jupyter {
+        #[arg(
+            short,
+            long,
+            help = "Specify the path to the XCling kernel executable."
+        )]
+        xcling_path: Option<String>,
+    },
 }
 
 #[cfg(target_os = "windows")]
@@ -293,7 +300,9 @@ fn main() {
         },
         Some(Commands::Setup { subcommand }) => match subcommand {
             Some(SetupSubcommands::Git) => setup::setup_git().unwrap(),
-            Some(SetupSubcommands::Jupyter) => setup::setup_jupyter().unwrap(),
+            Some(SetupSubcommands::Jupyter { xcling_path }) => {
+                setup::setup_jupyter(xcling_path).unwrap()
+            }
             None => {
                 Args::command()
                     .find_subcommand_mut("setup")
