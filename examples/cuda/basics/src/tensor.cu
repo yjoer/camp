@@ -1,5 +1,6 @@
 #include <cassert>
 #include <cstdio>
+#include <cublas_v2.h>
 
 #include "tensor.h"
 
@@ -121,4 +122,110 @@ void cuda_vector_add(VectorAddVariant variant, VectorAddOutputMode output_mode) 
 
   cudaFree(device_y);
   free(y);
+}
+
+void _vector_dot(int n, float *a, float *b, float *y) {
+  for (int i = 0; i < n; i++) {
+    *y += a[i] * b[i];
+  }
+}
+
+void vector_dot() {
+  int n = 10'000'000;
+
+  float *a, *b, *y;
+  a = (float *)malloc(sizeof(float) * n);
+  b = (float *)malloc(sizeof(float) * n);
+  y = (float *)malloc(sizeof(float));
+
+  *y = 0.f;
+  for (int i = 0; i < n; i++) {
+    a[i] = 1.f;
+    b[i] = 2.f;
+  }
+
+  _vector_dot(n, a, b, y);
+  printf("%f\n", *y);
+
+  free(a);
+  free(b);
+  free(y);
+}
+
+__global__ void _cuda_vector_dot(int n, float *a, float *b, float *y) {
+  __shared__ float cache[256];
+
+  int index = blockIdx.x * blockDim.x + threadIdx.x;
+  int stride = blockDim.x * gridDim.x;
+
+  float temp = 0.f;
+  for (int i = index; i < n; i += stride) {
+    temp += a[i] * b[i];
+  }
+
+  cache[threadIdx.x] = temp;
+  __syncthreads();
+
+  for (int i = blockDim.x / 2; i > 0; i >>= 1) {
+    if (threadIdx.x < i)
+      cache[threadIdx.x] += cache[threadIdx.x + i];
+    __syncthreads();
+  }
+
+  if (threadIdx.x == 0)
+    y[blockIdx.x] = cache[0];
+}
+
+void cuda_vector_dot() {
+  int n = 10'000'000;
+  int n_blocks = (n + 256 - 1) / 256;
+
+  float *a, *b, *y;
+  cudaMallocManaged(&a, sizeof(float) * n);
+  cudaMallocManaged(&b, sizeof(float) * n);
+  cudaMallocManaged(&y, sizeof(float) * n_blocks);
+
+  for (int i = 0; i < n; i++) {
+    a[i] = 1.f;
+    b[i] = 2.f;
+  }
+
+  _cuda_vector_dot<<<n_blocks, 256>>>(n, a, b, y);
+  cudaDeviceSynchronize();
+
+  float c = 0.f;
+  for (int i = 0; i < n_blocks; i++)
+    c += y[i];
+
+  printf("%f\n", c);
+
+  cudaFree(a);
+  cudaFree(b);
+  cudaFree(y);
+}
+
+void cublas_vector_dot() {
+  int n = 10'000'000;
+
+  float *a, *b, *y;
+  cudaMallocManaged(&a, sizeof(float) * n);
+  cudaMallocManaged(&b, sizeof(float) * n);
+  cudaMallocManaged(&y, sizeof(float));
+
+  *y = 0.f;
+  for (int i = 0; i < n; i++) {
+    a[i] = 1.f;
+    b[i] = 2.f;
+  }
+
+  cublasHandle_t handle;
+  cublasCreate(&handle);
+  cublasSdot(handle, n, a, 1, b, 1, y);
+  cublasDestroy(handle);
+
+  printf("%f\n", *y);
+
+  cudaFree(a);
+  cudaFree(b);
+  cudaFree(y);
 }
