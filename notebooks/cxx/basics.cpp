@@ -184,7 +184,9 @@ class Rectangle {
 public:
   Rectangle(int w, int h) : width(w), height(h) {}
 
-  int area() { return width * height; }
+  int area() {
+    return width * height;
+  }
 
   static Rectangle create_square(int length) {
     Rectangle square(length, length);

@@ -43,7 +43,9 @@ std::cout << p << std::endl;
 // ## Standard C++ Features
 
 // %%
-int add(int a, int b) { return a + b; }
+int add(int a, int b) {
+  return a + b;
+}
 
 // %%
 std::cout << add(1, 2);
@@ -56,7 +58,9 @@ class Rectangle {
 public:
   Rectangle(int w, int h) : width(w), height(h) {}
 
-  int area() { return width * height; }
+  int area() {
+    return width * height;
+  }
 }
 
 // %%
