@@ -79,6 +79,7 @@ if (MSVC)
         ??_7type_info@@6B@ # std::cout
         ??2@YAPEAX_K@Z # std::ostringstream
         ??3@YAXPEAX_K@Z # std::cout
+        ??3@YAXPEAX@Z # delete
     )
 
     foreach(SYMBOL ${CLING_SYMBOLS})
