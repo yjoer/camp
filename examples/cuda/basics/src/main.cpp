@@ -48,6 +48,29 @@ int main(int argc, char **argv) {
     std::cout << "cuda_vector_add MULTIPLE_BLOCKS took "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()
               << " milliseconds" << std::endl;
+  } else if (mode == "5") {
+    std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+
+    start = std::chrono::high_resolution_clock::now();
+    vector_dot();
+    end = std::chrono::high_resolution_clock::now();
+    std::cout << "vector_dot took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()
+              << " milliseconds" << std::endl;
+
+    start = std::chrono::high_resolution_clock::now();
+    cuda_vector_dot();
+    end = std::chrono::high_resolution_clock::now();
+    std::cout << "cuda_vector_dot took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()
+              << " milliseconds" << std::endl;
+
+    start = std::chrono::high_resolution_clock::now();
+    cublas_vector_dot();
+    end = std::chrono::high_resolution_clock::now();
+    std::cout << "cublas_vector_dot took "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count()
+              << " milliseconds" << std::endl;
   }
 
   get_errors();
