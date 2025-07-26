@@ -28,6 +28,7 @@ public:
   void clear();
   void push_front(const T &value);
   void pop_front();
+  void reverse();
 };
 
 // %%
@@ -95,6 +96,28 @@ template <class T> void forward_list<T>::pop_front() {
   delete temp;
 }
 
+// %% [markdown]
+// ### Reverse
+
+// %%
+template <class T> void forward_list<T>::reverse() {
+  tail = head;
+
+  forward_list_node<T> *prev = nullptr;
+  forward_list_node<T> *curr = head;
+  while (curr != nullptr) {
+    forward_list_node<T> *next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+
+  head = prev;
+}
+
+// %% [markdown]
+// ### Usage
+
 // %%
 forward_list<int> fwl;
 fwl.push_front(1);
@@ -107,6 +130,19 @@ fwl.clear();
 fwl.push_front(5);
 std::cout << **fwl.front() << std::endl;
 fwl.clear();
+std::cout << fwl.empty();
+
+// %%
+fwl.push_front(1);
+fwl.push_front(2);
+fwl.push_front(3);
+fwl.reverse();
+std::cout << **fwl.front() << std::endl;
+fwl.pop_front();
+std::cout << **fwl.front() << std::endl;
+fwl.pop_front();
+std::cout << **fwl.front() << std::endl;
+fwl.pop_front();
 std::cout << fwl.empty();
 
 // %% [markdown]
@@ -136,6 +172,7 @@ public:
   void push_back(const T &value);
   void pop_front();
   void pop_back();
+  void reverse();
 };
 
 // %%
@@ -196,6 +233,9 @@ template <class T> void list<T>::push_front(const T &value) {
   node->prev = nullptr;
   node->next = head;
 
+  if (head != nullptr)
+    head->prev = node;
+
   head = node;
 
   if (tail == nullptr)
@@ -211,6 +251,9 @@ template <class T> void list<T>::push_back(const T &value) {
   node->data = value;
   node->prev = tail;
   node->next = nullptr;
+
+  if (tail != nullptr)
+    tail->next = node;
 
   tail = node;
 
@@ -229,6 +272,12 @@ template <class T> void list<T>::pop_front() {
   list_node<T> *temp = head;
   head = head->next;
   delete temp;
+
+  if (head != nullptr) {
+    head->prev = nullptr;
+  } else {
+    tail = nullptr;
+  }
 }
 
 // %% [markdown]
@@ -242,7 +291,35 @@ template <class T> void list<T>::pop_back() {
   list_node<T> *temp = tail;
   tail = tail->prev;
   delete temp;
+
+  if (tail != nullptr) {
+    tail->next = nullptr;
+  } else {
+    head = nullptr;
+  }
 }
+
+// %% [markdown]
+// ### Reverse
+
+// %%
+template <class T> void list<T>::reverse() {
+  list_node<T> *prev = nullptr;
+  list_node<T> *curr = tail;
+  while (curr != nullptr) {
+    prev = curr->prev;
+    curr->prev = curr->next;
+    curr->next = prev;
+    curr = curr->next;
+  }
+
+  list_node<T> *temp = head;
+  head = tail;
+  tail = temp;
+}
+
+// %% [markdown]
+// ### Usage
 
 // %%
 list<int> l;
@@ -259,6 +336,32 @@ l.clear();
 l.push_front(5);
 std::cout << **l.back() << std::endl;
 l.clear();
+std::cout << l.empty();
+
+// %%
+l.push_front(1);
+l.push_front(2);
+l.push_front(3);
+l.reverse();
+std::cout << **l.front() << std::endl;
+l.pop_front();
+std::cout << **l.front() << std::endl;
+l.pop_front();
+std::cout << **l.front() << std::endl;
+l.pop_front();
+std::cout << l.empty();
+
+// %%
+l.push_back(4);
+l.push_back(5);
+l.push_back(6);
+l.reverse();
+std::cout << **l.back() << std::endl;
+l.pop_back();
+std::cout << **l.back() << std::endl;
+l.pop_back();
+std::cout << **l.back() << std::endl;
+l.pop_back();
 std::cout << l.empty();
 
 // %%
