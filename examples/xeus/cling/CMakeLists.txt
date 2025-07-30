@@ -75,6 +75,7 @@ if (MSVC)
         # use undname to get undecorated names
         __std_find_trivial_1 # std::cin
         __std_reverse_trivially_swappable_1 # std::cin
+        __std_reverse_trivially_swappable_4 # std::reverse
         ?_Facet_Register@std@@YAXPEAV_Facet_base@1@@Z # std::cin
         ??_7type_info@@6B@ # std::cout
         ??2@YAPEAX_K@Z # std::ostringstream
