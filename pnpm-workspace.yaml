@@ -3,6 +3,7 @@ packages:
   - examples/elasticsearch/*
   - examples/hatchet/*
   - examples/node/*
+  - examples/react-native/*
   - examples/tanstack/*
   - examples/temporal/*
   - examples/webpack/*

@@ -1,6 +1,7 @@
 __pycache__/
 .build/
 .camp/
+.expo/
 .ipynb_checkpoints/
 .nitro/
 .output/
@@ -19,6 +20,9 @@ Cargo.lock
 pixi.lock
 pnpm-lock.yaml
 uv.lock
+
+examples/react-native/**/android/
+examples/react-native/**/ios/
 
 **/.vercel/**
 !**/.vercel/output/
