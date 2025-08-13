@@ -4,6 +4,8 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
+import json
+
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
@@ -23,6 +25,8 @@ from torchvision.utils import draw_bounding_boxes
 from tqdm.auto import tqdm
 
 from camp.datasets.vitrox import VitroxBody1k
+from camp.utils.torch_utils import load_optimizer
+from camp.utils.torch_utils import save_optimizer
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -143,7 +147,7 @@ epochs = 0
 # %%
 model.train()
 
-for i in range(n_epochs):
+for i in range(epochs, n_epochs):
     print(f"Epoch: {i + 1}/{n_epochs}, Learning Rate: {lr_scheduler.get_last_lr()}")
 
     steps = 1
@@ -167,11 +171,10 @@ for i in range(n_epochs):
 checkpoint_path = f"./checkpoint-{epochs}"
 os.makedirs(checkpoint_path, exist_ok=True)
 
-with open(f"{checkpoint_path}/optimizer.pt", "wb") as f:
-    torch.save(optimizer.state_dict(), f)
+save_optimizer(checkpoint_path, optimizer)
 
-with open(f"{checkpoint_path}/scheduler.pt", "wb") as f:
-    torch.save(lr_scheduler.state_dict(), f)
+with open(f"{checkpoint_path}/scheduler.json", "w") as f:
+    f.write(json.dumps(lr_scheduler.state_dict()))
 
 with open(f"{checkpoint_path}/model.safetensors", "wb") as f:
     f.write(save(model.state_dict()))
@@ -180,11 +183,10 @@ with open(f"{checkpoint_path}/model.safetensors", "wb") as f:
 epochs = 20
 checkpoint_path = f"./checkpoint-{epochs}"
 
-with open(f"{checkpoint_path}/optimizer.pt", "rb") as f:
-    optimizer.load_state_dict(torch.load(f, weights_only=True))
+load_optimizer(checkpoint_path, optimizer)
 
-with open(f"{checkpoint_path}/scheduler.pt", "rb") as f:
-    lr_scheduler.load_state_dict(torch.load(f, weights_only=True))
+with open(f"{checkpoint_path}/scheduler.json", "r") as f:
+    lr_scheduler.load_state_dict(json.loads(f.read()))
 
 with open(f"{checkpoint_path}/model.safetensors", "rb") as f:
     model.load_state_dict(load(f.read()))

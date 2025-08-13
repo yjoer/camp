@@ -5,21 +5,21 @@ requires-python = ">= 3.11"
 dependencies = [
     "altair[all]==5.5.0",
     "fsspec>=2024.6.1",
-    "keras>=3.7.0",
+    "keras==3.11.2",
     "manim==0.19.0",
-    "matplotlib==3.10.3",
-    "minio==7.2.15",
+    "matplotlib==3.10.5",
+    "minio==7.2.16",
     "numpy==2.3.2",
-    "pandas==2.3.0",
+    "pandas==2.3.1",
     "polars==1.31.0",
     "psutil>=6.0.0",
-    "pyarrow>=17.0.0",
+    "pyarrow==21.0.0",
     "rich[jupyter]>=13.9.2",
     "s3fs>=2024.6.1",
-    "scikit-learn>=1.5.1",
+    "scikit-learn==1.7.1",
     "scipy==1.15.3",
     "seaborn>=0.13.2",
-    "statsmodels>=0.14.4",
+    "statsmodels==0.14.5",
     "streamlit>=1.41.1",
     "sympy>=1.13.3",
 ]
@@ -29,28 +29,37 @@ distributed = [
     "pyspark==4.0.0",
 ]
 gym = [
-    "gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.1.1",
+    "gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.2.0",
+]
+tensorflow = [
+    "tensorflow==2.20.0",
 ]
 torch = [
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+]
+torch-cu129 = [
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+]
+torch-common = [
     "deepspeed @ https://github.com/yjoer/camp/releases/download/v2025.6.0/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
-    "safetensors>=0.4.3",
-    "torch==2.4.1+cu124",
-    "torchmetrics>=1.4.1",
+    "safetensors==0.6.2",
+    "torchmetrics==1.8.1",
 ]
 tree = [
-    "catboost>=1.2.5",
-    "lightgbm>=4.4.0",
-    "xgboost>=2.1.0",
+    "catboost==1.2.8",
+    "lightgbm==4.6.0",
+    "xgboost==3.0.4",
 ]
 vision = [
     "mmcv>=2.2.0",
     "mmdet>=3.3.0",
     "mmengine>=0.10.4",
     "motmetrics @ git+https://github.com/cheind/py-motmetrics@057504b",
-    "pillow>=10.4.0",
+    "pillow==11.3.0",
     "supervision>=0.22.0",
-    "timm>=1.0.7",
-    "torchvision==0.19.1+cu124",
+    "timm==1.0.19",
     "ultralytics>=8.2.85",
 ]
 text = [
@@ -68,7 +77,7 @@ preferred_jupytext_formats_read = "cpp:percent,py:percent,rs:percent"
 notebook_metadata_filter = "-all"
 
 [tool.marimo.display]
-custom_css = ["random/marimo.css"]
+custom_css = ["marimo.css"]
 code_editor_font_size = 16
 
 [tool.marimo.runtime]
@@ -105,6 +114,12 @@ force-single-line = true
 [tool.uv]
 managed = true
 build-constraint-dependencies = ["setuptools==77.0.3"]
+conflicts = [
+  [
+    { extra = "torch" },
+    { extra = "torch-cu129" },
+  ],
+]
 dev-dependencies = [
     "black==25.1.0",
     "isort==6.0.1",
@@ -136,10 +151,21 @@ version = "4.3.3"
 requires-dist = ["scipy>=1.14.0", "smart-open>=1.8.1"]
 
 [tool.uv.sources]
-torch = { index = "pytorch" }
-torchvision = { index = "pytorch" }
+torch = [
+  { index = "pytorch", extra = "torch" },
+  { index = "pytorch-cu129", extra = "torch-cu129" },
+]
+torchvision = [
+  { index = "pytorch", extra = "torch" },
+  { index = "pytorch-cu129", extra = "torch-cu129" },
+]
 
 [[tool.uv.index]]
 name = "pytorch"
-url = "https://download.pytorch.org/whl/cu124"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu129"
+url = "https://download.pytorch.org/whl/cu129"
 explicit = true

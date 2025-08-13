@@ -1,4 +1,6 @@
 # %%
+import io
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -30,10 +32,29 @@ plt.xlabel("Proportion of Positive Samples")
 plt.show()
 
 # %%
-df_tennis = pd.read_csv("../datasets/play_tennis.csv")
+play_tennis_csv = """
+day,outlook,temp,humidity,wind,play
+1,sunny,hot,high,weak,no
+2,sunny,hot,high,strong,no
+3,overcast,hot,high,weak,yes
+4,rain,mild,high,weak,yes
+5,rain,cool,normal,weak,yes
+6,rain,cool,normal,strong,no
+7,overcast,cool,normal,strong,yes
+8,sunny,mild,high,weak,no
+9,sunny,cool,normal,weak,yes
+10,rain,mild,normal,weak,yes
+11,sunny,mild,normal,strong,yes
+12,overcast,mild,high,strong,yes
+13,overcast,hot,normal,weak,yes
+14,rain,mild,high,strong,no
+"""
 
 # %%
-play = df_tennis["play"] == "Yes"
+df_tennis = pd.read_csv(io.StringIO(play_tennis_csv))
+
+# %%
+play = df_tennis["play"] == "yes"
 n_total = df_tennis.shape[0]
 p_positive = df_tennis[play].shape[0] / n_total
 p_negative = df_tennis[~play].shape[0] / n_total
@@ -45,8 +66,8 @@ h = entropy(np.array([p_positive, p_negative]))
 h
 
 # %%
-wind_wk = df_tennis["wind"] == "Weak"
-wind_st = df_tennis["wind"] == "Strong"
+wind_wk = df_tennis["wind"] == "weak"
+wind_st = df_tennis["wind"] == "strong"
 
 n_wind_wk_total = df_tennis[wind_wk].shape[0]
 p_wind_wk_positive = df_tennis[wind_wk & play].shape[0] / n_wind_wk_total
