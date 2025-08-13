@@ -1,8 +1,13 @@
 # %%
 import os
+import sys
 
 os.environ["SPARK_LOCAL_IP"] = "0.0.0.0"
-os.environ["LD_LIBRARY_PATH"] = os.getenv("HADOOP_HOME", "") + "/lib/native"
+
+if sys.platform == "win32":
+    os.environ["PATH"] += os.pathsep + os.getenv("HADOOP_HOME", "") + "/bin"
+else:
+    os.environ["LD_LIBRARY_PATH"] = os.getenv("HADOOP_HOME", "") + "/lib/native"
 
 # %%
 import tempfile

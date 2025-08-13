@@ -1,3 +1,4 @@
+import json
 from tempfile import TemporaryDirectory
 from typing import Optional
 
@@ -9,6 +10,47 @@ from safetensors.torch import load
 from safetensors.torch import save
 from torch.optim.lr_scheduler import LRScheduler
 from torch.optim.optimizer import Optimizer
+
+
+def save_optimizer(path: str, optimizer: Optimizer):
+    state_dict = optimizer.state_dict()
+    tensors = {}
+    metadata = {}
+
+    for k1, v1 in state_dict["state"].items():
+        metadata[k1] = {}
+        for k2, v2 in v1.items():
+            if torch.is_tensor(v2):
+                tensors[f"{k1}.{k2}"] = v2
+            else:
+                metadata[k1][k2] = v2
+
+    with fsspec.open(f"{path}/optimizer.safetensors", "wb") as f:
+        f.write(save(tensors))
+
+    with fsspec.open(f"{path}/optimizer.json", "w") as f:
+        payload = {"param_groups": state_dict["param_groups"], "metadata": metadata}
+        f.write(json.dumps(payload))
+
+
+def load_optimizer(path: str, optimizer: Optimizer):
+    with fsspec.open(f"{path}/optimizer.safetensors", "rb") as f:
+        tensors = load(f.read())
+
+    with fsspec.open(f"{path}/optimizer.json", "r") as f:
+        payload = json.loads(f.read())
+
+    state_dict = {"state": {}, "param_groups": payload["param_groups"]}
+
+    for k, v in tensors.items():
+        k1, k2 = k.split(".")
+        state_dict["state"].setdefault(int(k1), {})[k2] = v
+
+    for k1, v1 in payload["metadata"].items():
+        for k2, v2 in v1.items():
+            state_dict["state"][int(k1)][k2] = v2
+
+    optimizer.load_state_dict(state_dict)
 
 
 def save_initial_weights(path: str, model: nn.Module, storage_options={}):
