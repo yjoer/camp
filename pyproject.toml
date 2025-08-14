@@ -4,24 +4,24 @@ version = "2024.0.0"
 requires-python = ">= 3.11"
 dependencies = [
     "altair[all]==5.5.0",
-    "fsspec>=2024.6.1",
+    "fsspec==2025.7.0",
     "keras==3.11.2",
     "manim==0.19.0",
     "matplotlib==3.10.5",
     "minio==7.2.16",
     "numpy==2.3.2",
     "pandas==2.3.1",
-    "polars==1.31.0",
-    "psutil>=6.0.0",
+    "polars==1.32.2",
+    "psutil==7.0.0",
     "pyarrow==21.0.0",
-    "rich[jupyter]>=13.9.2",
-    "s3fs>=2024.6.1",
+    "rich[jupyter]==14.1.0",
+    "s3fs==2025.7.0",
     "scikit-learn==1.7.1",
-    "scipy==1.15.3",
-    "seaborn>=0.13.2",
+    "scipy==1.16.1",
+    "seaborn==0.13.2",
     "statsmodels==0.14.5",
-    "streamlit>=1.41.1",
-    "sympy>=1.13.3",
+    "streamlit==1.48.1",
+    "sympy==1.14.0",
 ]
 
 [project.optional-dependencies]
@@ -63,7 +63,7 @@ vision = [
     "ultralytics>=8.2.85",
 ]
 text = [
-    "gensim>=4.3.3",
+    "gensim==4.3.3",
     "nltk==3.9.1",
     "spacy==3.8.7",
 ]
@@ -132,13 +132,12 @@ dev-dependencies = [
     "jupyterlab==4.5.0a2",
     "jupytext==1.17.2",
     "marimo==0.14.17",
-    "maturin==1.8.7",
+    "maturin==1.9.3",
     "mypy==1.17.1",
     "notebook-intelligence==2.3.0",
-    "pip>=24.2",
     "pytest-xdist==3.8.0",
     "pytest==8.4.1",
-    "ruff==0.12.8",
+    "ruff==0.12.9",
     "scalene==1.5.53",
 ]
 
