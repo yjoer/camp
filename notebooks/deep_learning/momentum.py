@@ -40,7 +40,27 @@ def optimize(lr=0.01, momentum=0.0):
 x = np.arange(-3, 2, 0.001)
 y = f(x)
 
+lr_slider = widgets.FloatLogSlider(
+    value=0.01,
+    base=10,
+    min=-5,
+    max=-1,
+    step=0.01,
+    description="Learning Rate",
+    layout={"width": "80%"},
+)
 
+momentum_slider = widgets.FloatSlider(
+    value=1.05,
+    min=0.01,
+    max=1.5,
+    step=0.01,
+    description="Momentum",
+    layout={"width": "80%"},
+)
+
+
+@interact(lr=lr_slider, momentum=momentum_slider)
 def plot_optimizer_steps(lr, momentum):
     values = optimize(lr, momentum)
     x_opt = [np.clip(v[0], -4, 3) for v in values]
@@ -58,25 +78,5 @@ def plot_optimizer_steps(lr, momentum):
 
     plt.show()
 
-
-# %%
-lr_slider = widgets.FloatLogSlider(
-    value=0.01,
-    base=10,
-    min=-5,
-    max=-1,
-    step=0.01,
-    description="Learning Rate",
-)
-
-momentum_slider = widgets.FloatSlider(
-    value=1.05,
-    min=0.01,
-    max=1.5,
-    step=0.01,
-    description="Momentum",
-)
-
-interact(plot_optimizer_steps, lr=lr_slider, momentum=momentum_slider)
 
 # %%
