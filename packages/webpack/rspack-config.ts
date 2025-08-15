@@ -14,7 +14,7 @@ const require = createRequire(import.meta.url);
 
 interface Options {
   configPath: string;
-  entry: string[];
+  entry: Configuration['entry'];
   minimize?: boolean;
   mode: 'development' | 'production';
   projectPath: string;
