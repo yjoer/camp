@@ -207,7 +207,12 @@ export default defineConfig([
       'perfectionist/sort-array-includes': 'warn',
       'perfectionist/sort-enums': 'warn',
       'perfectionist/sort-heritage-clauses': 'warn',
-      'perfectionist/sort-interfaces': 'warn',
+      'perfectionist/sort-interfaces': [
+        'warn',
+        {
+          groups: ['property', 'method'],
+        },
+      ],
       'perfectionist/sort-intersection-types': 'warn',
       'perfectionist/sort-jsx-props': [
         'warn',
