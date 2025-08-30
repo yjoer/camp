@@ -5,6 +5,7 @@ packages:
   - examples/node/*
   - examples/tanstack/*
   - examples/temporal/*
+  - examples/typescript/*
   - examples/webpack/*
   - stories
 
