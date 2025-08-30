@@ -2,6 +2,7 @@ __pycache__/
 .build/
 .camp/
 .ipynb_checkpoints/
+.next/
 .nitro/
 .output/
 .storybook-static/
@@ -16,6 +17,7 @@ target/
 *.gen.ts
 *.pyd
 Cargo.lock
+next-env.d.ts
 pixi.lock
 pnpm-lock.yaml
 uv.lock

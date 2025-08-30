@@ -1,0 +1,36 @@
+{
+  "name": "@camp/examples-react-server-rendering",
+  "type": "module",
+  "scripts": {
+    "bench:next-app": "k6 run scripts/bench.ts --env SERVER=next-app",
+    "bench:next-pages": "k6 run scripts/bench.ts --env SERVER=next-pages",
+    "bench:tss": "k6 run scripts/bench.ts --env SERVER=tss",
+    "bench:vite": "k6 run scripts/bench.ts --env SERVER=vite",
+    "build:next": "next build next",
+    "build:tss": "cd tss && vite build",
+    "build:vite": "vite build vite --outDir .output/client && vite build vite --outDir .output/server --ssr src/entry-server.js",
+    "dev:next": "next dev next",
+    "dev:tss": "cd tss && vite dev",
+    "dev:vite": "cd vite && node server.ts",
+    "start:next": "next start next",
+    "start:tss": "cd tss && cross-env NODE_ENV=production node .output/server/index.mjs",
+    "start:vite": "cross-env NODE_ENV=production node vite/server.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "1.131.30",
+    "@tanstack/react-start": "1.131.30",
+    "@tanstack/virtual-file-routes": "1.131.2",
+    "cross-env": "10.0.0",
+    "next": "15.5.2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/k6": "1.2.0",
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.9",
+    "@vitejs/plugin-react": "5.0.2",
+    "typescript": "5.9.2",
+    "vite": "npm:rolldown-vite@7.1.5"
+  }
+}
