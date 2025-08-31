@@ -6,15 +6,18 @@
     "bench:next-pages": "k6 run scripts/bench.ts --env SERVER=next-pages",
     "bench:tss": "k6 run scripts/bench.ts --env SERVER=tss",
     "bench:vite": "k6 run scripts/bench.ts --env SERVER=vite",
+    "bench:vite-stream": "k6 run scripts/bench.ts --env SERVER=vite-stream",
     "build:next": "next build next",
     "build:tss": "cd tss && vite build",
     "build:vite": "vite build vite --outDir .output/client && vite build vite --outDir .output/server --ssr src/entry-server.js",
     "dev:next": "next dev next",
     "dev:tss": "cd tss && vite dev",
     "dev:vite": "cd vite && node server.ts",
+    "dev:vite-stream": "cd vite && node server-stream.ts",
     "start:next": "next start next",
     "start:tss": "cd tss && cross-env NODE_ENV=production node .output/server/index.mjs",
-    "start:vite": "cross-env NODE_ENV=production node vite/server.ts"
+    "start:vite": "cross-env NODE_ENV=production node vite/server.ts",
+    "start:vite-stream": "cross-env NODE_ENV=production node vite/server-stream.ts"
   },
   "dependencies": {
     "@tanstack/react-router": "1.131.30",
