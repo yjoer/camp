@@ -8,6 +8,7 @@ export const options = {
 
 const urls = {
   'vite': 'http://127.0.0.1:3000',
+  'vite-stream': 'http://127.0.0.1:3000',
   'next-pages': 'http://127.0.0.1:3000',
   'next-app': 'http://127.0.0.1:3000/app',
   'tss': 'http://127.0.0.1:3000',
