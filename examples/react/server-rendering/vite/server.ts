@@ -50,6 +50,7 @@ server.on('request', async function (req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.end(html);
   } catch (error) {
+    if (!(error instanceof Error)) return;
     vite?.ssrFixStacktrace(error);
     res.statusCode = 500;
     res.end(error.stack);

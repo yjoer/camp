@@ -68,6 +68,7 @@ server.on('request', async function (req, res) {
       },
     });
   } catch (error) {
+    if (!(error instanceof Error)) return;
     vite?.ssrFixStacktrace(error);
     res.statusCode = 500;
     res.end(error.stack);
