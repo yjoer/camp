@@ -1,7 +1,6 @@
 # %%
-import numpy as np
-
 import camp.rs
+import numpy as np
 
 # %%
 # %%timeit
