@@ -21,6 +21,10 @@ const sections = [
       { to: '/transition-zustand', label: 'useTransition with Zustand' },
     ],
   },
+  {
+    label: 'Video and Audio',
+    children: [{ to: '/media-source-extensions', label: 'Media Source Extensions' }],
+  },
 ];
 
 function RouteComponent() {
