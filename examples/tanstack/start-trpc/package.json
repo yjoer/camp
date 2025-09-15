@@ -1,0 +1,36 @@
+{
+  "name": "@camp/examples-tanstack-start-trpc",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev",
+    "dev:server": "node --watch server.ts",
+    "start": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.0.2",
+    "@fastify/cors": "11.1.0",
+    "@tanstack/react-query": "5.87.4",
+    "@tanstack/react-router": "1.131.44",
+    "@tanstack/react-router-ssr-query": "1.131.44",
+    "@tanstack/react-start": "1.131.44",
+    "@tanstack/virtual-file-routes": "1.131.2",
+    "@trpc/client": "11.5.1",
+    "@trpc/server": "11.5.1",
+    "@trpc/tanstack-react-query": "11.5.1",
+    "fastify": "5.6.0",
+    "js-cookie": "3.0.5",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "react-error-boundary": "6.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.13",
+    "@types/js-cookie": "3.0.6",
+    "@types/react": "19.1.13",
+    "@types/react-dom": "19.1.9",
+    "tailwindcss": "4.1.13",
+    "typescript": "5.9.2",
+    "vite": "7.1.5"
+  }
+}
