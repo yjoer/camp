@@ -22,6 +22,10 @@ const sections = [
     ],
   },
   {
+    label: 'Web Components',
+    children: [{ to: '/custom-elements', label: 'Custom Elements' }],
+  },
+  {
     label: 'Video and Audio',
     children: [{ to: '/media-source-extensions', label: 'Media Source Extensions' }],
   },
