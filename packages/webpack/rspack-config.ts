@@ -70,6 +70,7 @@ export const getServerConfig = ({
     },
     resolve: {
       extensions: ['.js', '.ts'],
+      tsConfig: path.resolve(projectPath, 'tsconfig.json'),
     },
     plugins: [
       new rspack.ProgressPlugin(), //
