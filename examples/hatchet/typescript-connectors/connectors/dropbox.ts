@@ -53,7 +53,7 @@ const listFolder = dropbox.task({
   fn: async (input, ctx) => {
     const token = await ctx.parentOutput(getAccessToken);
 
-    ctx.log('Retrieving a list of files and folders recursively.');
+    ctx.logger.info('Retrieving a list of files and folders recursively.');
     let response = await fetch(`${baseUrl}/2/files/list_folder`, {
       method: 'POST',
       headers: {
@@ -77,7 +77,7 @@ const listFolder = dropbox.task({
     let { has_more: hasMore, cursor } = data;
 
     while (hasMore) {
-      ctx.log('Retrieving a list of files and folders recursively (cont).');
+      ctx.logger.info('Retrieving a list of files and folders recursively (cont).');
       response = await fetch(`${baseUrl}/2/files/list_folder/continue`, {
         method: 'POST',
         headers: {
@@ -98,7 +98,7 @@ const listFolder = dropbox.task({
       ({ has_more: hasMore, cursor } = data);
     }
 
-    ctx.log(`Total entries found: ${entriesAll.length}`);
+    ctx.logger.info(`Total entries found: ${entriesAll.length}`);
 
     return {
       entries: entriesAll,
@@ -116,7 +116,7 @@ const enrichEntries = dropbox.task({
     const paperFiles = entries.filter((f) => f.name.endsWith('.paper'));
     if (paperFiles.length === 0) return entries;
 
-    ctx.log(`Retrieving metadata for ${paperFiles.length} files.`);
+    ctx.logger.info(`Retrieving metadata for ${paperFiles.length} files.`);
     const response = await fetch(`${baseUrl}/2/sharing/get_file_metadata/batch`, {
       method: 'POST',
       headers: {
@@ -165,7 +165,7 @@ dropbox.task({
     for (let i = 0; i < paperFiles.length; i++) {
       const file = paperFiles[i];
 
-      ctx.log(`Exporting ${file.path_lower} to markdown.`);
+      ctx.logger.info(`Exporting ${file.path_lower} to markdown.`);
       const response = await fetch(`https://content.dropboxapi.com/2/files/export`, {
         method: 'POST',
         headers: {
@@ -183,7 +183,7 @@ dropbox.task({
       const metadata = result.export_metadata;
       if (!metadata) throw new Error(`Failed to get metadata for ${file.path_lower}`);
 
-      ctx.log(`Indexing ${file.path_lower}.`);
+      ctx.logger.info(`Indexing ${file.path_lower}.`);
       await es.update({
         id: file.id,
         index: 'dropbox',
