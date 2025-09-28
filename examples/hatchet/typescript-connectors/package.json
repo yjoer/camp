@@ -6,11 +6,11 @@
     "start:worker": "node --env-file-if-exists .env worker.ts"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "9.0.2",
-    "@hatchet-dev/typescript-sdk": "1.6.3"
+    "@elastic/elasticsearch": "9.1.1",
+    "@hatchet-dev/typescript-sdk": "1.9.7"
   },
   "devDependencies": {
-    "dotenv": "16.5.0",
-    "typescript": "5.8.3"
+    "dotenv": "17.2.2",
+    "typescript": "5.9.2"
   }
 }

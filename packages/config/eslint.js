@@ -39,7 +39,6 @@ export default defineConfig([
       'no-octal': 'error', // x
       'no-undef': 'off', // nursery
       'no-unreachable': 'off', // nursery
-      'preserve-caught-error': 'error',
     },
   },
   {
