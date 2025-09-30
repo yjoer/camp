@@ -1,8 +1,6 @@
-import path from 'node:path';
-
 import compat from '@cmpx/eslint-plugin-compat';
-import { includeIgnoreFile } from '@eslint/compat';
 import { defineConfig } from 'eslint/config';
+import gitignore from 'eslint-config-flat-gitignore';
 import prettier from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import * as imp from 'eslint-plugin-import-x';
@@ -13,8 +11,6 @@ import * as reactHooks from 'eslint-plugin-react-hooks';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
-
-const gitignorePath = path.resolve(process.cwd(), '.gitignore');
 
 const getImportGroups = () => [
   'builtin',
@@ -28,7 +24,7 @@ const getImportGroups = () => [
 ];
 
 export default defineConfig([
-  includeIgnoreFile(gitignorePath),
+  gitignore(),
   {
     // https://github.com/typescript-eslint/typescript-eslint/blob/v8.34.1/packages/eslint-plugin/src/configs/eslint-recommended-raw.ts
     rules: {

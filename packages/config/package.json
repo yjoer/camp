@@ -1,6 +1,7 @@
 {
   "name": "@camp/config",
   "version": "0.0.0",
+  "type": "module",
   "dependencies": {
     "@cmpx/eslint-plugin-compat": "6.0.3",
     "@commitlint/cli": "20.0.0",
@@ -8,6 +9,7 @@
     "@eslint/compat": "1.4.0",
     "@prettier/plugin-oxc": "0.0.4",
     "eslint": "9.36.0",
+    "eslint-config-flat-gitignore": "2.1.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import-x": "4.16.1",
