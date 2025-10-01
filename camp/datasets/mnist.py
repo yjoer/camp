@@ -1,5 +1,6 @@
 import gzip
 import struct
+from typing import ClassVar
 from typing import Literal
 
 import fsspec
@@ -8,13 +9,13 @@ import numpy as np
 try:
     import torch
 except ImportError:
-    torch = None  # type: ignore
+    torch = None  # ty: ignore[invalid-assignment]
 
 TensorType = Literal["np", "pt"]
 
 
 class FashionMNIST:
-    files = {
+    files: ClassVar[dict[str, str]] = {
         "train": "train-images-idx3-ubyte.gz",
         "train_labels": "train-labels-idx1-ubyte.gz",
         "test": "t10k-images-idx3-ubyte.gz",
@@ -22,7 +23,14 @@ class FashionMNIST:
     }
 
     @staticmethod
-    def load(path: str, storage_options={}, return_tensors: TensorType = "pt"):
+    def load(
+        path: str,
+        storage_options: dict | None = None,
+        return_tensors: TensorType = "pt",
+    ) -> dict[str, np.ndarray] | dict[str, torch.Tensor] | None:
+        if storage_options is None:
+            storage_options = {}
+
         mnist = FashionMNIST()
         buffers = mnist._load(path, storage_options)
         arrays = mnist._parse(buffers)
@@ -33,7 +41,9 @@ class FashionMNIST:
         if return_tensors == "pt":
             return mnist._to_tensor(arrays)
 
-    def _load(self, path: str, storage_options: dict):
+        return None
+
+    def _load(self, path: str, storage_options: dict) -> dict[str, bytes]:
         buffers = {}
 
         for k, v in self.files.items():
@@ -42,12 +52,12 @@ class FashionMNIST:
 
         return buffers
 
-    def _parse(self, buffers: dict[str, bytes]):
+    def _parse(self, buffers: dict[str, bytes]) -> dict[str, np.ndarray]:
         arrays = {}
 
         for subset in ["train", "test"]:
             header = struct.unpack(">IIII", buffers[subset][0:16])
-            magic_number, n_items, n_rows, n_cols = header
+            _magic_number, n_items, n_rows, n_cols = header
 
             images = np.frombuffer(buffers[subset][16:], dtype=np.uint8)
             images = images.reshape(n_items, n_rows * n_cols)
@@ -55,17 +65,20 @@ class FashionMNIST:
             arrays[subset] = images
 
         for subset in ["train_labels", "test_labels"]:
-            magic_number, n_items = struct.unpack(">II", buffers[subset][0:8])
+            _magic_number, n_items = struct.unpack(">II", buffers[subset][0:8])
             labels = np.frombuffer(buffers[subset][8:], dtype=np.uint8)
 
             arrays[subset] = labels
 
         return arrays
 
-    def _to_tensor(self, arrays: dict[str, np.ndarray]):
+    def _to_tensor(
+        self,
+        arrays: dict[str, np.ndarray],
+    ) -> dict[str, torch.Tensor] | None:
         if torch is None:
             print("cannot convert to tensors because torch is not installed.")
-            return
+            return None
 
         tensors = {}
 

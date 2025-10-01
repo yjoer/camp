@@ -2,5 +2,5 @@
 name = "examples-grafana-smartctl"
 version = "2025.4.0"
 dependencies = [
-    "grafana-foundation-sdk==1743724444!11.5.0",
+  "grafana-foundation-sdk==1758039791!11.6.0",
 ]

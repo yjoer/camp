@@ -79,7 +79,7 @@ for p in pred_nms:
             "labels": p[:, 5],
             "keypoints": p_keypoints[:, :, :2],
             "visibility": p_keypoints[:, :, 2],
-        }
+        },
     )
 
 # %%

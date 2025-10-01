@@ -25,7 +25,7 @@ X = np.array(
         [0, 0, 0, 0, 0, 0, 0, 1, 1, 0],  # lazy dog
         [0, 0, 0, 0, 0, 0, 1, 1, 1, 0],  # the lazy dog
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],  # The quick brown fox jumps over the lazy dog.
-    ]
+    ],
 )
 
 U, sigma, Vt = np.linalg.svd(X, full_matrices=False)
@@ -54,7 +54,7 @@ wv.most_similar(positive=["woman", "king"], negative=["man"], topn=5)
 wv.most_similar_cosmul(positive=["woman", "king"], negative=["man"], topn=5)
 
 # %%
-wv.doesnt_match("breakfast cereal dinner lunch".split())
+wv.doesnt_match(["breakfast", "cereal", "dinner", "lunch"])
 
 # %% [markdown]
 # ### GloVe
@@ -70,6 +70,6 @@ gv.most_similar(positive=["woman", "king"], negative=["man"], topn=5)
 gv.most_similar_cosmul(positive=["woman", "king"], negative=["man"], topn=5)
 
 # %%
-gv.doesnt_match("breakfast cereal dinner lunch".split())
+gv.doesnt_match(["breakfast", "cereal", "dinner", "lunch"])
 
 # %%

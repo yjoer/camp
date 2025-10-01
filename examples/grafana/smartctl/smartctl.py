@@ -5,11 +5,12 @@ from grafana_foundation_sdk.builders.dashboard import Row
 from grafana_foundation_sdk.builders.prometheus import Dataquery as PrometheusQuery
 from grafana_foundation_sdk.builders.timeseries import Panel as Timeseries
 from grafana_foundation_sdk.cog.encoder import JSONEncoder
+from grafana_foundation_sdk.models.common import LegendDisplayMode
 from grafana_foundation_sdk.models.common import TimeZoneBrowser
 from grafana_foundation_sdk.models.dashboard import VariableOption
 
 
-def dashboard():
+def dashboard() -> Dashboard:
     builder = (
         Dashboard("SMARTctl Exporter")
         .uid("smartctl-exporter")
@@ -43,57 +44,56 @@ def dashboard():
     row = offline_uncorrectable(row)
     row = udma_crc_error_count(row)
     row = multi_zone_error_rate(row)
-    builder = builder.with_row(row)
 
-    return builder
+    return builder.with_row(row)
 
 
-def variables(builder):
+def variables(builder: Dashboard) -> Dashboard:
     return (
         builder.with_variable(
             QueryVariable("node")
             .label("node")
             .query("label_values(smartctl_version, instance)")
             .current(VariableOption(selected=True, text="All", value="$__all"))
-            .include_all(True)
-            .multi(True)
+            .include_all(include_all=True)
+            .multi(multi=True),
         )
         .with_variable(
             QueryVariable("disk")
             .label("disk")
             .query("label_values(smartctl_device, device)")
             .current(VariableOption(selected=True, text="All", value="$__all"))
-            .include_all(True)
-            .multi(True)
+            .include_all(include_all=True)
+            .multi(multi=True),
         )
         .with_variable(
             QueryVariable("interface")
             .label("interface")
             .query("label_values(smartctl_device, interface)")
             .current(VariableOption(selected=True, text="All", value="$__all"))
-            .include_all(True)
-            .multi(True)
+            .include_all(include_all=True)
+            .multi(multi=True),
         )
         .with_variable(
             QueryVariable("model_name")
             .label("model_name")
             .query("label_values(smartctl_device, model_name)")
             .current(VariableOption(selected=True, text="All", value="$__all"))
-            .include_all(True)
-            .multi(True)
+            .include_all(include_all=True)
+            .multi(multi=True),
         )
         .with_variable(
             QueryVariable("serial_number")
             .label("serial_number")
             .query("label_values(smartctl_device, serial_number)")
             .current(VariableOption(selected=True, text="All", value="$__all"))
-            .include_all(True)
-            .multi(True)
+            .include_all(include_all=True)
+            .multi(multi=True),
         )
     )
 
 
-def disk_temperature(builder):
+def disk_temperature(builder: Dashboard) -> Dashboard:
     return builder.with_panel(
         Timeseries()
         .title("Disk Temperature")
@@ -107,21 +107,21 @@ def disk_temperature(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def raw_read_error_rate(builder):
+def raw_read_error_rate(builder: Dashboard) -> Dashboard:
     return builder.with_panel(
         Timeseries()
         .title("Raw Read Error Rate")
@@ -134,21 +134,21 @@ def raw_read_error_rate(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def spin_up_time(builder):
+def spin_up_time(builder: Dashboard) -> Dashboard:
     return builder.with_panel(
         Timeseries()
         .title("Spin Up Time")
@@ -162,21 +162,21 @@ def spin_up_time(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def reallocated_sector_count(builder):
+def reallocated_sector_count(builder: Dashboard) -> Dashboard:
     return builder.with_panel(
         Timeseries()
         .title("Reallocated Sector Count")
@@ -189,21 +189,21 @@ def reallocated_sector_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def start_stop_count(builder):
+def start_stop_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Start/Stop Count")
@@ -216,21 +216,21 @@ def start_stop_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def seek_error_rate(builder):
+def seek_error_rate(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Seek Error Rate")
@@ -243,21 +243,21 @@ def seek_error_rate(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def power_on_hours(builder):
+def power_on_hours(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Power On Hours")
@@ -270,21 +270,21 @@ def power_on_hours(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def spin_retry_count(builder):
+def spin_retry_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Spin Retry Count")
@@ -297,21 +297,21 @@ def spin_retry_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def calibration_retry_count(builder):
+def calibration_retry_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Calibration Retry Count")
@@ -324,21 +324,21 @@ def calibration_retry_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def power_cycle_count(builder):
+def power_cycle_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Power Cycle Count")
@@ -351,21 +351,21 @@ def power_cycle_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def power_off_retract_count(builder):
+def power_off_retract_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Power Off Retract Count")
@@ -378,21 +378,21 @@ def power_off_retract_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def load_cycle_count(builder):
+def load_cycle_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Load Cycle Count")
@@ -405,21 +405,21 @@ def load_cycle_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def reallocated_event_count(builder):
+def reallocated_event_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Reallocated Event Count")
@@ -432,21 +432,21 @@ def reallocated_event_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def current_pending_sector_count(builder):
+def current_pending_sector_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Current Pending Sector Count")
@@ -459,21 +459,21 @@ def current_pending_sector_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def udma_crc_error_count(builder):
+def udma_crc_error_count(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("UDMA CRC Error Count")
@@ -486,21 +486,21 @@ def udma_crc_error_count(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def offline_uncorrectable(builder):
+def offline_uncorrectable(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Offline Uncorrectable")
@@ -513,21 +513,21 @@ def offline_uncorrectable(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 
-def multi_zone_error_rate(builder):
+def multi_zone_error_rate(builder: Row) -> Row:
     return builder.with_panel(
         Timeseries()
         .title("Multi-Zone Error Rate")
@@ -540,17 +540,17 @@ def multi_zone_error_rate(builder):
                   on(instance, device) group_left(interface, serial_number, model_name)
                   smartctl_device{interface=~'$interface', serial_number=~'$serial_number', model_name=~'$model_name'}
                 )
-                """
+                """,
             )
-            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}")
+            .legend_format("{{ instance }} / {{ device }} / {{ model_name }}"),
         )
         .legend(
             VizLegendOptions()
-            .display_mode("table")
+            .display_mode(LegendDisplayMode.TABLE)
             .placement("bottom")
             .calcs(["mean", "lastNotNull", "max", "min"])
-            .show_legend(True)
-        )
+            .show_legend(show_legend=True),
+        ),
     )
 
 

@@ -7,7 +7,7 @@ import * as imp from 'eslint-plugin-import-x';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import perfectionist from 'eslint-plugin-perfectionist';
 import react from 'eslint-plugin-react';
-import * as reactHooks from 'eslint-plugin-react-hooks';
+import reactHooks from 'eslint-plugin-react-hooks';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
@@ -106,7 +106,9 @@ export default defineConfig([
   },
   {
     name: 'react-hooks/recommended',
-    extends: [reactHooks.configs['recommended-latest']],
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: { 'react-hooks': reactHooks },
+    extends: ['react-hooks/recommended-latest'],
   },
   {
     name: 'jsx-a11y/recommended',

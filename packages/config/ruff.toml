@@ -1,0 +1,41 @@
+[format]
+line-ending = "lf"
+
+[lint]
+select = ["ALL"]
+ignore = [
+  "D100",  # undocumented-public-module
+  "D101",  # undocumented-public-class
+  "D102",  # undocumented-public-method
+  "D103",  # undocumented-public-function
+  "D105",  # undocumented-magic-method
+  "D107",  # undocumented-public-init
+  "E501",  # line-too-long
+  "E731",  # lambda-assignment
+  "E741",  # ambiguous-variable-name
+  "N801",  # invalid-class-name
+  "N803",  # invalid-argument-name
+  "N806",  # non-lowercase-variable-in-function
+  "N812",  # lowercase-imported-as-non-lowercase
+  "S101",  # assert
+  "T201",  # print
+  "ERA001",  # commented-out-code
+  "FBT001",  # boolean-type-hint-positional-argument
+  "FBT002",  # boolean-default-value-positional-argument
+  "INP001",  # implicit-namespace-package
+  "SLF001",  # private-member-access
+  "PERF401",  # manual-list-comprehension
+  "PLR2004",  # magic-value-comparison
+]
+allowed-confusables = [
+  "∗",  # tombi: lint.rules.string-max-length.disabled = true
+]
+
+[lint.isort]
+force-single-line = true
+
+[lint.pylint]
+max-args = 10
+
+[lint.pydocstyle]
+convention = "google"

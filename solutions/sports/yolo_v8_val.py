@@ -1,6 +1,7 @@
 # %%
 import json
 import os
+from typing import TYPE_CHECKING
 
 import altair as alt
 import fsspec
@@ -9,6 +10,7 @@ import pandas as pd
 import torch
 import torchvision.transforms.v2.functional as tvf
 from IPython.display import display
+from PIL import Image
 from torchvision.ops import box_convert
 from torchvision.utils import draw_bounding_boxes
 from ultralytics import YOLO
@@ -18,6 +20,9 @@ from camp.datasets.ikcest import IKCESTDetectionDataset
 from camp.datasets.utils import resize_image_and_boxes
 from camp.models.yolo.yolo_utils import YOLOv8DetectionPredictor
 from camp.utils.torch_utils import load_model
+
+if TYPE_CHECKING:
+    from torchvision.tv_tensors import Image as TVImage
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -120,16 +125,16 @@ if VALIDATION_SPLIT:
 
 
 # %%
-def transforms(image, target):
+def transforms(image: Image.Image, target: dict) -> tuple:
     boxes = box_convert(target["boxes"], "xywh", "xyxy")
     max_size = 640
-    output_size = (384, 640)
+    output_size = [384, 640]
 
     image, boxes = resize_image_and_boxes(image, boxes, max_size, output_size)
     target["boxes"] = boxes
 
-    image = tvf.to_image(image)
-    image = tvf.to_dtype(image, dtype=torch.float32, scale=True)
+    image: TVImage = tvf.to_image(image)
+    image: torch.Tensor = tvf.to_dtype(image, dtype=torch.float32, scale=True)
 
     return image, target
 

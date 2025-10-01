@@ -5,15 +5,16 @@ os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
 import json
+from pathlib import Path
 
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch.optim as optim
 import torchvision.transforms.v2.functional as tvf
 from safetensors.torch import load
 from safetensors.torch import save
+from torch import optim
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 from torchmetrics.detection import IntersectionOverUnion
@@ -47,15 +48,15 @@ dataset = VitroxBody1k.load("s3://datasets/vitrox_body_1k", storage_options)
 
 # %%
 class CustomDataset(Dataset):
-    def __init__(self, dataset: dict, subset: str):
+    def __init__(self, dataset: dict, subset: str) -> None:
         self.images = dataset[subset]
         self.labels = dataset[f"{subset}_labels"]
         self.boxes = dataset[f"{subset}_boxes"]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.images)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int) -> tuple:
         max_size = 224
         output_size = (224, 224)
 
@@ -71,10 +72,7 @@ class CustomDataset(Dataset):
         if width > 224 or height > 224:
             image = tvf.resize(image, size=None, max_size=max_size)
 
-            if width > height:
-                scale_factor = max_size / width
-            else:
-                scale_factor = max_size / height
+            scale_factor = max_size / width if width > height else max_size / height
 
             boxes = torch.mul(boxes, scale_factor)
             width, height = image.size
@@ -113,8 +111,8 @@ plt.show()
 batch_size = 8
 
 
-def collate_fn(batch):
-    return tuple(zip(*batch))
+def collate_fn(batch: list) -> tuple:
+    return tuple(zip(*batch, strict=False))
 
 
 train_dataloader = DataLoader(
@@ -128,7 +126,7 @@ test_dataloader = DataLoader(test_dataset, batch_size, collate_fn=collate_fn)
 
 # %%
 model = fasterrcnn_mobilenet_v3_large_fpn(
-    weights=FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT
+    weights=FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT,
 )
 
 in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -169,14 +167,14 @@ for i in range(epochs, n_epochs):
 
 # %%
 checkpoint_path = f"./checkpoint-{epochs}"
-os.makedirs(checkpoint_path, exist_ok=True)
+Path(checkpoint_path).mkdir(parents=True, exist_ok=True)
 
 save_optimizer(checkpoint_path, optimizer)
 
-with open(f"{checkpoint_path}/scheduler.json", "w") as f:
+with Path(f"{checkpoint_path}/scheduler.json").open("w") as f:
     f.write(json.dumps(lr_scheduler.state_dict()))
 
-with open(f"{checkpoint_path}/model.safetensors", "wb") as f:
+with Path(f"{checkpoint_path}/model.safetensors").open("wb") as f:
     f.write(save(model.state_dict()))
 
 # %%
@@ -185,10 +183,10 @@ checkpoint_path = f"./checkpoint-{epochs}"
 
 load_optimizer(checkpoint_path, optimizer)
 
-with open(f"{checkpoint_path}/scheduler.json", "r") as f:
+with Path(f"{checkpoint_path}/scheduler.json").open("r") as f:
     lr_scheduler.load_state_dict(json.loads(f.read()))
 
-with open(f"{checkpoint_path}/model.safetensors", "rb") as f:
+with Path(f"{checkpoint_path}/model.safetensors").open("rb") as f:
     model.load_state_dict(load(f.read()))
 
 # %%

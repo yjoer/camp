@@ -3,6 +3,7 @@ import io
 import os
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import as_completed
+from typing import IO
 
 import fsspec
 import numpy as np
@@ -128,7 +129,7 @@ with fsspec.open_files(annotations, **storage_options) as files:
 pool = ThreadPoolExecutor()
 
 
-def pd_read_csv(f):
+def pd_read_csv(f: IO[bytes]) -> np.ndarray:
     return pd.read_csv(f, header=None).to_numpy()
 
 
@@ -148,7 +149,7 @@ pool = ThreadPoolExecutor()
 read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 
-def pa_read_csv(f):
+def pa_read_csv(f: IO[bytes]) -> np.ndarray:
     return csv.read_csv(f, read_options).to_pandas().to_numpy()
 
 
@@ -167,7 +168,7 @@ with fsspec.open_files(annotations, **storage_options) as files:
 pool = ThreadPoolExecutor()
 
 
-def pl_read_csv(f):
+def pl_read_csv(f: IO[bytes]) -> np.ndarray:
     return pl.read_csv(f.read(), has_header=False).to_numpy()
 
 
@@ -186,7 +187,7 @@ with fsspec.open_files(annotations, **storage_options) as files:
 pool = ThreadPoolExecutor()
 
 
-def np_read_csv(f):
+def np_read_csv(f: IO[bytes]) -> np.ndarray:
     return np.loadtxt(f, delimiter=",")
 
 
@@ -209,11 +210,11 @@ pool = ThreadPoolExecutor()
 read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 
-def pa_read_csv_ord(f):
+def pa_read_csv_ord(f: IO[bytes]) -> np.ndarray:
     return csv.read_csv(f, read_options).to_pandas().to_numpy()
 
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    results_pa = [x for x in pool.map(pa_read_csv_ord, files)]
+    results_pa = list(pool.map(pa_read_csv_ord, files))
 
 # %%

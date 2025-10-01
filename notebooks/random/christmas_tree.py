@@ -13,7 +13,7 @@ from manim import VGroup
 
 
 # %%
-def construct_cylinder(quick=False):
+def construct_cylinder(quick: bool = False) -> Cylinder:
     resolution = 24 if quick else [64, 96]
 
     cylinder = Cylinder(
@@ -32,7 +32,7 @@ def construct_cylinder(quick=False):
 
 # %%
 class CylinderScene(ThreeDScene):
-    def construct(self):
+    def construct(self) -> None:
         cylinder = construct_cylinder(quick=True)
         self.play(Create(cylinder))
 
@@ -41,7 +41,7 @@ class CylinderScene(ThreeDScene):
 
 
 # %%
-def construct_cone(radius: int, height: int, n_lines=128):
+def construct_cone(radius: int, height: int, n_lines: int = 128) -> VGroup:
     lines = VGroup()
 
     for i in range(n_lines):
@@ -60,7 +60,7 @@ def construct_cone(radius: int, height: int, n_lines=128):
 
 # %%
 class ConeScene(ThreeDScene):
-    def construct(self):
+    def construct(self) -> None:
         cone = construct_cone(2, 4)
         self.play(Create(cone))
 
@@ -69,7 +69,10 @@ class ConeScene(ThreeDScene):
 
 
 # %%
-def sample_points_from_triangles(vertices: list[tuple[float, float]], n_samples: int):
+def sample_points_from_triangles(
+    vertices: list[tuple[float, float]],
+    n_samples: int,
+) -> tuple[float, float]:
     rng = np.random.default_rng(seed=26)
     t1 = rng.random(size=n_samples)
     t2 = rng.random(size=n_samples)
@@ -85,7 +88,7 @@ def sample_points_from_triangles(vertices: list[tuple[float, float]], n_samples:
     return x, y
 
 
-def construct_dots(vertices: list[tuple[float, float]], n_dots: int):
+def construct_dots(vertices: list[tuple[float, float]], n_dots: int) -> VGroup:
     x, y = sample_points_from_triangles(vertices, n_samples=n_dots)
 
     palette = ["#FA4032", "#FF8383", "#FFC145", "#A294F9", "#B1F0F7"]
@@ -107,7 +110,7 @@ def construct_dots(vertices: list[tuple[float, float]], n_dots: int):
 
 # %%
 class DotScene(Scene):
-    def construct(self):
+    def construct(self) -> None:
         cone = construct_cone(2, 4)
         self.play(Create(cone))
 
@@ -120,7 +123,7 @@ class DotScene(Scene):
 
 
 # %%
-def construct_star():
+def construct_star() -> Star:
     star = Star(n=6, outer_radius=0.5, inner_radius=0.25)
     star.set_style(stroke_width=0)
     star.set_fill(color="#FFDF00", opacity=1)
@@ -130,7 +133,7 @@ def construct_star():
 
 # %%
 class StarScene(Scene):
-    def construct(self):
+    def construct(self) -> None:
         star = construct_star()
         self.play(GrowFromCenter(star), run_time=0.5)
         self.play(
@@ -140,7 +143,7 @@ class StarScene(Scene):
                 flash_radius=0.55,
                 line_stroke_width=4,
                 color="#FFDF00",
-            )
+            ),
         )
 
 
@@ -149,7 +152,7 @@ class StarScene(Scene):
 
 # %%
 class TreeScene(ThreeDScene):
-    def construct(self):
+    def construct(self) -> None:
         trunk = construct_cylinder(quick=False)
         trunk.shift([0, -2.5, 0])
         self.play(Create(trunk, run_time=0.5))
@@ -171,7 +174,7 @@ class TreeScene(ThreeDScene):
                 flash_radius=0.55,
                 line_stroke_width=4,
                 color="#FFDF00",
-            )
+            ),
         )
 
         self.wait()

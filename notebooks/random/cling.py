@@ -3,13 +3,14 @@ import ctypes
 import os
 import shutil
 import sys
+from pathlib import Path
 
 # %% [markdown]
 # ## Cling
 
 # %%
 cling_path = shutil.which("cling")
-cling_dir = os.path.abspath(os.path.join(cling_path, "../.."))
+cling_dir = (Path(cling_path) / ".." / "..").resolve()
 
 
 # %%
@@ -18,7 +19,7 @@ libs = ["/bin/libclingJupyter", "/lib/libclingJupyter", "/libexec/lib/libclingJu
 for lib in libs:
     for ext in [".dll", ".dylib", ".so"]:
         filename = cling_dir + lib + ext
-        if not os.path.exists(filename):
+        if not Path(filename).exists():
             continue
 
         cling = ctypes.CDLL(filename)

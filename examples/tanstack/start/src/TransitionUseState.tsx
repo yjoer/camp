@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
 import { memo, useState, useTransition } from 'react';
 

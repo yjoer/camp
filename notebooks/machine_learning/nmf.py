@@ -8,7 +8,7 @@ from sklearn.decomposition import PCA
 # %config InlineBackend.figure_formats = ['retina']
 
 # %%
-segments = {
+segments: dict[int, int] = {
     0: 0b1111110,
     1: 0b0110000,
     2: 0b1101101,
@@ -22,9 +22,17 @@ segments = {
 }
 
 
-def generate_led_digit(digit=None, segment=None, shape=(11, 6), pad=1):
+def generate_led_digit(
+    digit: int | None = None,
+    segment: int | None = None,
+    shape: tuple = (11, 6),
+    pad: int = 1,
+) -> np.ndarray:
     if digit is not None:
         segment = segments[digit]
+
+    if segment is None:
+        return np.zeros(shape)
 
     height, width = shape
     segment_height = (height - 3) // 2

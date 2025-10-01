@@ -161,11 +161,11 @@ dist_df = pd.DataFrame(
                 np.full((100), 1, dtype=np.uint8),
                 np.full((100), 2, dtype=np.uint8),
                 np.full((100), 3, dtype=np.uint8),
-            )
+            ),
         ),
         "scores": np.hstack((dist_x, dist_y, dist_z)),
         "treatment": rng.choice(["a", "b", "c"], size=300),
-    }
+    },
 )
 
 dist_df = dist_df.sort_values(by=["blocks", "treatment"])
@@ -187,11 +187,11 @@ dist_df.groupby("blocks").apply(
             x[x["treatment"] == "a"]["scores"],
             x[x["treatment"] == "b"]["scores"],
             x[x["treatment"] == "c"]["scores"],
-        )
+        ),
     ),
     include_groups=False,
 ).rename({0: "statistic", 1: "p_value"}, axis=1).assign(
-    outcome=lambda x: np.where(x["p_value"] > alpha, outcomes[0], outcomes[1])
+    outcome=lambda x: np.where(x["p_value"] > alpha, outcomes[0], outcomes[1]),
 )
 
 # %% [markdown]
@@ -305,18 +305,17 @@ print(p_values_corrected)
 
 
 # %%
-def cohens_d(a, b):
+def cohens_d(a: np.ndarray, b: np.ndarray) -> np.float64:
     diff = np.mean(a) - np.mean(b)
     n1, n2 = len(a), len(b)
     var1, var2 = np.var(a), np.var(b)
 
     std_pooled = np.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
-    d = diff / std_pooled
-    return d
+    return diff / std_pooled
 
 
 # %%
-def cohens_h(a, b):
+def cohens_h(a: float, b: float) -> np.float64:
     return 2 * np.arcsin(np.sqrt(a)) - 2 * np.arcsin(np.sqrt(b))
 
 

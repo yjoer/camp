@@ -2,9 +2,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
+from torch import nn
+from torch import optim
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -38,7 +38,7 @@ y_cos = y_cos.reshape(-1, 1)
 
 # %%
 class SinCosNet(nn.Module):
-    def __init__(self, hidden_layers: int):
+    def __init__(self, hidden_layers: int) -> None:
         super().__init__()
 
         self.model = nn.Sequential(
@@ -60,7 +60,7 @@ class SinCosNet(nn.Module):
             nn.Linear(hidden_layers, 1),
         )
 
-    def forward(self, inputs):
+    def forward(self, inputs: torch.Tensor) -> tuple:
         x = self.model(inputs)
         output_sin = self.model_sin(x)
         output_cos = self.model_cos(x)

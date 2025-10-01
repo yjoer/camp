@@ -1,10 +1,12 @@
 # %%
 from io import BytesIO
+from typing import SupportsFloat
 from typing import cast
 
 import gymnasium as gym
 import imageio
 import numpy as np
+from gymnasium.core import ObsType
 from IPython.display import Image
 
 # %%
@@ -12,12 +14,18 @@ env = gym.make("Taxi-v3", render_mode="rgb_array")
 
 
 # %%
-def epsilon_greedy(Q, state, epsilon, i, j):
+def epsilon_greedy(
+    Q: np.ndarray,
+    state: int,
+    epsilon: float,
+    i: int,
+    j: int,
+) -> np.int64:
     seed = int(str(i) + str(j))
-    np.random.seed(seed)
     env.action_space.seed(seed)
+    rng = np.random.default_rng(seed)
 
-    if np.random.rand() < epsilon:
+    if rng.random() < epsilon:
         action = env.action_space.sample()
     else:
         action = np.argmax(Q[state])
@@ -26,7 +34,15 @@ def epsilon_greedy(Q, state, epsilon, i, j):
 
 
 # %%
-def update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma):
+def update_q_table_v2(
+    Q: np.ndarray,
+    state: int,
+    action: np.int64,
+    reward: SupportsFloat,
+    next_state: ObsType,
+    alpha: float,
+    gamma: float,
+) -> None:
     old_value = Q[state, action]
     next_max = np.max(Q[next_state])
 
@@ -34,22 +50,22 @@ def update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma):
 
 
 # %%
-def get_policy(Q):
+def get_policy(Q: np.ndarray) -> dict:
     n_states = env.observation_space.n
     return {state: np.argmax(Q[state]) for state in range(n_states)}
 
 
 # %%
-def simulate_policy(policy):
-    state, info = env.reset(seed=26)
+def simulate_policy(policy: dict) -> list[np.ndarray]:
+    state, _info = env.reset(seed=26)
 
-    frames = [cast(np.ndarray, env.render())]
+    frames = [cast("np.ndarray", env.render())]
     terminated = False
 
-    for i in range(100):
+    for _ in range(100):
         action = policy[state]
-        state, reward, terminated, _, _ = env.step(action)
-        frames.append(cast(np.ndarray, env.render()))
+        state, _reward, terminated, _, _ = env.step(action)
+        frames.append(cast("np.ndarray", env.render()))
 
         if terminated:
             print("You reached the goal!")
@@ -59,7 +75,7 @@ def simulate_policy(policy):
 
 
 # %%
-def epsilon_greedy_decayed(n_episodes, max_actions):
+def epsilon_greedy_decayed(n_episodes: int, max_actions: int) -> np.ndarray:
     n_states = env.observation_space.n
     n_actions = env.action_space.n
 
@@ -73,7 +89,7 @@ def epsilon_greedy_decayed(n_episodes, max_actions):
     gamma = 1
 
     for i in range(n_episodes):
-        state, info = env.reset(seed=i)
+        state, _info = env.reset(seed=i)
         terminated = False
 
         for j in range(max_actions):
@@ -81,7 +97,7 @@ def epsilon_greedy_decayed(n_episodes, max_actions):
                 break
 
             action = epsilon_greedy(Q, state, epsilon, i, j)
-            next_state, reward, terminated, truncated, info = env.step(action)
+            next_state, reward, terminated, _truncated, _info = env.step(action)
             update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma)
 
             state = next_state
@@ -92,7 +108,7 @@ def epsilon_greedy_decayed(n_episodes, max_actions):
 
 
 # %%
-Q = epsilon_greedy_decayed(750, 200)
+Q = epsilon_greedy_decayed(1100, 100)
 policy = get_policy(Q)
 
 frames = simulate_policy(policy)
@@ -100,9 +116,14 @@ frames = simulate_policy(policy)
 # %%
 buffer = BytesIO()
 
-with imageio.get_writer(buffer, format="gif", fps=2, loop=0) as writer:  # type: ignore
+with imageio.get_writer(
+    buffer,
+    format="gif",  # ty: ignore[invalid-argument-type]
+    fps=2,
+    loop=0,
+) as writer:
     for frame in frames:
-        writer.append_data(frame)  # type: ignore
+        writer.append_data(frame)  # ty: ignore[unresolved-attribute]
 
 buffer.seek(0)
 

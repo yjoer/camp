@@ -76,7 +76,9 @@ detections = sv.Detections(
     tracker_id=detections.iloc[:, 1].to_numpy().astype(int),
 )
 
-labels = [f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id)]
+labels = [
+    f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id, strict=False)
+]
 
 box_annotator = sv.BoxAnnotator(thickness=1)
 

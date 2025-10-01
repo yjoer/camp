@@ -29,16 +29,18 @@ distributed = [
   "pyspark==4.0.1",
 ]
 gym = [
-  "gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.2.0",
+  "gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.2.1",
 ]
 tensorflow = [
   "tensorflow==2.20.0",
 ]
-torch = [
-  "torch==2.8.0",
-  "torchvision==0.23.0",
+text = [
+  "en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
+  "gensim @ git+https://github.com/piskvorky/gensim@8f81545",
+  "nltk==3.9.2",
+  "spacy==3.8.7",
 ]
-torch-cu129 = [
+torch = [
   "torch==2.8.0",
   "torchvision==0.23.0",
 ]
@@ -46,6 +48,10 @@ torch-common = [
   "deepspeed @ https://github.com/yjoer/camp/releases/download/v2025.6.0/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
   "safetensors==0.6.2",
   "torchmetrics==1.8.1",
+]
+torch-cu129 = [
+  "torch==2.8.0",
+  "torchvision==0.23.0",
 ]
 tree = [
   "catboost==1.2.8",
@@ -62,10 +68,27 @@ vision = [
   "timm==1.0.19",
   "ultralytics==8.3.189",
 ]
-text = [
-  "gensim==4.3.3",
-  "nltk==3.9.1",
-  "spacy==3.8.7",
+
+[dependency-groups]
+dev = [
+  "black==25.9.0",
+  "isort==6.1.0",
+  "jedi-language-server==0.45.1",
+  "jupyter-collaboration==4.1.1",
+  "jupyterlab==4.5.0b0",
+  "jupyterlab-code-formatter==3.0.2",
+  "jupyterlab-git==0.51.2",
+  "jupyterlab-lsp==5.2.0",
+  "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
+  "jupytext==1.17.3",
+  "marimo==0.16.5",
+  "maturin==1.9.5",
+  "mypy==1.18.2",
+  "notebook-intelligence==2.5.0",
+  "pytest==8.4.2",
+  "pytest-xdist==3.8.0",
+  "ruff==0.13.3",
+  "scalene==1.5.53",
 ]
 
 [build-system]
@@ -101,15 +124,16 @@ testpaths = ["camp", "solutions"]
 
 [tool.ruff]
 cache-dir = ".venv/.ruff_cache"
+extend = "packages/config/ruff.toml"
 
-[tool.ruff.format]
-line-ending = "lf"
-
-[tool.ruff.lint]
-ignore = ["E731", "E741"]
-
-[tool.ruff.lint.isort]
-force-single-line = true
+[tool.ruff.lint.per-file-ignores]
+"notebooks/**.py" = [
+  "B015",  # useless-comparison
+  "B018",  # useless-expression
+]
+"solutions/**.py" = [
+  "B018",  # useless-expression
+]
 
 [tool.uv]
 managed = true
@@ -119,26 +143,6 @@ conflicts = [
     { extra = "torch" },
     { extra = "torch-cu129" },
   ],
-]
-dev-dependencies = [
-  "black==25.1.0",
-  "isort==6.0.1",
-  "jedi-language-server==0.45.1",
-  "jupyter-collaboration==4.1.1",
-  "jupyterlab-code-formatter==3.0.2",
-  "jupyterlab-git==0.51.2",
-  "jupyterlab-lsp==5.2.0",
-  "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
-  "jupyterlab==4.5.0b0",
-  "jupytext==1.17.3",
-  "marimo==0.16.2",
-  "maturin==1.9.3",
-  "mypy==1.17.1",
-  "notebook-intelligence==2.4.2",
-  "pytest-xdist==3.8.0",
-  "pytest==8.4.1",
-  "ruff==0.13.2",
-  "scalene==1.5.53",
 ]
 
 [tool.uv.workspace]

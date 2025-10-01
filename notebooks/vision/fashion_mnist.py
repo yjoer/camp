@@ -7,9 +7,9 @@ os.environ["KERAS_BACKEND"] = "torch"
 import keras
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
+from torch import nn
+from torch import optim
 from torch.utils.data import DataLoader
 from torch.utils.data import TensorDataset
 from torchmetrics import Accuracy
@@ -44,7 +44,7 @@ transforms = v2.Compose(
     [
         v2.Lambda(lambda x: x.view(-1, 1, 28, 28)),
         v2.ToDtype(torch.float32, scale=True),
-    ]
+    ],
 )
 
 train_images = transforms(dataset["train"])
@@ -110,7 +110,7 @@ metrics = MetricCollection(
         Accuracy(task="multiclass", num_classes=10),
         Precision(task="multiclass", num_classes=10, average=None),
         Recall(task="multiclass", num_classes=10, average=None),
-    ]
+    ],
 )
 
 feature_extractor.eval()
