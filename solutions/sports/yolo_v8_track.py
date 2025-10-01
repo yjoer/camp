@@ -171,15 +171,26 @@ def save_tracking_arrays(
     epoch: int,
     video_name: str,
     tracklets_seq: list[np.ndarray],
-    storage_options={},
-):
+    storage_options: dict | None = None,
+) -> None:
+    if storage_options is None:
+        storage_options = {}
+
     tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
 
     with fsspec.open(tracking_path, "wb", **storage_options) as f:
         np.savez(f, *tracklets_seq)
 
 
-def load_tracking_arrays(path: str, epoch: int, video_name: str, storage_options={}):
+def load_tracking_arrays(
+    path: str,
+    epoch: int,
+    video_name: str,
+    storage_options: dict | None = None,
+) -> list:
+    if storage_options is None:
+        storage_options = {}
+
     tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
 
     with fsspec.open(tracking_path, **storage_options) as f:
@@ -200,8 +211,8 @@ with torch.no_grad():
 
     pbar = tqdm(total=len(dataloader))
 
-    for images, metadata in dataloader:
-        images = torch.stack(images, dim=0).to(device)
+    for batch_images, metadata in dataloader:
+        images = torch.stack(batch_images, dim=0).to(device)
         feat_maps = yolo.model(images)
 
         pred_nms = predictor(feat_maps)
@@ -338,7 +349,10 @@ for i, tracklets in enumerate(tqdm(tracklets_seq)):
         tracker_id=tracklets[:, 4].astype(int),
     )
 
-    labels = [f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id)]
+    labels = [
+        f"{c}/{t}"
+        for c, t in zip(detections.class_id, detections.tracker_id, strict=False)
+    ]
 
     box_annotator = sv.BoxAnnotator(thickness=1)
 

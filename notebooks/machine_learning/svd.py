@@ -44,7 +44,7 @@ rank_slider = widgets.IntSlider(
 
 # %%
 @interact(k=rank_slider)
-def low_rank_approximation(k):
+def low_rank_approximation(k: int) -> None:
     channels = []
 
     for c in range(3):

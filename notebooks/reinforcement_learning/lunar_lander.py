@@ -15,10 +15,10 @@ import keras
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
 from IPython.display import Image
+from torch import nn
+from torch import optim
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -29,18 +29,18 @@ env = gym.make("LunarLander-v3", render_mode="rgb_array")
 
 # %%
 class ReplayBuffer:
-    def __init__(self, capacity):
+    def __init__(self, capacity: int) -> None:
         self.buffer = deque([], maxlen=capacity)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.buffer)
 
-    def push(self, state, action, reward, next_state, done):
+    def push(self, state, action, reward, next_state, done) -> None:
         self.buffer.append((state, action, reward, next_state, done))
 
-    def sample(self, batch_size):
+    def sample(self, batch_size: int) -> tuple:
         batch = random.sample(self.buffer, batch_size)
-        states, actions, rewards, next_states, dones = zip(*batch)
+        states, actions, rewards, next_states, dones = zip(*batch, strict=False)
 
         states_t = torch.stack(states, dim=0)
         actions_t = torch.tensor(actions, dtype=torch.long).unsqueeze(1)
@@ -52,7 +52,7 @@ class ReplayBuffer:
 
 
 # %%
-def select_action(q_network, state):
+def select_action(q_network: QNetwork, state):
     q_values = q_network(state)
     action = torch.argmax(q_values).item()
 
@@ -60,33 +60,44 @@ def select_action(q_network, state):
 
 
 # %%
-def select_action_epsilon_greedy(q_network, state, epsilon):
+def select_action_epsilon_greedy(q_network: QNetwork, state, epsilon: np.float32):
     q_values = q_network(state)
     action = torch.argmax(q_values).item()
 
-    sample = np.random.random()
+    rng = np.random.default_rng()
+    sample = rng.random()
 
     if sample < epsilon:
-        return np.random.choice(range(len(q_values)))
+        return rng.choice(range(len(q_values)))
 
     return action
 
 
 # %%
-def loss_barebone(q_network, state, action, reward, next_state, done):
+def loss_barebone(
+    q_network: QNetwork,
+    state,
+    action,
+    reward,
+    next_state,
+    done,
+) -> torch.Tensor:
     q_values = q_network(state)
     q_value_current = q_values[action]
 
     q_value_next = q_network(next_state).max()
     q_value_target = reward + gamma * q_value_next * (1 - done)
 
-    loss = F.mse_loss(q_value_current, q_value_target)
-
-    return loss
+    return F.mse_loss(q_value_current, q_value_target)
 
 
 # %%
-def loss_dqn(online_network, target_network, replay_buffer, batch_size):
+def loss_dqn(
+    online_network: QNetwork,
+    target_network: QNetwork,
+    replay_buffer: ReplayBuffer,
+    batch_size: int,
+) -> torch.Tensor:
     states, actions, rewards, next_states, dones = replay_buffer.sample(batch_size)
     q_values = online_network(states).gather(1, actions).squeeze(1)
 
@@ -94,13 +105,15 @@ def loss_dqn(online_network, target_network, replay_buffer, batch_size):
         q_values_next = target_network(next_states).amax(1)
         q_values_target = rewards + gamma * q_values_next * (1 - dones)
 
-    loss = F.mse_loss(q_values_target, q_values)
-
-    return loss
+    return F.mse_loss(q_values_target, q_values)
 
 
 # %%
-def update_target_network(online_network, target_network, tau):
+def update_target_network(
+    online_network: QNetwork,
+    target_network: QNetwork,
+    tau: float,
+) -> None:
     state_online = online_network.state_dict()
     state_target = target_network.state_dict()
 
@@ -112,24 +125,22 @@ def update_target_network(online_network, target_network, tau):
 
 # %%
 class QNetwork(nn.Module):
-    def __init__(self, n_states, n_actions):
+    def __init__(self, n_states: int, n_actions) -> None:
         super().__init__()
 
         self.fc1 = nn.Linear(n_states, 64)
         self.fc2 = nn.Linear(64, 64)
         self.fc3 = nn.Linear(64, n_actions)
 
-    def forward(self, state):
+    def forward(self, state: torch.Tensor) -> torch.Tensor:
         x = torch.relu(self.fc1(state))
         x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
-
-        return x
+        return self.fc3(x)
 
 
 # %%
-n_states = cast(tuple[int, ...], env.observation_space.shape)[0]
-n_actions = cast(gym.spaces.Discrete, env.action_space).n
+n_states = cast("tuple[int, ...]", env.observation_space.shape)[0]
+n_actions = cast("gym.spaces.Discrete", env.action_space).n
 n_episodes = 1500
 
 gamma = 0.99
@@ -201,19 +212,19 @@ plt.show()
 
 
 # %%
-def play(q_network):
-    state, info = env.reset(seed=26)
+def play(q_network: QNetwork) -> list[np.ndarray]:
+    state, _info = env.reset(seed=26)
     state = torch.tensor(state, dtype=torch.float32)
 
-    frames = [cast(np.ndarray, env.render())]
+    frames = [cast("np.ndarray", env.render())]
 
-    for i in range(2000):
+    for _ in range(2000):
         action = torch.argmax(q_network(state)).item()
 
-        state, reward, terminated, truncated, _ = env.step(action)
+        state, _reward, terminated, truncated, _ = env.step(action)
         state = torch.tensor(state, dtype=torch.float32)
 
-        frames.append(cast(np.ndarray, env.render()))
+        frames.append(cast("np.ndarray", env.render()))
 
         if terminated:
             print("You reached the goal!")
@@ -230,9 +241,9 @@ frames = play(online_network)
 # %%
 buffer = BytesIO()
 
-with imageio.get_writer(buffer, format="gif", fps=30, loop=0) as writer:  # type: ignore
+with imageio.get_writer(buffer, format="gif", fps=30, loop=0) as writer:  # ty: ignore invalid-argument-type
     for frame in frames:
-        writer.append_data(frame)  # type: ignore
+        writer.append_data(frame)  # ty: ignore unresolved-attribute
 
 buffer.seek(0)
 

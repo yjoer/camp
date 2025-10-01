@@ -3,7 +3,7 @@ import numpy as np
 
 
 # %%
-def rgb_to_cmy(pixel: list | tuple, normalize: bool = False):
+def rgb_to_cmy(pixel: list | tuple, normalize: bool = False) -> tuple:
     pixel_np = np.array(pixel)
 
     if normalize:
@@ -18,7 +18,7 @@ cmy
 
 
 # %%
-def cmy_to_rgb(pixel: list | tuple):
+def cmy_to_rgb(pixel: list | tuple) -> tuple:
     return tuple(round(x) for x in tuple((1 - np.array(pixel)) * 255))
 
 
@@ -27,7 +27,7 @@ cmy_to_rgb(cmy)
 
 
 # %%
-def cmy_to_cmyk(pixel: list | tuple):
+def cmy_to_cmyk(pixel: list | tuple) -> tuple:
     K = np.min(pixel)
 
     if K == 1:
@@ -48,7 +48,7 @@ cmyk
 
 
 # %%
-def cmyk_to_cmy(pixel: list | tuple):
+def cmyk_to_cmy(pixel: list | tuple) -> tuple:
     C, M, Y, K = pixel
 
     C = C * (1 - K) + K
@@ -63,7 +63,7 @@ cmyk_to_cmy(cmyk)
 
 
 # %%
-def rgb_to_hsi(pixel: list | tuple, normalize: bool = False):
+def rgb_to_hsi(pixel: list | tuple, normalize: bool = False) -> tuple:
     if normalize:
         pixel = tuple(x / 255 for x in pixel)
 
@@ -89,7 +89,7 @@ hsi
 
 
 # %%
-def hsi_to_rgb(pixel: list | tuple):
+def hsi_to_rgb(pixel: list | tuple) -> tuple:
     H, S, I = pixel
     cosd = lambda x: np.cos(np.deg2rad(x))
 

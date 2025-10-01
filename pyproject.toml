@@ -34,11 +34,12 @@ gym = [
 tensorflow = [
   "tensorflow==2.20.0",
 ]
-torch = [
-  "torch==2.8.0",
-  "torchvision==0.23.0",
+text = [
+  "gensim==4.3.3",
+  "nltk==3.9.1",
+  "spacy==3.8.7",
 ]
-torch-cu129 = [
+torch = [
   "torch==2.8.0",
   "torchvision==0.23.0",
 ]
@@ -46,6 +47,10 @@ torch-common = [
   "deepspeed @ https://github.com/yjoer/camp/releases/download/v2025.6.0/deepspeed-0.15.0+55b4cae8-py3-none-any.whl",
   "safetensors==0.6.2",
   "torchmetrics==1.8.1",
+]
+torch-cu129 = [
+  "torch==2.8.0",
+  "torchvision==0.23.0",
 ]
 tree = [
   "catboost==1.2.8",
@@ -61,11 +66,6 @@ vision = [
   "supervision>=0.22.0",
   "timm==1.0.19",
   "ultralytics==8.3.189",
-]
-text = [
-  "gensim==4.3.3",
-  "nltk==3.9.1",
-  "spacy==3.8.7",
 ]
 
 [build-system]
@@ -101,15 +101,16 @@ testpaths = ["camp", "solutions"]
 
 [tool.ruff]
 cache-dir = ".venv/.ruff_cache"
+extend = "node_modules/@camp/config/ruff.toml"
 
-[tool.ruff.format]
-line-ending = "lf"
-
-[tool.ruff.lint]
-ignore = ["E731", "E741"]
-
-[tool.ruff.lint.isort]
-force-single-line = true
+[tool.ruff.lint.per-file-ignores]
+"notebooks/**.py" = [
+  "B015",  # useless-comparison
+  "B018",  # useless-expression
+]
+"solutions/**.py" = [
+  "B018",  # useless-expression
+]
 
 [tool.uv]
 managed = true

@@ -31,7 +31,7 @@ outcomes = ["Fail to reject the null hypothesis", "Reject the null hypothesis"]
 
 
 # %%
-def var_ratio(x, y):
+def var_ratio(x: np.ndarray, y: np.ndarray) -> np.float32:
     mean_x = np.mean(x)
     mean_y = np.mean(y)
     var_x = np.var(x, ddof=1)
@@ -46,7 +46,13 @@ def var_ratio(x, y):
 
 
 # %%
-def ttest_delta(n, mean_control, mean_treatment, var_control, var_treatment):
+def ttest_delta(
+    n: int,
+    mean_control: np.float32,
+    mean_treatment: np.float32,
+    var_control: np.float32,
+    var_treatment: np.float32,
+) -> tuple:
     diff = mean_treatment - mean_control
     stderr = np.sqrt(var_treatment / n + var_control / n)
     z = diff / stderr

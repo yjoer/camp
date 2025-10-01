@@ -72,8 +72,8 @@ if not url_100_exists:
 
 # %%
 if not url_100_exists:
-    np.random.seed(26)
-    files = np.random.choice(df_en["Text#"], size=100)
+    rng = np.random.default_rng(26)
+    files = rng.choice(df_en["Text#"], size=100)
     files = [
         minio.get_object(
             bucket_name="datasets",
@@ -222,27 +222,25 @@ response = minio.get_object(
 )
 
 memory_buffer = io.BytesIO(response.read())
-lm = pickle.load(memory_buffer)
+lm = pickle.load(memory_buffer)  # noqa: S301
 del memory_buffer
 
 
 # %%
-def generate(text_seed: list[str], random_seed: int):
+def generate(text_seed: list[str], random_seed: int) -> str:
     sentence = text_seed[:]
-    random_seed = random.Random(random_seed)
+    random_seed = random.Random(random_seed)  # noqa: S311
 
     while True:
         token = lm.generate(1, text_seed=sentence, random_seed=random_seed)
-        if token == "</s>":
+        if token == "</s>":  # noqa: S105
             sentence.append(".")
             break
 
         sentence.append(token)
 
     sentence = " ".join(sentence)
-    sentence = re.sub(r"\s+([,.'])", r"\1", sentence)
-
-    return sentence
+    return re.sub(r"\s+([,.'])", r"\1", sentence)
 
 
 # %%

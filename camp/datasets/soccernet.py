@@ -1,13 +1,14 @@
 import json
 import math
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable
+from pathlib import Path
+from typing import TYPE_CHECKING
+from typing import Any
 from typing import Literal
-from typing import Optional
 
 import fsspec
 import numpy as np
-import pandas as pd
 import torch
 from IPython.display import clear_output
 from minio import Minio
@@ -16,8 +17,18 @@ from pyarrow import csv
 from rich.console import Console
 from torch.utils.data import Dataset
 
+if TYPE_CHECKING:
+    import pandas as pd
 
-def read_json_multi(files: list[str], protocol: str, storage_options={}):
+
+def read_json_multi(
+    files: list[str],
+    protocol: str,
+    storage_options: dict | None = None,
+) -> list:
+    if storage_options is None:
+        storage_options = {}
+
     pool = ThreadPoolExecutor()
 
     if protocol == "s3":
@@ -30,7 +41,7 @@ def read_json_multi(files: list[str], protocol: str, storage_options={}):
             secure=False,
         )
 
-        def read_json(f: str):
+        def read_json(f: str) -> dict:
             segments = f.split("/")
             bucket_name = segments[0]
             object_name = "/".join(segments[1:])
@@ -42,22 +53,23 @@ def read_json_multi(files: list[str], protocol: str, storage_options={}):
             return data
     elif protocol == "file":
 
-        def read_json(f: str):
-            with open(f, "r") as f:
+        def read_json(filename: str) -> dict:
+            with Path(filename).open("r") as f:
                 return json.load(f)
 
-    results = [x for x in pool.map(read_json, files)]
-
-    return results
+    return list(pool.map(read_json, files))
 
 
 class SoccerNetLegibilityDataset(Dataset):
     def __init__(
         self,
         path: str,
-        storage_options={},
-        transforms: Optional[Callable] = None,
-    ):
+        storage_options: dict | None = None,
+        transforms: Callable | None = None,
+    ) -> None:
+        if storage_options is None:
+            storage_options = {}
+
         protocol = fsspec.utils.get_protocol(path)
         subset_path = f"{path}/train"
 
@@ -76,10 +88,10 @@ class SoccerNetLegibilityDataset(Dataset):
         self.storage_options = storage_options
         self.transforms = transforms
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.images)
 
-    def __getitem__(self, idx: int):
+    def __getitem__(self, idx: int) -> tuple[Image.Image, np.int64]:
         image_path = self.images[idx]
         image_filename = image_path.split("/")[-1]
 
@@ -102,9 +114,12 @@ class SoccerNetCalibrationDataset(Dataset):
         self,
         path: str,
         subset: CalibrationSubsetType,
-        storage_options={},
-        transforms: Optional[Callable] = None,
-    ):
+        storage_options: dict | None = None,
+        transforms: Callable | None = None,
+    ) -> None:
+        if storage_options is None:
+            storage_options = {}
+
         console = Console()
 
         protocol = fsspec.utils.get_protocol(path)
@@ -162,15 +177,15 @@ class SoccerNetCalibrationDataset(Dataset):
         self.storage_options = storage_options
         self.transforms = transforms
 
-    def _transform_subset(self, subset: str):
+    def _transform_subset(self, subset: str) -> str:
         mapping = {"val": "valid"}
 
-        return mapping[subset] if subset in mapping else subset
+        return mapping.get(subset, subset)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.images)
 
-    def __getitem__(self, idx: int):
+    def __getitem__(self, idx: int) -> tuple[torch.Tensor, dict[str, Any]]:
         image_path = self.images[idx]
 
         with fsspec.open(image_path, **self.storage_options) as f:

@@ -4,6 +4,7 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
+import datetime as dt
 from datetime import datetime
 
 import fsspec
@@ -11,9 +12,9 @@ import keras
 import matplotlib.pyplot as plt
 import psutil
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
+from torch import nn
+from torch import optim
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
 from torchvision.models import ResNet50_Weights
@@ -109,7 +110,8 @@ resnet.fc = nn.Linear(fc_in_features, n_classes)
 
 resnet = resnet.to(device)
 
-train_started_at = datetime.now().isoformat(timespec="seconds").replace(":", "-")
+dt_now = datetime.now(tz=dt.UTC)
+train_started_at = dt_now.isoformat(timespec="seconds").replace(":", "-")
 train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
 
 batch_size = 16
@@ -161,10 +163,10 @@ for i in range(n_epochs):
     step = 1
     pbar = keras.utils.Progbar(len(train_dataloader))
 
-    for images, targets in train_dataloader:
-        images = torch.stack(images, dim=0).to(device)
+    for batch_images, batch_targets in train_dataloader:
+        images = torch.stack(batch_images, dim=0).to(device)
 
-        targets = torch.stack(targets, dim=0)
+        targets = torch.stack(batch_targets, dim=0)
         targets = F.one_hot(targets, num_classes=n_classes)
         targets = targets.to(device, dtype=torch.float32)
 
@@ -194,6 +196,6 @@ for i in range(n_epochs):
     if VALIDATION_SPLIT:
         metrics_dict = validation_loop(resnet, val_dataloader, device)
 
-    epoch += 1
+    epoch += 1  # noqa: SIM113
 
 # %%

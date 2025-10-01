@@ -17,7 +17,7 @@ df = pd.DataFrame(
 df._mgr
 
 # %%
-with pd.option_context("mode.copy_on_write", False):
+with pd.option_context("mode.copy_on_write", False):  # noqa: FBT003
     df_copy = df.copy()
     vw = df_copy[:]
     vw.iloc[0, 0] = 10
@@ -26,7 +26,7 @@ with pd.option_context("mode.copy_on_write", False):
     print(vw._mgr)
 
 # %%
-with pd.option_context("mode.copy_on_write", True):
+with pd.option_context("mode.copy_on_write", True):  # noqa: FBT003
     vw = df[:]
     vw.iloc[0, 0] = 10
 

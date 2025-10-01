@@ -22,7 +22,7 @@ df_labels = pd.DataFrame(
         {"query_id": 2, "query": "green hats", "score": 0.8, "doc_id": 6},
         {"query_id": 2, "query": "green hats", "score": 0.7, "doc_id": 7},
         {"query_id": 2, "query": "green hats", "score": 0.1, "doc_id": 8},
-    ]
+    ],
 )
 
 df_labels
@@ -38,7 +38,7 @@ df_results = pd.DataFrame(
         {"query_id": 2, "rank": 1, "query": "green hats", "doc_id": 5},
         {"query_id": 2, "rank": 2, "query": "green hats", "doc_id": 9},
         {"query_id": 2, "rank": 3, "query": "green hats", "doc_id": 6},
-    ]
+    ],
 )
 
 df_results
@@ -94,7 +94,7 @@ asymp1 = ax1.axvline(x=0, alpha=0.08, color="red", linestyle="--", label="Asympt
 asymp2 = ax1.axvline(x=1, alpha=0.08, color="red", linestyle="--", label="Asymptote 2")
 
 lines = line1 + line2 + [asymp1, asymp2]
-labels = cast(list[str], [l.get_label() for l in lines])
+labels = cast("list[str]", [l.get_label() for l in lines])
 ax1.legend(lines, labels, loc="upper right")
 
 x2 = np.arange(1, 10, 0.01)
@@ -106,7 +106,7 @@ line3 = ax3.plot(x2, y3, label="log(x)")
 line4 = ax4.plot(x2, y4, color="tab:orange", label="1/log(x)")
 
 lines = line3 + line4
-labels = cast(list[str], [l.get_label() for l in lines])
+labels = cast("list[str]", [l.get_label() for l in lines])
 ax3.legend(lines, labels, loc="upper right")
 
 plt.show()

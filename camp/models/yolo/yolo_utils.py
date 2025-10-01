@@ -1,5 +1,7 @@
+from collections.abc import Sequence
+
 import torch
-import torch.nn as nn
+from torch import nn
 from ultralytics.nn.modules.head import Detect
 from ultralytics.utils.loss import BboxLoss
 from ultralytics.utils.ops import non_max_suppression
@@ -30,7 +32,7 @@ def decode_feature_maps(
 def make_anchors(
     feat_maps: list[torch.Tensor],
     strides: torch.Tensor,
-    grid_cell_offset=0.5,
+    grid_cell_offset: float = 0.5,
 ) -> tuple[torch.Tensor, torch.Tensor]:
     device, dtype = feat_maps[0].device, feat_maps[0].dtype
     anchor_points = []
@@ -53,7 +55,11 @@ def make_anchors(
     return torch.cat(anchor_points), torch.cat(stride_tensors)
 
 
-def decode_boxes(pred_dist: torch.Tensor, anchor_points: torch.Tensor, reg_max: int):
+def decode_boxes(
+    pred_dist: torch.Tensor,
+    anchor_points: torch.Tensor,
+    reg_max: int,
+) -> torch.Tensor:
     batch_size, anchors, channels = pred_dist.shape
     device = pred_dist.device
 
@@ -71,17 +77,15 @@ def decode_boxes_eval(
     pred_dist: torch.Tensor,
     anchor_points: torch.Tensor,
     stride_tensors: torch.Tensor,
-):
+) -> torch.Tensor:
     # https://github.com/ultralytics/ultralytics/blob/v8.2.87/ultralytics/nn/modules/head.py#L87
     boxes_dist = head.dfl(pred_dist)
 
     boxes = dist2bbox(boxes_dist, anchor_points.unsqueeze(0), xywh=True, dim=1)
-    boxes_scaled = boxes * stride_tensors
-
-    return boxes_scaled
+    return boxes * stride_tensors
 
 
-def preprocess_targets(targets: tuple[dict]):
+def preprocess_targets(targets: Sequence[dict]) -> tuple:
     batch_size = len(targets)
     n_max_boxes = 0
 
@@ -111,7 +115,7 @@ class YOLOv8DetectionLoss:
         box_gain: float,
         dfl_gain: float,
         device: torch.device,
-    ):
+    ) -> None:
         self.reg_max = reg_max
         self.n_classes = n_classes
         self.strides = strides
@@ -125,7 +129,11 @@ class YOLOv8DetectionLoss:
         self.bce = nn.BCEWithLogitsLoss(reduction="none")
         self.bbox_loss = BboxLoss(reg_max)
 
-    def __call__(self, feat_maps: list[torch.Tensor], targets: tuple[dict]):
+    def __call__(
+        self,
+        feat_maps: list[torch.Tensor],
+        targets: tuple[dict],
+    ) -> torch.Tensor:
         pred_dist, pred_scores = decode_feature_maps(
             feat_maps,
             self.reg_max,
@@ -197,7 +205,7 @@ class YOLOv8DetectionPredictor:
         strides: torch.Tensor,
         confidence_threshold: float,
         iou_threshold: float,
-    ):
+    ) -> None:
         self.model = model
         self.reg_max = reg_max
         self.n_classes = n_classes
@@ -205,7 +213,7 @@ class YOLOv8DetectionPredictor:
         self.confidence_threshold = confidence_threshold
         self.iou_threshold = iou_threshold
 
-    def decode(self, feat_maps: list[torch.Tensor]):
+    def decode(self, feat_maps: list[torch.Tensor]) -> torch.Tensor:
         pred_dist, pred_scores = decode_feature_maps(
             feat_maps,
             self.reg_max,
@@ -234,7 +242,7 @@ class YOLOv8DetectionPredictor:
     def __call__(self, feat_maps: list[torch.Tensor]) -> list[torch.Tensor]:
         pred = self.decode(feat_maps)
 
-        pred_nms = non_max_suppression(
+        return non_max_suppression(
             pred,
             conf_thres=self.confidence_threshold,
             iou_thres=self.iou_threshold,
@@ -242,8 +250,6 @@ class YOLOv8DetectionPredictor:
             max_det=300,
             classes=None,
         )
-
-        return pred_nms
 
 
 class YOLOv8PosePredictor:
@@ -256,7 +262,7 @@ class YOLOv8PosePredictor:
         keypoint_shape: tuple[int, int],
         confidence_threshold: float,
         iou_threshold: float,
-    ):
+    ) -> None:
         self.n_classes = n_classes
         # n_keypoints, n_dims ((x, y) or (x, y, visible))
         self.keypoint_shape = keypoint_shape
@@ -303,7 +309,7 @@ class YOLOv8PosePredictor:
 
         pred = torch.cat((x, keypoints), dim=1)
 
-        pred_nms = non_max_suppression(
+        return non_max_suppression(
             pred,
             conf_thres=self.confidence_threshold,
             iou_thres=self.iou_threshold,
@@ -313,12 +319,10 @@ class YOLOv8PosePredictor:
             classes=None,
         )
 
-        return pred_nms
-
 
 class TestYOLOUtils:
     @staticmethod
-    def test_decode_feature_maps():
+    def test_decode_feature_maps() -> None:
         feat_maps = [
             torch.zeros((3, 144, 48, 80)),
             torch.zeros((3, 144, 24, 40)),
@@ -333,7 +337,7 @@ class TestYOLOUtils:
         assert pred_scores.shape == (3, 80, 5040)
 
     @staticmethod
-    def test_make_anchors():
+    def test_make_anchors() -> None:
         feat_maps = [
             torch.zeros((3, 144, 48, 80)),
             torch.zeros((3, 144, 24, 40)),
@@ -352,7 +356,7 @@ class TestYOLOUtils:
         assert stride_tensors.shape == (5040, 1)
 
     @staticmethod
-    def test_decode_boxes():
+    def test_decode_boxes() -> None:
         anchor_points = torch.zeros(5040, 2)
         pred_dist = torch.zeros(3, 5040, 64)
 
@@ -361,7 +365,7 @@ class TestYOLOUtils:
         assert boxes.shape == (3, 5040, 4)
 
     @staticmethod
-    def test_decode_boxes_eval():
+    def test_decode_boxes_eval() -> None:
         feat_maps = [
             torch.zeros((3, 144, 48, 80)),
             torch.zeros((3, 144, 24, 40)),
@@ -389,7 +393,7 @@ class TestYOLOUtils:
         assert pred_boxes.shape == (3, 4, 5040)
 
     @staticmethod
-    def test_preprocess_targets():
+    def test_preprocess_targets() -> None:
         targets = [
             {"labels": torch.tensor([1, 2, 3]), "boxes": torch.ones((3, 4))},
             {"labels": torch.tensor([4, 5]), "boxes": torch.ones((2, 4))},

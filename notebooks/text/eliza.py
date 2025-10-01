@@ -1,17 +1,16 @@
 import re
 import time
+from collections.abc import Generator
 
 import streamlit as st
 
 
-def replace_do_you_questions(text: str):
+def replace_do_you_questions(text: str) -> str:
     pattern = r"^Do you (.*?)\??$"
-    response = re.sub(pattern, r"I \1.", text, flags=re.IGNORECASE)
-
-    return response
+    return re.sub(pattern, r"I \1.", text, flags=re.IGNORECASE)
 
 
-def respond(text: str):
+def respond(text: str) -> None:
     with st.chat_message("user"):
         st.markdown(text)
 
@@ -20,7 +19,7 @@ def respond(text: str):
     text = text.strip()
     response = replace_do_you_questions(text)
 
-    def stream_response():
+    def stream_response() -> Generator[str]:
         for word in response.split(" "):
             yield word + " "
             time.sleep(0.1)

@@ -7,11 +7,17 @@ from PIL import Image
 
 
 class VitroxBody1k:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     @staticmethod
-    def load(path: str, storage_options={}):
+    def load(
+        path: str,
+        storage_options: dict | None = None,
+    ) -> dict[str, list[Any] | list[list[Any]]]:
+        if storage_options is None:
+            storage_options = {}
+
         arrays: dict[str, list[Any] | list[list[Any]]] = {}
 
         for subset in ["train", "test"]:

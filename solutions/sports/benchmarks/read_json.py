@@ -54,19 +54,19 @@ with fsspec.open_files(annotations, "r", **storage_options) as files:
 pool = ThreadPoolExecutor()
 
 
-def fsspec_read_json(f):
+def fsspec_read_json(f) -> dict:
     return json.load(f)
 
 
 with fsspec.open_files(annotations, "r", **storage_options) as files:
-    results_fsspec = [x for x in pool.map(fsspec_read_json, files)]
+    results_fsspec = list(pool.map(fsspec_read_json, files))
 
 # %% [markdown]
 # ## Multithreaded MinIO
 
 # %%
 minio = Minio(
-    endpoint=cast(str, storage_options["endpoint_url"])
+    endpoint=cast("str", storage_options["endpoint_url"])
     .replace("http://", "")
     .replace("https://", ""),
     access_key=storage_options["key"],
@@ -80,7 +80,7 @@ minio = Minio(
 pool = ThreadPoolExecutor()
 
 
-def minio_read_json(f):
+def minio_read_json(f) -> dict:
     segments = f.split("/")
     bucket_name = segments[0]
     object_name = "/".join(segments[1:])
@@ -92,7 +92,7 @@ def minio_read_json(f):
     return json.loads(data)
 
 
-results_minio = [x for x in pool.map(minio_read_json, annotations_np)]
+results_minio = list(pool.map(minio_read_json, annotations_np))
 
 # %% [markdown]
 # ## Async IO
@@ -101,7 +101,7 @@ results_minio = [x for x in pool.map(minio_read_json, annotations_np)]
 # %%timeit -n1 -r3
 
 
-def target_fn():
+def target_fn() -> None:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
@@ -114,7 +114,7 @@ def target_fn():
     )
 
     async def gather():
-        async def read_json(f: str):
+        async def read_json(f: str) -> dict:
             f = await fs.open_async(f, "rb")
             data = await f.read()
             await f.close()
