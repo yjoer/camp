@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
 import { useState, useTransition } from 'react';
 import { createContext, useContextSelector, useContextUpdate } from 'use-context-selector';

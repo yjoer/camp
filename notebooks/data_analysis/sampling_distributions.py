@@ -12,31 +12,31 @@ from statsmodels.stats.proportion import proportion_confint
 # ## Binomial Distribution
 
 # %%
-n_A = 1000
-n_B = 1000
-p_A = 0.80
-p_B = 0.85
+n_a = 1000
+n_b = 1000
+p_a = 0.80
+p_b = 0.85
 
-binom_x = np.arange(n_A * p_A - 50, n_B * p_B + 50)
-binom_A = st.binom.pmf(binom_x, n=n_A, p=p_A)
-binom_B = st.binom.pmf(binom_x, n=n_B, p=p_B)
+binom_x = np.arange(n_a * p_a - 50, n_b * p_b + 50)
+binom_a = st.binom.pmf(binom_x, n=n_a, p=p_a)
+binom_b = st.binom.pmf(binom_x, n=n_b, p=p_b)
 
-norm_x = np.linspace(p_A - 0.05, p_B + 0.05, 500)
-norm_A = st.norm.pdf(norm_x, loc=p_A, scale=np.sqrt(p_A * (1 - p_A) / n_A))
-norm_B = st.norm.pdf(norm_x, loc=p_B, scale=np.sqrt(p_B * (1 - p_B) / n_B))
+norm_x = np.linspace(p_a - 0.05, p_b + 0.05, 500)
+norm_a = st.norm.pdf(norm_x, loc=p_a, scale=np.sqrt(p_a * (1 - p_a) / n_a))
+norm_b = st.norm.pdf(norm_x, loc=p_b, scale=np.sqrt(p_b * (1 - p_b) / n_b))
 
 fig = plt.figure(figsize=(8, 4), constrained_layout=True)
 ax1, ax2 = fig.add_subplot(121), fig.add_subplot(122)
 
-ax1.bar(binom_x, binom_A, alpha=0.5)
-ax1.bar(binom_x, binom_B, alpha=0.5)
+ax1.bar(binom_x, binom_a, alpha=0.5)
+ax1.bar(binom_x, binom_b, alpha=0.5)
 
-ax2.plot(norm_x, norm_A)
-ax2.plot(norm_x, norm_B)
+ax2.plot(norm_x, norm_a)
+ax2.plot(norm_x, norm_b)
 
-colors = ax2._get_lines._cycler_items  # type: ignore
-ax2.axvline(x=p_A, color=colors[0]["color"], linestyle="--")
-ax2.axvline(x=p_B, color=colors[1]["color"], linestyle="--")
+colors = ax2._get_lines._cycler_items  # ty: ignore[unresolved-attribute]
+ax2.axvline(x=p_a, color=colors[0]["color"], linestyle="--")
+ax2.axvline(x=p_b, color=colors[1]["color"], linestyle="--")
 
 plt.show()
 
@@ -76,8 +76,8 @@ plt.show()
 
 # %%
 (A_low, B_low), (A_up, B_up) = proportion_confint(
-    count=[n_A * p_A, n_B * p_B],
-    nobs=[n_A, n_B],
+    count=[n_a * p_a, n_b * p_b],
+    nobs=[n_a, n_b],
     alpha=0.05,
 )
 

@@ -1,8 +1,8 @@
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from configparser import ConfigParser
 from typing import IO
-from typing import Callable
-from typing import Optional
+from typing import Any
 
 import fsspec
 import numpy as np
@@ -12,28 +12,29 @@ from pyarrow import csv
 from torch.utils.data import Dataset
 
 
-def read_csv_multi(files: list[IO[bytes]]):
+def read_csv_multi(files: list[IO[bytes]]) -> list:
     pool = ThreadPoolExecutor()
     read_options = csv.ReadOptions(autogenerate_column_names=True)
 
-    def read_csv(f):
+    def read_csv(f: IO[bytes]) -> np.ndarray:
         return csv.read_csv(f, read_options).to_pandas().to_numpy()
 
-    results = [x for x in pool.map(read_csv, files)]
-
-    return results
+    return list(pool.map(read_csv, files))
 
 
-class UnexpectedRoleException(Exception):
+class UnexpectedRoleError(Exception):
     pass
 
 
 class IKCEST:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     @staticmethod
-    def load_test(path: str, storage_options={}):
+    def load_test(path: str, storage_options: dict | None = None) -> tuple:
+        if storage_options is None:
+            storage_options = {}
+
         protocol = fsspec.utils.get_protocol(path)
         subset_path = f"{path}/test"
 
@@ -69,13 +70,18 @@ class IKCEST:
         return subset_frames, subset_seq_metadata
 
     @staticmethod
-    def load(path: str, storage_options={}):
+    def load(path: str, storage_options: dict | None = None) -> tuple:
+        """Retrieve the list of images and load all associated annotations.
+
+        These data can be efficiently stored in memory, given the relatively
+        small size of the files. The annotations are structured into a
+        dictionary, where each key corresponds to a video name, and the
+        associated value is a NumPy array containing the set of annotations
+        linked to that video.
         """
-        Retrieve the list of images and load all associated annotations into memory,
-        considering their small size. Organize these annotations in a dictionary where
-        each key represents a video name and the corresponding value is a NumPy array
-        containing the set of annotations related to that video.
-        """
+        if storage_options is None:
+            storage_options = {}
+
         protocol = fsspec.utils.get_protocol(path)
         subset_path = f"{path}/train"
 
@@ -114,7 +120,7 @@ class IKCEST:
                     elif role.startswith("ball"):
                         label = 4
                     else:
-                        raise UnexpectedRoleException()
+                        raise UnexpectedRoleError
 
                     tracklet_labels.append(label)
 
@@ -127,7 +133,7 @@ class IKCEST:
         with fsspec.open_files(annotations, **storage_options) as files:
             annotations_list = read_csv_multi(files)
 
-            for video, annotations_np in zip(videos, annotations_list):
+            for video, annotations_np in zip(videos, annotations_list, strict=False):
                 video_name = video.split("/")[-1]
                 annotations_dict[video_name] = annotations_np
 
@@ -135,19 +141,20 @@ class IKCEST:
 
 
 class IKCESTDetectionDataset(Dataset):
-    """
-    Given an index, load the frame, and filter the corresponding annotations to extract
-    the bounding boxes. The tracklet identifier is disregarded since it is irrelevant to
-    the player detection task.
+    """Load a video frame by index and extract its player bounding boxes.
+
+    Given an index, load the frame, and filter the corresponding annotations to
+    extract the bounding boxes. The tracklet identifier is disregarded since it
+    is irrelevant to the player detection task.
     """
 
     def __init__(
         self,
         path: str,
-        subset: str,
-        storage_options={},
-        transforms: Optional[Callable] = None,
-    ):
+        subset: str,  # noqa: ARG002
+        storage_options: dict | None = None,
+        transforms: Callable | None = None,
+    ) -> None:
         frames, tracklet_labels, annotations_dict = IKCEST.load(path, storage_options)
 
         self.storage_options = storage_options
@@ -156,10 +163,10 @@ class IKCESTDetectionDataset(Dataset):
         self.tracklet_labels = tracklet_labels
         self.transforms = transforms
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.frames)
 
-    def __getitem__(self, idx: int):
+    def __getitem__(self, idx: int) -> tuple[Image.Image, dict[str, Any]]:
         frame_path = self.frames[idx]
         video_name = frame_path.split("/")[-3]
 
@@ -187,9 +194,9 @@ class IKCESTDetectionTestDataset(Dataset):
     def __init__(
         self,
         path: str,
-        storage_options={},
-        transforms: Optional[Callable] = None,
-    ):
+        storage_options: dict | None = None,
+        transforms: Callable | None = None,
+    ) -> None:
         frames, seq_metadata = IKCEST.load_test(path, storage_options)
 
         self.frames = frames
@@ -197,10 +204,10 @@ class IKCESTDetectionTestDataset(Dataset):
         self.storage_options = storage_options
         self.transforms = transforms
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.frames)
 
-    def __getitem__(self, idx: int):
+    def __getitem__(self, idx: int) -> tuple[Image.Image, dict[str, Any]]:
         frame_path = self.frames[idx]
 
         with fsspec.open(frame_path, **self.storage_options) as f:

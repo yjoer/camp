@@ -6,8 +6,8 @@ import numpy as np
 # %%timeit
 total = 0
 
-for i in range(1_000_000):
-    total += 1
+for _ in range(1_000_000):
+    total += 1  # noqa: SIM113
 
 # %%
 # %%timeit
@@ -19,14 +19,14 @@ np.sum(np.arange(1_000_000))
 
 
 # %%
-def fibonacci(n):
+def fibonacci(n: int) -> int:
     a = 0
     b = 1
 
     if n == 0:
         return a
 
-    for i in range(1, n):
+    for _ in range(1, n):
         c = a + b
         a = b
         b = c

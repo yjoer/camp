@@ -3,7 +3,7 @@ import numpy as np
 
 
 # %%
-def sigmoid(x):
+def sigmoid(x: float) -> np.float64:
     return 1 / (1 + np.exp(-x))
 
 
@@ -13,12 +13,12 @@ print(sigmoid(0.2))
 
 
 # %%
-def norm(x: np.ndarray):
+def norm(x: np.ndarray) -> np.ndarray:
     return x / np.sum(x)
 
 
 # %%
-def softmax(x: np.ndarray):
+def softmax(x: np.ndarray) -> np.ndarray:
     return np.exp(x) / np.sum(np.exp(x))
 
 

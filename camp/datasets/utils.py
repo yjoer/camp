@@ -7,17 +7,14 @@ def resize_image_and_boxes(
     image: Image.Image,
     boxes: torch.Tensor,
     max_size: int,
-    output_size: tuple[int, int],
-):
+    output_size: list[int],
+) -> tuple[torch.Tensor, torch.Tensor]:
     # Match the longest edge of the image to the maximum size.
     width, height = image.size
-    image = tvf.resize(image, size=None, max_size=max_size)
+    image: torch.Tensor = tvf.resize(image, size=None, max_size=max_size)
 
     # Scale the bounding boxes accordingly.
-    if width > height:
-        scale_factor = max_size / width
-    else:
-        scale_factor = max_size / height
+    scale_factor = max_size / width if width > height else max_size / height
 
     boxes = torch.mul(boxes, scale_factor)
 
@@ -39,11 +36,11 @@ def resize_image_and_boxes(
 
 class TestUtils:
     @staticmethod
-    def test_resize_image_and_boxes():
+    def test_resize_image_and_boxes() -> None:
         image = Image.new("RGB", (1920, 1080))
         boxes = torch.tensor([[120, 120, 240, 240], [240, 240, 360, 360]])
         max_size = 640
-        output_size = (384, 640)
+        output_size = [384, 640]
 
         image, boxes = resize_image_and_boxes(image, boxes, max_size, output_size)
 

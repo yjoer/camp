@@ -12,10 +12,11 @@ __pycache__/
 node_modules/
 target/
 
-.env
-.jupyter_ystore.db
+*.db-journal
 *.gen.ts
 *.pyd
+.env
+.jupyter_ystore.db
 Cargo.lock
 next-env.d.ts
 pixi.lock

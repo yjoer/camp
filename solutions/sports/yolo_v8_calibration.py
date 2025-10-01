@@ -48,11 +48,7 @@ if is_notebook():
         colors="lime",
     )
 
-    keypoints = []
-    for sublist in train_target["keypoints"]:
-        for item in sublist:
-            keypoints.append(item)
-
+    keypoints = train_target["keypoints"].copy()
     keypoints = torch.tensor(keypoints, dtype=torch.float32)
     keypoints[:, 0] *= 960
     keypoints[:, 1] *= 540

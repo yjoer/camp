@@ -1,4 +1,5 @@
 from multiprocessing import Pool
+from typing import TYPE_CHECKING
 
 import fsspec
 import motmetrics as mm
@@ -6,29 +7,33 @@ import numpy as np
 import pandas as pd
 import torch
 import torchvision.transforms.v2.functional as tvf
+from PIL import Image
 from torchvision.ops import box_convert
 from tqdm.auto import tqdm
 
 from camp.datasets.utils import resize_image_and_boxes
 
+if TYPE_CHECKING:
+    from torchvision.tv_tensors import Image as TVImage
 
-def transforms(image, target):
+
+def transforms(image: Image.Image, target: dict) -> tuple:
     boxes = box_convert(target["boxes"], "xywh", "xyxy")
     max_size = 640
-    output_size = (384, 640)
+    output_size = [384, 640]
 
     image, boxes = resize_image_and_boxes(image, boxes, max_size, output_size)
     target["boxes"] = boxes
 
-    image = tvf.to_image(image)
-    image = tvf.to_dtype(image, dtype=torch.float32, scale=True)
+    image: TVImage = tvf.to_image(image)
+    image: torch.Tensor = tvf.to_dtype(image, dtype=torch.float32, scale=True)
 
     return image, target
 
 
-def transforms_test(image):
+def transforms_test(image: torch.Tensor) -> torch.Tensor:
     max_size = 640
-    output_size = (384, 640)
+    output_size = [384, 640]
 
     image = tvf.resize(image, size=None, max_size=max_size)
 
@@ -39,12 +44,10 @@ def transforms_test(image):
         image = tvf.center_crop(image, output_size)
 
     image = tvf.to_image(image)
-    image = tvf.to_dtype(image, dtype=torch.float32, scale=True)
-
-    return image
+    return tvf.to_dtype(image, dtype=torch.float32, scale=True)
 
 
-def inverse_transforms(boxes: torch.Tensor):
+def inverse_transforms(boxes: torch.Tensor) -> torch.Tensor:
     size = (384, 640)
     output_size = (360, 640)
 
@@ -64,16 +67,14 @@ def inverse_transforms(boxes: torch.Tensor):
     else:
         scale_factor = max_size / output_height
 
-    boxes = torch.mul(boxes, scale_factor)
-
-    return boxes
+    return torch.mul(boxes, scale_factor)
 
 
-def collate_fn(batch):
-    return tuple(zip(*batch))
+def collate_fn(batch: list) -> tuple:
+    return tuple(zip(*batch, strict=False))
 
 
-def _compute_tracking_metrics(args: tuple[pd.DataFrame, pd.DataFrame]):
+def _compute_tracking_metrics(args: tuple[pd.DataFrame, pd.DataFrame]) -> tuple:
     df_gt, df_sub = args
     acc = mm.utils.compare_to_groundtruth(df_gt, df_sub, dist="iou", distth=0.5)
 
@@ -104,8 +105,11 @@ def evaluate_tracking(
     checkpoint_path: str,
     train_started_at: str,
     epoch: int,
-    storage_options={},
-):
+    storage_options: dict | None = None,
+) -> pd.DataFrame:
+    if storage_options is None:
+        storage_options = {}
+
     protocol = fsspec.utils.get_protocol(path)
     test_path = f"{path}/test"
     tracking_sub_path = f"{checkpoint_path}/{train_started_at}/checkpoint-{epoch}-sub"
@@ -132,9 +136,12 @@ def evaluate_tracking(
         df_subs.append(df_sub)
 
     with Pool() as p:
-        imap_it = p.imap(_compute_tracking_metrics, list(zip(df_gts, df_subs)))
-        metrics = []
+        imap_it = p.imap(
+            _compute_tracking_metrics,
+            list(zip(df_gts, df_subs, strict=False)),
+        )
 
+        metrics = []
         for idf1, hota, mota in tqdm(imap_it, total=len(video_names)):
             metrics.append((idf1, hota, mota))
 

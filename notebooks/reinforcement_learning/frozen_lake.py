@@ -1,11 +1,13 @@
 # %%
 import math
 from typing import Any
+from typing import SupportsFloat
 from typing import cast
 
 import gymnasium as gym
 import matplotlib.pyplot as plt
 import numpy as np
+from gymnasium.core import ObsType
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -18,19 +20,19 @@ env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="rgb_array")
 state, info = env.reset(seed=26)
 
 # %%
-images = [cast(np.ndarray, env.render())]
+images = [cast("np.ndarray", env.render())]
 actions = [2, 2, 1, 1, 1, 2]
 
 for action in actions:
     state, reward, terminated, _, _ = env.step(action)
-    images.append(cast(np.ndarray, env.render()))
+    images.append(cast("np.ndarray", env.render()))
 
     if terminated:
         print("You reached the goal!")
 
 
 # %%
-def render_images(images):
+def render_images(images: list) -> None:
     n_rows = math.ceil(len(images) / 3)
     n_cols = 3
 
@@ -53,7 +55,7 @@ render_images(images)
 env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="rgb_array")
 
 # %%
-lake_map = cast(Any, env.unwrapped).desc
+lake_map = cast("Any", env.unwrapped).desc
 terminal_states = []
 
 for row in range(lake_map.shape[0]):
@@ -67,7 +69,12 @@ for row in range(lake_map.shape[0]):
 
 
 # %%
-def compute_state_value(policy, state, terminal_states, gamma):
+def compute_state_value(
+    policy: dict,
+    state: int,
+    terminal_states: list[int],
+    gamma: float,
+) -> float:
     visited_states = []
     value = 0
     terminate = False
@@ -94,7 +101,12 @@ def compute_state_value(policy, state, terminal_states, gamma):
 
 
 # %%
-def evaluate_policy(policy, n_states, terminal_states, gamma):
+def evaluate_policy(
+    policy: dict,
+    n_states: np.int64,
+    terminal_states: list[int],
+    gamma: float,
+) -> dict:
     return {
         state: compute_state_value(policy, state, terminal_states, gamma)
         for state in range(n_states)
@@ -102,7 +114,13 @@ def evaluate_policy(policy, n_states, terminal_states, gamma):
 
 
 # %%
-def compute_q_value(V, state, action, terminal_states, gamma):
+def compute_q_value(
+    V: dict,
+    state: int,
+    action: int,
+    terminal_states: list[int],
+    gamma: float,
+) -> float:
     if state in terminal_states:
         return 0
 
@@ -115,7 +133,13 @@ def compute_q_value(V, state, action, terminal_states, gamma):
 
 
 # %%
-def improve_policy(V, n_states, n_actions, terminal_states, gamma):
+def improve_policy(
+    V: dict,
+    n_states: np.int64,
+    n_actions: np.int64,
+    terminal_states: list[int],
+    gamma: float,
+) -> tuple:
     Q = {
         (state, action): compute_q_value(V, state, action, terminal_states, gamma)
         for state in range(n_states)
@@ -132,13 +156,14 @@ def improve_policy(V, n_states, n_actions, terminal_states, gamma):
 
 
 # %%
-def iterate_policy():
+def iterate_policy() -> tuple:
     n_states = env.observation_space.n
     n_actions = env.action_space.n
-    policy = {state: np.random.randint(n_actions) for state in range(n_states)}
+    rng = np.random.default_rng()
+    policy = {state: rng.integers(n_actions) for state in range(n_states)}
     gamma = 0.99
 
-    for i in range(10):
+    for _ in range(10):
         V = evaluate_policy(policy, n_states, terminal_states, gamma)
 
         improved_policy, Q = improve_policy(
@@ -164,16 +189,16 @@ print(f"Q: {Q}")
 
 
 # %%
-def simulate_policy(policy):
-    state, info = env.reset(seed=26)
+def simulate_policy(policy: dict) -> list:
+    state, _info = env.reset(seed=26)
 
-    images = [cast(np.ndarray, env.render())]
+    images = [cast("np.ndarray", env.render())]
     terminated = False
 
-    for i in range(8):
+    for _ in range(8):
         action = policy[state]
-        state, reward, terminated, _, _ = env.step(action)
-        images.append(cast(np.ndarray, env.render()))
+        state, _reward, terminated, _, _ = env.step(action)
+        images.append(cast("np.ndarray", env.render()))
 
         if terminated:
             print("You reached the goal!")
@@ -195,8 +220,8 @@ render_images(images)
 
 
 # %%
-def generate_episode(i):
-    state, info = env.reset(seed=i)
+def generate_episode(i: int) -> list:
+    state, _info = env.reset(seed=i)
     episode = []
 
     j = 0
@@ -205,7 +230,7 @@ def generate_episode(i):
     while not terminated:
         env.action_space.seed(int(str(i) + str(j)))
         action = env.action_space.sample()
-        next_state, reward, terminated, truncated, info = env.step(action)
+        next_state, reward, terminated, _truncated, _info = env.step(action)
         episode.append((state, action, reward))
 
         j += 1
@@ -215,7 +240,7 @@ def generate_episode(i):
 
 
 # %%
-def first_visit_mc(n_episodes):
+def first_visit_mc(n_episodes: int) -> np.ndarray:
     n_states = env.observation_space.n
     n_actions = env.action_space.n
 
@@ -226,7 +251,7 @@ def first_visit_mc(n_episodes):
         episode = generate_episode(i)
         visited_states_actions = set()
 
-        for j, (state, action, reward) in enumerate(episode):
+        for j, (state, action, _reward) in enumerate(episode):
             if (state, action) in visited_states_actions:
                 continue
 
@@ -243,7 +268,7 @@ def first_visit_mc(n_episodes):
 
 
 # %%
-def every_visit_mc(n_episodes):
+def every_visit_mc(n_episodes: int) -> np.ndarray:
     n_states = env.observation_space.n
     n_actions = env.action_space.n
 
@@ -253,7 +278,7 @@ def every_visit_mc(n_episodes):
     for i in range(n_episodes):
         episode = generate_episode(i)
 
-        for j, (state, action, reward) in enumerate(episode):
+        for j, (state, action, _reward) in enumerate(episode):
             returns_sum[state, action] += sum(x[2] for x in episode[j:])
             returns_count[state, action] += 1
 
@@ -266,7 +291,7 @@ def every_visit_mc(n_episodes):
 
 
 # %%
-def get_policy(Q):
+def get_policy(Q: np.ndarray) -> dict:
     n_states = env.observation_space.n
     return {state: np.argmax(Q[state]) for state in range(n_states)}
 
@@ -294,7 +319,16 @@ render_images(images)
 
 
 # %%
-def update_q_table(Q, state, action, reward, next_state, next_action, alpha, gamma):
+def update_q_table(
+    Q: np.ndarray,
+    state: int,
+    action: np.int64,
+    reward: SupportsFloat,
+    next_state: ObsType,
+    next_action: np.int64,
+    alpha: float,
+    gamma: float,
+) -> None:
     old_value = Q[state, action]
     next_value = Q[next_state, next_action]
 
@@ -302,7 +336,7 @@ def update_q_table(Q, state, action, reward, next_state, next_action, alpha, gam
 
 
 # %%
-def sarsa(n_episodes):
+def sarsa(n_episodes: int) -> np.ndarray:
     n_states = env.observation_space.n
     n_actions = env.action_space.n
 
@@ -312,7 +346,7 @@ def sarsa(n_episodes):
     gamma = 1
 
     for i in range(n_episodes):
-        state, info = env.reset(seed=i)
+        state, _info = env.reset(seed=i)
 
         env.action_space.seed(i)
         action = env.action_space.sample()
@@ -321,7 +355,7 @@ def sarsa(n_episodes):
         terminated = False
 
         while not terminated:
-            next_state, reward, terminated, truncated, info = env.step(action)
+            next_state, reward, terminated, _truncated, _info = env.step(action)
 
             env.action_space.seed(int(str(i) + str(j)))
             next_action = env.action_space.sample()
@@ -356,7 +390,15 @@ render_images(images)
 
 
 # %%
-def update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma):
+def update_q_table_v2(
+    Q: np.ndarray,
+    state: int,
+    action: np.int64,
+    reward: SupportsFloat,
+    next_state: ObsType,
+    alpha: float,
+    gamma: float,
+) -> None:
     old_value = Q[state, action]
     next_max = max(Q[next_state])
 
@@ -364,7 +406,7 @@ def update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma):
 
 
 # %%
-def q_learning(n_episodes):
+def q_learning(n_episodes: int) -> np.ndarray:
     n_states = env.observation_space.n
     n_actions = env.action_space.n
 
@@ -374,7 +416,7 @@ def q_learning(n_episodes):
     gamma = 1
 
     for i in range(n_episodes):
-        state, info = env.reset(seed=i)
+        state, _info = env.reset(seed=i)
 
         j = 0
         terminated = False
@@ -382,7 +424,7 @@ def q_learning(n_episodes):
         while not terminated:
             env.action_space.seed(int(str(i) + str(j)))
             action = env.action_space.sample()
-            next_state, reward, terminated, truncated, info = env.step(action)
+            next_state, reward, terminated, _truncated, _info = env.step(action)
 
             update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma)
 

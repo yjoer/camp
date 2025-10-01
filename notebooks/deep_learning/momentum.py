@@ -10,17 +10,17 @@ from ipywidgets import interact
 
 
 # %%
-def f(x):
-    return x**4 + x**3 - 5 * x**2
+def f(x: torch.Tensor) -> torch.Tensor:
+    return x**4 + x**3 - 5 * x**2  # ty: ignore[unsupported-operator]
 
 
 # %%
-def optimize(lr=0.01, momentum=0.0):
+def optimize(lr: float = 0.01, momentum: float = 0.0) -> list[tuple[float, float]]:
     x = torch.tensor(2.0, requires_grad=True)
     buffer = torch.zeros_like(x.detach())
     values = []
 
-    for i in range(10):
+    for _ in range(10):
         y = f(x)
         values.append((x.item(), y.item()))
 
@@ -61,7 +61,7 @@ momentum_slider = widgets.FloatSlider(
 
 
 @interact(lr=lr_slider, momentum=momentum_slider)
-def plot_optimizer_steps(lr, momentum):
+def plot_optimizer_steps(lr: float, momentum: float) -> None:
     values = optimize(lr, momentum)
     x_opt = [np.clip(v[0], -4, 3) for v in values]
     y_opt = [np.clip(v[1], -15, 15) for v in values]
@@ -70,7 +70,7 @@ def plot_optimizer_steps(lr, momentum):
     plt.plot(x, y, linewidth=2)
     plt.plot(x_opt, y_opt, "r-X", linewidth=2, markersize=6)
 
-    for i, (p, q) in enumerate(zip(x_opt, y_opt)):
+    for i, (p, q) in enumerate(zip(x_opt, y_opt, strict=False)):
         plt.text(p, q + 0.625, f"{i}", color="r", ha="center")
 
     plt.grid()

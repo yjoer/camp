@@ -12,19 +12,19 @@ lng = [A[1], B[1], C[1], D[1]]
 
 
 # %%
-def sinusoidal_projection(lat, lng):
+def sinusoidal_projection(lat: list[float], lng: list[float]) -> tuple:
     R = 6371009
     lat_rad = np.radians(lat)
     lng_rad = np.radians(lng)
 
     lat_m = [R * y for y in lat_rad]
-    lng_m = [R * x * np.cos(y) for y, x in zip(lat_rad, lng_rad)]
+    lng_m = [R * x * np.cos(y) for y, x in zip(lat_rad, lng_rad, strict=True)]
 
     return lat_m, lng_m
 
 
 # %%
-def shoelace_formula(x, y):
+def shoelace_formula(x: list[np.float64], y: list[np.float64]) -> np.float64:
     return 0.5 * (np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
 
@@ -34,7 +34,7 @@ shoelace_formula(lng_m, lat_m)
 
 
 # %%
-def unknown_projection(lat, lng):
+def unknown_projection(lat: list[float], lng: list[float]) -> tuple:
     R = 6371009
     lat_rad = np.radians(lat)
     lng_rad = np.radians(lng)

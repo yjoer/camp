@@ -9,8 +9,8 @@ from spacy.symbols import ORTH
 from spacy.tokens import Span
 
 # %%
-if not spacy.util.is_package("en_core_web_sm"):
-    spacy.cli.download("en_core_web_sm")
+# if not spacy.util.is_package("en_core_web_sm"):
+#     spacy.cli.download("en_core_web_sm")
 
 # %%
 nltk.download("punkt_tab")

@@ -4,10 +4,10 @@ import os
 os.environ["KERAS_BACKEND"] = "torch"
 
 # %%
+import datetime as dt
 import json
 from datetime import datetime
 from typing import Any
-from typing import Union
 
 import fsspec
 import keras
@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import psutil
 import torch
-import torch.nn as nn
-import torch.optim as optim
+from torch import nn
+from torch import optim
 from torch.utils.data import DataLoader
 from torch.utils.data import Subset
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
@@ -76,7 +76,7 @@ if not os.getenv("S3_ENDPOINT"):
     storage_options = {}
 
 # %%
-train_dataset: Union[IKCESTDetectionDataset, Subset] = IKCESTDetectionDataset(
+train_dataset: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
     path=TRAIN_DATASET_PATH,
     subset="train",
     storage_options=storage_options,
@@ -148,7 +148,8 @@ yolo.model.model[-1].stride = yolo_head.stride
 
 yolo.model = yolo.model.to(device)
 
-train_started_at = datetime.now().isoformat(timespec="seconds").replace(":", "-")
+dt_now = datetime.now(tz=dt.UTC)
+train_started_at = dt_now.isoformat(timespec="seconds").replace(":", "-")
 train_storage_path = f"{CHECKPOINT_PATH}/{train_started_at}"
 
 reg_max = yolo.model.model[-1].reg_max
@@ -249,7 +250,7 @@ if RESUME_EPOCH > 0:
 
 
 # %%
-def validation_loop():
+def validation_loop() -> tuple:
     metric = MeanAveragePrecision(box_format="xyxy")
     metric.warn_on_many_detections = False
 
@@ -260,11 +261,11 @@ def validation_loop():
     pbar = keras.utils.Progbar(len(val_dataloader))
 
     with torch.no_grad():
-        for images, targets in val_dataloader:
-            images = torch.stack(images, dim=0).to(device)
+        for batch_images, batch_targets in val_dataloader:
+            images = torch.stack(batch_images, dim=0).to(device)
             feat_maps = yolo.model(images)
 
-            losses = criterion(feat_maps, targets)
+            losses = criterion(feat_maps, batch_targets)
             pred_nms = predictor(feat_maps)
 
             preds = [
@@ -274,7 +275,7 @@ def validation_loop():
 
             targets = [
                 {"boxes": t["boxes"].to(device), "labels": t["labels"].to(device).int()}
-                for t in targets
+                for t in batch_targets
             ]
 
             map_dict = metric.forward(preds, targets)
@@ -302,16 +303,15 @@ def validation_loop():
 # %%
 yolo.model.train()
 
-history: dict[str, list[Any]] = dict(train=[], val=[], val_metric=[])
+history: dict[str, list[Any]] = {"train": [], "val": [], "val_metric": []}
 
 for i in range(epochs, n_epochs):
     print(f"Epoch: {i + 1}/{n_epochs}, Learning Rate: {lr_scheduler.get_last_lr()}")
 
     steps = 1
     pbar = keras.utils.Progbar(n_batches)
-
-    for images, targets in train_dataloader:
-        images = torch.stack(images, dim=0).to(device)
+    for batch_images, targets in train_dataloader:
+        images = torch.stack(batch_images, dim=0).to(device)
 
         with torch.autocast(device.type, torch.float16, enabled=USE_AMP):
             feat_maps = yolo.model(images)
