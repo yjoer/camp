@@ -1,4 +1,5 @@
 import compat_plugin from '@cmpx/eslint-plugin-compat';
+import stylex_plugin from '@stylexjs/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 import gitignore from 'eslint-config-flat-gitignore';
 import prettier_config from 'eslint-config-prettier/flat';
@@ -120,6 +121,20 @@ function react_hooks() {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: { 'react-hooks': react_hooks_plugin },
     extends: ['react-hooks/recommended-latest'],
+  };
+}
+
+function stylex() {
+  return {
+    name: 'stylex/recommended',
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    plugins: { '@stylexjs': stylex_plugin },
+    rules: {
+      '@stylexjs/no-unused': 'error',
+      '@stylexjs/sort-keys': 'warn',
+      '@stylexjs/valid-shorthands': 'warn',
+      '@stylexjs/valid-styles': 'error',
+    },
   };
 }
 
@@ -286,6 +301,7 @@ export default defineConfig([
   typescript(),
   react(),
   react_hooks(),
+  stylex(),
   jsx_a11y(),
   unicorn(),
   prettier(),
