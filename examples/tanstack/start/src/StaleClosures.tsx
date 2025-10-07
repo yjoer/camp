@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react';
 
 export const Route = createFileRoute({
   component: StaleClosures,
@@ -9,6 +9,7 @@ function StaleClosures() {
   return (
     <div className="mx-2 my-1 flex flex-col gap-4">
       <DependencyArray />
+      <EffectEvents />
       <RefSync />
       <StateRefHook />
     </div>
@@ -35,7 +36,7 @@ function DependencyArray() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      timedLogStaleRef.current.textContent = `Timed Log (Stale): ${count}`;
+      timedLogStaleRef.current.textContent = `Timed Log - Stale: ${count}`;
     }, 1000);
 
     return () => {
@@ -48,7 +49,7 @@ function DependencyArray() {
   }, [count]);
 
   const handleClickStale = useCallback(() => {
-    logStaleRef.current.textContent = `Log (Stale): ${count}`;
+    logStaleRef.current.textContent = `Log - Stale: ${count}`;
   }, []);
 
   return (
@@ -56,18 +57,62 @@ function DependencyArray() {
       <span className="bg-[#ffdd00]">Dependency Array</span>
       <div>Count: {count}</div>
       <div ref={timedLogRef}>Timed Log:</div>
-      <div ref={timedLogStaleRef}>Timed Log (Stale):</div>
+      <div ref={timedLogStaleRef}>Timed Log - Stale:</div>
       <div ref={logRef}>Log:</div>
-      <div ref={logStaleRef}>Log (Stale):</div>
+      <div ref={logStaleRef}>Log - Stale:</div>
       <div className="mt-1 flex gap-2">
-        <button className="font-semibold" onClick={() => setCount((prev) => prev + 1)}>
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={() => setCount((prev) => prev + 1)}>
           Increment
         </button>
-        <button className="font-semibold" onClick={handleClick}>
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={handleClick}>
           Log
         </button>
-        <button className="font-semibold" onClick={handleClickStale}>
-          Log (Stale)
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={handleClickStale}>
+          Log - Stale
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function EffectEvents() {
+  const [count, setCount] = useState(0);
+  const timedLogRef = useRef<HTMLDivElement>(null!);
+
+  const onInterval = useEffectEvent(() => {
+    timedLogRef.current.textContent = `Timed Log: ${count}`;
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      onInterval();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <div>
+      <span className="bg-[#ffdd00]">Effect Events</span>
+      <div>Count: {count}</div>
+      <div ref={timedLogRef}>Timed Log:</div>
+      <div className="mt-1 flex gap-2">
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={() => setCount((prev) => prev + 1)}>
+          Increment
         </button>
       </div>
     </div>
@@ -107,10 +152,16 @@ function RefSync() {
       <div ref={timedLogRef}>Timed Log:</div>
       <div ref={logRef}>Log:</div>
       <div className="mt-1 flex gap-2">
-        <button className="font-semibold" onClick={handleIncrement}>
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={handleIncrement}>
           Increment
         </button>
-        <button className="font-semibold" onClick={handleClick}>
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={handleClick}>
           Log
         </button>
       </div>
@@ -149,10 +200,16 @@ function StateRefHook() {
       <div ref={timedLogRef}>Timed Log:</div>
       <div ref={logRef}>Log:</div>
       <div className="mt-1 flex gap-2">
-        <button className="font-semibold" onClick={handleIncrement}>
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={handleIncrement}>
           Increment
         </button>
-        <button className="font-semibold" onClick={handleClick}>
+        <button
+          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
+            active:scale-96"
+          onClick={handleClick}>
           Log
         </button>
       </div>
