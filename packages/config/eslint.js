@@ -1,14 +1,14 @@
-import compat from '@cmpx/eslint-plugin-compat';
+import compat_plugin from '@cmpx/eslint-plugin-compat';
 import { defineConfig } from 'eslint/config';
 import gitignore from 'eslint-config-flat-gitignore';
-import prettier from 'eslint-config-prettier/flat';
+import prettier_config from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import * as imp from 'eslint-plugin-import-x';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import perfectionist from 'eslint-plugin-perfectionist';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import unicorn from 'eslint-plugin-unicorn';
+import jsx_a11y_plugin from 'eslint-plugin-jsx-a11y';
+import perfectionist_plugin from 'eslint-plugin-perfectionist';
+import react_plugin from 'eslint-plugin-react';
+import react_hooks_plugin from 'eslint-plugin-react-hooks';
+import unicorn_plugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 
@@ -23,9 +23,8 @@ const getImportGroups = () => [
   'type',
 ];
 
-export default defineConfig([
-  gitignore(),
-  {
+function eslint() {
+  return {
     // https://github.com/typescript-eslint/typescript-eslint/blob/v8.34.1/packages/eslint-plugin/src/configs/eslint-recommended-raw.ts
     rules: {
       'constructor-super': 'off',
@@ -36,16 +35,19 @@ export default defineConfig([
       'no-undef': 'off', // nursery
       'no-unreachable': 'off', // nursery
     },
-  },
-  {
+  };
+}
+
+function import_x() {
+  return {
     name: 'import/recommended',
     plugins: { 'import-x': imp.importX },
     rules: {
       'import-x/export': 'error', // nursery
-      'import-x/extensions': [
-        'error',
-        { js: 'ignorePackages', jsx: 'never', ts: 'ignorePackages', tsx: 'never' },
-      ],
+      // 'import-x/extensions': [
+      //   'error',
+      //   { js: 'ignorePackages', jsx: 'never', ts: 'ignorePackages', tsx: 'never' },
+      // ],
       'import-x/no-extraneous-dependencies': [
         'error',
         {
@@ -74,10 +76,13 @@ export default defineConfig([
     settings: {
       'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
-  },
-  {
+  };
+}
+
+function typescript() {
+  return {
     name: 'typescript',
-    files: ['**/*.{ts,tsx,cts,mts}'],
+    files: ['**/*.{ts,cts,mts,tsx}'],
     plugins: { '@typescript-eslint': ts.plugin },
     extends: [imp.flatConfigs.typescript],
     languageOptions: {
@@ -86,11 +91,14 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/member-ordering': 'error',
     },
-  },
-  {
+  };
+}
+
+function react() {
+  return {
     name: 'react/recommended',
     files: ['**/*.{js,jsx,ts,tsx}'],
-    extends: [react.configs.flat['jsx-runtime']],
+    extends: [react_plugin.configs.flat['jsx-runtime']],
     languageOptions: {
       globals: { ...globals.browser, ...globals.serviceworker },
     },
@@ -103,16 +111,22 @@ export default defineConfig([
       'react/jsx-no-leaked-render': 'error',
       'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }], // prettier-ignore
     },
-  },
-  {
+  };
+}
+
+function react_hooks() {
+  return {
     name: 'react-hooks/recommended',
     files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: { 'react-hooks': reactHooks },
+    plugins: { 'react-hooks': react_hooks_plugin },
     extends: ['react-hooks/recommended-latest'],
-  },
-  {
+  };
+}
+
+function jsx_a11y() {
+  return {
     name: 'jsx-a11y/recommended',
-    plugins: { 'jsx-a11y': jsxA11y },
+    plugins: { 'jsx-a11y': jsx_a11y_plugin },
     rules: {
       'jsx-a11y/aria-proptypes': 'error',
       'jsx-a11y/interactive-supports-focus': [
@@ -167,18 +181,18 @@ export default defineConfig([
         },
       ],
     },
-  },
-  {
+  };
+}
+
+function unicorn() {
+  return {
     name: 'unicorn/recommended',
-    plugins: { unicorn },
+    plugins: { unicorn: unicorn_plugin },
     rules: {
       'unicorn/expiring-todo-comments': 'error',
       'unicorn/import-style': 'error',
-      'unicorn/no-array-callback-reference': 'error',
       'unicorn/no-named-default': 'error',
-      'unicorn/no-unnecessary-array-splice-count': 'error',
       'unicorn/no-unnecessary-polyfills': 'error',
-      'unicorn/prefer-at': 'error',
       'unicorn/prefer-default-parameters': 'error',
       'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-keyboard-event-key': 'error',
@@ -186,21 +200,26 @@ export default defineConfig([
       'unicorn/prefer-single-call': 'error',
       'unicorn/prefer-switch': 'error',
       'unicorn/prefer-ternary': 'error',
-      'unicorn/prefer-top-level-await': 'error',
       'unicorn/relative-url-style': 'error',
       'unicorn/template-indent': 'error',
       //
       'unicorn/no-for-loop': 'off', // x
       'unicorn/prevent-abbreviations': 'off',
     },
-  },
-  {
+  };
+}
+
+function prettier() {
+  return {
     name: 'prettier/config',
-    extends: [prettier],
-  },
-  {
+    extends: [prettier_config],
+  };
+}
+
+function perfectionist() {
+  return {
     name: 'perfectionist',
-    plugins: { perfectionist },
+    plugins: { perfectionist: perfectionist_plugin },
     rules: {
       'perfectionist/sort-array-includes': 'warn',
       'perfectionist/sort-enums': 'warn',
@@ -250,11 +269,28 @@ export default defineConfig([
         ignoreCase: false,
       },
     },
-  },
-  {
+  };
+}
+
+function compat() {
+  return {
     name: 'compat/recommended',
-    extends: [compat.configs['flat/recommended']],
-  },
+    extends: [compat_plugin.configs['flat/recommended']],
+  };
+}
+
+export default defineConfig([
+  gitignore(),
+  eslint(),
+  import_x(),
+  typescript(),
+  react(),
+  react_hooks(),
+  jsx_a11y(),
+  unicorn(),
+  prettier(),
+  perfectionist(),
+  compat(),
   {
     files: ['**/*.{js,cjs,mjs,ts,cts,mts}'],
     languageOptions: {
