@@ -11,7 +11,7 @@ const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development
 const ignoredPackages = {
   'aws-sdk': true,
   'mock-aws-s3': true,
-  'nock': true,
+  nock: true,
 };
 
 const customConfig = {

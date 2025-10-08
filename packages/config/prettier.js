@@ -9,7 +9,7 @@ export default {
   ],
   bracketSameLine: true,
   printWidth: 100,
-  quoteProps: 'consistent',
+  quoteProps: 'as-needed',
   singleQuote: true,
   tailwindFunctions: ['clsx', 'cva'],
   customFunctions: ['clsx', 'cva'],
