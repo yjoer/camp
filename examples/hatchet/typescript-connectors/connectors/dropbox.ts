@@ -58,7 +58,7 @@ const listFolder = dropbox.task({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token.access_token}`,
+        Authorization: `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
         path: '',
@@ -82,7 +82,7 @@ const listFolder = dropbox.task({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token.access_token}`,
+          Authorization: `Bearer ${token.access_token}`,
         },
         body: JSON.stringify({
           cursor,
@@ -121,7 +121,7 @@ const enrichEntries = dropbox.task({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token.access_token}`,
+        Authorization: `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
         files: paperFiles.map((f) => f.path_lower),
@@ -169,7 +169,7 @@ dropbox.task({
       const response = await fetch(`https://content.dropboxapi.com/2/files/export`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token.access_token}`,
+          Authorization: `Bearer ${token.access_token}`,
           'Dropbox-API-Arg': JSON.stringify({
             path: file.path_lower,
             export_format: 'markdown',

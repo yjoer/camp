@@ -68,8 +68,8 @@ function import_x() {
       'import-x/order': [
         'error',
         {
-          'alphabetize': { order: 'asc' },
-          'groups': getImportGroups(),
+          alphabetize: { order: 'asc' },
+          groups: getImportGroups(),
           'newlines-between': 'always',
         },
       ],

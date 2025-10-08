@@ -7,13 +7,13 @@ export const options = {
 };
 
 const urls = {
-  'node': 'http://127.0.0.1:3000',
-  'express': 'http://127.0.0.1:3000',
-  'fastify': 'http://127.0.0.1:3000',
+  node: 'http://127.0.0.1:3000',
+  express: 'http://127.0.0.1:3000',
+  fastify: 'http://127.0.0.1:3000',
   'h-three': 'http://127.0.0.1:3000',
-  'trpc': 'http://127.0.0.1:3000/trpc/hello',
+  trpc: 'http://127.0.0.1:3000/trpc/hello',
   'trpc-fastify': 'http://127.0.0.1:3000/trpc/hello',
-  'orpc': 'http://127.0.0.1:3000/hello',
+  orpc: 'http://127.0.0.1:3000/hello',
   'orpc-fastify': 'http://127.0.0.1:3000/rpc/hello',
   'orpc-h-three': 'http://127.0.0.1:3000/rpc/hello',
   'orpc-api': 'http://127.0.0.1:3000',
