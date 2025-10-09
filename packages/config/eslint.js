@@ -119,8 +119,7 @@ function react_hooks() {
   return {
     name: 'react-hooks/recommended',
     files: ['**/*.{js,jsx,ts,tsx}'],
-    plugins: { 'react-hooks': react_hooks_plugin },
-    extends: ['react-hooks/recommended-latest'],
+    extends: [react_hooks_plugin.configs.flat['recommended-latest']],
   };
 }
 
