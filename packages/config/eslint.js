@@ -1,9 +1,9 @@
-import compat_plugin from '@cmpx/eslint-plugin-compat';
 import stylex_plugin from '@stylexjs/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 import gitignore from 'eslint-config-flat-gitignore';
 import prettier_config from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import compat_plugin from 'eslint-plugin-compat';
 import * as imp from 'eslint-plugin-import-x';
 import jsx_a11y_plugin from 'eslint-plugin-jsx-a11y';
 import perfectionist_plugin from 'eslint-plugin-perfectionist';
@@ -130,7 +130,13 @@ function stylex() {
     plugins: { '@stylexjs': stylex_plugin },
     rules: {
       '@stylexjs/no-unused': 'error',
-      '@stylexjs/sort-keys': 'warn',
+      '@stylexjs/sort-keys': [
+        'warn',
+        {
+          validImports: ['stylex', '@stylexjs/stylex', { from: 'react-strict-dom', as: 'css' }],
+          order: 'recess-order',
+        },
+      ],
       '@stylexjs/valid-shorthands': 'warn',
       '@stylexjs/valid-styles': 'error',
     },
