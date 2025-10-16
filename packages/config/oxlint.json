@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["import", "jsx-a11y", "react", "typescript", "unicorn"],
   "categories": {
     "correctness": "error"
@@ -122,6 +123,7 @@
     "no-unexpected-multiline": "error",
     "no-unused-expressions": "error",
     //
+    "react/exhaustive-deps": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "typescript/no-explicit-any": "off",
     "unicorn/filename-case": ["off", { "cases": { "kebabCase": true, "pascalCase": true } }],
