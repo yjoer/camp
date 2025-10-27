@@ -1,9 +1,0 @@
-{
-  "configurations": [
-    {
-      "name": "xcling",
-      "includePath": ["${workspaceFolder}/examples/xeus/cling/.pixi/envs/default/Library/include"]
-    }
-  ],
-  "version": 4
-}
