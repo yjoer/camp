@@ -9,6 +9,7 @@ cmd = [
   "cmake",
   "-G",
   "Ninja",
+  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
   "-DCMAKE_INSTALL_PREFIX=.build/install",
   "-DCMAKE_BUILD_TYPE=Release",
   "-DCMAKE_C_COMPILER_LAUNCHER=ccache",

@@ -18,7 +18,6 @@ set(xeus-zmq_REQUIRED_VERSION 1.0.2)
 find_package(cppzmq REQUIRED)
 find_package(xeus-zmq ${xeus-zmq_REQUIRED_VERSION} REQUIRED)
 find_package(Boost REQUIRED COMPONENTS process)
-find_package(Clang REQUIRED)
 find_package(Cling REQUIRED)
 find_package(Threads)
 
