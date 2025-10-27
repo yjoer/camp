@@ -14,6 +14,8 @@ cmd = [
   "-DCMAKE_BUILD_TYPE=Release",
   "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
   "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+  "-DCMAKE_C_COMPILER=clang-cl",
+  "-DCMAKE_CXX_COMPILER=clang-cl",
   "-DOPENSSL_ROOT_DIR=$CONDA_PREFIX/Library",
   "-S",
   ".",
