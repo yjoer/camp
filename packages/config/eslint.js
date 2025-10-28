@@ -134,7 +134,7 @@ function stylex() {
         'warn',
         {
           validImports: ['stylex', '@stylexjs/stylex', { from: 'react-strict-dom', as: 'css' }],
-          order: 'recess-order',
+          order: 'recess',
         },
       ],
       '@stylexjs/valid-shorthands': 'warn',
