@@ -1,6 +1,7 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef } from 'react';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/media-source-extensions')({
   component: MediaSourceExtensions,
 });
 

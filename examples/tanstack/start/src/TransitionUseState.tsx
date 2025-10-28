@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import { createFileRoute } from '@tanstack/react-router';
 import { memo, useState, useTransition } from 'react';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/transition-use-state')({
   component: TransitionUseState,
 });
 

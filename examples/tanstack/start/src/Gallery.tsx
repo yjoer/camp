@@ -1,6 +1,6 @@
-import { Link } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/')({
   component: RouteComponent,
 });
 
@@ -28,6 +28,10 @@ const sections = [
   {
     label: 'Video and Audio',
     children: [{ to: '/media-source-extensions', label: 'Media Source Extensions' }],
+  },
+  {
+    label: 'Web Workers',
+    children: [{ to: '/worker-offscreen-canvas', label: 'Offscreen Canvas' }],
   },
 ];
 

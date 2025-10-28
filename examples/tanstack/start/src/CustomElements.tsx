@@ -1,7 +1,8 @@
 // oxlint-disable no-namespace
+import { createFileRoute } from '@tanstack/react-router';
 import { createIsomorphicFn } from '@tanstack/react-start';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/custom-elements')({
   component: CustomElements,
 });
 

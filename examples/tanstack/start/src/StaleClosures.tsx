@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { createFileRoute } from '@tanstack/react-router';
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/stale-closures')({
   component: StaleClosures,
 });
 
