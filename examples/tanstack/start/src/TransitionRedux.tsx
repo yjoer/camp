@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import { createFileRoute } from '@tanstack/react-router';
 import { useTransition } from 'react';
 
 import { setPage, setPageSlow } from '@/state/TransitionReduxSlice';
 import { useAppDispatch, useAppSelector } from '@/state/index';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/transition-redux')({
   component: TransitionRedux,
 });
 

@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
 import { createContext, useContextSelector, useContextUpdate } from 'use-context-selector';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/transition-use-context-selector')({
   component: TransitionUseContextSelector,
 });
 
