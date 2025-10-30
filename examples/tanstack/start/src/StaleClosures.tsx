@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react';
+
+import { button_styles } from '@/components/button';
 
 export const Route = createFileRoute('/stale-closures')({
   component: StaleClosures,
@@ -62,22 +65,13 @@ function DependencyArray() {
       <div ref={logRef}>Log:</div>
       <div ref={logStaleRef}>Log - Stale:</div>
       <div className="mt-1 flex gap-2">
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={() => setCount((prev) => prev + 1)}>
+        <button onClick={() => setCount((prev) => prev + 1)} {...stylex.props(button_styles.base)}>
           Increment
         </button>
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={handleClick}>
+        <button onClick={handleClick} {...stylex.props(button_styles.base)}>
           Log
         </button>
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={handleClickStale}>
+        <button onClick={handleClickStale} {...stylex.props(button_styles.base)}>
           Log - Stale
         </button>
       </div>
@@ -109,10 +103,7 @@ function EffectEvents() {
       <div>Count: {count}</div>
       <div ref={timedLogRef}>Timed Log:</div>
       <div className="mt-1 flex gap-2">
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={() => setCount((prev) => prev + 1)}>
+        <button onClick={() => setCount((prev) => prev + 1)} {...stylex.props(button_styles.base)}>
           Increment
         </button>
       </div>
@@ -153,16 +144,10 @@ function RefSync() {
       <div ref={timedLogRef}>Timed Log:</div>
       <div ref={logRef}>Log:</div>
       <div className="mt-1 flex gap-2">
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={handleIncrement}>
+        <button onClick={handleIncrement} {...stylex.props(button_styles.base)}>
           Increment
         </button>
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={handleClick}>
+        <button onClick={handleClick} {...stylex.props(button_styles.base)}>
           Log
         </button>
       </div>
@@ -201,16 +186,10 @@ function StateRefHook() {
       <div ref={timedLogRef}>Timed Log:</div>
       <div ref={logRef}>Log:</div>
       <div className="mt-1 flex gap-2">
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={handleIncrement}>
+        <button onClick={handleIncrement} {...stylex.props(button_styles.base)}>
           Increment
         </button>
-        <button
-          className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-            active:scale-96"
-          onClick={handleClick}>
+        <button onClick={handleClick} {...stylex.props(button_styles.base)}>
           Log
         </button>
       </div>

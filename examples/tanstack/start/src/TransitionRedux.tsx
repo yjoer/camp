@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTransition } from 'react';
 
+import { button_styles } from '@/components/button';
 import { setPage, setPageSlow } from '@/state/TransitionReduxSlice';
 import { useAppDispatch, useAppSelector } from '@/state/index';
 
@@ -40,7 +42,7 @@ function SettingsPanel() {
     <>
       <div>Page: {page}</div>
       <div>Pending: {isPending ? 'true' : 'false'}</div>
-      <button className="mt-1 font-semibold" onClick={handleClick}>
+      <button onClick={handleClick} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
     </>
