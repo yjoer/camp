@@ -8,6 +8,7 @@ on:
         type: choice
         options:
           - examples/tanstack/start
+          - examples/tanstack/start-solid
           - stories
 
 jobs:
