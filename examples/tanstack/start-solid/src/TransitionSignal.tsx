@@ -1,5 +1,8 @@
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/solid-router';
 import { createSignal, For, useTransition } from 'solid-js';
+
+import { button_styles } from '../components/button';
 
 export const Route = createFileRoute('/transition-signal')({
   component: TransitionSignal,
@@ -23,7 +26,7 @@ function TransitionSignal() {
     <div class="mx-2 my-1">
       <div>Page: {page()}</div>
       <div>Pending: {pending() ? 'true' : 'false'}</div>
-      <button class="mt-1 font-semibold" onClick={handle_click}>
+      <button onClick={handle_click} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
       <Posts page={page_slow()} />

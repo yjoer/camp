@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTransition } from 'react';
 import { create } from 'zustand';
+
+import { button_styles } from '@/components/button';
 
 export const Route = createFileRoute('/transition-zustand')({
   component: TransitionZustand,
@@ -38,7 +41,7 @@ function SettingsPanel() {
     <>
       <div>Page: {page}</div>
       <div>Pending: {isPending ? 'true' : 'false'}</div>
-      <button className="mt-1 font-semibold" onClick={handleClick}>
+      <button onClick={handleClick} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
     </>

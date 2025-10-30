@@ -4,6 +4,7 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-r
 import ReduxProvider from '@/lib/ReduxProvider';
 
 import styles from './root.css?url';
+import stylex from './stylex.css?url';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -13,6 +14,7 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: 'stylesheet', href: styles }, //
+      { rel: 'stylesheet', href: stylex },
     ],
   }),
   component: RootComponent,

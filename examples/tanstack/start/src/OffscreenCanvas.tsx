@@ -1,13 +1,14 @@
 import { createORPCClient } from '@orpc/client';
 import { RPCLink } from '@orpc/client/message-port';
 import { MessageType } from '@orpc/standard-server-peer';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 
-// oxlint-disable-next-line import/default
-import CanvasWorker from '../lib/canvas-worker?worker';
+import { button_styles } from '@/components/button';
+import CanvasWorker from '@/lib/canvas-worker?worker';
 
-import type { router } from '../lib/canvas-worker';
+import type { router } from '@/lib/canvas-worker';
 import type { RouterClient } from '@orpc/server';
 
 export const Route = createFileRoute('/worker-offscreen-canvas')({
@@ -48,10 +49,7 @@ function OffscreenCanvas() {
         <span className="bg-[#ffdd00]">Date</span>
         <div className="h-6">{date}</div>
         <div className="mt-1">
-          <button
-            className="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform
-              active:scale-96"
-            onClick={handle_click}>
+          <button onClick={handle_click} {...stylex.props(button_styles.base)}>
             Get Date
           </button>
         </div>

@@ -1,0 +1,13 @@
+diff --git a/dist/esm/index.mjs b/dist/esm/index.mjs
+index 1c7839a3371bbb5ae97ad316a7587a2ed5483315..350cc7631072cc039c3f9035f44e894b3c116e00 100644
+--- a/dist/esm/index.mjs
++++ b/dist/esm/index.mjs
+@@ -217,7 +217,7 @@ function solidPlugin(options = {}) {
+         }]] : [],
+         ast: false,
+         sourceMaps: true,
+-        configFile: false,
++        configFile: true,
+         babelrc: false,
+         parserOpts: {
+           plugins

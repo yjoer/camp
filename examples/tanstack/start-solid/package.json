@@ -9,14 +9,18 @@
   },
   "dependencies": {
     "@fontsource-variable/roboto": "5.2.8",
+    "@stylexjs/stylex": "0.16.3",
     "@tanstack/solid-router": "1.134.1",
     "@tanstack/solid-start": "1.134.1",
     "@tanstack/virtual-file-routes": "1.133.19",
     "solid-js": "1.9.10"
   },
   "devDependencies": {
+    "@stylexjs/babel-plugin": "0.16.3",
+    "@stylexjs/postcss-plugin": "0.16.3",
     "@tailwindcss/vite": "4.1.16",
     "@tanstack/nitro-v2-vite-plugin": "1.133.19",
+    "autoprefixer": "10.4.21",
     "cross-env": "10.1.0",
     "tailwindcss": "4.1.16",
     "typescript": "5.9.3",

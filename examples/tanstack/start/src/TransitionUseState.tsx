@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { memo, useState, useTransition } from 'react';
+
+import { button_styles } from '@/components/button';
 
 export const Route = createFileRoute('/transition-use-state')({
   component: TransitionUseState,
@@ -26,7 +29,7 @@ function TransitionUseState() {
     <div className="mx-2 my-1">
       <div>Page: {page}</div>
       <div>Pending: {isPending ? 'true' : 'false'}</div>
-      <button className="mt-1 font-semibold" onClick={handleClick}>
+      <button onClick={handleClick} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
       <Posts page={pageSlow} />

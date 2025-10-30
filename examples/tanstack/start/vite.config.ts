@@ -1,5 +1,3 @@
-import path from 'node:path';
-
 import tailwindcss from '@tailwindcss/vite';
 import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
@@ -22,10 +20,7 @@ const routes = rootRoute('root.tsx', [
 
 export default defineConfig({
   resolve: {
-    alias: {
-      '@/lib': path.resolve(import.meta.dirname, 'lib'),
-      '@/state': path.resolve(import.meta.dirname, 'state'),
-    },
+    tsconfigPaths: true,
   },
   server: {
     port: 3000,
@@ -39,7 +34,7 @@ export default defineConfig({
       },
     }),
     nitroV2Plugin({ preset: process.env.TSS_TARGET }),
-    react(),
+    react({ babel: { configFile: true } }),
     tailwindcss(),
   ],
 });

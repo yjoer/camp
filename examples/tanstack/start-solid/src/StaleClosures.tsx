@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/refs */
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/solid-router';
 import { createSignal, onCleanup, onMount } from 'solid-js';
+
+import { button_styles } from '../components/button';
 
 export const Route = createFileRoute('/stale-closures')({
   component: StaleClosures,
@@ -41,14 +44,10 @@ function Signals() {
       <div ref={timed_log_ref}>Timed Log: </div>
       <div ref={log_ref}>Log: </div>
       <div class="mt-1 flex gap-2">
-        <button
-          class="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform active:scale-96"
-          onClick={() => set_count((prev) => prev + 1)}>
+        <button onClick={() => set_count((prev) => prev + 1)} {...stylex.props(button_styles.base)}>
           Increment
         </button>
-        <button
-          class="cursor-pointer rounded bg-black/4 px-3 py-1 transition-transform active:scale-96"
-          onClick={handle_click}>
+        <button onClick={handle_click} {...stylex.props(button_styles.base)}>
           Log
         </button>
       </div>
