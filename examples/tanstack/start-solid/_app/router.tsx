@@ -1,6 +1,6 @@
 /* eslint-disable import-x/extensions */
 /* eslint-disable import-x/no-unresolved */
-import { createRouter as createTanStackRouter } from '@tanstack/react-router';
+import { createRouter as createTanStackRouter } from '@tanstack/solid-router';
 
 import { routeTree } from './routeTree.gen';
 
