@@ -1,4 +1,3 @@
-__pycache__/
 .build/
 .camp/
 .ipynb_checkpoints/
@@ -9,6 +8,8 @@ __pycache__/
 .tanstack/
 .venv/
 .virtual_documents/
+__pycache__/
+dist/
 node_modules/
 target/
 
