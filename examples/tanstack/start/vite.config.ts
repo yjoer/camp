@@ -13,6 +13,7 @@ const routes = rootRoute('root.tsx', [
   route('/transition-use-search', '../src/TransitionUseSearch.tsx'),
   route('/transition-redux', '../src/TransitionRedux.tsx'),
   route('/transition-zustand', '../src/TransitionZustand.tsx'),
+  route('/list-virt-dynamic-height', '../src/list-virt/DynamicHeight.tsx'),
   route('/custom-elements', '../src/CustomElements.tsx'),
   route('/media-source-extensions', '../src/MediaSourceExtensions.tsx'),
   route('/worker-offscreen-canvas', '../src/OffscreenCanvas.tsx'),

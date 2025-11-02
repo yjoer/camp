@@ -22,6 +22,13 @@ const sections = [
     ],
   },
   {
+    label: 'List Virtualization',
+    children: [
+      { to: '/list-virt-dynamic-height', label: 'Dynamic Height with uwrap' },
+      { to: '/list-virt-dynamic-height?wrap=canvas-hypertxt', label: 'Dynamic Height with canvas-hypertxt' }, // prettier-ignore
+    ],
+  },
+  {
     label: 'Web Components',
     children: [{ to: '/custom-elements', label: 'Custom Elements' }],
   },
