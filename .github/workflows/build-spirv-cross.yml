@@ -1,0 +1,29 @@
+name: Build SPIRV-Cross
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-spirv-cross:
+    name: Build SPIRV-Cross
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: KhronosGroup/SPIRV-Cross
+          ref: vulkan-sdk-1.4.328.1
+      - name: Configure
+        run: |
+          cmake `
+          -G ninja `
+          -DCMAKE_INSTALL_PREFIX=../build/install `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_C_COMPILER=clang `
+          -DCMAKE_CXX_COMPILER=clang++ `
+          -DSPIRV_CROSS_STATIC=ON `
+          -DSPIRV_CROSS_CLI=ON `
+          -S . `
+          -B ../build
+      - name: Build and Install
+        run: cmake --build ../build --target install
