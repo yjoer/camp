@@ -10,8 +10,6 @@ jobs:
   build-spirv-cross:
     name: Build SPIRV-Cross
     runs-on: windows-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -41,4 +39,4 @@ jobs:
           gh release edit ${{ env.VERSION }} --draft=false
         env:
           GH_REPO: yjoer/spirv-cross-builds
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SPIRV_GITHUB_TOKEN }}
