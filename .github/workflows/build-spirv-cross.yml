@@ -10,6 +10,8 @@ jobs:
   build-spirv-cross:
     name: Build SPIRV-Cross
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
