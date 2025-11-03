@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: KhronosGroup/SPIRV-Cross
-          ref: vulkan-sdk-${VERSION}
+          ref: vulkan-sdk-${{ env.VERSION }}
       - name: Configure
         run: |
           cmake `
@@ -34,9 +34,9 @@ jobs:
         run: tar -acvf spirv-cross-windows-x64.zip -C ../build/install *
       - name: Release
         run: |
-          gh release create ${VERSION} --draft --title ${VERSION}
-          gh release upload ${VERSION} spirv-cross-windows-x64.zip
-          gh release edit ${VERSION} --draft=false
+          gh release create ${{ env.VERSION }} --draft --title ${{ env.VERSION }}
+          gh release upload ${{ env.VERSION }} spirv-cross-windows-x64.zip
+          gh release edit ${{ env.VERSION }} --draft=false
         env:
           GH_REPO: yjoer/spirv-cross-builds
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
