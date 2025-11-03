@@ -16,7 +16,7 @@ jobs:
       - name: Configure
         run: |
           cmake `
-          -G ninja `
+          -G Ninja `
           -DCMAKE_INSTALL_PREFIX=../build/install `
           -DCMAKE_BUILD_TYPE=Release `
           -DCMAKE_C_COMPILER=clang `
