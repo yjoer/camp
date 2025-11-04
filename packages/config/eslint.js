@@ -64,12 +64,19 @@ function import_x() {
           ],
         },
       ],
-      'import-x/no-unresolved': 'error', // x
+      'import-x/no-unresolved': ['error', { ignore: [String.raw`^@\/build`] }], // x
       'import-x/order': [
         'error',
         {
           alphabetize: { order: 'asc' },
           groups: getImportGroups(),
+          pathGroups: [
+            {
+              pattern: '@/**',
+              group: 'internal',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['type'],
           'newlines-between': 'always',
         },
       ],

@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
+      "@/build/*": ["./.build/*"],
       "@/components/*": ["./components/*"],
       "@/lib/*": ["./lib/*"],
       "@/state/*": ["./state/*"]

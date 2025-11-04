@@ -1,0 +1,31 @@
+[tasks."build:triangle"]
+run = [
+  """
+  slangc shaders/triangle.slang -target spirv -o .build/triangle_vert.spv -entry vs_main
+  """,
+  """
+  spirv-cross .build/triangle_vert.spv --es --version 300 --stage vert --output .build/triangle.vert
+  """,
+  """
+  slangc shaders/triangle.slang -target spirv -o .build/triangle_frag.spv -entry fs_main
+  """,
+  """
+  spirv-cross .build/triangle_frag.spv --es --version 300 --stage frag --output .build/triangle.frag
+  """,
+]
+
+[tasks."build:rectangle"]
+run = [
+  """
+  slangc shaders/rectangle.slang -target spirv -o .build/rectangle_vert.spv -entry vs_main
+  """,
+  """
+  spirv-cross .build/rectangle_vert.spv --es --version 300 --stage vert --output .build/rectangle.vert
+  """,
+  """
+  slangc shaders/rectangle.slang -target spirv -o .build/rectangle_frag.spv -entry fs_main
+  """,
+  """
+  spirv-cross .build/rectangle_frag.spv --es --version 300 --stage frag --output .build/rectangle.frag
+  """,
+]
