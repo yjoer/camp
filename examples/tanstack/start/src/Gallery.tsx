@@ -40,6 +40,14 @@ const sections = [
     label: 'Web Workers',
     children: [{ to: '/worker-offscreen-canvas', label: 'Offscreen Canvas' }],
   },
+  {
+    label: 'WebGL',
+    children: [
+      { to: '/webgl/triangle', label: 'Triangle' },
+      { to: '/webgl/rectangle', label: 'Rectangle' },
+      { to: '/webgl/multiple-rectangles', label: 'Multiple Rectangles' },
+    ],
+  },
 ];
 
 function RouteComponent() {

@@ -17,6 +17,9 @@ const routes = rootRoute('root.tsx', [
   route('/custom-elements', '../src/CustomElements.tsx'),
   route('/media-source-extensions', '../src/MediaSourceExtensions.tsx'),
   route('/worker-offscreen-canvas', '../src/OffscreenCanvas.tsx'),
+  route('/webgl/triangle', '../src/webgl/Triangle.tsx'),
+  route('/webgl/rectangle', '../src/webgl/Rectangle.tsx'),
+  route('/webgl/multiple-rectangles', '../src/webgl/MultipleRectangles.tsx'),
 ]);
 
 export default defineConfig({
