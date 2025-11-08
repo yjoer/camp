@@ -9,6 +9,7 @@ import jsx_a11y_plugin from 'eslint-plugin-jsx-a11y';
 import perfectionist_plugin from 'eslint-plugin-perfectionist';
 import react_plugin from 'eslint-plugin-react';
 import react_hooks_plugin from 'eslint-plugin-react-hooks';
+import react_you_might_not_need_an_effect_plugin from 'eslint-plugin-react-you-might-not-need-an-effect';
 import unicorn_plugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
@@ -127,6 +128,13 @@ function react_hooks() {
     name: 'react-hooks/recommended',
     files: ['**/*.{js,jsx,ts,tsx}'],
     extends: [react_hooks_plugin.configs.flat['recommended-latest']],
+  };
+}
+
+function react_you_might_not_need_an_effect() {
+  return {
+    name: 'react/you-might-not-need-an-effect/recommended',
+    extends: [react_you_might_not_need_an_effect_plugin.configs.recommended],
   };
 }
 
@@ -313,6 +321,7 @@ export default defineConfig([
   typescript(),
   react(),
   react_hooks(),
+  react_you_might_not_need_an_effect(),
   stylex(),
   jsx_a11y(),
   unicorn(),
