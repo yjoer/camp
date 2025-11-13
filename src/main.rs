@@ -59,7 +59,9 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<SetupSubcommands>,
     },
-    #[clap(about = "Create fixup commits for all commits by the specified author.")]
+    #[clap(
+        about = "Convert commits by the specified author into fixup commits targeting their nearest ancestor by a different author."
+    )]
     Fold {
         #[arg(short, long, help = "Name of the author whose commits to fold.")]
         name: String,
