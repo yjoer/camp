@@ -59,6 +59,11 @@ enum Commands {
         #[command(subcommand)]
         subcommand: Option<SetupSubcommands>,
     },
+    #[clap(about = "Create fixup commits for all commits by the specified author.")]
+    Fold {
+        #[arg(short, long, help = "Name of the author whose commits to fold.")]
+        name: String,
+    },
     #[clap(about = "Apply a patch to the latest non-fixup commit automatically.")]
     Fixup,
     #[clap(about = "Squash fixup commits into their targets.")]
@@ -311,6 +316,7 @@ fn main() {
                     .unwrap();
             }
         },
+        Some(Commands::Fold { name }) => fold(&name).unwrap(),
         Some(Commands::Fixup) => fixup().unwrap(),
         Some(Commands::Squash) => squash().unwrap(),
         Some(Commands::Doctor) => doctor::doctor(),
@@ -328,6 +334,53 @@ fn disable_web_search() {
             .and_then(|k| k.set_u32("DisableSearchBoxSuggestions", 1))
             .unwrap();
     }
+}
+
+fn fold(name: &str) -> Result<(), Box<dyn Error>> {
+    let cwd = std::env::current_dir()?;
+    let repo = Repository::discover(&cwd)?;
+
+    let head_oid = repo.refname_to_id("HEAD")?;
+    let head_commit = repo.find_annotated_commit(head_oid)?;
+
+    let mut revwalk = repo.revwalk()?;
+    revwalk.push_head()?;
+    revwalk.set_sorting(git2::Sort::TOPOLOGICAL | git2::Sort::REVERSE)?;
+    let root_oid = revwalk.next().unwrap()?;
+    let root_commit = repo.find_annotated_commit(root_oid)?;
+
+    let mut rebase = repo.rebase(Some(&head_commit), Some(&root_commit), None, None)?;
+
+    while let Some(op) = rebase.next() {
+        let oid = op?.id();
+        let commit = repo.find_commit(oid)?;
+        let author = commit.author();
+        let author_name = author.name().unwrap_or("");
+        let committer = commit.committer();
+        let mut message = commit.message().unwrap_or("").to_string();
+
+        if author_name == name {
+            let mut revwalk_ = repo.revwalk()?;
+            revwalk_.push(oid)?;
+
+            for rev_ in revwalk_ {
+                let oid_ = rev_?;
+                let commit_ = repo.find_commit(oid_)?;
+                let author_ = commit_.author();
+                let author_name_ = author_.name().unwrap_or("");
+
+                if author_name_ != name {
+                    message = format!("fixup! {}", commit_.message().unwrap_or(""));
+                    break;
+                }
+            }
+        }
+
+        let _ = rebase.commit(None, &committer, Some(&message));
+    }
+
+    rebase.finish(None)?;
+    Ok(())
 }
 
 fn fixup() -> Result<(), Box<dyn Error>> {
