@@ -378,7 +378,7 @@ fn fold(name: &str) -> Result<(), Box<dyn Error>> {
             }
         }
 
-        let _ = rebase.commit(None, &committer, Some(&message));
+        rebase.commit(None, &committer, Some(&message))?;
     }
 
     rebase.finish(None)?;
