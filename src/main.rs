@@ -4,6 +4,7 @@ use clap::CommandFactory;
 use clap::Parser;
 use clap::Subcommand;
 use git2::Repository;
+use inquire::MultiSelect;
 use regex::Regex;
 use std::error::Error;
 use std::process::Command;
@@ -137,52 +138,7 @@ fn main() {
 
     match cli.command {
         Some(Commands::ContextMenu { subcommand }) => match subcommand {
-            Some(ContextMenuSubcommands::Clean) => {
-                #[cfg(target_os = "windows")]
-                {
-                    // Add to Favorites
-                    let key = CLASSES_ROOT.create("*\\shell\\pintohomefile").unwrap();
-                    key.set_string("ProgrammaticAccessOnly", "").unwrap();
-
-                    // Pin to Quick Access
-                    let key = CLASSES_ROOT.create("Folder\\shell\\pintohome").unwrap();
-                    key.set_string("ProgrammaticAccessOnly", "").unwrap();
-
-                    #[rustfmt::skip]
-                    let key = CURRENT_USER.create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced").unwrap();
-                    key.set_u32("MaxUndoItems", 0).unwrap();
-
-                    let key = CURRENT_USER.create("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked").unwrap();
-
-                    // Move to OneDrive
-                    key.set_string("{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}", "")
-                        .unwrap();
-
-                    // OneDrive
-                    key.set_string("{5250E46F-BB09-D602-5891-F476DC89B700}", "")
-                        .unwrap();
-
-                    // Pin to Start
-                    key.set_string("{470C0EBD-5D73-4d58-9CED-E91E22E23282}", "")
-                        .unwrap();
-
-                    // Scan with Microsoft Defender
-                    key.set_string("{09A47860-11B0-4DA5-AFA5-26D86198A780}", "")
-                        .unwrap();
-
-                    // Share with Skype
-                    key.set_string("{776DBC8D-7347-478C-8D71-791E12EF49D8}", "")
-                        .unwrap();
-
-                    // Adobe Acrobat
-                    key.set_string("{A6595CD1-BF77-430A-A452-18696685F7C7}", "")
-                        .unwrap();
-
-                    // Upload to MEGA
-                    key.set_string("{0229E5E7-09E9-45CF-9228-0228EC7D5F17}", "")
-                        .unwrap();
-                }
-            }
+            Some(ContextMenuSubcommands::Clean) => context_menu().unwrap(),
             Some(ContextMenuSubcommands::Legacy) => {
                 #[cfg(target_os = "windows")]
                 {
@@ -326,6 +282,91 @@ fn main() {
             Args::command().print_help().unwrap();
         }
     }
+}
+
+#[cfg(target_os = "windows")]
+fn context_menu() -> Result<(), Box<dyn Error>> {
+    let options = vec![
+        "Add to Favorites",
+        "Pin to Quick Access",
+        "Undo Items",
+        "Move to OneDrive",
+        "OneDrive",
+        "Pin to Start",
+        "Scan with Microsoft Defender",
+        "Share with Skype",
+        "Adobe Acrobat",
+        "Upload to MEGA",
+    ];
+
+    let selections = MultiSelect::new("Select context menu items to disable:", options).prompt()?;
+
+    for selection in &selections {
+        #[rustfmt::skip]
+        let blocked_key = CURRENT_USER
+            .create("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")
+            .unwrap();
+
+        match *selection {
+            "Add to Favorites" => {
+                let key = CLASSES_ROOT.create("*\\shell\\pintohomefile").unwrap();
+                key.set_string("ProgrammaticAccessOnly", "").unwrap();
+            }
+            "Pin to Quick Access" => {
+                let key = CLASSES_ROOT.create("Folder\\shell\\pintohome").unwrap();
+                key.set_string("ProgrammaticAccessOnly", "").unwrap();
+            }
+            "Undo Items" => {
+                let key = CURRENT_USER
+                    .create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
+                    .unwrap();
+                key.set_u32("MaxUndoItems", 0).unwrap();
+            }
+            "Move to OneDrive" => {
+                blocked_key
+                    .set_string("{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}", "")
+                    .unwrap();
+            }
+            "OneDrive" => {
+                blocked_key
+                    .set_string("{5250E46F-BB09-D602-5891-F476DC89B700}", "")
+                    .unwrap();
+            }
+            "Pin to Start" => {
+                blocked_key
+                    .set_string("{470C0EBD-5D73-4d58-9CED-E91E22E23282}", "")
+                    .unwrap();
+            }
+            "Scan with Microsoft Defender" => {
+                blocked_key
+                    .set_string("{09A47860-11B0-4DA5-AFA5-26D86198A780}", "")
+                    .unwrap();
+            }
+            "Share with Skype" => {
+                blocked_key
+                    .set_string("{776DBC8D-7347-478C-8D71-791E12EF49D8}", "")
+                    .unwrap();
+            }
+            "Adobe Acrobat" => {
+                blocked_key
+                    .set_string("{A6595CD1-BF77-430A-A452-18696685F7C7}", "")
+                    .unwrap();
+            }
+            "Upload to MEGA" => {
+                blocked_key
+                    .set_string("{0229E5E7-09E9-45CF-9228-0228EC7D5F17}", "")
+                    .unwrap();
+            }
+            _ => {}
+        }
+    }
+
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn context_menu() -> Result<(), Box<dyn Error>> {
+    Ok(())
 }
 
 fn disable_web_search() {
