@@ -3,6 +3,13 @@ name = "camp"
 edition = "2021"
 default-run = "camp"
 
+[workspace]
+members = [
+  "examples/ratatui/counter",
+  "examples/ratatui/counter-elm",
+  "examples/ratatui/json-editor"
+]
+
 [lib]
 crate-type = ["cdylib", "lib"]
 
@@ -15,13 +22,11 @@ name = "camp-nw"
 path = "src/main.rs"
 required-features = ["windows_subsystem"]
 
-[features]
-windows_subsystem = []
-
 [dependencies]
 clap = { version = "4.5.40", features = ["derive"] }
 git2 = "0.20.2"
 indexmap = "2.8.0"
+inquire = "0.9.1"
 owo-colors = "4.2.0"
 pyo3 = { version = "0.21.2", features = ["extension-module"] }
 regex = "1.11.0"
@@ -30,7 +35,11 @@ windows-registry = "0.5.2"
 
 [target.'cfg(windows)'.dependencies.windows]
 version = "0.61.3"
-features = ["Win32_Foundation", "Win32_System_Console", "Win32_UI_WindowsAndMessaging"]
+features = [
+  "Win32_Foundation",
+  "Win32_System_Console",
+  "Win32_UI_WindowsAndMessaging"
+]
 
-[workspace]
-members = ["examples/ratatui/counter", "examples/ratatui/counter-elm", "examples/ratatui/json-editor"]
+[features]
+windows_subsystem = []
