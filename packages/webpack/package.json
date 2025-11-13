@@ -4,7 +4,7 @@
   "dependencies": {
     "@rspack/core": "^1",
     "@vercel/webpack-asset-relocator-loader": "1.10.0",
-    "ts-loader": "9.5.2",
+    "ts-loader": "9.5.4",
     "webpack": "^5",
     "webpack-merge": "^6",
     "webpack-node-externals": "3.0.0"
