@@ -6,7 +6,10 @@ use clap::Subcommand;
 use git2::Repository;
 use inquire::MultiSelect;
 use regex::Regex;
+use reqwest;
 use std::error::Error;
+use std::fs;
+use std::path::Path;
 use std::process::Command;
 
 #[cfg(target_os = "windows")]
@@ -77,6 +80,9 @@ enum Commands {
 
 #[derive(Subcommand, Debug)]
 enum ContextMenuSubcommands {
+    #[clap(about = "Set up the context menu.")]
+    Setup,
+
     #[clap(about = "Clean up the context menu.")]
     Clean,
 
@@ -138,6 +144,7 @@ fn main() {
 
     match cli.command {
         Some(Commands::ContextMenu { subcommand }) => match subcommand {
+            Some(ContextMenuSubcommands::Setup) => setup_context_menu().unwrap(),
             Some(ContextMenuSubcommands::Clean) => context_menu().unwrap(),
             Some(ContextMenuSubcommands::Legacy) => {
                 #[cfg(target_os = "windows")]
@@ -285,6 +292,52 @@ fn main() {
 }
 
 #[cfg(target_os = "windows")]
+fn setup_context_menu() -> Result<(), Box<dyn Error>> {
+    let options = vec!["Windows Terminal", "WSL"];
+
+    let selections = MultiSelect::new("Select context menu items to set up:", options).prompt()?;
+
+    for selection in &selections {
+        match *selection {
+            "Windows Terminal" => {
+                let local_appdata = std::env::var("LOCALAPPDATA")?;
+                let icon_path = Path::new(&local_appdata).join("Microsoft\\WindowsApps\\wt.ico");
+                fs::create_dir_all(icon_path.parent().unwrap())?;
+
+                if !icon_path.exists() {
+                    let url = "https://raw.githubusercontent.com/microsoft/terminal/master/res/terminal.ico";
+                    let bytes = reqwest::blocking::get(url)?.bytes()?;
+                    fs::write(icon_path, &bytes)?;
+                }
+
+                let key = CLASSES_ROOT.create("Directory\\Background\\shell\\WindowsTerminal")?;
+                key.set_expand_string("", "Open in Terminal")?;
+                key.set_expand_string("Icon", "%LOCALAPPDATA%\\Microsoft\\WindowsApps\\wt.ico")?;
+
+                let cmd_key = key.create("command")?;
+                cmd_key.set_string("", "wt.exe -d \"%V\"")?;
+            }
+            "WSL" => {
+                let key = CLASSES_ROOT.create("Directory\\background\\shell\\WSL")?;
+                match key.remove_value("Extended") {
+                    Ok(_) => {}
+                    Err(_) => {}
+                };
+                key.set_expand_string("Icon", "wsl.exe")?;
+            }
+            _ => {}
+        }
+    }
+
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn setup_context_menu() -> Result<(), Box<dyn Error>> {
+    Ok(())
+}
+
+#[cfg(target_os = "windows")]
 fn context_menu() -> Result<(), Box<dyn Error>> {
     let options = vec![
         "Add to Favorites",
@@ -304,58 +357,42 @@ fn context_menu() -> Result<(), Box<dyn Error>> {
     for selection in &selections {
         #[rustfmt::skip]
         let blocked_key = CURRENT_USER
-            .create("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")
-            .unwrap();
+            .create("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?;
 
         match *selection {
             "Add to Favorites" => {
-                let key = CLASSES_ROOT.create("*\\shell\\pintohomefile").unwrap();
-                key.set_string("ProgrammaticAccessOnly", "").unwrap();
+                let key = CLASSES_ROOT.create("*\\shell\\pintohomefile")?;
+                key.set_string("ProgrammaticAccessOnly", "")?;
             }
             "Pin to Quick Access" => {
-                let key = CLASSES_ROOT.create("Folder\\shell\\pintohome").unwrap();
-                key.set_string("ProgrammaticAccessOnly", "").unwrap();
+                let key = CLASSES_ROOT.create("Folder\\shell\\pintohome")?;
+                key.set_string("ProgrammaticAccessOnly", "")?;
             }
             "Undo Items" => {
                 let key = CURRENT_USER
-                    .create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")
-                    .unwrap();
-                key.set_u32("MaxUndoItems", 0).unwrap();
+                    .create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?;
+                key.set_u32("MaxUndoItems", 0)?;
             }
             "Move to OneDrive" => {
-                blocked_key
-                    .set_string("{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}", "")
-                    .unwrap();
+                blocked_key.set_string("{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}", "")?;
             }
             "OneDrive" => {
-                blocked_key
-                    .set_string("{5250E46F-BB09-D602-5891-F476DC89B700}", "")
-                    .unwrap();
+                blocked_key.set_string("{5250E46F-BB09-D602-5891-F476DC89B700}", "")?;
             }
             "Pin to Start" => {
-                blocked_key
-                    .set_string("{470C0EBD-5D73-4d58-9CED-E91E22E23282}", "")
-                    .unwrap();
+                blocked_key.set_string("{470C0EBD-5D73-4d58-9CED-E91E22E23282}", "")?;
             }
             "Scan with Microsoft Defender" => {
-                blocked_key
-                    .set_string("{09A47860-11B0-4DA5-AFA5-26D86198A780}", "")
-                    .unwrap();
+                blocked_key.set_string("{09A47860-11B0-4DA5-AFA5-26D86198A780}", "")?;
             }
             "Share with Skype" => {
-                blocked_key
-                    .set_string("{776DBC8D-7347-478C-8D71-791E12EF49D8}", "")
-                    .unwrap();
+                blocked_key.set_string("{776DBC8D-7347-478C-8D71-791E12EF49D8}", "")?;
             }
             "Adobe Acrobat" => {
-                blocked_key
-                    .set_string("{A6595CD1-BF77-430A-A452-18696685F7C7}", "")
-                    .unwrap();
+                blocked_key.set_string("{A6595CD1-BF77-430A-A452-18696685F7C7}", "")?;
             }
             "Upload to MEGA" => {
-                blocked_key
-                    .set_string("{0229E5E7-09E9-45CF-9228-0228EC7D5F17}", "")
-                    .unwrap();
+                blocked_key.set_string("{0229E5E7-09E9-45CF-9228-0228EC7D5F17}", "")?;
             }
             _ => {}
         }
