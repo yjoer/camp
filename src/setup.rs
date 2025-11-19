@@ -1,11 +1,20 @@
 use crate::doctor::GIT_ALIASES;
 use git2::Config;
+use inquire::MultiSelect;
 use std::env;
 use std::error::Error;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::process::Command;
+
+#[cfg(target_os = "windows")]
+mod windows_imports {
+    pub use windows_registry::LOCAL_MACHINE;
+}
+
+#[cfg(target_os = "windows")]
+use windows_imports::*;
 
 pub fn setup_git() -> Result<(), Box<dyn Error>> {
     setup_config()?;
@@ -181,5 +190,29 @@ fn setup_jupyter_xcling_kernel(xcling_path: Option<String>) -> Result<(), Box<dy
         eprintln!("{}", stderr);
     }
 
+    Ok(())
+}
+
+#[cfg(target_os = "windows")]
+pub fn setup_cpu_priority() -> Result<(), Box<dyn Error>> {
+    let options = vec!["Microsoft Defender"];
+
+    let selections = MultiSelect::new("Select programs to set up:", options).prompt()?;
+
+    for selection in selections {
+        match selection {
+            "Microsoft Defender" => {
+                let key = LOCAL_MACHINE.create("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\MsMpEng.exe\\PerfOptions")?;
+                key.set_u32("CpuPriorityClass", 1)?;
+            }
+            _ => {}
+        }
+    }
+
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn setup_cpu_priority() -> Result<(), Box<dyn Error>> {
     Ok(())
 }

@@ -23,7 +23,7 @@ path = "src/main.rs"
 required-features = ["windows_subsystem"]
 
 [dependencies]
-clap = { version = "4.5.40", features = ["derive"] }
+clap = { version = "4.5.40", features = ["derive", "wrap_help"] }
 git2 = "0.20.2"
 indexmap = "2.8.0"
 inquire = "0.9.1"
