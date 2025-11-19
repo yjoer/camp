@@ -1,6 +1,5 @@
 #![cfg_attr(feature = "windows_subsystem", windows_subsystem = "windows")]
 
-use clap::CommandFactory;
 use clap::Parser;
 use clap::Subcommand;
 use git2::Repository;
@@ -35,7 +34,7 @@ mod setup;
 #[command(version, about, long_about = None)]
 struct Args {
     #[command(subcommand)]
-    command: Option<Commands>,
+    command: Commands,
 
     #[arg(short = None, long, help = "Hide the console window.")]
     hide_console: bool,
@@ -46,22 +45,22 @@ enum Commands {
     #[clap(about = "Work with the context menu.")]
     ContextMenu {
         #[command(subcommand)]
-        subcommand: Option<ContextMenuSubcommands>,
+        subcommand: ContextMenuSubcommands,
     },
     #[clap(about = "Configure Windows Search settings.")]
     Search {
         #[command(subcommand)]
-        subcommand: Option<SearchSubcommands>,
+        subcommand: SearchSubcommands,
     },
     #[clap(about = "Work with Visual Studio Code.")]
     Code {
         #[command(subcommand)]
-        subcommand: Option<CodeSubcommands>,
+        subcommand: CodeSubcommands,
     },
     #[clap(about = "Set up Git config, aliases, and Jupyter kernels.")]
     Setup {
         #[command(subcommand)]
-        subcommand: Option<SetupSubcommands>,
+        subcommand: SetupSubcommands,
     },
     #[clap(
         about = "Convert commits by the specified author into fixup commits targeting their nearest ancestor by a different author."
@@ -119,6 +118,9 @@ enum SetupSubcommands {
         )]
         xcling_path: Option<String>,
     },
+
+    #[clap(about = "Set up CPU priority.")]
+    CPUPriority,
 }
 
 #[cfg(target_os = "windows")]
@@ -143,36 +145,22 @@ fn main() {
     }
 
     match cli.command {
-        Some(Commands::ContextMenu { subcommand }) => match subcommand {
-            Some(ContextMenuSubcommands::Setup) => setup_context_menu().unwrap(),
-            Some(ContextMenuSubcommands::Clean) => context_menu().unwrap(),
-            Some(ContextMenuSubcommands::Legacy) => {
+        Commands::ContextMenu { subcommand } => match subcommand {
+            ContextMenuSubcommands::Setup => setup_context_menu().unwrap(),
+            ContextMenuSubcommands::Clean => context_menu().unwrap(),
+            ContextMenuSubcommands::Legacy => {
                 #[cfg(target_os = "windows")]
                 {
                     let key = CURRENT_USER.create("Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32").unwrap();
                     key.set_string("", "").unwrap();
                 }
             }
-            None => {
-                Args::command()
-                    .find_subcommand_mut("context-menu")
-                    .unwrap()
-                    .print_help()
-                    .unwrap();
-            }
         },
-        Some(Commands::Search { subcommand }) => match subcommand {
-            Some(SearchSubcommands::DisableWebSearch) => disable_web_search(),
-            None => {
-                Args::command()
-                    .find_subcommand_mut("search")
-                    .unwrap()
-                    .print_help()
-                    .unwrap();
-            }
+        Commands::Search { subcommand } => match subcommand {
+            SearchSubcommands::DisableWebSearch => disable_web_search(),
         },
-        Some(Commands::Code { subcommand }) => match subcommand {
-            Some(CodeSubcommands::Install) => {
+        Commands::Code { subcommand } => match subcommand {
+            CodeSubcommands::Install => {
                 #[cfg(target_os = "windows")]
                 {
                     let menu_text = "Open with Code (WSL)";
@@ -209,7 +197,7 @@ fn main() {
                     bg_cmd_key.set_string("", bg_cmd.as_str()).unwrap();
                 }
             }
-            Some(CodeSubcommands::Launch { path }) => {
+            CodeSubcommands::Launch { path } => {
                 if !path.starts_with("\\\\wsl$") {
                     return;
                 }
@@ -260,34 +248,16 @@ fn main() {
                         .expect("");
                 }
             }
-            None => {
-                Args::command()
-                    .find_subcommand_mut("code")
-                    .unwrap()
-                    .print_help()
-                    .unwrap();
-            }
         },
-        Some(Commands::Setup { subcommand }) => match subcommand {
-            Some(SetupSubcommands::Git) => setup::setup_git().unwrap(),
-            Some(SetupSubcommands::Jupyter { xcling_path }) => {
-                setup::setup_jupyter(xcling_path).unwrap()
-            }
-            None => {
-                Args::command()
-                    .find_subcommand_mut("setup")
-                    .unwrap()
-                    .print_help()
-                    .unwrap();
-            }
+        Commands::Setup { subcommand } => match subcommand {
+            SetupSubcommands::Git => setup::setup_git().unwrap(),
+            SetupSubcommands::Jupyter { xcling_path } => setup::setup_jupyter(xcling_path).unwrap(),
+            SetupSubcommands::CPUPriority => setup::setup_cpu_priority().unwrap(),
         },
-        Some(Commands::Fold { name }) => fold(&name).unwrap(),
-        Some(Commands::Fixup) => fixup().unwrap(),
-        Some(Commands::Squash) => squash().unwrap(),
-        Some(Commands::Doctor) => doctor::doctor(),
-        None => {
-            Args::command().print_help().unwrap();
-        }
+        Commands::Fold { name } => fold(&name).unwrap(),
+        Commands::Fixup => fixup().unwrap(),
+        Commands::Squash => squash().unwrap(),
+        Commands::Doctor => doctor::doctor(),
     }
 }
 
@@ -297,8 +267,8 @@ fn setup_context_menu() -> Result<(), Box<dyn Error>> {
 
     let selections = MultiSelect::new("Select context menu items to set up:", options).prompt()?;
 
-    for selection in &selections {
-        match *selection {
+    for selection in selections {
+        match selection {
             "Windows Terminal" => {
                 let local_appdata = std::env::var("LOCALAPPDATA")?;
                 let icon_path = Path::new(&local_appdata).join("Microsoft\\WindowsApps\\wt.ico");
@@ -354,12 +324,12 @@ fn context_menu() -> Result<(), Box<dyn Error>> {
 
     let selections = MultiSelect::new("Select context menu items to disable:", options).prompt()?;
 
-    for selection in &selections {
+    for selection in selections {
         #[rustfmt::skip]
         let blocked_key = CURRENT_USER
             .create("Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked")?;
 
-        match *selection {
+        match selection {
             "Add to Favorites" => {
                 let key = CLASSES_ROOT.create("*\\shell\\pintohomefile")?;
                 key.set_string("ProgrammaticAccessOnly", "")?;
