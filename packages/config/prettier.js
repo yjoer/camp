@@ -6,6 +6,7 @@ export default {
     'prettier-plugin-tailwindcss',
     'prettier-plugin-classnames',
     'prettier-plugin-merge',
+    'prettier-plugin-java',
   ],
   bracketSameLine: true,
   printWidth: 100,
