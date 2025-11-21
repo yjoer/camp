@@ -71,24 +71,25 @@ vision = [
 
 [dependency-groups]
 dev = [
-  "black==25.9.0",
-  "isort==6.1.0",
-  "jedi-language-server==0.45.1",
-  "jupyter-collaboration==4.1.1",
-  "jupyterlab==4.5.0b0",
+  "black==25.11.0",
+  "isort==7.0.0",
+  "jedi-language-server==0.46.0",
+  "jjava==1.0a6",
+  "jupyter-collaboration==4.1.2",
+  "jupyterlab==4.5.0",
   "jupyterlab-code-formatter==3.0.2",
   "jupyterlab-git==0.51.2",
   "jupyterlab-lsp==5.2.0",
   "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
-  "jupytext==1.17.3",
-  "marimo==0.16.5",
-  "maturin==1.9.5",
+  "jupytext==1.18.1",
+  "marimo==0.18.0",
+  "maturin==1.10.2",
   "mypy==1.18.2",
-  "notebook-intelligence==2.5.0",
-  "pytest==8.4.2",
+  "notebook-intelligence==2.6.1",
+  "pytest==9.0.1",
   "pytest-xdist==3.8.0",
-  "ruff==0.13.3",
-  "scalene==1.5.53",
+  "ruff==0.14.5",
+  "scalene==1.5.55",
 ]
 
 [build-system]
@@ -96,7 +97,7 @@ requires = ["maturin>=1,<2"]
 build-backend = "maturin"
 
 [tool.jupytext]
-preferred_jupytext_formats_read = "cpp:percent,py:percent,rs:percent"
+preferred_jupytext_formats_read = "cpp:percent,java:percent,py:percent,rs:percent"
 notebook_metadata_filter = "-all"
 
 [tool.marimo.display]
@@ -116,10 +117,10 @@ explicit_package_bases = true
 ignore_missing_imports = true
 allow_redefinition = true
 
-[tool.pytest.ini_options]
-addopts = "-n auto"
+[tool.pytest]
+addopts = ["-n", "auto"]
 cache_dir = ".venv/.pytest_cache"
-python_files = "*.py"
+python_files = ["*.py"]
 testpaths = ["camp", "solutions"]
 
 [tool.ruff]
