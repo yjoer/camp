@@ -52,6 +52,16 @@ for (int i = 0; i < 5; i++)
   std::cout << *(numbers + i) << " ";
 std::cout << std::endl;
 
+// %%
+int *numbers = new int[5];
+numbers[0] = 1;
+
+for (int i = 0; i < 5; i++)
+  std::cout << numbers[i] << " ";
+std::cout << std::endl;
+
+delete[] numbers;
+
 // %% [markdown]
 // ## Statements
 
