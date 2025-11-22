@@ -1,5 +1,35 @@
 // %%
 import java.lang.Math;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
+// %% [markdown]
+// ## Declarations
+
+// %% [markdown]
+// ### Arrays
+
+// %%
+class DeclarationsArrays {
+
+  static void f1() {
+    int[] numbers = { 1, 2, 3, 4, 5 };
+    System.out.println(Arrays.toString(numbers));
+  }
+
+  static void f2() {
+    int[] numbers = new int[5];
+    numbers[0] = 1;
+    System.out.println(Arrays.toString(numbers));
+  }
+}
+
+// %%
+// DeclarationsArrays.f1();
+
+// %%
+// DeclarationsArrays.f2();
 
 // %% [markdown]
 // ## Statements
@@ -29,6 +59,31 @@ class StatementsFor {
 
 // %%
 // StatementsFor.f1();
+
+// %% [markdown]
+// ### For-Each Loop
+
+// %%
+class StatementsForEach {
+
+  static String[] letters = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j" };
+
+  static void f1() {
+    int number = 2147483647;
+    Deque<Integer> digits = new ArrayDeque<>();
+    while (number > 0) {
+      digits.addFirst(number % 10);
+      number /= 10;
+    }
+
+    for (int d : digits) {
+      System.out.print(letters[d]);
+    }
+  }
+}
+
+// %%
+// StatementsForEach.f1();
 
 // %% [markdown]
 // ### While Loop
