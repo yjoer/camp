@@ -32,4 +32,4 @@ layout.buildDirectory.set(file(".build"))
 
 sourceSets { main { java.srcDirs("src") } }
 
-application { mainClass = "App" }
+application { mainClass = "Launcher" }
