@@ -1,9 +1,14 @@
 import java.util.ArrayList;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import lib.AppState;
 import lib.Simulator;
 import lib.SimulatorOps;
@@ -12,12 +17,14 @@ class SimulationControls extends VBox {
 
   Simulator simulator = null;
   boolean is_started = false;
+  Timeline timeline = null;
 
   TraceViewer trace_viewer;
 
   Button start_button = new Button("Start");
   Button step_button = new Button("Step");
-  Button fast_forward_button = new Button("Fast Forward");
+  SplitMenuButton fast_forward_button = new SplitMenuButton();
+  MenuItem animate_item = new MenuItem("Animate");
 
   SimulationControls(TraceViewer trace_viewer) {
     this.trace_viewer = trace_viewer;
@@ -32,6 +39,13 @@ class SimulationControls extends VBox {
       handle_step();
     });
 
+    animate_item.setOnAction(e -> {
+      if (timeline == null) handle_animate();
+      else handle_stop_animate();
+    });
+
+    fast_forward_button.setText("Fast Forward");
+    fast_forward_button.getItems().addAll(animate_item);
     fast_forward_button.setVisible(false);
     fast_forward_button.setOnAction(e -> {
       handle_fast_forward();
@@ -85,6 +99,9 @@ class SimulationControls extends VBox {
 
   private void handle_stop() {
     simulator = null;
+    is_started = false;
+    if (timeline != null) handle_stop_animate();
+
     trace_viewer.traces_tab.jobs.getChildren().clear();
     trace_viewer.traces_tab.waiting_list.getChildren().clear();
     trace_viewer.traces_tab.partitions.getChildren().clear();
@@ -100,7 +117,6 @@ class SimulationControls extends VBox {
 
     trace_viewer.insights_tab.logs_text_area.clear();
 
-    is_started = false;
     start_button.setText("Start");
     step_button.setVisible(false);
     fast_forward_button.setVisible(false);
@@ -163,11 +179,37 @@ class SimulationControls extends VBox {
     String avg_fragmentation = String.format("%.4f", simulator.avg_fragmentation());
     trace_viewer.insights_tab.avg_fragmentation_text.setText(avg_fragmentation);
 
-    if (!simulator.hasNext()) step_button.setDisable(true);
+    if (!simulator.hasNext()) {
+      step_button.setDisable(true);
+      fast_forward_button.setDisable(true);
+    }
+  }
+
+  private void handle_animate() {
+    animate_item.setText("Stop Animating");
+
+    timeline = new Timeline(
+      new KeyFrame(Duration.millis(500), e -> {
+        if (!simulator.hasNext()) {
+          handle_stop_animate();
+          return;
+        }
+
+        handle_step();
+      })
+    );
+
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  private void handle_stop_animate() {
+    animate_item.setText("Animate");
+    timeline.stop();
+    timeline = null;
   }
 
   private void handle_fast_forward() {
     while (simulator.hasNext()) handle_step();
-    if (!simulator.hasNext()) fast_forward_button.setDisable(true);
   }
 }

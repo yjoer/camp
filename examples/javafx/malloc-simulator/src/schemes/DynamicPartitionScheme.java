@@ -34,9 +34,7 @@ public final class DynamicPartitionScheme implements PartitionScheme {
     int idx = placement_strategy.next(table, job.size());
     if (idx == -1) return idx;
 
-    Partition p = table.get(idx);
-    p.set_job(job);
-
+    table.get(idx).set_job(job);
     return idx;
   }
 
