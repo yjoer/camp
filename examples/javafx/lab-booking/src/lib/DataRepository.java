@@ -13,8 +13,7 @@ public class DataRepository {
   public int find_user_id_by_email(String email_address) {
     String query = "select user_id from users where email_address = ?";
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, email_address);
 
       ResultSet rs = statement.executeQuery();
@@ -29,8 +28,7 @@ public class DataRepository {
   public String find_password_by_email(String email_address) {
     String query = "select password from users where email_address = ?";
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, email_address);
 
       ResultSet rs = statement.executeQuery();
@@ -45,8 +43,7 @@ public class DataRepository {
   public String find_role_by_user_id(int user_id) {
     String query = "select role_name from users where user_id = ?";
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setInt(1, user_id);
 
       ResultSet rs = statement.executeQuery();
@@ -71,8 +68,7 @@ public class DataRepository {
       values(?, ?, ?, ?, ?, ?)
       """;
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, first_name);
       statement.setString(2, last_name);
       statement.setString(3, email_address);
@@ -88,8 +84,7 @@ public class DataRepository {
   boolean find_seat_occupied(String seat_id) {
     String query = "select count(*) from bookings where seat_id = ?";
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, seat_id);
 
       ResultSet rs = statement.executeQuery();
@@ -115,8 +110,7 @@ public class DataRepository {
       where seat_id = ?
       """;
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, seat_id);
 
       ResultSet rs = statement.executeQuery();
@@ -152,8 +146,7 @@ public class DataRepository {
         supervisor_name = excluded.supervisor_name
       """;
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, seat_id);
       statement.setString(2, name);
       statement.setString(3, matric_number);
@@ -168,8 +161,7 @@ public class DataRepository {
   public void delete_booking(String seat_id) {
     String query = "delete from bookings where seat_id = ?";
 
-    try {
-      PreparedStatement statement = conn.prepareStatement(query);
+    try (PreparedStatement statement = conn.prepareStatement(query)) {
       statement.setString(1, seat_id);
       statement.executeUpdate();
     } catch (SQLException e) {
