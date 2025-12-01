@@ -16,12 +16,12 @@ dist/
 node_modules/
 target/
 
+*.db
 *.db-journal
 *.gen.ts
 *.pyd
 .classpath
 .env
-.jupyter_ystore.db
 .project
 Cargo.lock
 next-env.d.ts

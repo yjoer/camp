@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml">
+  <TabPane VBox.vgrow="always" tabClosingPolicy="unavailable">
+    <tabs>
+      <Tab fx:id="tab_1" text="Service Computing Laboratory" />
+      <Tab fx:id="tab_2" text="Enabling Technologies and Infrastructures Laboratories" />
+      <Tab fx:id="tab_3" text="Data-to-knowledge Laboratory" />
+    </tabs>
+  </TabPane>
+  <Separator />
+  <VBox fx:id="legend" />
+</VBox>

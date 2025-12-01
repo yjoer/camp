@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<HBox xmlns:fx="http://javafx.com/fxml" alignment="top_center">
+  <padding>
+    <Insets top="8" right="16" bottom="8" left="16" />
+  </padding>
+  <VBox prefWidth="320">
+    <Text text="Welcome to Lab Booking System!" />
+    <Text fx:id="message" fill="#f44336" />
+    <Label text="Email Address">
+      <VBox.margin>
+        <Insets top="24" />
+      </VBox.margin>
+    </Label>
+    <TextField fx:id="email_address" />
+    <Label text="Password">
+      <VBox.margin>
+        <Insets top="8" />
+      </VBox.margin>
+    </Label>
+    <PasswordField fx:id="password" />
+    <HBox>
+      <VBox.margin>
+        <Insets top="16" />
+      </VBox.margin>
+      <Button fx:id="sign_up_button" onAction="#handle_sign_up" text="Sign Up" />
+      <Region HBox.hgrow="always" />
+      <Button fx:id="sign_in_button" onAction="#handle_sign_in" text="Sign In" />
+    </HBox>
+  </VBox>
+</HBox>
