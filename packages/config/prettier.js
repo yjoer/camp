@@ -2,6 +2,7 @@
 export default {
   plugins: [
     // '@prettier/plugin-oxc',
+    '@prettier/plugin-xml',
     'prettier-plugin-packagejson',
     'prettier-plugin-tailwindcss',
     'prettier-plugin-classnames',
@@ -12,6 +13,8 @@ export default {
   printWidth: 100,
   quoteProps: 'as-needed',
   singleQuote: true,
+  //
+  xmlWhitespaceSensitivity: 'ignore',
   tailwindFunctions: ['clsx', 'cva'],
   customFunctions: ['clsx', 'cva'],
   endingPosition: 'absolute',

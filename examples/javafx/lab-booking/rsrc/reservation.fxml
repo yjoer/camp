@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<HBox xmlns:fx="http://javafx.com/fxml" alignment="top_center">
+  <padding>
+    <Insets top="8" right="16" bottom="8" left="16" />
+  </padding>
+  <VBox prefWidth="320">
+    <Text text="Please enter the details to reserve a seat." />
+    <Text fx:id="message" fill="#f44336" />
+    <HBox spacing="8">
+      <VBox.margin>
+        <Insets top="24" />
+      </VBox.margin>
+      <VBox HBox.hgrow="always">
+        <Label text="Cubicle ID" />
+        <TextField fx:id="cubicle_id" disable="true" />
+      </VBox>
+      <VBox HBox.hgrow="always">
+        <Label text="Seat Number" />
+        <TextField fx:id="seat_number" disable="true" />
+      </VBox>
+    </HBox>
+    <Label text="Name">
+      <VBox.margin>
+        <Insets top="8" />
+      </VBox.margin>
+    </Label>
+    <TextField fx:id="name" />
+    <Label text="Matric Number">
+      <VBox.margin>
+        <Insets top="8" />
+      </VBox.margin>
+    </Label>
+    <TextField fx:id="matric_number" />
+    <HBox spacing="8">
+      <VBox.margin>
+        <Insets top="8" />
+      </VBox.margin>
+      <VBox HBox.hgrow="always">
+        <Label text="Check-In Date" />
+        <DatePicker fx:id="check_in_date" />
+      </VBox>
+      <VBox HBox.hgrow="always">
+        <Label text="Supervisor's Name" />
+        <TextField fx:id="supervisor_name" />
+      </VBox>
+    </HBox>
+    <ButtonBar>
+      <VBox.margin>
+        <Insets top="16" />
+      </VBox.margin>
+      <buttons>
+        <Button fx:id="delete_button" onAction="#handle_delete" text="Delete" visible="false" />
+        <Button fx:id="reserve_button" onAction="#handle_reserve" text="Reserve" />
+        <Button fx:id="cancel_button" onAction="#handle_cancel" text="Cancel" />
+      </buttons>
+    </ButtonBar>
+  </VBox>
+</HBox>
