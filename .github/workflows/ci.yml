@@ -16,6 +16,9 @@ jobs:
   verify-cpp:
     uses: ./.github/workflows/verify-cpp.yml
 
+  verify-java:
+    uses: ./.github/workflows/verify-java.yml
+
   verify-js:
     uses: ./.github/workflows/verify-js.yml
 
