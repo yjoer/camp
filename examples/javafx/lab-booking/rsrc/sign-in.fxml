@@ -13,7 +13,7 @@
     <Insets top="8" right="16" bottom="8" left="16" />
   </padding>
   <VBox prefWidth="320">
-    <Text text="Welcome to Lab Booking System!" />
+    <Text text="Welcome to the Lab Booking System!" />
     <Text fx:id="message" fill="#f44336" />
     <Label text="Email Address">
       <VBox.margin>

@@ -22,10 +22,13 @@ public class LocalDatabase {
 
     try {
       connection = DriverManager.getConnection("jdbc:sqlite:data.db");
-      if (exists) return;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
 
-      Statement statement = connection.createStatement();
+    if (exists) return;
 
+    try (Statement statement = connection.createStatement()) {
       statement.executeUpdate("create table roles (role_name text primary key)");
       statement.executeUpdate("insert into roles values('student')");
       statement.executeUpdate("insert into roles values('administrator')");
