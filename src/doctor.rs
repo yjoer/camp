@@ -86,6 +86,8 @@ fn context_menu() -> IndexMap<String, String> {
     let path = "Software\\Microsoft\\Windows\\CurrentVersion\\Shell Extensions\\Blocked";
 
     let mut blocked_items = IndexMap::<&str, &str>::new();
+    #[rustfmt::skip]
+    blocked_items.insert("Work Folders Context Menu Handler", "{E61BF828-5E63-4287-BEF1-60B1A4FDE0E3}");
     blocked_items.insert("Move to OneDrive", "{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}");
     blocked_items.insert("OneDrive", "{5250E46F-BB09-D602-5891-F476DC89B700}");
     blocked_items.insert("Pin to Start", "{470C0EBD-5D73-4d58-9CED-E91E22E23282}");
