@@ -313,6 +313,7 @@ fn context_menu() -> Result<(), Box<dyn Error>> {
         "Add to Favorites",
         "Pin to Quick Access",
         "Undo Items",
+        "Work Folders Context Menu Handler",
         "Move to OneDrive",
         "OneDrive",
         "Pin to Start",
@@ -342,6 +343,9 @@ fn context_menu() -> Result<(), Box<dyn Error>> {
                 let key = CURRENT_USER
                     .create("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced")?;
                 key.set_u32("MaxUndoItems", 0)?;
+            }
+            "Work Folders Context Menu Handler" => {
+                blocked_key.set_string("{E61BF828-5E63-4287-BEF1-60B1A4FDE0E3}", "")?;
             }
             "Move to OneDrive" => {
                 blocked_key.set_string("{1FA0E654-C9F2-4A1F-9800-B9A75D744B00}", "")?;
