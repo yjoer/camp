@@ -28,6 +28,7 @@ mod windows_imports {
 use windows_imports::*;
 
 mod doctor;
+mod monitor;
 mod setup;
 
 #[derive(Parser, Debug)]
@@ -75,6 +76,8 @@ enum Commands {
     Squash,
     #[clap(about = "Check installation status and diagnose possible problems.")]
     Doctor,
+    #[clap(about = "Change the display brightness on selected applications.")]
+    Monitor,
 }
 
 #[derive(Subcommand, Debug)]
@@ -258,6 +261,7 @@ fn main() {
         Commands::Fixup => fixup().unwrap(),
         Commands::Squash => squash().unwrap(),
         Commands::Doctor => doctor::doctor(),
+        Commands::Monitor => monitor::monitor(),
     }
 }
 

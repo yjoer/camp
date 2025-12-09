@@ -130,9 +130,7 @@ create_graph_interface!(GraphString, String);
 #[pyfunction]
 #[pyo3(name = "dijkstra")]
 pub fn dijkstra_string(
-    graph: &mut GraphString,
-    start: String,
-    end: String,
+    graph: &mut GraphString, start: String, end: String,
 ) -> PyResult<(Vec<String>, u32)> {
     match dijkstra(&graph.inner, start, end) {
         Some((path, distance)) => Ok((path, distance)),
