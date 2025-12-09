@@ -77,7 +77,10 @@ enum Commands {
     #[clap(about = "Check installation status and diagnose possible problems.")]
     Doctor,
     #[clap(about = "Change the display brightness on selected applications.")]
-    Monitor,
+    Monitor {
+        #[command(subcommand)]
+        subcommand: Option<MonitorSubcommands>,
+    },
 }
 
 #[derive(Subcommand, Debug)]
@@ -124,6 +127,18 @@ enum SetupSubcommands {
 
     #[clap(about = "Set up CPU priority.")]
     CPUPriority,
+}
+
+#[derive(Subcommand, Debug)]
+enum MonitorSubcommands {
+    #[clap(about = "Launch the monitor service.")]
+    Service,
+
+    #[clap(about = "Install the monitor service.")]
+    Install,
+
+    #[clap(about = "Uninstall the monitor service.")]
+    Uninstall,
 }
 
 #[cfg(target_os = "windows")]
@@ -261,7 +276,12 @@ fn main() {
         Commands::Fixup => fixup().unwrap(),
         Commands::Squash => squash().unwrap(),
         Commands::Doctor => doctor::doctor(),
-        Commands::Monitor => monitor::monitor(),
+        Commands::Monitor { subcommand } => match subcommand {
+            Some(MonitorSubcommands::Service) => monitor::start_monitor_service().unwrap(),
+            Some(MonitorSubcommands::Install) => monitor::install_monitor_service().unwrap(),
+            Some(MonitorSubcommands::Uninstall) => monitor::uninstall_monitor_service().unwrap(),
+            None => monitor::monitor(),
+        },
     }
 }
 
