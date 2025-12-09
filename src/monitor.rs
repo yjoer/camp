@@ -354,17 +354,24 @@ fn monitor_service_handler() -> Result<(), Box<dyn std::error::Error>> {
 unsafe fn spawn_user_process(command_line: String) -> Result<HANDLE, windows::core::Error> {
     let mut sessions: *mut WTS_SESSION_INFOW = ptr::null_mut();
     let mut session_count: u32 = 0;
-    WTSEnumerateSessionsW(None, 0, 1, &mut sessions, &mut session_count)?;
-
     let mut user_token: HANDLE = HANDLE::default();
-    let sessions_slice = slice::from_raw_parts(sessions, session_count as usize);
-    for session in sessions_slice {
-        if session.State == WTSActive {
+
+    'retry: loop {
+        WTSEnumerateSessionsW(None, 0, 1, &mut sessions, &mut session_count)?;
+
+        let sessions_slice = slice::from_raw_parts(sessions, session_count as usize);
+        for session in sessions_slice {
+            if session.State != WTSActive {
+                continue;
+            }
+
             match WTSQueryUserToken(session.SessionId, &mut user_token) {
-                Ok(_) => break,
+                Ok(_) => break 'retry,
                 Err(_) => {}
             }
         }
+
+        sleep(Duration::from_secs(3));
     }
 
     WTSFreeMemory(sessions as *mut c_void);
