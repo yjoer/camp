@@ -49,6 +49,10 @@ mod windows_imports {
     pub use windows::Win32::System::RemoteDesktop::WTS_SESSION_INFOW;
     pub use windows::Win32::System::Rpc::RPC_C_AUTHN_NONE;
     pub use windows::Win32::System::Rpc::RPC_C_AUTHN_WINNT;
+    pub use windows::Win32::System::Services::ChangeServiceConfig2W;
+    pub use windows::Win32::System::Services::SC_HANDLE;
+    pub use windows::Win32::System::Services::SERVICE_CONFIG_DELAYED_AUTO_START_INFO;
+    pub use windows::Win32::System::Services::SERVICE_DELAYED_AUTO_START_INFO;
     pub use windows::Win32::System::Threading::CreateProcessAsUserW;
     pub use windows::Win32::System::Threading::OpenProcess;
     pub use windows::Win32::System::Threading::TerminateProcess;
@@ -437,7 +441,20 @@ pub fn install_monitor_service() -> Result<(), Box<dyn std::error::Error>> {
         account_password: None,
     };
 
-    service_manager.create_service(&service_info, ServiceAccess::CHANGE_CONFIG)?;
+    let service = service_manager.create_service(&service_info, ServiceAccess::CHANGE_CONFIG)?;
+
+    unsafe {
+        let mut delayed = SERVICE_DELAYED_AUTO_START_INFO {
+            fDelayedAutostart: true.into(),
+        };
+
+        ChangeServiceConfig2W(
+            SC_HANDLE(service.raw_handle()),
+            SERVICE_CONFIG_DELAYED_AUTO_START_INFO,
+            Some(&mut delayed as *mut _ as *mut c_void),
+        )?;
+    }
+
     Ok(())
 }
 
