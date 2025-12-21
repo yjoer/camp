@@ -1,6 +1,7 @@
 .build/
 .camp/
 .gradle/
+.idea/
 .ipynb_checkpoints/
 .next/
 .nitro/
