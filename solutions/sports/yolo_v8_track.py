@@ -45,7 +45,7 @@ TRAIN_STARTED_AT = ""
 DATALOADER_WORKERS = psutil.cpu_count(logical=False)
 
 if OVERFITTING_VIDEO_TEST:
-    CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
+  CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
 
 # %%
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -53,44 +53,44 @@ print("Running on CPU.") if device.type == "cpu" else print("Running on GPU.")
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
 if not os.getenv("S3_ENDPOINT"):
-    storage_options = {}
+  storage_options = {}
 
 # %%
 train_dataset: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
-    path=TRAIN_DATASET_PATH,
-    subset="train",
-    storage_options=storage_options,
-    transforms=transforms,
+  path=TRAIN_DATASET_PATH,
+  subset="train",
+  storage_options=storage_options,
+  transforms=transforms,
 )
 
 train_dataset_raw: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
-    path=TRAIN_DATASET_PATH,
-    subset="train",
-    storage_options=storage_options,
+  path=TRAIN_DATASET_PATH,
+  subset="train",
+  storage_options=storage_options,
 )
 
 test_dataset: IKCESTDetectionTestDataset | Subset = IKCESTDetectionTestDataset(
-    path=TRAIN_DATASET_PATH,
-    storage_options=storage_options,
-    transforms=transforms_test,
+  path=TRAIN_DATASET_PATH,
+  storage_options=storage_options,
+  transforms=transforms_test,
 )
 
 test_dataset_raw: IKCESTDetectionTestDataset | Subset = IKCESTDetectionTestDataset(
-    path=TRAIN_DATASET_PATH,
-    storage_options=storage_options,
+  path=TRAIN_DATASET_PATH,
+  storage_options=storage_options,
 )
 
 if OVERFITTING_VIDEO_TEST:
-    train_dataset = Subset(train_dataset, list(range(750)))
+  train_dataset = Subset(train_dataset, list(range(750)))
 
 if TEST_VIDEOS_TEST:
-    test_dataset = Subset(test_dataset, list(range(2250)))
+  test_dataset = Subset(test_dataset, list(range(2250)))
 
 # %%
 yolo = YOLO("yolov8n.pt")
@@ -120,40 +120,40 @@ load_model(train_storage_path, epochs, yolo.model, storage_options)
 
 # %%
 train_dataloader = DataLoader(
-    train_dataset,
-    batch_size,
-    num_workers=DATALOADER_WORKERS,
-    collate_fn=collate_fn,
-    persistent_workers=True,
+  train_dataset,
+  batch_size,
+  num_workers=DATALOADER_WORKERS,
+  collate_fn=collate_fn,
+  persistent_workers=True,
 )
 
 test_dataloader = DataLoader(
-    test_dataset,
-    batch_size,
-    num_workers=DATALOADER_WORKERS,
-    collate_fn=collate_fn,
-    persistent_workers=True,
+  test_dataset,
+  batch_size,
+  num_workers=DATALOADER_WORKERS,
+  collate_fn=collate_fn,
+  persistent_workers=True,
 )
 
 if hasattr(os, "register_at_fork") and hasattr(fsspec, "asyn"):
-    os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
+  os.register_at_fork(after_in_child=fsspec.asyn.reset_lock)
 
 dataloader = test_dataloader
 
 if OVERFITTING_VIDEO_TEST:
-    dataloader = train_dataloader
+  dataloader = train_dataloader
 
 if TEST_VIDEOS_TEST:
-    dataloader = test_dataloader
+  dataloader = test_dataloader
 
 # %%
 predictor = YOLOv8DetectionPredictor(
-    yolo.model,
-    reg_max,
-    n_classes,
-    strides,
-    confidence_threshold=0.25,
-    iou_threshold=0.7,
+  yolo.model,
+  reg_max,
+  n_classes,
+  strides,
+  confidence_threshold=0.25,
+  iou_threshold=0.7,
 )
 
 # %%
@@ -167,37 +167,37 @@ args.fuse_score = True
 
 
 def save_tracking_arrays(
-    path: str,
-    epoch: int,
-    video_name: str,
-    tracklets_seq: list[np.ndarray],
-    storage_options: dict | None = None,
+  path: str,
+  epoch: int,
+  video_name: str,
+  tracklets_seq: list[np.ndarray],
+  storage_options: dict | None = None,
 ) -> None:
-    if storage_options is None:
-        storage_options = {}
+  if storage_options is None:
+    storage_options = {}
 
-    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
+  tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
 
-    with fsspec.open(tracking_path, "wb", **storage_options) as f:
-        np.savez(f, *tracklets_seq)
+  with fsspec.open(tracking_path, "wb", **storage_options) as f:
+    np.savez(f, *tracklets_seq)
 
 
 def load_tracking_arrays(
-    path: str,
-    epoch: int,
-    video_name: str,
-    storage_options: dict | None = None,
+  path: str,
+  epoch: int,
+  video_name: str,
+  storage_options: dict | None = None,
 ) -> list:
-    if storage_options is None:
-        storage_options = {}
+  if storage_options is None:
+    storage_options = {}
 
-    tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
+  tracking_path = f"{path}/checkpoint-{epoch}-tracking/{video_name}.npz"
 
-    with fsspec.open(tracking_path, **storage_options) as f:
-        tracklets_seq = np.load(f)
-        tracklets_seq = [tracklets_seq[key] for key in tracklets_seq]
+  with fsspec.open(tracking_path, **storage_options) as f:
+    tracklets_seq = np.load(f)
+    tracklets_seq = [tracklets_seq[key] for key in tracklets_seq]
 
-    return tracklets_seq
+  return tracklets_seq
 
 
 # %%
@@ -205,50 +205,50 @@ yolo.model.eval()
 yolo.model.model[-1].training = True
 
 with torch.no_grad():
-    frame_counter = 0
-    video_name = "0"
-    tracklets_seq: list[np.ndarray] = []
+  frame_counter = 0
+  video_name = "0"
+  tracklets_seq: list[np.ndarray] = []
 
-    pbar = tqdm(total=len(dataloader))
+  pbar = tqdm(total=len(dataloader))
 
-    for batch_images, metadata in dataloader:
-        images = torch.stack(batch_images, dim=0).to(device)
-        feat_maps = yolo.model(images)
+  for batch_images, metadata in dataloader:
+    images = torch.stack(batch_images, dim=0).to(device)
+    feat_maps = yolo.model(images)
 
-        pred_nms = predictor(feat_maps)
+    pred_nms = predictor(feat_maps)
 
-        for idx, pred in enumerate(pred_nms):
-            pred_np = pred.cpu().numpy()
+    for idx, pred in enumerate(pred_nms):
+      pred_np = pred.cpu().numpy()
 
-            # Run on every first frame.
-            if (frame_counter % 750) == 0:
-                if "seq" in metadata[idx]:
-                    video_name = metadata[idx]["seq"]["name"]
+      # Run on every first frame.
+      if (frame_counter % 750) == 0:
+        if "seq" in metadata[idx]:
+          video_name = metadata[idx]["seq"]["name"]
 
-                if video_name.isdigit() and frame_counter != 0:
-                    video_name = str(int(video_name) + 1)
+        if video_name.isdigit() and frame_counter != 0:
+          video_name = str(int(video_name) + 1)
 
-                tracker = BYTETracker(args, frame_rate=25)
+        tracker = BYTETracker(args, frame_rate=25)
 
-            boxes = Boxes(pred_np, orig_shape=())
-            tracklets = tracker.update(boxes)
-            tracklets_seq.append(tracklets)
+      boxes = Boxes(pred_np, orig_shape=())
+      tracklets = tracker.update(boxes)
+      tracklets_seq.append(tracklets)
 
-            # Run on every last frame.
-            if ((frame_counter + 1) % 750) == 0:
-                save_tracking_arrays(
-                    train_storage_path,
-                    epochs,
-                    video_name,
-                    tracklets_seq,
-                    storage_options,
-                )
+      # Run on every last frame.
+      if ((frame_counter + 1) % 750) == 0:
+        save_tracking_arrays(
+          train_storage_path,
+          epochs,
+          video_name,
+          tracklets_seq,
+          storage_options,
+        )
 
-                tracklets_seq = []
+        tracklets_seq = []
 
-            frame_counter += 1
+      frame_counter += 1
 
-        pbar.update()
+    pbar.update()
 
 # %%
 tracking_path = f"{train_storage_path}/checkpoint-{epochs}-tracking"
@@ -260,124 +260,123 @@ tracklets_npzs = fs.ls(tracking_path)
 tracklets_npzs = [fs.unstrip_protocol(t) for t in tracklets_npzs]
 
 for tracklets_npz in tqdm(tracklets_npzs):
-    with fsspec.open(tracklets_npz, **storage_options) as f:
-        tracklets_seq = np.load(f)
-        tracklets_seq = [tracklets_seq[key] for key in tracklets_seq]
+  with fsspec.open(tracklets_npz, **storage_options) as f:
+    tracklets_seq = np.load(f)
+    tracklets_seq = [tracklets_seq[key] for key in tracklets_seq]
 
-    tracklets_seq_df = []
+  tracklets_seq_df = []
 
-    # Convert the detections to align with the submission format one frame at a time.
-    for i, tracklets in enumerate(tracklets_seq):
-        n_tracklets = tracklets.shape[0]
+  # Convert the detections to align with the submission format one frame at a time.
+  for i, tracklets in enumerate(tracklets_seq):
+    n_tracklets = tracklets.shape[0]
 
-        # Skip the iteration if the frame has no tracklets.
-        if n_tracklets == 0:
-            continue
+    # Skip the iteration if the frame has no tracklets.
+    if n_tracklets == 0:
+      continue
 
-        frame_id = np.full((n_tracklets, 1), i + 1, dtype=np.int32)
-        tracker_id = tracklets[:, [4]].astype(np.int32)
+    frame_id = np.full((n_tracklets, 1), i + 1, dtype=np.int32)
+    tracker_id = tracklets[:, [4]].astype(np.int32)
 
-        boxes = torch.from_numpy(tracklets[:, :4])
-        boxes = inverse_transforms(boxes)
-        boxes = box_convert(boxes, in_fmt="xyxy", out_fmt="xywh")
-        boxes = boxes.numpy()
+    boxes = torch.from_numpy(tracklets[:, :4])
+    boxes = inverse_transforms(boxes)
+    boxes = box_convert(boxes, in_fmt="xyxy", out_fmt="xywh")
+    boxes = boxes.numpy()
 
-        confidence = tracklets[:, [5]]
+    confidence = tracklets[:, [5]]
 
-        class_id = tracklets[:, [6]].astype(np.int32)
-        extras = np.full((n_tracklets, 2), -1, dtype=np.int32)
+    class_id = tracklets[:, [6]].astype(np.int32)
+    extras = np.full((n_tracklets, 2), -1, dtype=np.int32)
 
-        tracklets_df = [
-            pd.DataFrame(x)
-            for x in [frame_id, tracker_id, boxes, confidence, class_id, extras]
-        ]
+    tracklets_df = [
+      pd.DataFrame(x)
+      for x in [frame_id, tracker_id, boxes, confidence, class_id, extras]
+    ]
 
-        tracklets_df = pd.concat(tracklets_df, axis=1)
-        tracklets_seq_df.append(tracklets_df)
+    tracklets_df = pd.concat(tracklets_df, axis=1)
+    tracklets_seq_df.append(tracklets_df)
 
-    tracklets_seq_df = pd.concat(tracklets_seq_df, axis=0)
-    video_name = tracklets_npz.split("/")[-1].split(".")[0]
-    video_sub_file = f"{tracking_sub_path}/{video_name}.txt"
+  tracklets_seq_df = pd.concat(tracklets_seq_df, axis=0)
+  video_name = tracklets_npz.split("/")[-1].split(".")[0]
+  video_sub_file = f"{tracking_sub_path}/{video_name}.txt"
 
-    with fsspec.open(video_sub_file, "wb", **storage_options) as f:
-        tracklets_seq_df.to_csv(f, header=False, index=False)
+  with fsspec.open(video_sub_file, "wb", **storage_options) as f:
+    tracklets_seq_df.to_csv(f, header=False, index=False)
 
 # %%
 video_name = "0"
 frame_offset = 0
 
 tracklets_seq = load_tracking_arrays(
-    train_storage_path,
-    epochs,
-    video_name,
-    storage_options,
+  train_storage_path,
+  epochs,
+  video_name,
+  storage_options,
 )
 
 video_writer = cv2.VideoWriter(
-    filename=f"{video_name}.mkv",
-    fourcc=cv2.VideoWriter.fourcc(*"VP80"),
-    fps=25,
-    frameSize=(1920, 1080),
+  filename=f"{video_name}.mkv",
+  fourcc=cv2.VideoWriter.fourcc(*"VP80"),
+  fps=25,
+  frameSize=(1920, 1080),
 )
 
 # %%
 for i, tracklets in enumerate(tqdm(tracklets_seq)):
-    if tracklets.size == 0:
-        frame = test_dataset_raw[i + frame_offset][0]
-
-        if OVERFITTING_VIDEO_TEST:
-            frame = train_dataset_raw[i][0]
-
-        if TEST_VIDEOS_TEST:
-            frame = test_dataset_raw[i + frame_offset][0]
-
-        frame = tvf.to_image(frame)
-        frame = frame.permute(1, 2, 0).numpy()
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        video_writer.write(frame)
-
-        continue
-
-    boxes = torch.from_numpy(tracklets[:, :4])
-    boxes = inverse_transforms(boxes)
-    boxes = boxes.numpy()
-
-    detections = sv.Detections(
-        xyxy=boxes,
-        confidence=tracklets[:, 5],
-        class_id=tracklets[:, 6].astype(int),
-        tracker_id=tracklets[:, 4].astype(int),
-    )
-
-    labels = [
-        f"{c}/{t}"
-        for c, t in zip(detections.class_id, detections.tracker_id, strict=False)
-    ]
-
-    box_annotator = sv.BoxAnnotator(thickness=1)
-
-    label_annotator = sv.LabelAnnotator(
-        text_scale=0.5,
-        text_padding=2,
-        color_lookup=sv.ColorLookup.TRACK,
-    )
-
+  if tracklets.size == 0:
     frame = test_dataset_raw[i + frame_offset][0]
 
     if OVERFITTING_VIDEO_TEST:
-        frame = train_dataset_raw[i][0]
+      frame = train_dataset_raw[i][0]
 
     if TEST_VIDEOS_TEST:
-        frame = test_dataset_raw[i + frame_offset][0]
+      frame = test_dataset_raw[i + frame_offset][0]
 
     frame = tvf.to_image(frame)
     frame = frame.permute(1, 2, 0).numpy()
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    video_writer.write(frame)
 
-    annotated_frame = box_annotator.annotate(frame, detections)
-    annotated_frame = label_annotator.annotate(annotated_frame, detections, labels)
-    annotated_frame = cv2.cvtColor(annotated_frame, cv2.COLOR_RGB2BGR)
+    continue
 
-    video_writer.write(annotated_frame)
+  boxes = torch.from_numpy(tracklets[:, :4])
+  boxes = inverse_transforms(boxes)
+  boxes = boxes.numpy()
+
+  detections = sv.Detections(
+    xyxy=boxes,
+    confidence=tracklets[:, 5],
+    class_id=tracklets[:, 6].astype(int),
+    tracker_id=tracklets[:, 4].astype(int),
+  )
+
+  labels = [
+    f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id, strict=False)
+  ]
+
+  box_annotator = sv.BoxAnnotator(thickness=1)
+
+  label_annotator = sv.LabelAnnotator(
+    text_scale=0.5,
+    text_padding=2,
+    color_lookup=sv.ColorLookup.TRACK,
+  )
+
+  frame = test_dataset_raw[i + frame_offset][0]
+
+  if OVERFITTING_VIDEO_TEST:
+    frame = train_dataset_raw[i][0]
+
+  if TEST_VIDEOS_TEST:
+    frame = test_dataset_raw[i + frame_offset][0]
+
+  frame = tvf.to_image(frame)
+  frame = frame.permute(1, 2, 0).numpy()
+
+  annotated_frame = box_annotator.annotate(frame, detections)
+  annotated_frame = label_annotator.annotate(annotated_frame, detections, labels)
+  annotated_frame = cv2.cvtColor(annotated_frame, cv2.COLOR_RGB2BGR)
+
+  video_writer.write(annotated_frame)
 
 video_writer.release()
 

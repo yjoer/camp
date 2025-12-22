@@ -11,29 +11,29 @@ from ipywidgets import interact
 
 # %%
 def f(x: torch.Tensor) -> torch.Tensor:
-    return x**4 + x**3 - 5 * x**2  # ty: ignore[unsupported-operator]
+  return x**4 + x**3 - 5 * x**2  # ty: ignore[unsupported-operator]
 
 
 # %%
 def optimize(lr: float = 0.01, momentum: float = 0.0) -> list[tuple[float, float]]:
-    x = torch.tensor(2.0, requires_grad=True)
-    buffer = torch.zeros_like(x.detach())
-    values = []
+  x = torch.tensor(2.0, requires_grad=True)
+  buffer = torch.zeros_like(x.detach())
+  values = []
 
-    for _ in range(10):
-        y = f(x)
-        values.append((x.item(), y.item()))
+  for _ in range(10):
+    y = f(x)
+    values.append((x.item(), y.item()))
 
-        y.backward()
-        d_p = x.grad.data
+    y.backward()
+    d_p = x.grad.data
 
-        if momentum != 0:
-            d_p = buffer.mul_(momentum).add_(d_p)
+    if momentum != 0:
+      d_p = buffer.mul_(momentum).add_(d_p)
 
-        x.detach().add_(d_p, alpha=-lr)
-        x.grad.zero_()
+    x.detach().add_(d_p, alpha=-lr)
+    x.grad.zero_()
 
-    return values
+  return values
 
 
 # %%
@@ -41,42 +41,42 @@ x = np.arange(-3, 2, 0.001)
 y = f(x)
 
 lr_slider = widgets.FloatLogSlider(
-    value=0.01,
-    base=10,
-    min=-5,
-    max=-1,
-    step=0.01,
-    description="Learning Rate",
-    layout={"width": "80%"},
+  value=0.01,
+  base=10,
+  min=-5,
+  max=-1,
+  step=0.01,
+  description="Learning Rate",
+  layout={"width": "80%"},
 )
 
 momentum_slider = widgets.FloatSlider(
-    value=1.05,
-    min=0.01,
-    max=1.5,
-    step=0.01,
-    description="Momentum",
-    layout={"width": "80%"},
+  value=1.05,
+  min=0.01,
+  max=1.5,
+  step=0.01,
+  description="Momentum",
+  layout={"width": "80%"},
 )
 
 
 @interact(lr=lr_slider, momentum=momentum_slider)
 def plot_optimizer_steps(lr: float, momentum: float) -> None:
-    values = optimize(lr, momentum)
-    x_opt = [np.clip(v[0], -4, 3) for v in values]
-    y_opt = [np.clip(v[1], -15, 15) for v in values]
+  values = optimize(lr, momentum)
+  x_opt = [np.clip(v[0], -4, 3) for v in values]
+  y_opt = [np.clip(v[1], -15, 15) for v in values]
 
-    plt.figure(figsize=(8, 4))
-    plt.plot(x, y, linewidth=2)
-    plt.plot(x_opt, y_opt, "r-X", linewidth=2, markersize=6)
+  plt.figure(figsize=(8, 4))
+  plt.plot(x, y, linewidth=2)
+  plt.plot(x_opt, y_opt, "r-X", linewidth=2, markersize=6)
 
-    for i, (p, q) in enumerate(zip(x_opt, y_opt, strict=False)):
-        plt.text(p, q + 0.625, f"{i}", color="r", ha="center")
+  for i, (p, q) in enumerate(zip(x_opt, y_opt, strict=False)):
+    plt.text(p, q + 0.625, f"{i}", color="r", ha="center")
 
-    plt.grid()
-    plt.legend(["Square Function", "Optimizer Steps"])
+  plt.grid()
+  plt.legend(["Square Function", "Optimizer Steps"])
 
-    plt.show()
+  plt.show()
 
 
 # %%

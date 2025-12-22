@@ -89,7 +89,7 @@ phi = 0.95
 dist_ar = np.zeros(len(dist_skewed))
 
 for i in range(1, len(dist_skewed)):
-    dist_ar[i] = phi * dist_ar[i - 1] + dist_skewed[i]
+  dist_ar[i] = phi * dist_ar[i - 1] + dist_skewed[i]
 
 # %%
 fig = plt.figure(figsize=(6, 3), constrained_layout=True)
@@ -155,17 +155,17 @@ print(outcomes[0]) if p_value > alpha else print(outcomes[1])
 
 # %%
 dist_df = pd.DataFrame(
-    {
-        "blocks": np.hstack(
-            (
-                np.full((100), 1, dtype=np.uint8),
-                np.full((100), 2, dtype=np.uint8),
-                np.full((100), 3, dtype=np.uint8),
-            ),
-        ),
-        "scores": np.hstack((dist_x, dist_y, dist_z)),
-        "treatment": rng.choice(["a", "b", "c"], size=300),
-    },
+  {
+    "blocks": np.hstack(
+      (
+        np.full((100), 1, dtype=np.uint8),
+        np.full((100), 2, dtype=np.uint8),
+        np.full((100), 3, dtype=np.uint8),
+      ),
+    ),
+    "scores": np.hstack((dist_x, dist_y, dist_z)),
+    "treatment": rng.choice(["a", "b", "c"], size=300),
+  },
 )
 
 dist_df = dist_df.sort_values(by=["blocks", "treatment"])
@@ -182,16 +182,16 @@ plt.show()
 alpha = 0.05
 
 dist_df.groupby("blocks").apply(
-    lambda x: pd.Series(
-        st.f_oneway(
-            x[x["treatment"] == "a"]["scores"],
-            x[x["treatment"] == "b"]["scores"],
-            x[x["treatment"] == "c"]["scores"],
-        ),
+  lambda x: pd.Series(
+    st.f_oneway(
+      x[x["treatment"] == "a"]["scores"],
+      x[x["treatment"] == "b"]["scores"],
+      x[x["treatment"] == "c"]["scores"],
     ),
-    include_groups=False,
+  ),
+  include_groups=False,
 ).rename({0: "statistic", 1: "p_value"}, axis=1).assign(
-    outcome=lambda x: np.where(x["p_value"] > alpha, outcomes[0], outcomes[1]),
+  outcome=lambda x: np.where(x["p_value"] > alpha, outcomes[0], outcomes[1]),
 )
 
 # %% [markdown]
@@ -205,9 +205,9 @@ plt.show()
 alpha = 0.05
 
 statistic, p_value = st.f_oneway(
-    dist_df[dist_df["blocks"] == 1]["scores"],
-    dist_df[dist_df["blocks"] == 2]["scores"],
-    dist_df[dist_df["blocks"] == 3]["scores"],
+  dist_df[dist_df["blocks"] == 1]["scores"],
+  dist_df[dist_df["blocks"] == 2]["scores"],
+  dist_df[dist_df["blocks"] == 3]["scores"],
 )
 
 print(statistic, p_value)
@@ -219,9 +219,9 @@ print(outcomes[0]) if p_value > alpha else print(outcomes[1])
 # %%
 alpha = 0.05
 statistic, p_value = st.kruskal(
-    dist_df[dist_df["blocks"] == 1]["scores"],
-    dist_df[dist_df["blocks"] == 2]["scores"],
-    dist_df[dist_df["blocks"] == 3]["scores"],
+  dist_df[dist_df["blocks"] == 1]["scores"],
+  dist_df[dist_df["blocks"] == 2]["scores"],
+  dist_df[dist_df["blocks"] == 3]["scores"],
 )
 
 print(statistic, p_value)
@@ -288,10 +288,10 @@ comparisons = [(1, 2), (1, 3), (2, 3)]
 p_values = []
 
 for c in comparisons:
-    a = dist_df[dist_df["blocks"] == c[0]]["scores"]
-    b = dist_df[dist_df["blocks"] == c[1]]["scores"]
-    statistic, p_value = st.ttest_ind(a, b)
-    p_values.append(p_value)
+  a = dist_df[dist_df["blocks"] == c[0]]["scores"]
+  b = dist_df[dist_df["blocks"] == c[1]]["scores"]
+  statistic, p_value = st.ttest_ind(a, b)
+  p_values.append(p_value)
 
 # %%
 _, p_values_corrected, _, _ = multipletests(p_values, alpha=0.05, method="bonferroni")
@@ -306,17 +306,17 @@ print(p_values_corrected)
 
 # %%
 def cohens_d(a: np.ndarray, b: np.ndarray) -> np.float64:
-    diff = np.mean(a) - np.mean(b)
-    n1, n2 = len(a), len(b)
-    var1, var2 = np.var(a), np.var(b)
+  diff = np.mean(a) - np.mean(b)
+  n1, n2 = len(a), len(b)
+  var1, var2 = np.var(a), np.var(b)
 
-    std_pooled = np.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
-    return diff / std_pooled
+  std_pooled = np.sqrt(((n1 - 1) * var1 + (n2 - 1) * var2) / (n1 + n2 - 2))
+  return diff / std_pooled
 
 
 # %%
 def cohens_h(a: float, b: float) -> np.float64:
-    return 2 * np.arcsin(np.sqrt(a)) - 2 * np.arcsin(np.sqrt(b))
+  return 2 * np.arcsin(np.sqrt(a)) - 2 * np.arcsin(np.sqrt(b))
 
 
 # %%

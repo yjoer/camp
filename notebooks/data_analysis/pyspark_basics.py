@@ -5,9 +5,9 @@ import sys
 os.environ["SPARK_LOCAL_IP"] = "0.0.0.0"  # noqa: S104
 
 if sys.platform == "win32":
-    os.environ["PATH"] += os.pathsep + os.getenv("HADOOP_HOME", "") + "/bin"
+  os.environ["PATH"] += os.pathsep + os.getenv("HADOOP_HOME", "") + "/bin"
 else:
-    os.environ["LD_LIBRARY_PATH"] = os.getenv("HADOOP_HOME", "") + "/lib/native"
+  os.environ["LD_LIBRARY_PATH"] = os.getenv("HADOOP_HOME", "") + "/lib/native"
 
 # %%
 import datetime as dt
@@ -31,9 +31,9 @@ from pyspark.sql.types import TimestampType
 
 # %%
 spark = (
-    SparkSession.builder.config("spark.ui.showConsoleProgress", False)  # noqa: FBT003
-    .config("spark.sql.execution.arrow.pyspark.enabled", True)  # noqa: FBT003
-    .getOrCreate()
+  SparkSession.builder.config("spark.ui.showConsoleProgress", False)  # noqa: FBT003
+  .config("spark.sql.execution.arrow.pyspark.enabled", True)  # noqa: FBT003
+  .getOrCreate()
 )
 
 # %% [markdown]
@@ -47,9 +47,9 @@ dt_1 = datetime(2023, 1, 1, 12, 0, 0, tzinfo=dt.UTC)
 dt_2 = datetime(2024, 1, 1, 12, 0, 0, tzinfo=dt.UTC)
 dt_3 = datetime(2025, 1, 1, 12, 0, 0, tzinfo=dt.UTC)
 rows = [
-    Row(a=1, b=1.1, c="a", d=date(2023, 1, 1), e=dt_1),
-    Row(a=2, b=2.2, c="b", d=date(2024, 1, 1), e=dt_2),
-    Row(a=3, b=3.3, c="c", d=date(2025, 1, 1), e=dt_3),
+  Row(a=1, b=1.1, c="a", d=date(2023, 1, 1), e=dt_1),
+  Row(a=2, b=2.2, c="b", d=date(2024, 1, 1), e=dt_2),
+  Row(a=3, b=3.3, c="c", d=date(2025, 1, 1), e=dt_3),
 ]
 
 df = spark.createDataFrame(rows)
@@ -65,13 +65,13 @@ df
 
 # %%
 schema = StructType(
-    [
-        StructField("a", IntegerType()),
-        StructField("b", FloatType()),
-        StructField("c", StringType()),
-        StructField("d", DateType()),
-        StructField("e", TimestampType()),
-    ],
+  [
+    StructField("a", IntegerType()),
+    StructField("b", FloatType()),
+    StructField("c", StringType()),
+    StructField("d", DateType()),
+    StructField("e", TimestampType()),
+  ],
 )
 
 df = spark.createDataFrame(rows, schema=schema)
@@ -82,17 +82,17 @@ df
 
 # %%
 df_pd = pd.DataFrame(
-    {
-        "a": [1, 2, 3],
-        "b": [1.1, 1.2, 1.3],
-        "c": ["a", "b", "c"],
-        "d": [date(2023, 1, 1), date(2024, 1, 1), date(2025, 1, 1)],
-        "e": [
-            datetime(2023, 1, 1, 12, 0, 0, tzinfo=dt.UTC),
-            datetime(2024, 1, 1, 12, 0, 0, tzinfo=dt.UTC),
-            datetime(2025, 1, 1, 12, 0, 0, tzinfo=dt.UTC),
-        ],
-    },
+  {
+    "a": [1, 2, 3],
+    "b": [1.1, 1.2, 1.3],
+    "c": ["a", "b", "c"],
+    "d": [date(2023, 1, 1), date(2024, 1, 1), date(2025, 1, 1)],
+    "e": [
+      datetime(2023, 1, 1, 12, 0, 0, tzinfo=dt.UTC),
+      datetime(2024, 1, 1, 12, 0, 0, tzinfo=dt.UTC),
+      datetime(2025, 1, 1, 12, 0, 0, tzinfo=dt.UTC),
+    ],
+  },
 )
 
 df = spark.createDataFrame(df_pd)
@@ -203,7 +203,7 @@ df.filter(df.a == 1).show()
 # %%
 @F.pandas_udf("long")  # ty: ignore[no-matching-overload]
 def plus_one(series: pd.Series) -> pd.Series:
-    return series + 1
+  return series + 1
 
 
 df.select(plus_one(df.a)).show()
@@ -215,8 +215,8 @@ df.select(plus_one(df.a)).show()
 
 # %%
 def filter_one(iterator: Iterator[pd.DataFrame]) -> Generator[pd.DataFrame]:
-    for df_pd in iterator:
-        yield df_pd[df_pd.a == 1]
+  for df_pd in iterator:
+    yield df_pd[df_pd.a == 1]
 
 
 df.mapInPandas(filter_one, schema=df.schema).show()
@@ -226,18 +226,18 @@ df.mapInPandas(filter_one, schema=df.schema).show()
 
 # %%
 df = spark.createDataFrame(
-    [
-        ("a", "carrot", 1, 10),
-        ("b", "carrot", 4, 40),
-        ("c", "carrot", 7, 70),
-        ("b", "banana", 2, 20),
-        ("a", "banana", 5, 50),
-        ("c", "banana", 8, 80),
-        ("b", "grape", 3, 30),
-        ("c", "grape", 6, 60),
-        ("a", "grape", 9, 90),
-    ],
-    schema=["basket", "fruit", "v1", "v2"],
+  [
+    ("a", "carrot", 1, 10),
+    ("b", "carrot", 4, 40),
+    ("c", "carrot", 7, 70),
+    ("b", "banana", 2, 20),
+    ("a", "banana", 5, 50),
+    ("c", "banana", 8, 80),
+    ("b", "grape", 3, 30),
+    ("c", "grape", 6, 60),
+    ("a", "grape", 9, 90),
+  ],
+  schema=["basket", "fruit", "v1", "v2"],
 )
 
 # %% [markdown]
@@ -253,7 +253,7 @@ df.groupby("basket").avg().show()
 
 # %%
 def minus_mean(df_pd: pd.DataFrame) -> pd.DataFrame:
-    return df_pd.assign(v1=df_pd.v1 - df_pd.v1.mean())
+  return df_pd.assign(v1=df_pd.v1 - df_pd.v1.mean())
 
 
 df.groupby("basket").applyInPandas(minus_mean, schema=df.schema).show()
@@ -263,28 +263,28 @@ df.groupby("basket").applyInPandas(minus_mean, schema=df.schema).show()
 
 # %%
 df1 = spark.createDataFrame(
-    [
-        (20250101, 1, 1.0),
-        (20250101, 2, 2.0),
-        (20250102, 1, 3.0),
-        (20250102, 2, 4.0),
-    ],
-    schema=["time", "id", "v1"],
+  [
+    (20250101, 1, 1.0),
+    (20250101, 2, 2.0),
+    (20250102, 1, 3.0),
+    (20250102, 2, 4.0),
+  ],
+  schema=["time", "id", "v1"],
 )
 
 df2 = spark.createDataFrame(
-    [(20250101, 1, "x"), (20250101, 2, "y")],
-    schema=["time", "id", "v2"],
+  [(20250101, 1, "x"), (20250101, 2, "y")],
+  schema=["time", "id", "v2"],
 )
 
 
 def merge_ordered(left: pd.DataFrame, right: pd.DataFrame) -> pd.DataFrame:
-    return pd.merge_ordered(left, right)
+  return pd.merge_ordered(left, right)
 
 
 df1.groupby("id").cogroup(df2.groupby("id")).applyInPandas(
-    merge_ordered,
-    schema="time int, id int, v1 double, v2 string",
+  merge_ordered,
+  schema="time int, id int, v1 double, v2 string",
 ).show()
 
 # %% [markdown]
@@ -295,24 +295,24 @@ df1.groupby("id").cogroup(df2.groupby("id")).applyInPandas(
 
 # %%
 with tempfile.TemporaryDirectory() as d:
-    df.write.csv(d, mode="overwrite", header=True)
-    spark.read.csv(d, header=True).show()
+  df.write.csv(d, mode="overwrite", header=True)
+  spark.read.csv(d, header=True).show()
 
 # %% [markdown]
 # Parquet
 
 # %%
 with tempfile.TemporaryDirectory() as d:
-    df.write.parquet(d, mode="overwrite")
-    spark.read.parquet(d, header=True).show()
+  df.write.parquet(d, mode="overwrite")
+  spark.read.parquet(d, header=True).show()
 
 # %% [markdown]
 # ORC
 
 # %%
 with tempfile.TemporaryDirectory() as d:
-    df.write.orc(d, mode="overwrite")
-    spark.read.orc(d).show()
+  df.write.orc(d, mode="overwrite")
+  spark.read.orc(d).show()
 
 # %% [markdown]
 # ## SQL

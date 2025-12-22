@@ -1,3 +1,5 @@
+indent-width = 2
+
 [format]
 line-ending = "lf"
 
@@ -28,7 +30,7 @@ ignore = [
   "PLR2004",  # magic-value-comparison
 ]
 allowed-confusables = [
-  "∗",  # tombi: lint.rules.string-max-length.disabled = true
+  "∗",
 ]
 
 [lint.isort]

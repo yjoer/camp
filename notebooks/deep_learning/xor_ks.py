@@ -35,6 +35,6 @@ print(history.history["binary_accuracy"][-1])
 y_pred = nn.predict(X)
 
 for i in range(4):
-    print(f"Input: {X[i]}, Output: {y_pred[i]}")
+  print(f"Input: {X[i]}, Output: {y_pred[i]}")
 
 # %%

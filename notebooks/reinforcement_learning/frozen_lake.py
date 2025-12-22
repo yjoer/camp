@@ -24,25 +24,25 @@ images = [cast("np.ndarray", env.render())]
 actions = [2, 2, 1, 1, 1, 2]
 
 for action in actions:
-    state, reward, terminated, _, _ = env.step(action)
-    images.append(cast("np.ndarray", env.render()))
+  state, reward, terminated, _, _ = env.step(action)
+  images.append(cast("np.ndarray", env.render()))
 
-    if terminated:
-        print("You reached the goal!")
+  if terminated:
+    print("You reached the goal!")
 
 
 # %%
 def render_images(images: list) -> None:
-    n_rows = math.ceil(len(images) / 3)
-    n_cols = 3
+  n_rows = math.ceil(len(images) / 3)
+  n_cols = 3
 
-    plt.figure(figsize=(6.4, 6.4), constrained_layout=True)
+  plt.figure(figsize=(6.4, 6.4), constrained_layout=True)
 
-    for i, image in enumerate(images):
-        plt.subplot(n_rows, n_cols, i + 1)
-        plt.imshow(image)
+  for i, image in enumerate(images):
+    plt.subplot(n_rows, n_cols, i + 1)
+    plt.imshow(image)
 
-    plt.show()
+  plt.show()
 
 
 # %%
@@ -59,9 +59,9 @@ lake_map = cast("Any", env.unwrapped).desc
 terminal_states = []
 
 for row in range(lake_map.shape[0]):
-    for col in range(lake_map.shape[1]):
-        if lake_map[row, col] == b"H" or lake_map[row, col] == b"G":
-            terminal_states.append(4 * row + col)
+  for col in range(lake_map.shape[1]):
+    if lake_map[row, col] == b"H" or lake_map[row, col] == b"G":
+      terminal_states.append(4 * row + col)
 
 
 # %% [markdown]
@@ -70,116 +70,116 @@ for row in range(lake_map.shape[0]):
 
 # %%
 def compute_state_value(
-    policy: dict,
-    state: int,
-    terminal_states: list[int],
-    gamma: float,
+  policy: dict,
+  state: int,
+  terminal_states: list[int],
+  gamma: float,
 ) -> float:
-    visited_states = []
-    value = 0
-    terminate = False
+  visited_states = []
+  value = 0
+  terminate = False
 
-    while True:
-        action = policy[state]
-        _, next_state, reward, _ = env.unwrapped.P[state][action][0]
+  while True:
+    action = policy[state]
+    _, next_state, reward, _ = env.unwrapped.P[state][action][0]
 
-        if next_state in terminal_states:
-            terminate = True
+    if next_state in terminal_states:
+      terminate = True
 
-        if next_state == state or next_state in visited_states:
-            terminate = True
+    if next_state == state or next_state in visited_states:
+      terminate = True
 
-        visited_states.append(state)
-        value += reward + gamma * value
+    visited_states.append(state)
+    value += reward + gamma * value
 
-        if terminate:
-            break
+    if terminate:
+      break
 
-        state = next_state
+    state = next_state
 
-    return value
+  return value
 
 
 # %%
 def evaluate_policy(
-    policy: dict,
-    n_states: np.int64,
-    terminal_states: list[int],
-    gamma: float,
+  policy: dict,
+  n_states: np.int64,
+  terminal_states: list[int],
+  gamma: float,
 ) -> dict:
-    return {
-        state: compute_state_value(policy, state, terminal_states, gamma)
-        for state in range(n_states)
-    }
+  return {
+    state: compute_state_value(policy, state, terminal_states, gamma)
+    for state in range(n_states)
+  }
 
 
 # %%
 def compute_q_value(
-    V: dict,
-    state: int,
-    action: int,
-    terminal_states: list[int],
-    gamma: float,
+  V: dict,
+  state: int,
+  action: int,
+  terminal_states: list[int],
+  gamma: float,
 ) -> float:
-    if state in terminal_states:
-        return 0
+  if state in terminal_states:
+    return 0
 
-    _, next_state, reward, _ = env.unwrapped.P[state][action][0]
+  _, next_state, reward, _ = env.unwrapped.P[state][action][0]
 
-    if next_state == state or next_state in [5, 7, 11, 12]:
-        reward = -1
+  if next_state == state or next_state in [5, 7, 11, 12]:
+    reward = -1
 
-    return reward + gamma * V[next_state]
+  return reward + gamma * V[next_state]
 
 
 # %%
 def improve_policy(
-    V: dict,
-    n_states: np.int64,
-    n_actions: np.int64,
-    terminal_states: list[int],
-    gamma: float,
+  V: dict,
+  n_states: np.int64,
+  n_actions: np.int64,
+  terminal_states: list[int],
+  gamma: float,
 ) -> tuple:
-    Q = {
-        (state, action): compute_q_value(V, state, action, terminal_states, gamma)
-        for state in range(n_states)
-        for action in range(n_actions)
-    }
+  Q = {
+    (state, action): compute_q_value(V, state, action, terminal_states, gamma)
+    for state in range(n_states)
+    for action in range(n_actions)
+  }
 
-    improved_policy = {}
+  improved_policy = {}
 
-    for state in range(n_states):
-        max_action = max(range(n_actions), key=lambda action: Q[(state, action)])
-        improved_policy[state] = max_action
+  for state in range(n_states):
+    max_action = max(range(n_actions), key=lambda action: Q[(state, action)])
+    improved_policy[state] = max_action
 
-    return improved_policy, Q
+  return improved_policy, Q
 
 
 # %%
 def iterate_policy() -> tuple:
-    n_states = env.observation_space.n
-    n_actions = env.action_space.n
-    rng = np.random.default_rng()
-    policy = {state: rng.integers(n_actions) for state in range(n_states)}
-    gamma = 0.99
+  n_states = env.observation_space.n
+  n_actions = env.action_space.n
+  rng = np.random.default_rng()
+  policy = {state: rng.integers(n_actions) for state in range(n_states)}
+  gamma = 0.99
 
-    for _ in range(10):
-        V = evaluate_policy(policy, n_states, terminal_states, gamma)
+  for _ in range(10):
+    V = evaluate_policy(policy, n_states, terminal_states, gamma)
 
-        improved_policy, Q = improve_policy(
-            V,
-            n_states,
-            n_actions,
-            terminal_states,
-            gamma,
-        )
+    improved_policy, Q = improve_policy(
+      V,
+      n_states,
+      n_actions,
+      terminal_states,
+      gamma,
+    )
 
-        if improved_policy == policy:
-            break
+    if improved_policy == policy:
+      break
 
-        policy = improved_policy
+    policy = improved_policy
 
-    return policy, V, Q
+  return policy, V, Q
 
 
 # %%
@@ -190,21 +190,21 @@ print(f"Q: {Q}")
 
 # %%
 def simulate_policy(policy: dict) -> list:
-    state, _info = env.reset(seed=26)
+  state, _info = env.reset(seed=26)
 
-    images = [cast("np.ndarray", env.render())]
-    terminated = False
+  images = [cast("np.ndarray", env.render())]
+  terminated = False
 
-    for _ in range(8):
-        action = policy[state]
-        state, _reward, terminated, _, _ = env.step(action)
-        images.append(cast("np.ndarray", env.render()))
+  for _ in range(8):
+    action = policy[state]
+    state, _reward, terminated, _, _ = env.step(action)
+    images.append(cast("np.ndarray", env.render()))
 
-        if terminated:
-            print("You reached the goal!")
-            break
+    if terminated:
+      print("You reached the goal!")
+      break
 
-    return images
+  return images
 
 
 # %%
@@ -221,79 +221,79 @@ render_images(images)
 
 # %%
 def generate_episode(i: int) -> list:
-    state, _info = env.reset(seed=i)
-    episode = []
+  state, _info = env.reset(seed=i)
+  episode = []
 
-    j = 0
-    terminated = False
+  j = 0
+  terminated = False
 
-    while not terminated:
-        env.action_space.seed(int(str(i) + str(j)))
-        action = env.action_space.sample()
-        next_state, reward, terminated, _truncated, _info = env.step(action)
-        episode.append((state, action, reward))
+  while not terminated:
+    env.action_space.seed(int(str(i) + str(j)))
+    action = env.action_space.sample()
+    next_state, reward, terminated, _truncated, _info = env.step(action)
+    episode.append((state, action, reward))
 
-        j += 1
-        state = next_state
+    j += 1
+    state = next_state
 
-    return episode
+  return episode
 
 
 # %%
 def first_visit_mc(n_episodes: int) -> np.ndarray:
-    n_states = env.observation_space.n
-    n_actions = env.action_space.n
+  n_states = env.observation_space.n
+  n_actions = env.action_space.n
 
-    returns_sum = np.zeros((n_states, n_actions))
-    returns_count = np.zeros((n_states, n_actions))
+  returns_sum = np.zeros((n_states, n_actions))
+  returns_count = np.zeros((n_states, n_actions))
 
-    for i in range(n_episodes):
-        episode = generate_episode(i)
-        visited_states_actions = set()
+  for i in range(n_episodes):
+    episode = generate_episode(i)
+    visited_states_actions = set()
 
-        for j, (state, action, _reward) in enumerate(episode):
-            if (state, action) in visited_states_actions:
-                continue
+    for j, (state, action, _reward) in enumerate(episode):
+      if (state, action) in visited_states_actions:
+        continue
 
-            returns_sum[state, action] += sum(x[2] for x in episode[j:])
-            returns_count[state, action] += 1
-            visited_states_actions.add((state, action))
+      returns_sum[state, action] += sum(x[2] for x in episode[j:])
+      returns_count[state, action] += 1
+      visited_states_actions.add((state, action))
 
-    nonzero_counts = returns_count != 0
+  nonzero_counts = returns_count != 0
 
-    Q = np.zeros((n_states, n_actions))
-    Q[nonzero_counts] = returns_sum[nonzero_counts] / returns_count[nonzero_counts]
+  Q = np.zeros((n_states, n_actions))
+  Q[nonzero_counts] = returns_sum[nonzero_counts] / returns_count[nonzero_counts]
 
-    return Q
+  return Q
 
 
 # %%
 def every_visit_mc(n_episodes: int) -> np.ndarray:
-    n_states = env.observation_space.n
-    n_actions = env.action_space.n
+  n_states = env.observation_space.n
+  n_actions = env.action_space.n
 
-    returns_sum = np.zeros((n_states, n_actions))
-    returns_count = np.zeros((n_states, n_actions))
+  returns_sum = np.zeros((n_states, n_actions))
+  returns_count = np.zeros((n_states, n_actions))
 
-    for i in range(n_episodes):
-        episode = generate_episode(i)
+  for i in range(n_episodes):
+    episode = generate_episode(i)
 
-        for j, (state, action, _reward) in enumerate(episode):
-            returns_sum[state, action] += sum(x[2] for x in episode[j:])
-            returns_count[state, action] += 1
+    for j, (state, action, _reward) in enumerate(episode):
+      returns_sum[state, action] += sum(x[2] for x in episode[j:])
+      returns_count[state, action] += 1
 
-    nonzero_counts = returns_count != 0
+  nonzero_counts = returns_count != 0
 
-    Q = np.zeros((n_states, n_actions))
-    Q[nonzero_counts] = returns_sum[nonzero_counts] / returns_count[nonzero_counts]
+  Q = np.zeros((n_states, n_actions))
+  Q[nonzero_counts] = returns_sum[nonzero_counts] / returns_count[nonzero_counts]
 
-    return Q
+  return Q
 
 
 # %%
 def get_policy(Q: np.ndarray) -> dict:
-    n_states = env.observation_space.n
-    return {state: np.argmax(Q[state]) for state in range(n_states)}
+  n_states = env.observation_space.n
+  return {state: np.argmax(Q[state]) for state in range(n_states)}
 
 
 # %%
@@ -320,61 +320,61 @@ render_images(images)
 
 # %%
 def update_q_table(
-    Q: np.ndarray,
-    state: int,
-    action: np.int64,
-    reward: SupportsFloat,
-    next_state: ObsType,
-    next_action: np.int64,
-    alpha: float,
-    gamma: float,
+  Q: np.ndarray,
+  state: int,
+  action: np.int64,
+  reward: SupportsFloat,
+  next_state: ObsType,
+  next_action: np.int64,
+  alpha: float,
+  gamma: float,
 ) -> None:
-    old_value = Q[state, action]
-    next_value = Q[next_state, next_action]
+  old_value = Q[state, action]
+  next_value = Q[next_state, next_action]
 
-    Q[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_value)
+  Q[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_value)
 
 
 # %%
 def sarsa(n_episodes: int) -> np.ndarray:
-    n_states = env.observation_space.n
-    n_actions = env.action_space.n
+  n_states = env.observation_space.n
+  n_actions = env.action_space.n
 
-    Q = np.zeros((n_states, n_actions))
+  Q = np.zeros((n_states, n_actions))
 
-    alpha = 0.1
-    gamma = 1
+  alpha = 0.1
+  gamma = 1
 
-    for i in range(n_episodes):
-        state, _info = env.reset(seed=i)
+  for i in range(n_episodes):
+    state, _info = env.reset(seed=i)
 
-        env.action_space.seed(i)
-        action = env.action_space.sample()
+    env.action_space.seed(i)
+    action = env.action_space.sample()
 
-        j = 0
-        terminated = False
+    j = 0
+    terminated = False
 
-        while not terminated:
-            next_state, reward, terminated, _truncated, _info = env.step(action)
+    while not terminated:
+      next_state, reward, terminated, _truncated, _info = env.step(action)
 
-            env.action_space.seed(int(str(i) + str(j)))
-            next_action = env.action_space.sample()
+      env.action_space.seed(int(str(i) + str(j)))
+      next_action = env.action_space.sample()
 
-            update_q_table(
-                Q,
-                state,
-                action,
-                reward,
-                next_state,
-                next_action,
-                alpha,
-                gamma,
-            )
+      update_q_table(
+        Q,
+        state,
+        action,
+        reward,
+        next_state,
+        next_action,
+        alpha,
+        gamma,
+      )
 
-            j += 1
-            state, action = next_state, next_action
+      j += 1
+      state, action = next_state, next_action
 
-    return Q
+  return Q
 
 
 # %%
@@ -391,47 +391,47 @@ render_images(images)
 
 # %%
 def update_q_table_v2(
-    Q: np.ndarray,
-    state: int,
-    action: np.int64,
-    reward: SupportsFloat,
-    next_state: ObsType,
-    alpha: float,
-    gamma: float,
+  Q: np.ndarray,
+  state: int,
+  action: np.int64,
+  reward: SupportsFloat,
+  next_state: ObsType,
+  alpha: float,
+  gamma: float,
 ) -> None:
-    old_value = Q[state, action]
-    next_max = max(Q[next_state])
+  old_value = Q[state, action]
+  next_max = max(Q[next_state])
 
-    Q[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_max)
+  Q[state, action] = (1 - alpha) * old_value + alpha * (reward + gamma * next_max)
 
 
 # %%
 def q_learning(n_episodes: int) -> np.ndarray:
-    n_states = env.observation_space.n
-    n_actions = env.action_space.n
+  n_states = env.observation_space.n
+  n_actions = env.action_space.n
 
-    Q = np.zeros((n_states, n_actions))
+  Q = np.zeros((n_states, n_actions))
 
-    alpha = 0.1
-    gamma = 1
+  alpha = 0.1
+  gamma = 1
 
-    for i in range(n_episodes):
-        state, _info = env.reset(seed=i)
+  for i in range(n_episodes):
+    state, _info = env.reset(seed=i)
 
-        j = 0
-        terminated = False
+    j = 0
+    terminated = False
 
-        while not terminated:
-            env.action_space.seed(int(str(i) + str(j)))
-            action = env.action_space.sample()
-            next_state, reward, terminated, _truncated, _info = env.step(action)
+    while not terminated:
+      env.action_space.seed(int(str(i) + str(j)))
+      action = env.action_space.sample()
+      next_state, reward, terminated, _truncated, _info = env.step(action)
 
-            update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma)
+      update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma)
 
-            j += 1
-            state = next_state
+      j += 1
+      state = next_state
 
-    return Q
+  return Q
 
 
 # %%

@@ -19,7 +19,7 @@ flops, macs, params = get_model_profile(resnet, input_shape=(1, 3, 224, 224))
 
 # %%
 mobilenet = fasterrcnn_mobilenet_v3_large_fpn(
-    weights=FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT,
+  weights=FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT,
 )
 
 # %%
@@ -31,7 +31,7 @@ flops, macs, params = get_model_profile(mobilenet, input_shape=(1, 3, 224, 224))
 
 # %%
 mobilenet_low = fasterrcnn_mobilenet_v3_large_320_fpn(
-    weights=FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT,
+  weights=FasterRCNN_MobileNet_V3_Large_320_FPN_Weights.DEFAULT,
 )
 
 # %%

@@ -31,10 +31,10 @@ from sklearn.model_selection import train_test_split
 
 # %%
 df_tollbooth = pd.DataFrame(
-    {
-        "age": [5, 7, 8, 7, 2, 17, 2, 9, 4, 11, 12, 9, 6],
-        "speed": [99, 86, 87, 88, 111, 86, 103, 87, 94, 78, 77, 85, 86],
-    },
+  {
+    "age": [5, 7, 8, 7, 2, 17, 2, 9, 4, 11, 12, 9, 6],
+    "speed": [99, 86, 87, 88, 111, 86, 103, 87, 94, 78, 77, 85, 86],
+  },
 )
 
 # %%
@@ -45,8 +45,8 @@ plt.show()
 
 # %%
 slope, intercept, r, p, se = stats.linregress(
-    df_tollbooth["age"],
-    df_tollbooth["speed"],
+  df_tollbooth["age"],
+  df_tollbooth["speed"],
 )
 
 # %%
@@ -240,28 +240,28 @@ X, y = make_moons(n_samples=500, noise=0.30, random_state=12345)
 
 # %%
 df = pd.concat(
-    objs=(
-        pd.DataFrame(X, columns=["X1", "X2"]),
-        pd.DataFrame(y, columns=["y"]),
-    ),
-    axis=1,
+  objs=(
+    pd.DataFrame(X, columns=["X1", "X2"]),
+    pd.DataFrame(y, columns=["y"]),
+  ),
+  axis=1,
 )
 
 # %%
 alt.Chart(df).mark_point().encode(
-    x="X1:Q",
-    y="X2:Q",
-    color="y:N",
-    tooltip=["X1", "X2", "y"],
+  x="X1:Q",
+  y="X2:Q",
+  color="y:N",
+  tooltip=["X1", "X2", "y"],
 )
 
 # %%
 X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=12345,
-    stratify=y,
+  X,
+  y,
+  test_size=0.2,
+  random_state=12345,
+  stratify=y,
 )
 
 # %%
@@ -295,11 +295,11 @@ iris = load_iris()
 
 # %%
 X_train, X_test, y_train, y_test = train_test_split(
-    iris.data,
-    iris.target,
-    test_size=0.2,
-    random_state=12345,
-    stratify=iris.target,
+  iris.data,
+  iris.target,
+  test_size=0.2,
+  random_state=12345,
+  stratify=iris.target,
 )
 
 # %%

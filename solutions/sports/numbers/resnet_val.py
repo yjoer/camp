@@ -18,23 +18,23 @@ TRAIN_STARTED_AT = ""
 CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50"
 
 if OVERFITTING_TEST:
-    CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50_test"
+  CHECKPOINT_PATH = "s3://models/soccernet_legibility/resnet_50_test"
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
 if not os.getenv("S3_ENDPOINT"):
-    storage_options = {}
+  storage_options = {}
 
 # %%
 train_dataset = SoccerNetLegibilityDataset(
-    path=DATASET_PATH,
-    storage_options=storage_options,
-    transforms=transforms,
+  path=DATASET_PATH,
+  storage_options=storage_options,
+  transforms=transforms,
 )
 
 # %%
@@ -55,8 +55,8 @@ train_image, train_target = train_dataset[0]
 resnet.eval()
 
 with torch.no_grad():
-    outputs = resnet(train_image.unsqueeze(0))
-    predictions = torch.argmax(outputs, dim=1)
+  outputs = resnet(train_image.unsqueeze(0))
+  predictions = torch.argmax(outputs, dim=1)
 
 predictions
 
