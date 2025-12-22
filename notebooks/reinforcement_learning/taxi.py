@@ -25,12 +25,7 @@ def epsilon_greedy(
   env.action_space.seed(seed)
   rng = np.random.default_rng(seed)
 
-  if rng.random() < epsilon:
-    action = env.action_space.sample()
-  else:
-    action = np.argmax(Q[state])
-
-  return action
+  return env.action_space.sample() if rng.random() < epsilon else np.argmax(Q[state])
 
 
 # %%
