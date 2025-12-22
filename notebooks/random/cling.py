@@ -3,6 +3,7 @@ import ctypes
 import os
 import shutil
 import sys
+from itertools import product
 from pathlib import Path
 
 # %% [markdown]
@@ -10,19 +11,18 @@ from pathlib import Path
 
 # %%
 cling_path = shutil.which("cling")
-cling_dir = (Path(cling_path) / ".." / "..").resolve()
+cling_dir = Path(cling_path or "") / ".." / ".."
 
 
 # %%
-libs = ["/bin/libclingJupyter", "/lib/libclingJupyter", "/libexec/lib/libclingJupyter"]
+libs = ["bin/libclingJupyter", "lib/libclingJupyter", "libexec/lib/libclingJupyter"]
+exts = [".dll", ".dylib", ".so"]
 
-for lib in libs:
-  for ext in [".dll", ".dylib", ".so"]:
-    filename = cling_dir + lib + ext
-    if not Path(filename).exists():
-      continue
+for lib, ext in product(libs, exts):
+  if not (filename := cling_dir / (lib + ext)).exists():
+    continue
 
-    cling = ctypes.CDLL(filename)
+  cling = ctypes.CDLL(str(filename))
 
 
 class my_void_p(ctypes.c_void_p):
@@ -36,11 +36,11 @@ cling.cling_eval.restype = my_void_p
 argv = [
   b"clingJupyter",
   b"-std=c++20",
-  b"-I" + cling_dir.encode("utf-8") + b"/include/",
+  b"-I" + str(cling_dir).encode("utf-8") + b"/include/",
 ]
 argv_type = ctypes.c_char_p * len(argv)
 argc = len(argv)
-llvm_dir = cling_dir.encode("utf-8")
+llvm_dir = str(cling_dir).encode("utf-8")
 r, w = os.pipe()
 
 interpreter = cling.cling_create(
