@@ -6,8 +6,11 @@ from grafana_foundation_sdk.builders.prometheus import Dataquery as PrometheusQu
 from grafana_foundation_sdk.builders.timeseries import Panel as Timeseries
 from grafana_foundation_sdk.cog.encoder import JSONEncoder
 from grafana_foundation_sdk.models.common import LegendDisplayMode
+from grafana_foundation_sdk.models.common import LegendPlacement
 from grafana_foundation_sdk.models.common import TimeZoneBrowser
 from grafana_foundation_sdk.models.dashboard import VariableOption
+from grafana_foundation_sdk.models.resource import Manifest
+from grafana_foundation_sdk.models.resource import Metadata
 
 
 def dashboard() -> Dashboard:
@@ -114,7 +117,7 @@ def disk_temperature(builder: Dashboard) -> Dashboard:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -141,7 +144,7 @@ def raw_read_error_rate(builder: Dashboard) -> Dashboard:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -169,7 +172,7 @@ def spin_up_time(builder: Dashboard) -> Dashboard:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -196,7 +199,7 @@ def reallocated_sector_count(builder: Dashboard) -> Dashboard:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -223,7 +226,7 @@ def start_stop_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -250,7 +253,7 @@ def seek_error_rate(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -277,7 +280,7 @@ def power_on_hours(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -304,7 +307,7 @@ def spin_retry_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -331,7 +334,7 @@ def calibration_retry_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -358,7 +361,7 @@ def power_cycle_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -385,7 +388,7 @@ def power_off_retract_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -412,7 +415,7 @@ def load_cycle_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -439,7 +442,7 @@ def reallocated_event_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -466,7 +469,7 @@ def current_pending_sector_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -493,7 +496,7 @@ def udma_crc_error_count(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -520,7 +523,7 @@ def offline_uncorrectable(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
@@ -547,12 +550,23 @@ def multi_zone_error_rate(builder: Row) -> Row:
         .legend(
             VizLegendOptions()
             .display_mode(LegendDisplayMode.TABLE)
-            .placement("bottom")
+            .placement(LegendPlacement.BOTTOM)
             .calcs(["mean", "lastNotNull", "max", "min"])
             .show_legend(show_legend=True),
         ),
     )
 
 
+def manifest() -> Manifest:
+    dash = dashboard().build()
+
+    return Manifest(
+        api_version="dashboard.grafana.app/v1beta1",
+        kind="Dashboard",
+        metadata=Metadata(name=dash.uid or ""),
+        spec=dash,
+    )
+
+
 if __name__ == "__main__":
-    print(JSONEncoder(sort_keys=True, indent=2).encode(dashboard().build()))
+    print(JSONEncoder(sort_keys=True, indent=2).encode(manifest()))
