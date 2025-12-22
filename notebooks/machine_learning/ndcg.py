@@ -13,16 +13,16 @@ import pandas as pd
 
 # %%
 df_labels = pd.DataFrame(
-    [
-        {"query_id": 1, "query": "red hats", "score": 0.9, "doc_id": 1},
-        {"query_id": 1, "query": "red hats", "score": 0.8, "doc_id": 2},
-        {"query_id": 1, "query": "red hats", "score": 0.1, "doc_id": 3},
-        {"query_id": 2, "query": "green hats", "score": 1.0, "doc_id": 4},
-        {"query_id": 2, "query": "green hats", "score": 0.9, "doc_id": 5},
-        {"query_id": 2, "query": "green hats", "score": 0.8, "doc_id": 6},
-        {"query_id": 2, "query": "green hats", "score": 0.7, "doc_id": 7},
-        {"query_id": 2, "query": "green hats", "score": 0.1, "doc_id": 8},
-    ],
+  [
+    {"query_id": 1, "query": "red hats", "score": 0.9, "doc_id": 1},
+    {"query_id": 1, "query": "red hats", "score": 0.8, "doc_id": 2},
+    {"query_id": 1, "query": "red hats", "score": 0.1, "doc_id": 3},
+    {"query_id": 2, "query": "green hats", "score": 1.0, "doc_id": 4},
+    {"query_id": 2, "query": "green hats", "score": 0.9, "doc_id": 5},
+    {"query_id": 2, "query": "green hats", "score": 0.8, "doc_id": 6},
+    {"query_id": 2, "query": "green hats", "score": 0.7, "doc_id": 7},
+    {"query_id": 2, "query": "green hats", "score": 0.1, "doc_id": 8},
+  ],
 )
 
 df_labels
@@ -32,13 +32,13 @@ df_labels
 
 # %%
 df_results = pd.DataFrame(
-    [
-        {"query_id": 1, "rank": 1, "query": "red hats", "doc_id": 2},
-        {"query_id": 1, "rank": 2, "query": "red hats", "doc_id": 3},
-        {"query_id": 2, "rank": 1, "query": "green hats", "doc_id": 5},
-        {"query_id": 2, "rank": 2, "query": "green hats", "doc_id": 9},
-        {"query_id": 2, "rank": 3, "query": "green hats", "doc_id": 6},
-    ],
+  [
+    {"query_id": 1, "rank": 1, "query": "red hats", "doc_id": 2},
+    {"query_id": 1, "rank": 2, "query": "red hats", "doc_id": 3},
+    {"query_id": 2, "rank": 1, "query": "green hats", "doc_id": 5},
+    {"query_id": 2, "rank": 2, "query": "green hats", "doc_id": 9},
+    {"query_id": 2, "rank": 3, "query": "green hats", "doc_id": 6},
+  ],
 )
 
 df_results
@@ -155,8 +155,8 @@ dcg_d
 
 # %%
 df_labeled_local = df_labeled_d.sort_values(
-    by=["query_id", "gain"],
-    ascending=[True, False],
+  by=["query_id", "gain"],
+  ascending=[True, False],
 )
 
 # %%
@@ -183,8 +183,8 @@ pd.concat((dcg_d, idcg_local, ndcg_local.rename("ndcg")), axis=1)
 
 # %%
 df_labeled_global = df_labels.sort_values(
-    by=["query_id", "score"],
-    ascending=[True, False],
+  by=["query_id", "score"],
+  ascending=[True, False],
 )
 
 # %%
@@ -247,8 +247,8 @@ max_gain = 2**max_score - 1
 idcg_max_k_ = 0
 
 for i in range(1, k + 1):
-    discount = 1 / np.log(i + 1)
-    idcg_max_k_ += max_gain * discount
+  discount = 1 / np.log(i + 1)
+  idcg_max_k_ += max_gain * discount
 
 idcg_max_k = dcg_k.copy().rename("ideal_discounted_gain")
 idcg_max_k[:] = idcg_max_k_
@@ -261,10 +261,10 @@ pd.concat((dcg_k, idcg_max_k, ndcg_k.rename("ndcg")), axis=1)
 
 # %%
 df_jaccard = (
-    df_labels.groupby(["query_id", "query"])["doc_id"]
-    .agg(set)
-    .to_frame()
-    .rename({"doc_id": "ideal"}, axis=1)
+  df_labels.groupby(["query_id", "query"])["doc_id"]
+  .agg(set)
+  .to_frame()
+  .rename({"doc_id": "ideal"}, axis=1)
 )
 
 df_jaccard["results"] = df_results.groupby(["query_id", "query"])["doc_id"].agg(set)

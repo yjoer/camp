@@ -26,8 +26,8 @@ optimizer = tf.train.AdamOptimizer(0.01).minimize(loss)
 
 # %%
 dataset = {
-    "x": [[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]],
-    "y": [[0.0], [1.0], [1.0], [0.0]],
+  "x": [[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]],
+  "y": [[0.0], [1.0], [1.0], [0.0]],
 }
 
 # %%
@@ -38,15 +38,15 @@ session.run(init)
 
 # %%
 for epoch in range(1, 2001):
-    v = session.run([optimizer, loss], feed_dict={x: dataset["x"], y: dataset["y"]})
+  v = session.run([optimizer, loss], feed_dict={x: dataset["x"], y: dataset["y"]})
 
-    if epoch % 200 == 0:
-        print(f"Epoch: {epoch}, Loss: {v[1]}")
+  if epoch % 200 == 0:
+    print(f"Epoch: {epoch}, Loss: {v[1]}")
 
 # %%
 for i in range(4):
-    y_pred = session.run(a2, feed_dict={x: [dataset["x"][i]]})
+  y_pred = session.run(a2, feed_dict={x: [dataset["x"][i]]})
 
-    print(f"Input: {dataset['x'][i]}, Output: {y_pred}")
+  print(f"Input: {dataset['x'][i]}, Output: {y_pred}")
 
 # %%

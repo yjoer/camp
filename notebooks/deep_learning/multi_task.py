@@ -38,34 +38,34 @@ y_cos = y_cos.reshape(-1, 1)
 
 # %%
 class SinCosNet(nn.Module):
-    def __init__(self, hidden_layers: int) -> None:
-        super().__init__()
+  def __init__(self, hidden_layers: int) -> None:
+    super().__init__()
 
-        self.model = nn.Sequential(
-            nn.Linear(1, hidden_layers),
-            nn.ReLU(),
-            nn.Linear(hidden_layers, hidden_layers),
-            nn.ReLU(),
-        )
+    self.model = nn.Sequential(
+      nn.Linear(1, hidden_layers),
+      nn.ReLU(),
+      nn.Linear(hidden_layers, hidden_layers),
+      nn.ReLU(),
+    )
 
-        self.model_sin = nn.Sequential(
-            nn.Linear(hidden_layers, hidden_layers),
-            nn.ReLU(),
-            nn.Linear(hidden_layers, 1),
-        )
+    self.model_sin = nn.Sequential(
+      nn.Linear(hidden_layers, hidden_layers),
+      nn.ReLU(),
+      nn.Linear(hidden_layers, 1),
+    )
 
-        self.model_cos = nn.Sequential(
-            nn.Linear(hidden_layers, hidden_layers),
-            nn.ReLU(),
-            nn.Linear(hidden_layers, 1),
-        )
+    self.model_cos = nn.Sequential(
+      nn.Linear(hidden_layers, hidden_layers),
+      nn.ReLU(),
+      nn.Linear(hidden_layers, 1),
+    )
 
-    def forward(self, inputs: torch.Tensor) -> tuple:
-        x = self.model(inputs)
-        output_sin = self.model_sin(x)
-        output_cos = self.model_cos(x)
+  def forward(self, inputs: torch.Tensor) -> tuple:
+    x = self.model(inputs)
+    output_sin = self.model_sin(x)
+    output_cos = self.model_cos(x)
 
-        return output_sin, output_cos
+    return output_sin, output_cos
 
 
 # %%
@@ -80,20 +80,20 @@ n_epochs = 100
 losses = []
 
 for epoch in range(n_epochs):
-    pred_sin, pred_cos = net(x)
+  pred_sin, pred_cos = net(x)
 
-    loss_sin = F.mse_loss(pred_sin, y_sin)
-    loss_cos = F.mse_loss(pred_cos, y_cos)
-    loss = loss_sin + loss_cos
+  loss_sin = F.mse_loss(pred_sin, y_sin)
+  loss_cos = F.mse_loss(pred_cos, y_cos)
+  loss = loss_sin + loss_cos
 
-    losses.append(loss.item())
+  losses.append(loss.item())
 
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+  optimizer.zero_grad()
+  loss.backward()
+  optimizer.step()
 
-    if (epoch + 1) % 10 == 0:
-        print(f"Epoch: {epoch + 1}, Loss: {loss.item():.4f}")
+  if (epoch + 1) % 10 == 0:
+    print(f"Epoch: {epoch + 1}, Loss: {loss.item():.4f}")
 
 # %%
 plt.figure(figsize=(6, 4))
@@ -106,9 +106,9 @@ plt.show()
 net.eval()
 
 with torch.no_grad():
-    pred_sin, pred_cos = net(x)
-    pred_sin = pred_sin.squeeze(dim=1)
-    pred_cos = pred_cos.squeeze(dim=1)
+  pred_sin, pred_cos = net(x)
+  pred_sin = pred_sin.squeeze(dim=1)
+  pred_cos = pred_cos.squeeze(dim=1)
 
 # %%
 plt.figure(figsize=(6, 4))

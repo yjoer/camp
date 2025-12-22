@@ -26,22 +26,22 @@ TRAIN_STARTED_AT = ""
 EPOCH = 99
 
 if OVERFITTING_TEST:
-    CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
+  CHECKPOINT_PATH = "s3://models/ikcest_2024/yolo_v8_test"
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
 if not os.getenv("S3_ENDPOINT"):
-    storage_options = {}
+  storage_options = {}
 
 # %%
 test_dataset = IKCESTDetectionTestDataset(
-    path=TRAIN_DATASET_PATH,
-    storage_options=storage_options,
+  path=TRAIN_DATASET_PATH,
+  storage_options=storage_options,
 )
 
 # %%
@@ -70,22 +70,22 @@ test_image = tvf.to_image(test_image)
 test_image = test_image.permute(1, 2, 0).numpy()
 
 detections = sv.Detections(
-    xyxy=boxes,
-    confidence=detections.iloc[:, 6].to_numpy(),
-    class_id=detections.iloc[:, 7].to_numpy().astype(int),
-    tracker_id=detections.iloc[:, 1].to_numpy().astype(int),
+  xyxy=boxes,
+  confidence=detections.iloc[:, 6].to_numpy(),
+  class_id=detections.iloc[:, 7].to_numpy().astype(int),
+  tracker_id=detections.iloc[:, 1].to_numpy().astype(int),
 )
 
 labels = [
-    f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id, strict=False)
+  f"{c}/{t}" for c, t in zip(detections.class_id, detections.tracker_id, strict=False)
 ]
 
 box_annotator = sv.BoxAnnotator(thickness=1)
 
 label_annotator = sv.LabelAnnotator(
-    text_scale=1,
-    text_padding=2,
-    color_lookup=sv.ColorLookup.TRACK,
+  text_scale=1,
+  text_padding=2,
+  color_lookup=sv.ColorLookup.TRACK,
 )
 
 test_image = box_annotator.annotate(test_image, detections)
@@ -100,11 +100,11 @@ plt.show()
 
 # %%
 df_metrics = evaluate_tracking(
-    TRAIN_DATASET_PATH,
-    CHECKPOINT_PATH,
-    TRAIN_STARTED_AT,
-    EPOCH,
-    storage_options,
+  TRAIN_DATASET_PATH,
+  CHECKPOINT_PATH,
+  TRAIN_STARTED_AT,
+  EPOCH,
+  storage_options,
 )
 
 # %%

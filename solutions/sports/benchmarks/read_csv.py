@@ -16,13 +16,13 @@ DATASET_PATH = "s3://datasets/ikcest_2024"
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
 if not os.getenv("S3_ENDPOINT"):
-    storage_options = {}
+  storage_options = {}
 
 # %%
 subset_path = f"{DATASET_PATH}/train"
@@ -40,7 +40,7 @@ annotations = [f"{v}/gt/gt.txt" for v in videos]
 
 # %%
 with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
-    x = io.BytesIO(f.read())
+  x = io.BytesIO(f.read())
 
 # %%
 # %%timeit
@@ -73,24 +73,24 @@ np_lt = np.loadtxt(x, delimiter=",")
 # %%
 # %%timeit
 with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
-    np_pd = pd.read_csv(f, header=None).to_numpy()
+  np_pd = pd.read_csv(f, header=None).to_numpy()
 
 # %%
 # %%timeit
 read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
-    np_pa = csv.read_csv(f, read_options).to_pandas().to_numpy()
+  np_pa = csv.read_csv(f, read_options).to_pandas().to_numpy()
 
 # %%
 # %%timeit
 with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
-    np_pl = pl.read_csv(f.read(), has_header=False).to_numpy()
+  np_pl = pl.read_csv(f.read(), has_header=False).to_numpy()
 
 # %%
 # %%timeit
 with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
-    np_lt = np.loadtxt(f, delimiter=",")
+  np_lt = np.loadtxt(f, delimiter=",")
 
 # %% [markdown]
 # ## Multiple Files
@@ -98,28 +98,28 @@ with fsspec.open(f"{subset_path}/SNMOT-060/gt/gt.txt", **storage_options) as f:
 # %%
 # %%timeit
 with fsspec.open_files(annotations, **storage_options) as files:
-    for f in files:
-        np_pd = pd.read_csv(f, header=None).to_numpy()
+  for f in files:
+    np_pd = pd.read_csv(f, header=None).to_numpy()
 
 # %%
 # %%timeit
 read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    for f in files:
-        np_pa = csv.read_csv(f, read_options).to_pandas().to_numpy()
+  for f in files:
+    np_pa = csv.read_csv(f, read_options).to_pandas().to_numpy()
 
 # %%
 # %%timeit
 with fsspec.open_files(annotations, **storage_options) as files:
-    for f in files:
-        np_pl = pl.read_csv(f.read(), has_header=False).to_numpy()
+  for f in files:
+    np_pl = pl.read_csv(f.read(), has_header=False).to_numpy()
 
 # %%
 # %%timeit
 with fsspec.open_files(annotations, **storage_options) as files:
-    for f in files:
-        np_lt = np.loadtxt(f, delimiter=",")
+  for f in files:
+    np_lt = np.loadtxt(f, delimiter=",")
 
 # %% [markdown]
 # ## Multiple Files Multithreaded
@@ -130,18 +130,18 @@ pool = ThreadPoolExecutor()
 
 
 def pd_read_csv(f: IO[bytes]) -> np.ndarray:
-    return pd.read_csv(f, header=None).to_numpy()
+  return pd.read_csv(f, header=None).to_numpy()
 
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    futures = []
-    results_pd = []
+  futures = []
+  results_pd = []
 
-    for f in files:
-        futures.append(pool.submit(pd_read_csv, f))
+  for f in files:
+    futures.append(pool.submit(pd_read_csv, f))
 
-    for future in as_completed(futures):
-        results_pd.append(future.result())
+  for future in as_completed(futures):
+    results_pd.append(future.result())
 
 # %%
 # %%timeit
@@ -150,18 +150,18 @@ read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 
 def pa_read_csv(f: IO[bytes]) -> np.ndarray:
-    return csv.read_csv(f, read_options).to_pandas().to_numpy()
+  return csv.read_csv(f, read_options).to_pandas().to_numpy()
 
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    futures = []
-    results_pa = []
+  futures = []
+  results_pa = []
 
-    for f in files:
-        futures.append(pool.submit(pa_read_csv, f))
+  for f in files:
+    futures.append(pool.submit(pa_read_csv, f))
 
-    for future in as_completed(futures):
-        results_pa.append(future.result())
+  for future in as_completed(futures):
+    results_pa.append(future.result())
 
 # %%
 # %%timeit
@@ -169,18 +169,18 @@ pool = ThreadPoolExecutor()
 
 
 def pl_read_csv(f: IO[bytes]) -> np.ndarray:
-    return pl.read_csv(f.read(), has_header=False).to_numpy()
+  return pl.read_csv(f.read(), has_header=False).to_numpy()
 
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    futures = []
-    results_pl = []
+  futures = []
+  results_pl = []
 
-    for f in files:
-        futures.append(pool.submit(pl_read_csv, f))
+  for f in files:
+    futures.append(pool.submit(pl_read_csv, f))
 
-    for future in as_completed(futures):
-        results_pl.append(future.result())
+  for future in as_completed(futures):
+    results_pl.append(future.result())
 
 # %%
 # %%timeit
@@ -188,18 +188,18 @@ pool = ThreadPoolExecutor()
 
 
 def np_read_csv(f: IO[bytes]) -> np.ndarray:
-    return np.loadtxt(f, delimiter=",")
+  return np.loadtxt(f, delimiter=",")
 
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    futures = []
-    results_np = []
+  futures = []
+  results_np = []
 
-    for f in files:
-        futures.append(pool.submit(np_read_csv, f))
+  for f in files:
+    futures.append(pool.submit(np_read_csv, f))
 
-    for future in as_completed(futures):
-        results_np.append(future.result())
+  for future in as_completed(futures):
+    results_np.append(future.result())
 
 # %% [markdown]
 # ## Multiple Files Multithreaded Ordered
@@ -211,10 +211,10 @@ read_options = csv.ReadOptions(autogenerate_column_names=True)
 
 
 def pa_read_csv_ord(f: IO[bytes]) -> np.ndarray:
-    return csv.read_csv(f, read_options).to_pandas().to_numpy()
+  return csv.read_csv(f, read_options).to_pandas().to_numpy()
 
 
 with fsspec.open_files(annotations, **storage_options) as files:
-    results_pa = list(pool.map(pa_read_csv_ord, files))
+  results_pa = list(pool.map(pa_read_csv_ord, files))
 
 # %%

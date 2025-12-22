@@ -101,11 +101,11 @@ iris = load_iris()
 
 # %%
 X_train, X_test, y_train, y_test = train_test_split(
-    iris.data,
-    iris.target,
-    test_size=0.2,
-    random_state=12345,
-    stratify=iris.target,
+  iris.data,
+  iris.target,
+  test_size=0.2,
+  random_state=12345,
+  stratify=iris.target,
 )
 
 # %% [markdown]
@@ -131,10 +131,10 @@ fig = plt.figure(figsize=(4, 4))
 ax = plt.gca()
 
 ConfusionMatrixDisplay.from_predictions(
-    y_test,
-    y_pred,
-    display_labels=iris.target_names,
-    ax=ax,
+  y_test,
+  y_pred,
+  display_labels=iris.target_names,
+  ax=ax,
 )
 
 plt.show()
@@ -144,12 +144,12 @@ fig = plt.figure(figsize=(12, 8.8))
 ax = fig.gca()
 
 plot_tree(
-    dt,
-    feature_names=iris.feature_names,
-    class_names=iris.target_names,
-    filled=True,
-    rounded=True,
-    ax=ax,
+  dt,
+  feature_names=iris.feature_names,
+  class_names=iris.target_names,
+  filled=True,
+  rounded=True,
+  ax=ax,
 )
 
 plt.show()
@@ -176,12 +176,12 @@ fig = plt.figure(figsize=(10, 7.2))
 ax = fig.gca()
 
 plot_tree(
-    dt,
-    feature_names=iris.feature_names,
-    class_names=iris.target_names,
-    filled=True,
-    rounded=True,
-    ax=ax,
+  dt,
+  feature_names=iris.feature_names,
+  class_names=iris.target_names,
+  filled=True,
+  rounded=True,
+  ax=ax,
 )
 
 plt.show()
@@ -205,12 +205,12 @@ fig = plt.figure(figsize=(8, 4.8))
 ax = fig.gca()
 
 plot_tree(
-    dt,
-    feature_names=iris.feature_names,
-    class_names=iris.target_names,
-    filled=True,
-    rounded=True,
-    ax=ax,
+  dt,
+  feature_names=iris.feature_names,
+  class_names=iris.target_names,
+  filled=True,
+  rounded=True,
+  ax=ax,
 )
 
 plt.show()
@@ -234,12 +234,12 @@ fig = plt.figure(figsize=(8, 5.6))
 ax = fig.gca()
 
 plot_tree(
-    dt,
-    feature_names=iris.feature_names,
-    class_names=iris.target_names,
-    filled=True,
-    rounded=True,
-    ax=ax,
+  dt,
+  feature_names=iris.feature_names,
+  class_names=iris.target_names,
+  filled=True,
+  rounded=True,
+  ax=ax,
 )
 
 plt.show()
@@ -249,10 +249,10 @@ plt.show()
 
 # %%
 parameters = {
-    "criterion": ["gini", "entropy", "log_loss"],
-    "splitter": ["best", "random"],
-    "max_depth": [1, 2, 3, 4, 5],
-    "max_features": [None, "sqrt", "log2"],
+  "criterion": ["gini", "entropy", "log_loss"],
+  "splitter": ["best", "random"],
+  "max_depth": [1, 2, 3, 4, 5],
+  "max_features": [None, "sqrt", "log2"],
 }
 
 

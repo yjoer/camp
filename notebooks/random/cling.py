@@ -17,16 +17,16 @@ cling_dir = (Path(cling_path) / ".." / "..").resolve()
 libs = ["/bin/libclingJupyter", "/lib/libclingJupyter", "/libexec/lib/libclingJupyter"]
 
 for lib in libs:
-    for ext in [".dll", ".dylib", ".so"]:
-        filename = cling_dir + lib + ext
-        if not Path(filename).exists():
-            continue
+  for ext in [".dll", ".dylib", ".so"]:
+    filename = cling_dir + lib + ext
+    if not Path(filename).exists():
+      continue
 
-        cling = ctypes.CDLL(filename)
+    cling = ctypes.CDLL(filename)
 
 
 class my_void_p(ctypes.c_void_p):
-    pass
+  pass
 
 
 cling.cling_create.restype = my_void_p
@@ -34,9 +34,9 @@ cling.cling_eval.restype = my_void_p
 
 # %%
 argv = [
-    b"clingJupyter",
-    b"-std=c++20",
-    b"-I" + cling_dir.encode("utf-8") + b"/include/",
+  b"clingJupyter",
+  b"-std=c++20",
+  b"-I" + cling_dir.encode("utf-8") + b"/include/",
 ]
 argv_type = ctypes.c_char_p * len(argv)
 argc = len(argv)
@@ -44,10 +44,10 @@ llvm_dir = cling_dir.encode("utf-8")
 r, w = os.pipe()
 
 interpreter = cling.cling_create(
-    ctypes.c_int(argc),
-    argv_type(*argv),
-    ctypes.c_char_p(llvm_dir),
-    w,
+  ctypes.c_int(argc),
+  argv_type(*argv),
+  ctypes.c_char_p(llvm_dir),
+  w,
 )
 
 # %%
@@ -93,40 +93,40 @@ fd.close()
 
 # %%
 if sys.platform == "win32":
-    import msvcrt
+  import msvcrt
 
-    peek_named_pipe = ctypes.windll.kernel32.PeekNamedPipe
-    peek_named_pipe.argtypes = [
-        ctypes.wintypes.HANDLE,
-        ctypes.c_void_p,
-        ctypes.wintypes.DWORD,
-        ctypes.POINTER(ctypes.wintypes.DWORD),
-        ctypes.POINTER(ctypes.wintypes.DWORD),
-        ctypes.POINTER(ctypes.wintypes.DWORD),
-    ]
-    peek_named_pipe.restype = ctypes.c_bool
+  peek_named_pipe = ctypes.windll.kernel32.PeekNamedPipe
+  peek_named_pipe.argtypes = [
+    ctypes.wintypes.HANDLE,
+    ctypes.c_void_p,
+    ctypes.wintypes.DWORD,
+    ctypes.POINTER(ctypes.wintypes.DWORD),
+    ctypes.POINTER(ctypes.wintypes.DWORD),
+    ctypes.POINTER(ctypes.wintypes.DWORD),
+  ]
+  peek_named_pipe.restype = ctypes.c_bool
 
-    bytes_available = ctypes.wintypes.DWORD()
-    status = peek_named_pipe(
-        ctypes.wintypes.HANDLE(msvcrt.get_osfhandle(ra)),
-        None,
-        0,
-        None,
-        ctypes.byref(bytes_available),
-        None,
-    )
+  bytes_available = ctypes.wintypes.DWORD()
+  status = peek_named_pipe(
+    ctypes.wintypes.HANDLE(msvcrt.get_osfhandle(ra)),
+    None,
+    0,
+    None,
+    ctypes.byref(bytes_available),
+    None,
+  )
 
-    print(status)
-    print(bytes_available.value)
+  print(status)
+  print(bytes_available.value)
 
 # %%
 os.read(ra, 5)
 
 # %%
 if sys.platform == "win32":
-    get_osfhandle = ctypes.windll.msvcrt._get_osfhandle
-    get_osfhandle.argtypes = [ctypes.c_int]
-    get_osfhandle.restype = ctypes.c_int
-    print(get_osfhandle(ra))
+  get_osfhandle = ctypes.windll.msvcrt._get_osfhandle
+  get_osfhandle.argtypes = [ctypes.c_int]
+  get_osfhandle.restype = ctypes.c_int
+  print(get_osfhandle(ra))
 
 # %%

@@ -19,9 +19,9 @@ from camp.datasets.mnist import FashionMNIST
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
 # %%
@@ -35,16 +35,16 @@ y_test = dataset["test_labels"]
 
 # %%
 class_names = [
-    "T-shirt/top",
-    "Trouser",
-    "Pullover",
-    "Dress",
-    "Coat",
-    "Sandal",
-    "Shirt",
-    "Sneaker",
-    "Bag",
-    "Ankle boot",
+  "T-shirt/top",
+  "Trouser",
+  "Pullover",
+  "Dress",
+  "Coat",
+  "Sandal",
+  "Shirt",
+  "Sneaker",
+  "Bag",
+  "Ankle boot",
 ]
 
 # %%
@@ -56,12 +56,12 @@ plt.show()
 fig = plt.figure(figsize=(8, 8), constrained_layout=True)
 
 for i in range(25):
-    fig.add_subplot(5, 5, i + 1)
+  fig.add_subplot(5, 5, i + 1)
 
-    plt.imshow(X_train[i].view(28, 28), cmap=plt.get_cmap("binary"))
-    plt.yticks([])
-    plt.xticks([])
-    plt.xlabel(class_names[y_train[i]])
+  plt.imshow(X_train[i].view(28, 28), cmap=plt.get_cmap("binary"))
+  plt.yticks([])
+  plt.xticks([])
+  plt.xlabel(class_names[y_train[i]])
 
 plt.show()
 
@@ -72,9 +72,9 @@ nn.add(Dense(256, activation="relu"))
 nn.add(Dense(10))
 
 nn.compile(
-    optimizer=Adam(learning_rate=0.01),
-    loss=SparseCategoricalCrossentropy(from_logits=True),
-    metrics=["accuracy"],
+  optimizer=Adam(learning_rate=0.01),
+  loss=SparseCategoricalCrossentropy(from_logits=True),
+  metrics=["accuracy"],
 )
 
 # %%

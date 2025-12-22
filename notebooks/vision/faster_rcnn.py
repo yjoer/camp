@@ -37,9 +37,9 @@ from camp.utils.torch_utils import save_optimizer
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY"),
 }
 
 # %%
@@ -48,46 +48,46 @@ dataset = VitroxBody1k.load("s3://datasets/vitrox_body_1k", storage_options)
 
 # %%
 class CustomDataset(Dataset):
-    def __init__(self, dataset: dict, subset: str) -> None:
-        self.images = dataset[subset]
-        self.labels = dataset[f"{subset}_labels"]
-        self.boxes = dataset[f"{subset}_boxes"]
+  def __init__(self, dataset: dict, subset: str) -> None:
+    self.images = dataset[subset]
+    self.labels = dataset[f"{subset}_labels"]
+    self.boxes = dataset[f"{subset}_boxes"]
 
-    def __len__(self) -> int:
-        return len(self.images)
+  def __len__(self) -> int:
+    return len(self.images)
 
-    def __getitem__(self, idx: int) -> tuple:
-        max_size = 224
-        output_size = (224, 224)
+  def __getitem__(self, idx: int) -> tuple:
+    max_size = 224
+    output_size = (224, 224)
 
-        image = self.images[idx]
-        width, height = image.size
+    image = self.images[idx]
+    width, height = image.size
 
-        labels = self.labels[idx]
-        labels = torch.tensor(labels, dtype=torch.int64)
+    labels = self.labels[idx]
+    labels = torch.tensor(labels, dtype=torch.int64)
 
-        boxes = torch.tensor(self.boxes[idx])
-        boxes = box_convert(boxes, "cxcywh", "xyxy")
+    boxes = torch.tensor(self.boxes[idx])
+    boxes = box_convert(boxes, "cxcywh", "xyxy")
 
-        if width > 224 or height > 224:
-            image = tvf.resize(image, size=None, max_size=max_size)
+    if width > 224 or height > 224:
+      image = tvf.resize(image, size=None, max_size=max_size)
 
-            scale_factor = max_size / width if width > height else max_size / height
+      scale_factor = max_size / width if width > height else max_size / height
 
-            boxes = torch.mul(boxes, scale_factor)
-            width, height = image.size
+      boxes = torch.mul(boxes, scale_factor)
+      width, height = image.size
 
-        image = tvf.center_crop(image, output_size)
+    image = tvf.center_crop(image, output_size)
 
-        output_width, output_height = output_size
-        left, top = (width - output_width) // 2, (height - output_height) // 2
-        boxes[:, [0, 2]] -= left
-        boxes[:, [1, 3]] -= top
+    output_width, output_height = output_size
+    left, top = (width - output_width) // 2, (height - output_height) // 2
+    boxes[:, [0, 2]] -= left
+    boxes[:, [1, 3]] -= top
 
-        image = tvf.to_image(image)
-        image = tvf.to_dtype(image, dtype=torch.float32, scale=True)
+    image = tvf.to_image(image)
+    image = tvf.to_dtype(image, dtype=torch.float32, scale=True)
 
-        return image, {"labels": labels, "boxes": boxes}
+    return image, {"labels": labels, "boxes": boxes}
 
 
 # %%
@@ -98,10 +98,10 @@ test_dataset = CustomDataset(dataset, subset="test")
 train_image, train_target = train_dataset[0]
 
 train_image_preview = draw_bounding_boxes(
-    image=train_image,
-    boxes=train_target["boxes"],
-    labels=[str(x.item()) for x in train_target["labels"]],
-    colors="lime",
+  image=train_image,
+  boxes=train_target["boxes"],
+  labels=[str(x.item()) for x in train_target["labels"]],
+  colors="lime",
 )
 
 plt.imshow(train_image_preview.permute(1, 2, 0))
@@ -112,21 +112,21 @@ batch_size = 8
 
 
 def collate_fn(batch: list) -> tuple:
-    return tuple(zip(*batch, strict=False))
+  return tuple(zip(*batch, strict=False))
 
 
 train_dataloader = DataLoader(
-    train_dataset,
-    batch_size,
-    shuffle=True,
-    collate_fn=collate_fn,
+  train_dataset,
+  batch_size,
+  shuffle=True,
+  collate_fn=collate_fn,
 )
 
 test_dataloader = DataLoader(test_dataset, batch_size, collate_fn=collate_fn)
 
 # %%
 model = fasterrcnn_mobilenet_v3_large_fpn(
-    weights=FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT,
+  weights=FasterRCNN_MobileNet_V3_Large_FPN_Weights.DEFAULT,
 )
 
 in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -146,24 +146,24 @@ epochs = 0
 model.train()
 
 for i in range(epochs, n_epochs):
-    print(f"Epoch: {i + 1}/{n_epochs}, Learning Rate: {lr_scheduler.get_last_lr()}")
+  print(f"Epoch: {i + 1}/{n_epochs}, Learning Rate: {lr_scheduler.get_last_lr()}")
 
-    steps = 1
-    pbar = keras.utils.Progbar(n_batches)
+  steps = 1
+  pbar = keras.utils.Progbar(n_batches)
 
-    for images, targets in train_dataloader:
-        loss_dict = model(images, targets)
-        losses = sum(loss for loss in loss_dict.values())
-        pbar.update(steps, values=[("loss", losses)])
+  for images, targets in train_dataloader:
+    loss_dict = model(images, targets)
+    losses = sum(loss for loss in loss_dict.values())
+    pbar.update(steps, values=[("loss", losses)])
 
-        optimizer.zero_grad()
-        losses.backward()
-        optimizer.step()
+    optimizer.zero_grad()
+    losses.backward()
+    optimizer.step()
 
-        steps += 1
+    steps += 1
 
-    lr_scheduler.step()
-    epochs += 1
+  lr_scheduler.step()
+  epochs += 1
 
 # %%
 checkpoint_path = f"./checkpoint-{epochs}"
@@ -172,10 +172,10 @@ Path(checkpoint_path).mkdir(parents=True, exist_ok=True)
 save_optimizer(checkpoint_path, optimizer)
 
 with Path(f"{checkpoint_path}/scheduler.json").open("w") as f:
-    f.write(json.dumps(lr_scheduler.state_dict()))
+  f.write(json.dumps(lr_scheduler.state_dict()))
 
 with Path(f"{checkpoint_path}/model.safetensors").open("wb") as f:
-    f.write(save(model.state_dict()))
+  f.write(save(model.state_dict()))
 
 # %%
 epochs = 20
@@ -184,10 +184,10 @@ checkpoint_path = f"./checkpoint-{epochs}"
 load_optimizer(checkpoint_path, optimizer)
 
 with Path(f"{checkpoint_path}/scheduler.json").open("r") as f:
-    lr_scheduler.load_state_dict(json.loads(f.read()))
+  lr_scheduler.load_state_dict(json.loads(f.read()))
 
 with Path(f"{checkpoint_path}/model.safetensors").open("rb") as f:
-    model.load_state_dict(load(f.read()))
+  model.load_state_dict(load(f.read()))
 
 # %%
 # %%time
@@ -197,30 +197,30 @@ model.eval()
 predictions = []
 
 with torch.no_grad():
-    for images, targets in tqdm(test_dataloader):
-        batch_predictions = model(images)
-        batch_predictions_max = []
+  for images, targets in tqdm(test_dataloader):
+    batch_predictions = model(images)
+    batch_predictions_max = []
 
-        for prediction in batch_predictions:
-            if prediction["scores"].numel() == 0:
-                prediction_dict = {
-                    "boxes": torch.tensor([[0, 0, 0, 0]]),
-                    "labels": torch.tensor([0]),
-                    "scores": torch.tensor([0]),
-                }
-            else:
-                idx = torch.argmax(prediction["scores"])
+    for prediction in batch_predictions:
+      if prediction["scores"].numel() == 0:
+        prediction_dict = {
+          "boxes": torch.tensor([[0, 0, 0, 0]]),
+          "labels": torch.tensor([0]),
+          "scores": torch.tensor([0]),
+        }
+      else:
+        idx = torch.argmax(prediction["scores"])
 
-                prediction_dict = {
-                    "boxes": prediction["boxes"][idx : idx + 1],
-                    "labels": prediction["labels"][idx : idx + 1],
-                    "scores": prediction["scores"][idx : idx + 1],
-                }
+        prediction_dict = {
+          "boxes": prediction["boxes"][idx : idx + 1],
+          "labels": prediction["labels"][idx : idx + 1],
+          "scores": prediction["scores"][idx : idx + 1],
+        }
 
-            batch_predictions_max.append(prediction_dict)
-            predictions.append(prediction_dict)
+      batch_predictions_max.append(prediction_dict)
+      predictions.append(prediction_dict)
 
-        metric.update(batch_predictions_max, targets)
+    metric.update(batch_predictions_max, targets)
 
 # %%
 metric.compute()
@@ -230,17 +230,17 @@ test_idx = 0
 test_image, test_target = test_dataset[test_idx]
 
 test_image_preview = draw_bounding_boxes(
-    image=test_image,
-    boxes=test_target["boxes"],
-    labels=[str(x.item()) for x in test_target["labels"]],
-    colors="lime",
+  image=test_image,
+  boxes=test_target["boxes"],
+  labels=[str(x.item()) for x in test_target["labels"]],
+  colors="lime",
 )
 
 test_image_predicted = draw_bounding_boxes(
-    image=test_image,
-    boxes=predictions[test_idx]["boxes"],
-    labels=[str(x.item()) for x in predictions[test_idx]["labels"]],
-    colors="lime",
+  image=test_image,
+  boxes=predictions[test_idx]["boxes"],
+  labels=[str(x.item()) for x in predictions[test_idx]["labels"]],
+  colors="lime",
 )
 
 plt.figure(figsize=(8, 4.8))

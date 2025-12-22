@@ -58,9 +58,9 @@ plt.show()
 norm_dist = st.norm.rvs(size=100, random_state=26)
 
 lower, upper = st.norm.interval(
-    loc=np.mean(norm_dist),
-    scale=np.std(norm_dist) / np.sqrt(100),
-    confidence=0.95,
+  loc=np.mean(norm_dist),
+  scale=np.std(norm_dist) / np.sqrt(100),
+  confidence=0.95,
 )
 
 fig = plt.figure()
@@ -76,9 +76,9 @@ plt.show()
 
 # %%
 (A_low, B_low), (A_up, B_up) = proportion_confint(
-    count=[n_a * p_a, n_b * p_b],
-    nobs=[n_a, n_b],
-    alpha=0.05,
+  count=[n_a * p_a, n_b * p_b],
+  nobs=[n_a, n_b],
+  alpha=0.05,
 )
 
 print(f"Group A 95% CI: [{A_low:.4f}, {A_up:.4f}]")

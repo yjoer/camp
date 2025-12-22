@@ -11,16 +11,16 @@ tf.disable_eager_execution()
 
 # %%
 storage_options = {
-    "endpoint_url": os.getenv("S3_ENDPOINT"),
-    "key": os.getenv("S3_ACCESS_KEY_ID"),
-    "secret": os.getenv("S3_SECRET_ACCESS_KEY").replace("\\", ""),
+  "endpoint_url": os.getenv("S3_ENDPOINT"),
+  "key": os.getenv("S3_ACCESS_KEY_ID"),
+  "secret": os.getenv("S3_SECRET_ACCESS_KEY").replace("\\", ""),
 }
 
 # %%
 dataset = FashionMNIST.load(
-    path="s3://datasets/fashion_mnist",
-    storage_options=storage_options,
-    return_tensors="np",
+  path="s3://datasets/fashion_mnist",
+  storage_options=storage_options,
+  return_tensors="np",
 )
 
 X_train = dataset["train"] / 255
@@ -66,9 +66,9 @@ session.run(init)
 
 # %%
 for epoch in range(1, 11):
-    v = session.run([optimizer, loss], feed_dict={x: X_train, y: y_train})
+  v = session.run([optimizer, loss], feed_dict={x: X_train, y: y_train})
 
-    print(f"Epoch: {epoch}, Loss: {v[1]}")
+  print(f"Epoch: {epoch}, Loss: {v[1]}")
 
 # %%
 correct = tf.equal(tf.argmax(a3, 1), tf.argmax(y, 1))

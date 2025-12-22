@@ -4,7 +4,7 @@ import numpy as np
 
 # %%
 def sigmoid(x: float) -> np.float64:
-    return 1 / (1 + np.exp(-x))
+  return 1 / (1 + np.exp(-x))
 
 
 # %%
@@ -14,12 +14,12 @@ print(sigmoid(0.2))
 
 # %%
 def norm(x: np.ndarray) -> np.ndarray:
-    return x / np.sum(x)
+  return x / np.sum(x)
 
 
 # %%
 def softmax(x: np.ndarray) -> np.ndarray:
-    return np.exp(x) / np.sum(np.exp(x))
+  return np.exp(x) / np.sum(np.exp(x))
 
 
 # %%
