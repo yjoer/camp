@@ -71,15 +71,16 @@ vision = [
 
 [dependency-groups]
 dev = [
-  "jedi-language-server==0.46.0",
+  # "jedi-language-server==0.46.0",
+  # "jupyterlab-lsp==5.2.0",
   "jjava==1.0a6",
   "jupyter-collaboration==4.2.0",
   "jupyter-ruff @ git+https://github.com/leotaku/jupyter-ruff@991d3a5",
   "jupyterlab==4.5.1",
   "jupyterlab-git==0.51.3",
-  "jupyterlab-lsp==5.2.0",
   "jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
   "jupytext==1.18.1",
+  "jupyverse[jupyterlab,auth]==0.10.30",
   "marimo==0.18.4",
   "maturin==1.10.2",
   "mypy==1.19.1",

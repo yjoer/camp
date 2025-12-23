@@ -2,7 +2,8 @@
   "name": "camp",
   "type": "module",
   "scripts": {
-    "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab"
+    "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab",
+    "jupyverse": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyverse --set frontend.collaborative=true --set kernels.require_yjs=true --set jupyterlab.server_side_execution=true"
   },
   "browserslist": "defaults and not op_mini all",
   "devDependencies": {
