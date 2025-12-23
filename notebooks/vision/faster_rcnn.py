@@ -154,7 +154,7 @@ for i in range(epochs, n_epochs):
   for images, targets in train_dataloader:
     loss_dict = model(images, targets)
     losses = sum(loss for loss in loss_dict.values())
-    pbar.update(steps, values=[("loss", losses)])
+    pbar.update(steps, values=[("loss", losses.item())])
 
     optimizer.zero_grad()
     losses.backward()
