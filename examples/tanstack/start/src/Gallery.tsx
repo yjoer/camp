@@ -24,6 +24,8 @@ const sections = [
   {
     label: 'List Virtualization',
     children: [
+      { to: '/list-virt-fixed-height', label: 'Fixed Height' },
+      { to: '/list-virt-fixed-height?variant=content-visibility', label: 'Fixed Height with Content Visibility' }, // prettier-ignore
       { to: '/list-virt-dynamic-height', label: 'Dynamic Height with uwrap' },
       { to: '/list-virt-dynamic-height?wrap=canvas-hypertxt', label: 'Dynamic Height with canvas-hypertxt' }, // prettier-ignore
     ],
