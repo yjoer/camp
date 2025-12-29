@@ -66,11 +66,13 @@ jobs:
       - name: Package
         run: tar -zcvf spirv-cross-linux-x64.tar.gz *
         working-directory: ../build/install
+      - name: Set Environment
+        run: echo "artifacts_path=$(realpath ../build/install)" >> $GITHUB_ENV
       - name: Upload Artifact
         uses: actions/upload-artifact@v6
         with:
           name: spirv-cross-linux-x64
-          path: ../build/install/spirv-cross-linux-x64.tar.gz
+          path: ${{ env.artifacts_path }}/spirv-cross-linux-x64.tar.gz
 
   release:
     name: release
