@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION: 1.4.328.1
+  VERSION: 1.4.335.0
 
 jobs:
-  build-spirv-cross:
-    name: Build SPIRV-Cross
+  build-windows:
+    name: build-windows
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -32,10 +32,62 @@ jobs:
         run: cmake --build ../build --target install
       - name: Package
         run: tar -acvf spirv-cross-windows-x64.zip -C ../build/install *
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: spirv-cross-windows-x64
+          path: spirv-cross-windows-x64.zip
+
+  build-linux:
+    name: build-linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: KhronosGroup/SPIRV-Cross
+          ref: vulkan-sdk-${{ env.VERSION }}
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+      - name: Configure
+        run: |
+          cmake \
+          -G Ninja \
+          -DCMAKE_INSTALL_PREFIX="../build/install" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER=clang \
+          -DCMAKE_CXX_COMPILER=clang++ \
+          -DSPIRV_CROSS_STATIC=ON \
+          -DSPIRV_CROSS_CLI=ON \
+          -S . \
+          -B ../build
+      - name: Build and Install
+        run: cmake --build ../build --target install
+      - name: Package
+        run: tar -zcvf spirv-cross-linux-x64.tar.gz -C ../build/install .
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: spirv-cross-linux-x64
+          path: spirv-cross-linux-x64.tar.gz
+
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-linux]
+    steps:
+      - name: Download Windows Artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: spirv-cross-windows-x64
+      - name: Download Linux Artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: spirv-cross-linux-x64
       - name: Release
         run: |
           gh release create ${{ env.VERSION }} --draft --title ${{ env.VERSION }}
-          gh release upload ${{ env.VERSION }} spirv-cross-windows-x64.zip
+          gh release upload ${{ env.VERSION }} spirv-cross-windows-x64.zip spirv-cross-linux-x64.tar.gz
           gh release edit ${{ env.VERSION }} --draft=false
         env:
           GH_REPO: yjoer/spirv-cross-builds
