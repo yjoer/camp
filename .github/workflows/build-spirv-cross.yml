@@ -64,7 +64,7 @@ jobs:
       - name: Build and Install
         run: cmake --build ../build --target install
       - name: Package
-        run: tar -zcvf spirv-cross-linux-x64.tar.gz -C ../build/install .
+        run: tar -zcvf spirv-cross-linux-x64.tar.gz -C ../build/install *
       - name: Upload Artifact
         uses: actions/upload-artifact@v6
         with:
