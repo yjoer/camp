@@ -1,0 +1,2 @@
+[tasks."build:vercel"]
+run = "pnpm storybook build --output-dir .vercel/output/static"
