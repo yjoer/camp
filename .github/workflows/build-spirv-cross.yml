@@ -70,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: spirv-cross-linux-x64
-          path: spirv-cross-linux-x64.tar.gz
+          path: ../build/install/spirv-cross-linux-x64.tar.gz
 
   release:
     name: release
