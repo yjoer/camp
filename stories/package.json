@@ -3,7 +3,6 @@
   "type": "module",
   "scripts": {
     "build": "storybook build",
-    "build:vercel": "storybook build --output-dir .vercel/output/static",
     "dev": "storybook dev -p 6006"
   },
   "dependencies": {

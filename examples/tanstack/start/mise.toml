@@ -1,3 +1,15 @@
+[tools]
+"github:shader-slang/slang" = "2025.24.2"
+"github:yjoer/spirv-cross-builds" = "1.4.335.0"
+
+[tasks."build:vercel"]
+depends = ["build:shaders"]
+env = { TSS_TARGET = "vercel" }
+run = "pnpm vite build"
+
+[tasks."build:shaders"]
+depends = ["build:triangle", "build:rectangle"]
+
 [tasks."build:triangle"]
 run = [
   """
