@@ -1,0 +1,7 @@
+{
+  "name": "@camp/examples-http-fastify",
+  "type": "module",
+  "dependencies": {
+    "fastify": "5.6.2"
+  }
+}

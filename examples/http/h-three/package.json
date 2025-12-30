@@ -1,0 +1,7 @@
+{
+  "name": "@camp/examples-http-h-three",
+  "type": "module",
+  "dependencies": {
+    "h3": "2.0.1-rc.6"
+  }
+}

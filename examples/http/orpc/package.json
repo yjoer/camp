@@ -1,0 +1,10 @@
+{
+  "name": "@camp/examples-http-orpc",
+  "type": "module",
+  "dependencies": {
+    "@orpc/openapi": "1.13.2",
+    "@orpc/server": "1.13.2",
+    "fastify": "5.6.2",
+    "h3": "2.0.1-rc.6"
+  }
+}
