@@ -5,6 +5,8 @@ default-run = "camp"
 
 [workspace]
 members = [
+  "examples/http/axum",
+  "examples/http/axum-connect",
   "examples/ratatui/counter",
   "examples/ratatui/counter-elm",
   "examples/ratatui/json-editor"
