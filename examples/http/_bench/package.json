@@ -1,0 +1,7 @@
+{
+  "name": "@camp/examples-http-bench",
+  "type": "module",
+  "devDependencies": {
+    "@types/k6": "1.4.0"
+  }
+}

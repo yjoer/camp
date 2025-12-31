@@ -14,6 +14,11 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
+  @GetMapping("/thread")
+  public String thread() {
+    return Thread.currentThread().toString();
+  }
+
   @GetMapping("/")
   public Map<String, String> hello() {
     return Map.of("hello", "world");
