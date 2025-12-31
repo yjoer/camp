@@ -161,6 +161,15 @@ servers: list[ServerConfig] = [
     endpoints=[hello],
   ),
   ServerConfig(
+    name="fastapi",
+    language="python",
+    build_cmd=None,
+    run_cmd=["uv", "run", "python", "server.py"],
+    cwd=http_dir / "fastapi",
+    base_url="http://127.0.0.1:3000",
+    endpoints=[hello],
+  ),
+  ServerConfig(
     name="spring-boot",
     language="java",
     build_cmd=["gradle", "bootJar"],

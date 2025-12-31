@@ -147,7 +147,7 @@ conflicts = [
 ]
 
 [tool.uv.workspace]
-members = ["examples/grafana/*"]
+members = ["examples/grafana/*", "examples/http/fastapi"]
 
 [[tool.uv.dependency-metadata]]
 name = "gensim"

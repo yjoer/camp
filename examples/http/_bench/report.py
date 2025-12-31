@@ -8,6 +8,7 @@ df_expanded = df.explode("measurements")
 
 # %%
 server_order = df["server_name"].unique().tolist()
+language_order = df["language"].unique().tolist()
 
 # %%
 rps_chart = (
@@ -21,7 +22,7 @@ rps_chart = (
     ),
     y=alt.Y("measurements:Q", scale=alt.Scale(padding=15, zero=False)),
     xOffset="jitter:Q",
-    color=alt.Color("language:N"),
+    color=alt.Color("language:N", sort=language_order),
   )
   .transform_calculate(jitter="random()")
   .properties(width=300)
@@ -39,7 +40,7 @@ latency_chart = (
     ),
     y=alt.Y("latency_us:Q", scale=alt.Scale(padding=15, zero=False)),
     xOffset="jitter:Q",
-    color=alt.Color("language:N"),
+    color=alt.Color("language:N", sort=language_order),
   )
   .transform_calculate(
     jitter="random()",
