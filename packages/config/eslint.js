@@ -271,22 +271,10 @@ function perfectionist() {
         {
           groups: ['key', 'ref', 'name', 'content', 'unknown'],
           customGroups: [
-            {
-              groupName: 'key',
-              elementNamePattern: 'key',
-            },
-            {
-              groupName: 'ref',
-              elementNamePattern: 'ref',
-            },
-            {
-              groupName: 'name',
-              elementNamePattern: 'name',
-            },
-            {
-              groupName: 'content',
-              elementNamePattern: 'content',
-            },
+            { groupName: 'key', elementNamePattern: 'key' },
+            { groupName: 'ref', elementNamePattern: 'ref' },
+            { groupName: 'name', elementNamePattern: 'name' },
+            { groupName: 'content', elementNamePattern: 'content' },
           ],
         },
       ],
@@ -296,7 +284,12 @@ function perfectionist() {
       'perfectionist/sort-object-types': 'warn',
       'perfectionist/sort-sets': 'warn',
       'perfectionist/sort-switch-case': 'warn',
-      'perfectionist/sort-union-types': 'warn',
+      'perfectionist/sort-union-types': [
+        'warn',
+        {
+          groups: ['unknown', 'named', 'nullish'],
+        },
+      ],
     },
     settings: {
       perfectionist: {

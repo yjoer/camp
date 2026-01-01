@@ -18,7 +18,7 @@ interface Options {
   minimize?: boolean;
   mode: 'development' | 'production';
   projectPath: string;
-  transpilePackages?: (RegExp | string)[];
+  transpilePackages?: (string | RegExp)[];
 }
 
 export const getServerConfig = ({
