@@ -262,6 +262,7 @@ function perfectionist() {
       'perfectionist/sort-interfaces': [
         'warn',
         {
+          type: 'unsorted',
           groups: ['property', 'method'],
         },
       ],
@@ -269,12 +270,13 @@ function perfectionist() {
       'perfectionist/sort-jsx-props': [
         'warn',
         {
-          groups: ['key', 'ref', 'name', 'content', 'unknown'],
+          groups: ['key', 'ref', 'name', 'content', 'unknown', 'callback'],
           customGroups: [
-            { groupName: 'key', elementNamePattern: 'key' },
-            { groupName: 'ref', elementNamePattern: 'ref' },
-            { groupName: 'name', elementNamePattern: 'name' },
-            { groupName: 'content', elementNamePattern: 'content' },
+            { groupName: 'key', elementNamePattern: '^key$' },
+            { groupName: 'ref', elementNamePattern: '^ref$' },
+            { groupName: 'name', elementNamePattern: '^name$' },
+            { groupName: 'content', elementNamePattern: '^content$' },
+            { groupName: 'callback', elementNamePattern: ['^on_.+', '^on[A-Z].*'] },
           ],
         },
       ],
