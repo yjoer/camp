@@ -283,7 +283,13 @@ function perfectionist() {
       'perfectionist/sort-maps': 'warn',
       'perfectionist/sort-named-exports': 'warn',
       'perfectionist/sort-named-imports': 'warn',
-      'perfectionist/sort-object-types': 'warn',
+      'perfectionist/sort-object-types': [
+        'warn',
+        {
+          type: 'unsorted',
+          groups: ['property', 'method'],
+        },
+      ],
       'perfectionist/sort-sets': 'warn',
       'perfectionist/sort-switch-case': 'warn',
       'perfectionist/sort-union-types': [
