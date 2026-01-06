@@ -2,19 +2,27 @@
   "name": "@camp/webpack",
   "type": "module",
   "dependencies": {
-    "@rspack/core": "^1",
     "@vercel/webpack-asset-relocator-loader": "1.10.0",
     "ts-loader": "9.5.4",
-    "webpack": "^5",
     "webpack-merge": "^6",
     "webpack-node-externals": "3.0.0"
   },
   "devDependencies": {
-    "@types/webpack-node-externals": "3.0.4"
+    "@rspack/core": "1.7.1",
+    "@types/webpack-node-externals": "3.0.4",
+    "webpack": "5.104.1"
   },
   "peerDependencies": {
     "@rspack/core": "^1",
     "webpack": "^5",
     "webpack-merge": "^6"
+  },
+  "peerDependenciesMeta": {
+    "@rspack/core": {
+      "optional": true
+    },
+    "webpack": {
+      "optional": true
+    }
   }
 }

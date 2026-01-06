@@ -1,6 +1,6 @@
 {
   "name": "@camp/webpack",
-  "version": "2025.11.0",
+  "version": "2026.1.0",
   "license": "MPL-2.0",
   "exports": {
     "./config": "./config.ts",
