@@ -6,6 +6,7 @@ import cp from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// @ts-expect-error no-types-available
 import relocateLoader from '@vercel/webpack-asset-relocator-loader';
 
 import type { Compiler, Resolver } from 'webpack';
