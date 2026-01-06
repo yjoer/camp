@@ -1,6 +1,10 @@
 {
   "name": "@xcamp/webpack",
   "version": "2026.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yjoer/camp.git"
+  },
   "type": "module",
   "exports": {
     "./config": {
