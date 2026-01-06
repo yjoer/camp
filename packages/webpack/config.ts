@@ -6,7 +6,7 @@ import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import nodeExternals from 'webpack-node-externals';
 
-import { AssetRelocatorCachePlugin, OptionalModulesPlugin, RunScriptPlugin } from './plugins.ts';
+import { AssetRelocatorCachePlugin, OptionalModulesPlugin, RunScriptPlugin } from './plugins.js';
 
 import type { Configuration } from 'webpack';
 
@@ -32,7 +32,7 @@ export const getServerConfig = ({
   // Convert strings into regular expressions for exact matches.
   for (let i = 0; i < transpilePackages.length; i++) {
     if (typeof transpilePackages[i] === 'string') {
-      transpilePackages[i] = new RegExp(transpilePackages[i]);
+      transpilePackages[i] = new RegExp(transpilePackages[i]!);
     }
   }
 

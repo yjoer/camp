@@ -1,6 +1,21 @@
 {
-  "name": "@camp/webpack",
+  "name": "@xcamp/webpack",
+  "version": "2026.1.0",
   "type": "module",
+  "exports": {
+    "./config": {
+      "types": "./.build/config.d.ts",
+      "import": "./.build/config.js"
+    },
+    "./rspack-config": {
+      "types": "./.build/rspack-config.d.ts",
+      "import": "./.build/rspack-config.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": "tsc --outDir .build"
+  },
   "dependencies": {
     "@vercel/webpack-asset-relocator-loader": "1.10.0",
     "ts-loader": "9.5.4",
@@ -10,6 +25,7 @@
   "devDependencies": {
     "@rspack/core": "1.7.1",
     "@types/webpack-node-externals": "3.0.4",
+    "typescript": "5.9.3",
     "webpack": "5.104.1"
   },
   "peerDependencies": {

@@ -2,8 +2,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { getServerConfig } from '@camp/webpack/rspack-config.ts';
 import { rspack } from '@rspack/core';
+import { getServerConfig } from '@xcamp/webpack/rspack-config.ts';
 import { merge } from 'webpack-merge';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';

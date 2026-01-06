@@ -1,7 +1,7 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
-import * as pkg from '@camp/webpack/config.ts';
+import * as pkg from '@xcamp/webpack/config.ts';
 
-import type { getServerConfig as GSC } from '@camp/webpack/config.ts';
+import type { getServerConfig as GSC } from '@xcamp/webpack/config.ts';
 
 // @ts-expect-error jiti
 // oxlint-disable-next-line namespace

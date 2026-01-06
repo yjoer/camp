@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { getServerConfig } from '@camp/webpack/config.ts';
+import { getServerConfig } from '@xcamp/webpack/config.ts';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
