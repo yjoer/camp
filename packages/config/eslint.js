@@ -58,6 +58,7 @@ function import_x() {
             '**/eslint.config.*s',
             '**/lint-staged.config.*s',
             '**/prettier.config.*s',
+            '**/rspack.config.*s',
             '**/stylelint.config.*s',
             '**/vite.config.*s',
             '**/vitest.config.*s',

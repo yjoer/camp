@@ -79,7 +79,8 @@ class SimulationControls extends VBox {
         case SimulatorOps.AddPartition p -> {
           trace_viewer.traces_tab.add_partition(p.idx(), p.name(), p.size());
         }
-        default -> {}
+        default -> {
+        }
       }
     }
 
@@ -157,7 +158,8 @@ class SimulationControls extends VBox {
           String log = String.format("t: %d, free %s\n", simulator.t() - 1, p.name());
           trace_viewer.insights_tab.logs_text_area.appendText(log);
         }
-        default -> {}
+        default -> {
+        }
       }
     }
 
