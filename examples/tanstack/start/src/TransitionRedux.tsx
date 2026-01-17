@@ -35,12 +35,12 @@ function SettingsPanel() {
 
   const dispatch = useAppDispatch();
 
-  const [isPending, startTransition] = useTransition();
+  const [is_pending, start_transition] = useTransition();
 
-  const handleClick = () => {
+  const handle_click = () => {
     dispatch(setPage());
 
-    startTransition(() => {
+    start_transition(() => {
       dispatch(setPageSlow());
     });
   };
@@ -48,8 +48,8 @@ function SettingsPanel() {
   return (
     <>
       <div>Page: {page}</div>
-      <div>Pending: {isPending ? 'true' : 'false'}</div>
-      <button onClick={handleClick} {...stylex.props(button_styles.base)}>
+      <div>Pending: {is_pending ? 'true' : 'false'}</div>
+      <button onClick={handle_click} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
     </>
@@ -62,22 +62,20 @@ const Posts = function Posts() {
   return (
     <div className="mt-4">
       {Array.from({ length: 10 }, (_, i) => {
-        const postId = (page - 1) * 10 + i + 1;
-        return <SlowPost key={postId} postId={postId} />;
+        const post_id = (page - 1) * 10 + i + 1;
+        return <SlowPost key={post_id} post_id={post_id} />;
       })}
     </div>
   );
 };
 
 interface SlowPostProps {
-  postId: number;
+  post_id: number;
 }
 
-function SlowPost({ postId }: SlowPostProps) {
-  let startTime = performance.now();
-  while (performance.now() - startTime < 50) {
-    //
-  }
+function SlowPost({ post_id }: SlowPostProps) {
+  let start_time = performance.now();
+  while (performance.now() - start_time < 50);
 
-  return <div>Slow Post #{postId}</div>;
+  return <div>Slow Post #{post_id}</div>;
 }

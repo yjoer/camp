@@ -26,19 +26,19 @@ function TransitionUseContextSelector() {
 
 function SettingsPanel() {
   const page = useContextSelector(Context, (v) => v.page);
-  const setPage = useContextSelector(Context, (v) => v.setPage);
-  const setPageSlow = useContextSelector(Context, (v) => v.setPageSlow);
+  const set_page = useContextSelector(Context, (v) => v.set_page);
+  const set_page_slow = useContextSelector(Context, (v) => v.set_page_slow);
 
   const update = useContextUpdate(Context);
 
-  const [isPending, startTransition] = useTransition();
+  const [is_pending, start_transition] = useTransition();
 
-  const handleClick = () => {
-    setPage((prev) => prev + 1);
+  const handle_click = () => {
+    set_page((prev) => prev + 1);
 
-    startTransition(() => {
+    start_transition(() => {
       update(() => {
-        setPageSlow((prev) => prev + 1);
+        set_page_slow((prev) => prev + 1);
       });
     });
   };
@@ -46,8 +46,8 @@ function SettingsPanel() {
   return (
     <>
       <div>Page: {page}</div>
-      <div>Pending: {isPending ? 'true' : 'false'}</div>
-      <button onClick={handleClick} {...stylex.props(button_styles.base)}>
+      <div>Pending: {is_pending ? 'true' : 'false'}</div>
+      <button onClick={handle_click} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
     </>
@@ -55,43 +55,41 @@ function SettingsPanel() {
 }
 
 const Posts = function Posts() {
-  const page = useContextSelector(Context, (v) => v.pageSlow);
+  const page = useContextSelector(Context, (v) => v.page_slow);
 
   return (
     <div className="mt-4">
       {Array.from({ length: 10 }, (_, i) => {
-        const postId = (page - 1) * 10 + i + 1;
-        return <SlowPost key={postId} postId={postId} />;
+        const post_id = (page - 1) * 10 + i + 1;
+        return <SlowPost key={post_id} post_id={post_id} />;
       })}
     </div>
   );
 };
 
 interface SlowPostProps {
-  postId: number;
+  post_id: number;
 }
 
-function SlowPost({ postId }: SlowPostProps) {
-  let startTime = performance.now();
-  while (performance.now() - startTime < 50) {
-    //
-  }
+function SlowPost({ post_id }: SlowPostProps) {
+  let start_time = performance.now();
+  while (performance.now() - start_time < 50);
 
-  return <div>Slow Post #{postId}</div>;
+  return <div>Slow Post #{post_id}</div>;
 }
 
 interface ContextProps {
   page: number;
-  pageSlow: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  setPageSlow: React.Dispatch<React.SetStateAction<number>>;
+  page_slow: number;
+  set_page: React.Dispatch<React.SetStateAction<number>>;
+  set_page_slow: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Context = createContext<ContextProps>({
   page: 1,
-  pageSlow: 1,
-  setPage: () => {},
-  setPageSlow: () => {},
+  page_slow: 1,
+  set_page: () => {},
+  set_page_slow: () => {},
 });
 
 interface ProviderProps {
@@ -99,10 +97,12 @@ interface ProviderProps {
 }
 
 function Provider({ children }: ProviderProps) {
-  const [page, setPage] = useState(1);
-  const [pageSlow, setPageSlow] = useState(1);
+  const [page, set_page] = useState(1);
+  const [page_slow, set_page_slow] = useState(1);
 
   return (
-    <Context.Provider value={{ page, setPage, pageSlow, setPageSlow }}>{children}</Context.Provider>
+    <Context.Provider value={{ page, set_page, page_slow, set_page_slow }}>
+      {children}
+    </Context.Provider>
   );
 }
