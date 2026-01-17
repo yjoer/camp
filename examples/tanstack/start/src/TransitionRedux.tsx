@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
 
 import { button_styles } from '@/components/button';
-import { setPage, setPageSlow } from '@/state/TransitionReduxSlice';
-import { create_store, useAppDispatch, useAppSelector } from '@/state/index';
 
-import type { AppStore } from '@/state/index';
+import type { Action, ThunkAction } from '@reduxjs/toolkit';
+import type { TypedUseSelectorHook } from 'react-redux';
 
 export const Route = createFileRoute('/transition-redux')({
   component: TransitionRedux,
@@ -31,17 +31,17 @@ function TransitionRedux() {
 }
 
 function SettingsPanel() {
-  const page = useAppSelector((state) => state['transition-redux'].page);
+  const page = useAppSelector((state) => state.posts.page);
 
   const dispatch = useAppDispatch();
 
   const [is_pending, start_transition] = useTransition();
 
   const handle_click = () => {
-    dispatch(setPage());
+    dispatch(set_page());
 
     start_transition(() => {
-      dispatch(setPageSlow());
+      dispatch(set_page_slow());
     });
   };
 
@@ -57,7 +57,7 @@ function SettingsPanel() {
 }
 
 const Posts = function Posts() {
-  const page = useAppSelector((state) => state['transition-redux'].pageSlow);
+  const page = useAppSelector((state) => state.posts.page_slow);
 
   return (
     <div className="mt-4">
@@ -79,3 +79,38 @@ function SlowPost({ post_id }: SlowPostProps) {
 
   return <div>Slow Post #{post_id}</div>;
 }
+
+const posts_slice = createSlice({
+  name: 'posts',
+  initialState: {
+    page: 1,
+    page_slow: 1,
+  },
+  reducers: {
+    set_page: (state) => {
+      state.page += 1;
+    },
+    set_page_slow: (state) => {
+      state.page_slow += 1;
+    },
+  },
+});
+
+const { set_page, set_page_slow } = posts_slice.actions;
+
+function create_store() {
+  const reducer = {
+    posts: posts_slice.reducer,
+  };
+
+  return configureStore({ reducer });
+}
+
+type AppStore = ReturnType<typeof create_store>;
+type RootState = ReturnType<AppStore['getState']>;
+type AppDispatch = AppStore['dispatch'];
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action>;
+
+const useAppDispatch: () => AppDispatch = useDispatch;
+const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppStore: () => AppStore = useStore;
