@@ -1,8 +1,6 @@
 /// <reference types="vite/client" />
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 
-import ReduxProvider from '@/lib/ReduxProvider';
-
 import styles from './root.css?url';
 import stylex from './stylex.css?url';
 
@@ -32,9 +30,7 @@ function RootComponent() {
         <HeadContent />
       </head>
       <body>
-        <ReduxProvider>
-          <Outlet />
-        </ReduxProvider>
+        <Outlet />
         <Scripts />
       </body>
     </html>

@@ -2,11 +2,14 @@
 // oxlint-disable no-console
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
+import { Provider } from 'react-redux';
 
 import { button_styles } from '@/components/button';
 import { setPage, setPageSlow } from '@/state/TransitionReduxSlice';
-import { useAppDispatch, useAppSelector } from '@/state/index';
+import { create_store, useAppDispatch, useAppSelector } from '@/state/index';
+
+import type { AppStore } from '@/state/index';
 
 export const Route = createFileRoute('/transition-redux')({
   component: TransitionRedux,
@@ -15,11 +18,15 @@ export const Route = createFileRoute('/transition-redux')({
 function TransitionRedux() {
   console.log('render');
 
+  const [store] = useState<AppStore>(create_store);
+
   return (
-    <div className="mx-2 my-1">
-      <SettingsPanel />
-      <Posts />
-    </div>
+    <Provider store={store}>
+      <div className="mx-2 my-1">
+        <SettingsPanel />
+        <Posts />
+      </div>
+    </Provider>
   );
 }
 
