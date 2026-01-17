@@ -24,24 +24,24 @@ function TransitionZustand() {
 
 function SettingsPanel() {
   const page = useStore((state) => state.page);
-  const setPage = useStore((state) => state.setPage);
-  const setPageSlow = useStore((state) => state.setPageSlow);
+  const set_page = useStore((state) => state.set_page);
+  const set_page_slow = useStore((state) => state.set_page_slow);
 
-  const [isPending, startTransition] = useTransition();
+  const [is_pending, start_transition] = useTransition();
 
-  const handleClick = () => {
-    setPage();
+  const handle_click = () => {
+    set_page();
 
-    startTransition(() => {
-      setPageSlow();
+    start_transition(() => {
+      set_page_slow();
     });
   };
 
   return (
     <>
       <div>Page: {page}</div>
-      <div>Pending: {isPending ? 'true' : 'false'}</div>
-      <button onClick={handleClick} {...stylex.props(button_styles.base)}>
+      <div>Pending: {is_pending ? 'true' : 'false'}</div>
+      <button onClick={handle_click} {...stylex.props(button_styles.base)}>
         Next Page
       </button>
     </>
@@ -49,41 +49,39 @@ function SettingsPanel() {
 }
 
 const Posts = function Posts() {
-  const page = useStore((state) => state.pageSlow);
+  const page = useStore((state) => state.page_slow);
 
   return (
     <div className="mt-4">
       {Array.from({ length: 10 }, (_, i) => {
-        const postId = (page - 1) * 10 + i + 1;
-        return <SlowPost key={postId} postId={postId} />;
+        const post_id = (page - 1) * 10 + i + 1;
+        return <SlowPost key={post_id} post_id={post_id} />;
       })}
     </div>
   );
 };
 
 interface SlowPostProps {
-  postId: number;
+  post_id: number;
 }
 
-function SlowPost({ postId }: SlowPostProps) {
-  let startTime = performance.now();
-  while (performance.now() - startTime < 50) {
-    //
-  }
+function SlowPost({ post_id }: SlowPostProps) {
+  let start_time = performance.now();
+  while (performance.now() - start_time < 50);
 
-  return <div>Slow Post #{postId}</div>;
+  return <div>Slow Post #{post_id}</div>;
 }
 
 interface State {
   page: number;
-  pageSlow: number;
-  setPage: () => void;
-  setPageSlow: () => void;
+  page_slow: number;
+  set_page: () => void;
+  set_page_slow: () => void;
 }
 
 const useStore = create<State>((set) => ({
   page: 1,
-  pageSlow: 1,
-  setPage: () => set((state) => ({ page: state.page + 1 })),
-  setPageSlow: () => set((state) => ({ pageSlow: state.pageSlow + 1 })),
+  page_slow: 1,
+  set_page: () => set((state) => ({ page: state.page + 1 })),
+  set_page_slow: () => set((state) => ({ page_slow: state.page_slow + 1 })),
 }));
