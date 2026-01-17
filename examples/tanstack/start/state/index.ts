@@ -6,7 +6,7 @@ import TransitionReduxReducer from './TransitionReduxSlice';
 import type { Action, ThunkAction } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 
-export function makeStore() {
+export function create_store() {
   const reducer = {
     'transition-redux': TransitionReduxReducer,
   };
@@ -16,7 +16,7 @@ export function makeStore() {
   });
 }
 
-export type AppStore = ReturnType<typeof makeStore>;
+export type AppStore = ReturnType<typeof create_store>;
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action>;
