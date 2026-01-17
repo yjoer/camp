@@ -2,7 +2,7 @@
 // oxlint-disable no-console
 import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { create } from 'zustand';
 
 import { button_styles } from '@/components/button';
@@ -14,18 +14,24 @@ export const Route = createFileRoute('/transition-zustand')({
 function TransitionZustand() {
   console.log('render');
 
+  const [store] = useState(create_store);
+
   return (
     <div className="mx-2 my-1">
-      <SettingsPanel />
-      <Posts />
+      <SettingsPanel store={store} />
+      <Posts store={store} />
     </div>
   );
 }
 
-function SettingsPanel() {
-  const page = useStore((state) => state.page);
-  const set_page = useStore((state) => state.set_page);
-  const set_page_slow = useStore((state) => state.set_page_slow);
+interface SettingsPanelProps {
+  store: ReturnType<typeof create_store>;
+}
+
+function SettingsPanel({ store }: SettingsPanelProps) {
+  const page = store((state) => state.page);
+  const set_page = store((state) => state.set_page);
+  const set_page_slow = store((state) => state.set_page_slow);
 
   const [is_pending, start_transition] = useTransition();
 
@@ -48,8 +54,12 @@ function SettingsPanel() {
   );
 }
 
-const Posts = function Posts() {
-  const page = useStore((state) => state.page_slow);
+interface PostsProps {
+  store: ReturnType<typeof create_store>;
+}
+
+const Posts = function Posts({ store }: PostsProps) {
+  const page = store((state) => state.page_slow);
 
   return (
     <div className="mt-4">
@@ -79,9 +89,11 @@ interface State {
   set_page_slow: () => void;
 }
 
-const useStore = create<State>((set) => ({
-  page: 1,
-  page_slow: 1,
-  set_page: () => set((state) => ({ page: state.page + 1 })),
-  set_page_slow: () => set((state) => ({ page_slow: state.page_slow + 1 })),
-}));
+const create_store = () => {
+  return create<State>((set) => ({
+    page: 1,
+    page_slow: 1,
+    set_page: () => set((state) => ({ page: state.page + 1 })),
+    set_page_slow: () => set((state) => ({ page_slow: state.page_slow + 1 })),
+  }));
+};
