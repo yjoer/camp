@@ -6,9 +6,9 @@
     "moduleResolution": "Bundler",
     "paths": {
       "@/build/*": ["./.build/*"],
-      "@/components/*": ["./components/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/state/*": ["./state/*"]
+      "@/components/*": ["./_components/*"],
+      "@/lib/*": ["./_lib/*"],
+      "@/state/*": ["./_state/*"]
     },
 
     "forceConsistentCasingInFileNames": true,
