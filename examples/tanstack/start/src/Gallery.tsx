@@ -12,6 +12,13 @@ const sections = [
     ],
   },
   {
+    label: 'External Stores',
+    children: [
+      { to: '/external-stores/redux', label: 'Redux' },
+      { to: '/external-stores/redux-toolkit', label: 'Redux Toolkit' },
+    ],
+  },
+  {
     label: 'Concurrent Rendering',
     children: [
       { to: '/transition-use-state', label: 'useTransition with useState' },

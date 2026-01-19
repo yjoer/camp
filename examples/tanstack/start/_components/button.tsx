@@ -9,7 +9,8 @@ export const button_styles = stylex.create({
     backgroundColor: 'rgba(0, 0, 0, 0.04)',
     borderRadius: 4,
     scale: {
-      ':active': 0.96,
+      ':active': 0.95,
     },
+    transition: 'scale 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
   },
 });
