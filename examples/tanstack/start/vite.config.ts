@@ -10,6 +10,7 @@ const routes = rootRoute('root.tsx', [
   route('/stale-closures', '../src/StaleClosures.tsx'),
   route('/external-stores/redux', '../src/external-stores/Redux.tsx'),
   route('/external-stores/redux-toolkit', '../src/external-stores/ReduxToolkit.tsx'),
+  route('/external-stores/zustand', '../src/external-stores/Zustand.tsx'),
   route('/transition-use-state', '../src/TransitionUseState.tsx'),
   route('/transition-use-context-selector', '../src/TransitionUseContextSelector.tsx'),
   route('/transition-use-search', '../src/TransitionUseSearch.tsx'),

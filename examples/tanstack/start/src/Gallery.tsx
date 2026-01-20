@@ -16,6 +16,7 @@ const sections = [
     children: [
       { to: '/external-stores/redux', label: 'Redux' },
       { to: '/external-stores/redux-toolkit', label: 'Redux Toolkit' },
+      { to: '/external-stores/zustand', label: 'Zustand' },
     ],
   },
   {
