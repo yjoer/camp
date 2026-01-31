@@ -13,12 +13,13 @@ function AnimationSidebar() {
   return (
     <div className="mx-2 my-1 flex flex-col gap-4">
       <SidebarTransition />
+      <SidebarWAAPI />
     </div>
   );
 }
 
 function SidebarTransition() {
-  const ref = useRef<HTMLDivElement>(null!);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [state, set_state] = useState<'closed' | 'closing' | 'opened' | 'opening'>('closed');
 
   const handle_toggle = () => {
@@ -34,7 +35,6 @@ function SidebarTransition() {
 
     if (state === 'opening') {
       el.style.transition = 'transform 250ms';
-      el.style.transform = 'translateX(100%)';
       void el.clientWidth; // reflow
       el.style.transform = 'translateX(0)';
     } else if (state === 'closing') {
@@ -53,6 +53,67 @@ function SidebarTransition() {
   return (
     <div>
       <span className="bg-[#ffa500]">CSS Transform</span>
+      <div className="mt-1">
+        <button onClick={handle_toggle} {...stylex.props(button_styles.base)}>
+          Toggle
+        </button>
+      </div>
+      {state !== 'closed' &&
+        createPortal(
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <Sidebar ref={ref} />
+          </div>,
+          document.body,
+        )}
+    </div>
+  );
+}
+
+function SidebarWAAPI() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const animation_ref = useRef<Animation | null>(null);
+  const [state, set_state] = useState<'closed' | 'closing' | 'opened' | 'opening'>('closed');
+
+  const handle_toggle = () => {
+    if (state === 'closed' || state === 'closing') set_state('opening');
+    else set_state('closing');
+  };
+
+  useLayoutEffect(() => {
+    if (!ref.current) return;
+    const el = ref.current;
+
+    if (state !== 'opening' && state !== 'closing') return;
+
+    const effect = animation_ref.current?.effect as KeyframeEffect | undefined;
+    if (!animation_ref.current || effect?.target !== el) {
+      const animation = el.animate(
+        [{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }],
+        {
+          duration: 250,
+          easing: 'ease-in-out',
+          fill: 'forwards',
+        },
+      );
+
+      animation.pause();
+      animation_ref.current = animation;
+    }
+
+    animation_ref.current.playbackRate = state === 'opening' ? 1 : -1;
+    animation_ref.current.play();
+
+    animation_ref.current.finished
+      .then(() => {
+        if (state === 'opening') set_state('opened');
+        if (state === 'closing') set_state('closed');
+      })
+      .catch(() => {});
+  }, [state]);
+
+  return (
+    <div>
+      <span className="bg-[#ffa500]">WAAPI Transform</span>
       <div className="mt-1">
         <button onClick={handle_toggle} {...stylex.props(button_styles.base)}>
           Toggle
@@ -97,6 +158,7 @@ const sidebar_sx = stylex.create({
     borderLeftColor: 'oklch(92% 0 0 / 1)',
     borderLeftStyle: 'solid',
     borderLeftWidth: 1,
+    transform: 'translateX(100%)',
   },
   icon: {
     width: 24,
