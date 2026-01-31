@@ -24,6 +24,7 @@ const routes = rootRoute('root.tsx', [
   route('/webgl/triangle', '../src/webgl/Triangle.tsx'),
   route('/webgl/rectangle', '../src/webgl/Rectangle.tsx'),
   route('/webgl/multiple-rectangles', '../src/webgl/MultipleRectangles.tsx'),
+  route('/ui/animations/sidebar', '../ui/AnimationSidebar.tsx'),
 ]);
 
 export default defineConfig({

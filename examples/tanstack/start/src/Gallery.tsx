@@ -60,25 +60,52 @@ const sections = [
   },
 ];
 
+const ui_sections = [
+  {
+    label: 'Animations',
+    children: [
+      { to: '/ui/animations/sidebar', label: 'Sidebar' }, //
+    ],
+  },
+];
+
 function RouteComponent() {
   return (
-    <div className="mx-2 my-1 flex flex-col gap-4">
-      {sections.map((section, idx) => {
-        return (
-          <div key={idx} className="flex flex-col">
-            <div>
+    <div className="mx-2 my-1 inline-grid gap-4 md:grid-cols-2">
+      <div className="flex flex-col gap-4">
+        {sections.map((section, idx) => {
+          return (
+            <div key={idx}>
               <span className="bg-[#ffdd00]">{section.label}</span>
+              {section?.children?.map((child, idx) => {
+                return (
+                  <Link key={idx} className="block" to={child.to}>
+                    {child.label}
+                  </Link>
+                );
+              })}
             </div>
-            {section?.children?.map((child, idx) => {
-              return (
-                <Link key={idx} to={child.to}>
-                  {child.label}
-                </Link>
-              );
-            })}
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      <div className="flex flex-col gap-4">
+        {ui_sections.map((section, idx) => {
+          return (
+            <div key={idx} className="flex flex-col">
+              <div>
+                <span className="bg-[#ffa500]">{section.label}</span>
+              </div>
+              {section?.children?.map((child, idx) => {
+                return (
+                  <Link key={idx} to={child.to}>
+                    {child.label}
+                  </Link>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
