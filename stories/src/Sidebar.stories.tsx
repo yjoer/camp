@@ -1,4 +1,3 @@
-// oxlint-disable no-unused-expressions
 import { cva } from 'cva';
 import { useRef, useState } from 'react';
 
@@ -61,7 +60,7 @@ function SidebarWidth() {
       const width = sidebarRef.current.clientWidth; // reflow
       sidebarRef.current.style.width = '0';
 
-      sidebarRef.current.offsetWidth; // reflow
+      void sidebarRef.current.offsetWidth; // reflow
 
       sidebarRef.current.style.width = `${width}px`;
     }
