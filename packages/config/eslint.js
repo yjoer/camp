@@ -3,6 +3,7 @@ import { defineConfig } from 'eslint/config';
 import gitignore from 'eslint-config-flat-gitignore';
 import prettier_config from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import tailwind_plugin from 'eslint-plugin-better-tailwindcss';
 import compat_plugin from 'eslint-plugin-compat';
 import * as imp from 'eslint-plugin-import-x';
 import jsx_a11y_plugin from 'eslint-plugin-jsx-a11y';
@@ -107,7 +108,7 @@ function typescript() {
 function react() {
   return {
     name: 'react/recommended',
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{jsx,tsx}'],
     extends: [react_plugin.configs.flat['jsx-runtime']],
     languageOptions: {
       globals: { ...globals.browser, ...globals.serviceworker },
@@ -127,7 +128,7 @@ function react() {
 function react_hooks() {
   return {
     name: 'react-hooks/recommended',
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{jsx,tsx}'],
     extends: [react_hooks_plugin.configs.flat['recommended-latest']],
   };
 }
@@ -142,7 +143,7 @@ function react_you_might_not_need_an_effect() {
 function stylex() {
   return {
     name: 'stylex/recommended',
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ['**/*.{jsx,tsx}'],
     plugins: { '@stylexjs': stylex_plugin },
     rules: {
       '@stylexjs/no-unused': 'error',
@@ -155,6 +156,27 @@ function stylex() {
       ],
       '@stylexjs/valid-shorthands': 'warn',
       '@stylexjs/valid-styles': 'error',
+    },
+  };
+}
+
+function tailwind() {
+  return {
+    name: 'better-tailwindcss/recommended',
+    files: ['**/*.{jsx,tsx}'],
+    plugins: { 'better-tailwindcss': tailwind_plugin },
+    rules: {
+      'better-tailwindcss/enforce-consistent-line-wrapping': [
+        'warn',
+        { printWidth: 100, preferSingleLine: true },
+      ],
+      'better-tailwindcss/enforce-consistent-class-order': 'warn',
+      'better-tailwindcss/enforce-canonical-classes': 'warn',
+      'better-tailwindcss/no-duplicate-classes': 'warn',
+      'better-tailwindcss/no-deprecated-classes': 'warn',
+      'better-tailwindcss/no-unnecessary-whitespace': 'warn',
+      'better-tailwindcss/no-unknown-classes': 'error',
+      'better-tailwindcss/no-conflicting-classes': 'error',
     },
   };
 }
@@ -325,6 +347,7 @@ export default defineConfig([
   react_hooks(),
   react_you_might_not_need_an_effect(),
   stylex(),
+  tailwind(),
   jsx_a11y(),
   unicorn(),
   prettier(),

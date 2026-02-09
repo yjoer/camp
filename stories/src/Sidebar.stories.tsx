@@ -104,7 +104,7 @@ function SidebarWidth() {
           Toggle Sidebar (rAF)
         </button>
       </div>
-      <Sidebar ref={sidebarRef} onTransitionEnd={handleTransitionEnd} type="width" />
+      <Sidebar ref={sidebarRef} type="width" onTransitionEnd={handleTransitionEnd} />
     </div>
   );
 }
@@ -155,7 +155,7 @@ interface SidebarProps {
 
 function Sidebar({ ref, type, style, onTransitionEnd }: SidebarProps) {
   return (
-    <div ref={ref} className={classes({ type })} onTransitionEnd={onTransitionEnd} style={style}>
+    <div ref={ref} className={classes({ type })} style={style} onTransitionEnd={onTransitionEnd}>
       {Array.from({ length: 5 }).map((_, idx) => (
         <div key={idx} className="flex gap-2 px-2 py-1">
           <div className="size-6 bg-neutral-200" />
@@ -167,7 +167,7 @@ function Sidebar({ ref, type, style, onTransitionEnd }: SidebarProps) {
 }
 
 const classes = cva(
-  'absolute top-0 right-0 h-full flex-col gap-2 border-l-1 border-l-neutral-200 py-2',
+  'absolute top-0 right-0 h-full flex-col gap-2 border-l border-l-neutral-200 py-2',
   {
     variants: {
       type: {
