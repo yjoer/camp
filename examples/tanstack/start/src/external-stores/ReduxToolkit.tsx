@@ -25,8 +25,8 @@ function ReduxToolkit() {
 function Counter() {
   const dispatch = useAppDispatch();
 
-  const loading = useAppSelector((state) => state.counter.loading);
-  const count = useAppSelector((state) => state.counter.value);
+  const loading = useAppSelector(state => state.counter.loading);
+  const count = useAppSelector(state => state.counter.value);
 
   return (
     <div className="mx-2 my-1">
@@ -96,14 +96,14 @@ const { increment, increment_by_amount } = counter_slice.actions;
 
 function increment_async() {
   return async (dispatch: AppDispatch) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     dispatch(increment_by_amount(2));
   };
 }
 
 const increment_async_a = createAsyncThunk('counter/increment_async_a', async (_, thunk) => {
   thunk.dispatch(increment_by_amount(1));
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise(resolve => setTimeout(resolve, 500));
   return 1;
 });
 

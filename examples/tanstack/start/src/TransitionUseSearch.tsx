@@ -26,11 +26,11 @@ function TransitionSearch() {
 
   const handle_click = () => {
     navigate({
-      search: (prev) => ({ page: (Number(prev.page) + 1).toString() }),
+      search: prev => ({ page: (Number(prev.page) + 1).toString() }),
     });
 
     start_transition(() => {
-      set_page_slow((prev) => (prev ? prev + 1 : 1));
+      set_page_slow(prev => (prev ? prev + 1 : 1));
     });
   };
 

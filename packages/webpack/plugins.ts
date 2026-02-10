@@ -31,7 +31,7 @@ export class RunScriptPlugin {
       // find the asset of the first entry file.
       const entry = compilation.entrypoints.keys().next().value;
       const assets = compilation.getAssets();
-      const asset = assets.find((asset) => asset.name === `${entry}.js`);
+      const asset = assets.find(asset => asset.name === `${entry}.js`);
       if (!asset) return;
 
       // const { filename } = compiler.options.output;

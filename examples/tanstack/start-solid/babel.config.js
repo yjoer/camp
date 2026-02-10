@@ -3,15 +3,10 @@ export default function babel(api) {
 
   return {
     plugins: [
-      [
-        '@stylexjs/babel-plugin',
-        {
-          debug: process.env.NODE_ENV === 'development',
-          unstable_moduleResolution: {
-            type: 'commonJS',
-          },
-        },
-      ],
+      ['@stylexjs/babel-plugin', {
+        debug: process.env.NODE_ENV === 'development',
+        unstable_moduleResolution: { type: 'commonJS' },
+      }],
     ],
     parserOpts: {
       plugins: ['jsx', 'typescript'],

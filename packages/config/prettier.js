@@ -4,9 +4,9 @@ export default {
     // '@prettier/plugin-oxc',
     '@prettier/plugin-xml',
     'prettier-plugin-packagejson',
-    'prettier-plugin-tailwindcss',
-    'prettier-plugin-classnames',
-    'prettier-plugin-merge',
+    // 'prettier-plugin-tailwindcss',
+    // 'prettier-plugin-classnames',
+    // 'prettier-plugin-merge',
     'prettier-plugin-java',
   ],
   bracketSameLine: true,
@@ -15,7 +15,7 @@ export default {
   singleQuote: true,
   //
   xmlWhitespaceSensitivity: 'ignore',
-  tailwindFunctions: ['clsx', 'cva'],
-  customFunctions: ['clsx', 'cva'],
-  endingPosition: 'absolute',
+  // tailwindFunctions: ['clsx', 'cva'],
+  // customFunctions: ['clsx', 'cva'],
+  // endingPosition: 'absolute',
 };

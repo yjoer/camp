@@ -25,7 +25,7 @@ jobs:
           pnpm add tailwindcss -w
           git restore .
       - name: Format
-        run: pnpm prettier --ignore-path .gitignore --check "**/*.{js,cjs,mjs,jsx,ts,tsx,css,scss,html,json,md,yml,yaml}"
+        run: pnpm prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,md,mdx,yml,yaml}"
 
   lint-js:
     name: Lint JS

@@ -26,8 +26,8 @@ function Redux() {
 function Counter() {
   const dispatch = useAppDispatch();
 
-  const loading = useAppSelector((state) => state.counter.loading);
-  const count = useAppSelector((state) => state.counter.value);
+  const loading = useAppSelector(state => state.counter.loading);
+  const count = useAppSelector(state => state.counter.value);
 
   return (
     <div className="mx-2 my-1">
@@ -85,7 +85,7 @@ function decrement(): CounterAction {
 
 function increment_async() {
   return async (dispatch: AppDispatch) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     dispatch(increment_by_amount(2));
   };
 }
@@ -96,7 +96,7 @@ function increment_async_a() {
     dispatch(increment_by_amount(1));
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
       dispatch({ type: INCREMENT_FULFILLED, payload: 1 });
     } catch {
       dispatch({ type: INCREMENT_REJECTED });

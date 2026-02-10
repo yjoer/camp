@@ -1,7 +1,7 @@
 import stylex_plugin from '@stylexjs/eslint-plugin';
+import stylistic_plugin from '@stylistic/eslint-plugin';
 import { defineConfig } from 'eslint/config';
 import gitignore from 'eslint-config-flat-gitignore';
-import prettier_config from 'eslint-config-prettier/flat';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import tailwind_plugin from 'eslint-plugin-better-tailwindcss';
 import compat_plugin from 'eslint-plugin-compat';
@@ -51,38 +51,34 @@ function import_x() {
       //   'error',
       //   { js: 'ignorePackages', jsx: 'never', ts: 'ignorePackages', tsx: 'never' },
       // ],
-      'import-x/no-extraneous-dependencies': [
-        'error',
-        {
-          devDependencies: [
-            '**/commitlint.config.*s',
-            '**/eslint.config.*s',
-            '**/lint-staged.config.*s',
-            '**/prettier.config.*s',
-            '**/rspack.config.*s',
-            '**/stylelint.config.*s',
-            '**/vite.config.*s',
-            '**/vitest.config.*s',
-            '**/webpack.config.*s',
-          ],
-        },
-      ],
+      'import-x/no-extraneous-dependencies': ['error', {
+        devDependencies: [
+          '**/babel.config.*s',
+          '**/commitlint.config.*s',
+          '**/eslint.config.*s',
+          '**/lint-staged.config.*s',
+          '**/postcss.config.*s',
+          '**/prettier.config.*s',
+          '**/rspack.config.*s',
+          '**/stylelint.config.*s',
+          '**/vite.config.*s',
+          '**/vitest.config.*s',
+          '**/webpack.config.*s',
+        ],
+      }],
       'import-x/no-unresolved': ['error', { ignore: [String.raw`^@\/build`] }], // x
-      'import-x/order': [
-        'error',
-        {
-          alphabetize: { order: 'asc' },
-          groups: getImportGroups(),
-          pathGroups: [
-            {
-              pattern: '@/**',
-              group: 'internal',
-            },
-          ],
-          pathGroupsExcludedImportTypes: ['type'],
-          'newlines-between': 'always',
-        },
-      ],
+      'import-x/order': ['error', {
+        'alphabetize': { order: 'asc' },
+        'groups': getImportGroups(),
+        'pathGroups': [
+          {
+            pattern: '@/**',
+            group: 'internal',
+          },
+        ],
+        'pathGroupsExcludedImportTypes': ['type'],
+        'newlines-between': 'always',
+      }],
     },
     settings: {
       'import-x/resolver-next': [createTypeScriptImportResolver()],
@@ -120,7 +116,7 @@ function react() {
       'react/prop-types': 'error',
       //
       'react/jsx-no-leaked-render': 'error',
-      'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }], // prettier-ignore
+      'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }],
     },
   };
 }
@@ -147,13 +143,10 @@ function stylex() {
     plugins: { '@stylexjs': stylex_plugin },
     rules: {
       '@stylexjs/no-unused': 'error',
-      '@stylexjs/sort-keys': [
-        'warn',
-        {
-          validImports: ['stylex', '@stylexjs/stylex', { from: 'react-strict-dom', as: 'css' }],
-          order: 'recess',
-        },
-      ],
+      '@stylexjs/sort-keys': ['warn', {
+        validImports: ['stylex', '@stylexjs/stylex', { from: 'react-strict-dom', as: 'css' }],
+        order: 'recess',
+      }],
       '@stylexjs/valid-shorthands': 'warn',
       '@stylexjs/valid-styles': 'error',
     },
@@ -166,10 +159,7 @@ function tailwind() {
     files: ['**/*.{jsx,tsx}'],
     plugins: { 'better-tailwindcss': tailwind_plugin },
     rules: {
-      'better-tailwindcss/enforce-consistent-line-wrapping': [
-        'warn',
-        { printWidth: 100, preferSingleLine: true },
-      ],
+      'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100, preferSingleLine: true }],
       'better-tailwindcss/enforce-consistent-class-order': 'warn',
       'better-tailwindcss/enforce-canonical-classes': 'warn',
       'better-tailwindcss/no-duplicate-classes': 'warn',
@@ -187,57 +177,33 @@ function jsx_a11y() {
     plugins: { 'jsx-a11y': jsx_a11y_plugin },
     rules: {
       'jsx-a11y/aria-proptypes': 'error',
-      'jsx-a11y/interactive-supports-focus': [
-        'error',
-        {
-          tabbable: ['button', 'checkbox', 'link', 'searchbox', 'spinbutton', 'switch', 'textbox'],
-        },
-      ],
-      'jsx-a11y/no-interactive-element-to-noninteractive-role': [
-        'error',
-        {
-          tr: ['none', 'presentation'],
-          canvas: ['img'],
-        },
-      ],
-      'jsx-a11y/no-noninteractive-element-interactions': [
-        'error',
-        {
-          handlers: [
-            'onClick',
-            'onError',
-            'onLoad',
-            'onMouseDown',
-            'onMouseUp',
-            'onKeyPress',
-            'onKeyDown',
-            'onKeyUp',
-          ],
-          alert: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
-          body: ['onError', 'onLoad'],
-          dialog: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
-          iframe: ['onError', 'onLoad'],
-          img: ['onError', 'onLoad'],
-        },
-      ],
-      'jsx-a11y/no-noninteractive-element-to-interactive-role': [
-        'error',
-        {
-          ul: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
-          ol: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
-          li: ['menuitem', 'menuitemradio', 'menuitemcheckbox', 'option', 'row', 'tab', 'treeitem'],
-          table: ['grid'],
-          td: ['gridcell'],
-          fieldset: ['radiogroup', 'presentation'],
-        },
-      ],
-      'jsx-a11y/no-static-element-interactions': [
-        'error',
-        {
-          allowExpressionValues: true,
-          handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
-        },
-      ],
+      'jsx-a11y/interactive-supports-focus': ['error', {
+        tabbable: ['button', 'checkbox', 'link', 'searchbox', 'spinbutton', 'switch', 'textbox'],
+      }],
+      'jsx-a11y/no-interactive-element-to-noninteractive-role': ['error', {
+        tr: ['none', 'presentation'],
+        canvas: ['img'],
+      }],
+      'jsx-a11y/no-noninteractive-element-interactions': ['error', {
+        handlers: ['onClick', 'onError', 'onLoad', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
+        alert: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
+        body: ['onError', 'onLoad'],
+        dialog: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
+        iframe: ['onError', 'onLoad'],
+        img: ['onError', 'onLoad'],
+      }],
+      'jsx-a11y/no-noninteractive-element-to-interactive-role': ['error', {
+        ul: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
+        ol: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
+        li: ['menuitem', 'menuitemradio', 'menuitemcheckbox', 'option', 'row', 'tab', 'treeitem'],
+        table: ['grid'],
+        td: ['gridcell'],
+        fieldset: ['radiogroup', 'presentation'],
+      }],
+      'jsx-a11y/no-static-element-interactions': ['error', {
+        allowExpressionValues: true,
+        handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
+      }],
     },
   };
 }
@@ -267,11 +233,34 @@ function unicorn() {
   };
 }
 
-function prettier() {
-  return {
-    name: 'prettier/config',
-    extends: [prettier_config],
-  };
+function stylistic() {
+  return [
+    stylistic_plugin.configs.customize({
+      indent: 2,
+      quotes: 'single',
+      semi: true,
+      jsx: true,
+      braceStyle: '1tbs',
+    }),
+    {
+      rules: {
+        '@stylistic/jsx-one-expression-per-line': ['error', { allow: 'non-jsx' }],
+        '@stylistic/jsx-closing-bracket-location': ['error', { nonEmpty: 'after-props', selfClosing: 'tag-aligned' }],
+        '@stylistic/jsx-wrap-multilines': ['error', {
+          declaration: 'parens-new-line',
+          assignment: 'parens-new-line',
+          return: 'parens-new-line',
+          arrow: 'parens-new-line',
+          condition: 'ignore',
+          logical: 'ignore',
+          prop: 'ignore',
+          propertyValue: 'ignore',
+        }],
+        '@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
+        '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
+      },
+    },
+  ];
 }
 
 function perfectionist() {
@@ -282,45 +271,33 @@ function perfectionist() {
       'perfectionist/sort-array-includes': 'warn',
       'perfectionist/sort-enums': 'warn',
       'perfectionist/sort-heritage-clauses': 'warn',
-      'perfectionist/sort-interfaces': [
-        'warn',
-        {
-          type: 'unsorted',
-          groups: ['property', 'method'],
-        },
-      ],
+      'perfectionist/sort-interfaces': ['warn', {
+        type: 'unsorted',
+        groups: ['property', 'method'],
+      }],
       'perfectionist/sort-intersection-types': 'warn',
-      'perfectionist/sort-jsx-props': [
-        'warn',
-        {
-          groups: ['key', 'ref', 'name', 'content', 'unknown', 'callback'],
-          customGroups: [
-            { groupName: 'key', elementNamePattern: '^key$' },
-            { groupName: 'ref', elementNamePattern: '^ref$' },
-            { groupName: 'name', elementNamePattern: '^name$' },
-            { groupName: 'content', elementNamePattern: '^content$' },
-            { groupName: 'callback', elementNamePattern: ['^on_.+', '^on[A-Z].*'] },
-          ],
-        },
-      ],
+      'perfectionist/sort-jsx-props': ['warn', {
+        groups: ['key', 'ref', 'name', 'content', 'unknown', 'callback'],
+        customGroups: [
+          { groupName: 'key', elementNamePattern: '^key$' },
+          { groupName: 'ref', elementNamePattern: '^ref$' },
+          { groupName: 'name', elementNamePattern: '^name$' },
+          { groupName: 'content', elementNamePattern: '^content$' },
+          { groupName: 'callback', elementNamePattern: ['^on_.+', '^on[A-Z].*'] },
+        ],
+      }],
       'perfectionist/sort-maps': 'warn',
       'perfectionist/sort-named-exports': 'warn',
       'perfectionist/sort-named-imports': 'warn',
-      'perfectionist/sort-object-types': [
-        'warn',
-        {
-          type: 'unsorted',
-          groups: ['property', 'method'],
-        },
-      ],
+      'perfectionist/sort-object-types': ['warn', {
+        type: 'unsorted',
+        groups: ['property', 'method'],
+      }],
       'perfectionist/sort-sets': 'warn',
       'perfectionist/sort-switch-case': 'warn',
-      'perfectionist/sort-union-types': [
-        'warn',
-        {
-          groups: ['unknown', 'named', 'nullish'],
-        },
-      ],
+      'perfectionist/sort-union-types': ['warn', {
+        groups: ['unknown', 'named', 'nullish'],
+      }],
     },
     settings: {
       perfectionist: {
@@ -350,7 +327,7 @@ export default defineConfig([
   tailwind(),
   jsx_a11y(),
   unicorn(),
-  prettier(),
+  stylistic(),
   perfectionist(),
   compat(),
   {
@@ -368,7 +345,7 @@ export default defineConfig([
 ]);
 
 export function defineImportResolver(pkgs, options = {}) {
-  return pkgs.map((pkg) => ({
+  return pkgs.map(pkg => ({
     files: [`./${pkg}/**/*`],
     settings: {
       'import-x/resolver-next': [

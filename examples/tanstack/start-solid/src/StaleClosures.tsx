@@ -44,7 +44,7 @@ function Signals() {
       <div ref={timed_log_ref}>Timed Log: </div>
       <div ref={log_ref}>Log: </div>
       <div class="mt-1 flex gap-2">
-        <button onClick={() => set_count((prev) => prev + 1)} {...stylex.props(button_styles.base)}>
+        <button onClick={() => set_count(prev => prev + 1)} {...stylex.props(button_styles.base)}>
           Increment
         </button>
         <button onClick={handle_click} {...stylex.props(button_styles.base)}>

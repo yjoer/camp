@@ -22,14 +22,14 @@ interface CounterProps {
 }
 
 function Counter({ store }: CounterProps) {
-  const increment = store((state) => state.increment);
-  const decrement = store((state) => state.decrement);
-  const increment_async = store((state) => state.increment_async);
-  const increment_async_a = store((state) => state.increment_async_a);
-  const increment_async_b = store((state) => state.increment_async_b);
+  const increment = store(state => state.increment);
+  const decrement = store(state => state.decrement);
+  const increment_async = store(state => state.increment_async);
+  const increment_async_a = store(state => state.increment_async_a);
+  const increment_async_b = store(state => state.increment_async_b);
 
-  const loading = store((state) => state.loading);
-  const count = store((state) => state.value);
+  const loading = store(state => state.loading);
+  const count = store(state => state.value);
 
   return (
     <div className="mx-2 my-1">
@@ -71,19 +71,19 @@ interface CounterSlice {
 const counter_slice: StateCreator<CounterSlice> = (set, get) => ({
   loading: false,
   value: 0,
-  increment: () => set((state) => ({ value: state.value + 1 })),
-  decrement: () => set((state) => ({ value: state.value - 1 })),
-  increment_by_amount: (value: number) => set((state) => ({ value: state.value + value })),
+  increment: () => set(state => ({ value: state.value + 1 })),
+  decrement: () => set(state => ({ value: state.value - 1 })),
+  increment_by_amount: (value: number) => set(state => ({ value: state.value + value })),
   increment_async: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
     get().increment_by_amount(2);
   },
   increment_async_a: async () => {
     set({ loading: true });
     get().increment_by_amount(1);
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    set((state) => ({ loading: false, value: state.value + 1 }));
+    await new Promise(resolve => setTimeout(resolve, 500));
+    set(state => ({ loading: false, value: state.value + 1 }));
   },
   increment_async_b: async () => {
     set({ loading: true });

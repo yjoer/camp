@@ -7,10 +7,10 @@ export default {
     'stylelint --cache --cache-location node_modules/.cache/.stylelintcache --max-warnings 0',
   ],
   'package.json': [
-    'sort-package-json --check', //
+    'sort-package-json --check',
   ],
-  '*.{js,cjs,mjs,jsx,ts,tsx,json,html,css,scss,md,mdx,yml,yaml}': [
-    'prettier --check', //
+  '*.{css,scss,html,json,md,mdx,yml,yaml}': [
+    'prettier --check',
   ],
   '*.py': [
     'uv run ruff check',
