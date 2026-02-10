@@ -260,6 +260,12 @@ function stylistic() {
         '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
       },
     },
+    {
+      files: ['**/*.{jsx,tsx}'],
+      rules: {
+        '@stylistic/quote-props': ['error', 'as-needed'],
+      },
+    },
   ];
 }
 
