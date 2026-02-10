@@ -29,9 +29,9 @@ interface SettingsPanelProps {
 }
 
 function SettingsPanel({ store }: SettingsPanelProps) {
-  const page = store((state) => state.page);
-  const set_page = store((state) => state.set_page);
-  const set_page_slow = store((state) => state.set_page_slow);
+  const page = store(state => state.page);
+  const set_page = store(state => state.set_page);
+  const set_page_slow = store(state => state.set_page_slow);
 
   const [is_pending, start_transition] = useTransition();
 
@@ -59,7 +59,7 @@ interface PostsProps {
 }
 
 const Posts = function Posts({ store }: PostsProps) {
-  const page = store((state) => state.page_slow);
+  const page = store(state => state.page_slow);
 
   return (
     <div className="mt-4">
@@ -90,10 +90,10 @@ interface State {
 }
 
 const create_store = () => {
-  return create<State>((set) => ({
+  return create<State>(set => ({
     page: 1,
     page_slow: 1,
-    set_page: () => set((state) => ({ page: state.page + 1 })),
-    set_page_slow: () => set((state) => ({ page_slow: state.page_slow + 1 })),
+    set_page: () => set(state => ({ page: state.page + 1 })),
+    set_page_slow: () => set(state => ({ page_slow: state.page_slow + 1 })),
   }));
 };

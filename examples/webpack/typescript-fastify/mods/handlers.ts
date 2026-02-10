@@ -65,4 +65,4 @@ export async function bcryptHash(request: FastifyRequest, reply: FastifyReply) {
   reply.send({ hash });
 }
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

@@ -25,20 +25,20 @@ function TransitionUseContextSelector() {
 }
 
 function SettingsPanel() {
-  const page = useContextSelector(Context, (v) => v.page);
-  const set_page = useContextSelector(Context, (v) => v.set_page);
-  const set_page_slow = useContextSelector(Context, (v) => v.set_page_slow);
+  const page = useContextSelector(Context, v => v.page);
+  const set_page = useContextSelector(Context, v => v.set_page);
+  const set_page_slow = useContextSelector(Context, v => v.set_page_slow);
 
   const update = useContextUpdate(Context);
 
   const [is_pending, start_transition] = useTransition();
 
   const handle_click = () => {
-    set_page((prev) => prev + 1);
+    set_page(prev => prev + 1);
 
     start_transition(() => {
       update(() => {
-        set_page_slow((prev) => prev + 1);
+        set_page_slow(prev => prev + 1);
       });
     });
   };
@@ -55,7 +55,7 @@ function SettingsPanel() {
 }
 
 const Posts = function Posts() {
-  const page = useContextSelector(Context, (v) => v.page_slow);
+  const page = useContextSelector(Context, v => v.page_slow);
 
   return (
     <div className="mt-4">

@@ -1,4 +1,3 @@
-/* eslint-disable import-x/no-extraneous-dependencies */
 import stylex from '@stylexjs/postcss-plugin';
 import autoprefixer from 'autoprefixer';
 

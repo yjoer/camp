@@ -31,7 +31,7 @@ function TransitionRedux() {
 }
 
 function SettingsPanel() {
-  const page = useAppSelector((state) => state.posts.page);
+  const page = useAppSelector(state => state.posts.page);
 
   const dispatch = useAppDispatch();
 
@@ -57,7 +57,7 @@ function SettingsPanel() {
 }
 
 const Posts = function Posts() {
-  const page = useAppSelector((state) => state.posts.page_slow);
+  const page = useAppSelector(state => state.posts.page_slow);
 
   return (
     <div className="mt-4">

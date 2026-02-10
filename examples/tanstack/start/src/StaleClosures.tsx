@@ -65,7 +65,7 @@ function DependencyArray() {
       <div ref={logRef}>Log:</div>
       <div ref={logStaleRef}>Log - Stale:</div>
       <div className="mt-1 flex gap-2">
-        <button onClick={() => setCount((prev) => prev + 1)} {...stylex.props(button_styles.base)}>
+        <button onClick={() => setCount(prev => prev + 1)} {...stylex.props(button_styles.base)}>
           Increment
         </button>
         <button onClick={handleClick} {...stylex.props(button_styles.base)}>
@@ -103,7 +103,7 @@ function EffectEvents() {
       <div>Count: {count}</div>
       <div ref={timedLogRef}>Timed Log:</div>
       <div className="mt-1 flex gap-2">
-        <button onClick={() => setCount((prev) => prev + 1)} {...stylex.props(button_styles.base)}>
+        <button onClick={() => setCount(prev => prev + 1)} {...stylex.props(button_styles.base)}>
           Increment
         </button>
       </div>
@@ -133,7 +133,7 @@ function RefSync() {
   }, []);
 
   const handleIncrement = useCallback(() => {
-    setCount((prev) => prev + 1);
+    setCount(prev => prev + 1);
     countRef.current += 1;
   }, []);
 
@@ -205,7 +205,7 @@ function useStateRef<T>(value: T): [React.RefObject<T>, (newState: T) => void] {
     if (Object.is(ref.current, newState)) return;
 
     ref.current = newState;
-    forceRender((prev) => !prev);
+    forceRender(prev => !prev);
   }
 
   return [ref, setState];

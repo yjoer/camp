@@ -34,7 +34,7 @@ function SidebarMaxWidth() {
 
   const handleToggle = () => {
     sidebarRef.current.style.maxWidth = isOpen ? '0' : '300px';
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
   };
 
   return (
@@ -65,7 +65,7 @@ function SidebarWidth() {
       sidebarRef.current.style.width = `${width}px`;
     }
 
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
   };
 
   const handleToggleRAF = () => {
@@ -84,7 +84,7 @@ function SidebarWidth() {
       });
     }
 
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
   };
 
   const handleTransitionEnd = () => {
@@ -133,7 +133,7 @@ function SidebarAnimationAPI() {
       sidebarRef.current.animate(keyframes, { duration: 250 });
     }
 
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
   };
 
   return (

@@ -52,7 +52,8 @@ function GradientBorderCard({ image }: GradientBorderCardProps) {
             mask-clip-[content-box,border-box] pointer-events-none absolute inset-0 rounded-[11px]
             bg-[linear-gradient(180deg,rgb(255_255_255/16%),rgb(255_255_255/2%))]
             mask-[linear-gradient(#fff_0_0),linear-gradient(#fff_0_0)] mask-exclude p-px
-          "></div>
+          ">
+        </div>
       </div>
       <h3 className="pt-1 font-semibold text-white/96">Gradient Border Card</h3>
       <p className="line-clamp-1 text-sm text-white/60">

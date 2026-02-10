@@ -1,4 +1,3 @@
-/* eslint-disable import-x/no-extraneous-dependencies */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -11,13 +10,13 @@ const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development
 const ignoredPackages = {
   'aws-sdk': true,
   'mock-aws-s3': true,
-  nock: true,
+  'nock': true,
 };
 
 const customConfig = {
   plugins: [
     new rspack.IgnorePlugin({
-      checkResource: (resource) => !!ignoredPackages[resource],
+      checkResource: resource => !!ignoredPackages[resource],
     }),
   ],
 };

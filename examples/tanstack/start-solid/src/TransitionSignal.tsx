@@ -15,10 +15,10 @@ function TransitionSignal() {
   const [pending, start_transition] = useTransition();
 
   const handle_click = () => {
-    set_page((prev) => prev + 1);
+    set_page(prev => prev + 1);
 
     start_transition(() => {
-      set_page_slow((prev) => prev + 1);
+      set_page_slow(prev => prev + 1);
     });
   };
 

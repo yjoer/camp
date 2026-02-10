@@ -58,7 +58,7 @@ const listFolder = dropbox.task({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.access_token}`,
+        'Authorization': `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
         path: '',
@@ -82,7 +82,7 @@ const listFolder = dropbox.task({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token.access_token}`,
+          'Authorization': `Bearer ${token.access_token}`,
         },
         body: JSON.stringify({
           cursor,
@@ -113,7 +113,7 @@ const enrichEntries = dropbox.task({
     const token = await ctx.parentOutput(getAccessToken);
     const { entries } = await ctx.parentOutput(listFolder);
 
-    const paperFiles = entries.filter((f) => f.name.endsWith('.paper'));
+    const paperFiles = entries.filter(f => f.name.endsWith('.paper'));
     if (paperFiles.length === 0) return entries;
 
     ctx.logger.info(`Retrieving metadata for ${paperFiles.length} files.`);
@@ -121,10 +121,10 @@ const enrichEntries = dropbox.task({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.access_token}`,
+        'Authorization': `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
-        files: paperFiles.map((f) => f.path_lower),
+        files: paperFiles.map(f => f.path_lower),
       }),
     });
 
@@ -159,7 +159,7 @@ dropbox.task({
     const token = await ctx.parentOutput(getAccessToken);
     const { entries } = await ctx.parentOutput(enrichEntries);
 
-    const paperFiles = entries.filter((f) => f.name.endsWith('.paper'));
+    const paperFiles = entries.filter(f => f.name.endsWith('.paper'));
     if (paperFiles.length === 0) return;
 
     for (let i = 0; i < paperFiles.length; i++) {
@@ -169,7 +169,7 @@ dropbox.task({
       const response = await fetch(`https://content.dropboxapi.com/2/files/export`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token.access_token}`,
+          'Authorization': `Bearer ${token.access_token}`,
           'Dropbox-API-Arg': JSON.stringify({
             path: file.path_lower,
             export_format: 'markdown',

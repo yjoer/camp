@@ -18,9 +18,9 @@ async function main() {
       const [u2] = await measure(usingReadStream);
       const [u3] = await measure(usingSharedBuffer);
 
-      const t1 = u1.map((u) => u.arrayBuffers / 1_000_000);
-      const t2 = u2.map((u) => u.arrayBuffers / 1_000_000);
-      const t3 = u3.map((u) => u.arrayBuffers / 1_000_000);
+      const t1 = u1.map(u => u.arrayBuffers / 1_000_000);
+      const t2 = u2.map(u => u.arrayBuffers / 1_000_000);
+      const t3 = u3.map(u => u.arrayBuffers / 1_000_000);
 
       console.log(
         asciichart.plot([t1, t2, t3], {

@@ -31,7 +31,7 @@ server.on('request', async function (req, res) {
 
     let render;
     if (isDevelopment) {
-      await new Promise((resolve) => vite.middlewares(req, res, resolve));
+      await new Promise(resolve => vite.middlewares(req, res, resolve));
 
       template = await fs.readFile(path.resolve(import.meta.dirname, 'index.html'), 'utf8');
       template = await vite.transformIndexHtml(url, template);
