@@ -6,8 +6,7 @@ import numpy as np
 # %%timeit
 total = 0
 
-for _ in range(1_000_000):
-  total += 1  # noqa: SIM113
+for _ in range(1_000_000): total += 1  # noqa: SIM113
 
 # %%
 # %%timeit
@@ -23,8 +22,7 @@ def fibonacci(n: int) -> int:
   a = 0
   b = 1
 
-  if n == 0:
-    return a
+  if n == 0: return a
 
   for _ in range(1, n):
     c = a + b
