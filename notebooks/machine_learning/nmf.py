@@ -28,11 +28,8 @@ def generate_led_digit(
   shape: tuple = (11, 6),
   pad: int = 1,
 ) -> np.ndarray:
-  if digit is not None:
-    segment = segments[digit]
-
-  if segment is None:
-    return np.zeros(shape)
+  if digit is not None: segment = segments[digit]
+  if segment is None: return np.zeros(shape)
 
   height, width = shape
   segment_height = (height - 3) // 2

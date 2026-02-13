@@ -250,8 +250,7 @@ with status() as update:
             f"std_ratio: {std_ratio}",
           )
 
-          if len(m) >= TARGET_MEASUREMENTS and std_ratio <= MAX_STD_RATIO:
-            break
+          if len(m) >= TARGET_MEASUREMENTS and std_ratio <= MAX_STD_RATIO: break
 
         m = remove_outliers(measurements, k=IQR_MULTIPLIER)
         mean_rps = np.mean(m)

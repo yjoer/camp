@@ -27,8 +27,7 @@ for action in actions:
   state, reward, terminated, _, _ = env.step(action)
   images.append(cast("np.ndarray", env.render()))
 
-  if terminated:
-    print("You reached the goal!")
+  if terminated: print("You reached the goal!")
 
 
 # %%
@@ -92,8 +91,7 @@ def compute_state_value(
     visited_states.append(state)
     value += reward + gamma * value
 
-    if terminate:
-      break
+    if terminate: break
 
     state = next_state
 
