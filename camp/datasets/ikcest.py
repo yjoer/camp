@@ -151,7 +151,7 @@ class IKCESTDetectionDataset(Dataset):
   def __init__(
     self,
     path: str,
-    subset: str,  # noqa: ARG002
+    _subset: str,
     storage_options: dict | None = None,
     transforms: Callable | None = None,
   ) -> None:

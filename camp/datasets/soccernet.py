@@ -54,7 +54,7 @@ def read_json_multi(
   elif protocol == "file":
 
     def read_json(filename: str) -> dict:
-      with Path(filename).open("r") as f:
+      with Path(filename).open("r", encoding="utf-8") as f:
         return json.load(f)
 
   return list(pool.map(read_json, files))
@@ -177,7 +177,7 @@ class SoccerNetCalibrationDataset(Dataset):
     self.storage_options = storage_options
     self.transforms = transforms
 
-  def _transform_subset(self, subset: str) -> str:
+  def _transform_subset(self, subset: str) -> str:  # noqa: PLR6301
     mapping = {"val": "valid"}
 
     return mapping.get(subset, subset)

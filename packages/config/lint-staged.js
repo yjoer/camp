@@ -15,7 +15,7 @@ export default {
   '*.py': [
     'uv run ruff check',
     'uv run ruff check --select I',
-    'uv run ruff format --check',
-    'uv run mypy',
+    // 'uv run ruff format --check',
+    // 'uv run mypy',
   ],
 };

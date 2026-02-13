@@ -126,7 +126,7 @@ def compute_q_value(
 
   _, next_state, reward, _ = env.unwrapped.P[state][action][0]
 
-  if next_state == state or next_state in [5, 7, 11, 12]:
+  if next_state == state or next_state in {5, 7, 11, 12}:
     reward = -1
 
   return reward + gamma * V[next_state]
@@ -149,7 +149,7 @@ def improve_policy(
   improved_policy = {}
 
   for state in range(n_states):
-    max_action = max(range(n_actions), key=lambda action: Q[(state, action)])
+    max_action = max(range(n_actions), key=lambda action: Q[state, action])
     improved_policy[state] = max_action
 
   return improved_policy, Q

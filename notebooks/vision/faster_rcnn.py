@@ -160,7 +160,7 @@ for i in range(epochs, n_epochs):
     losses.backward()
     optimizer.step()
 
-    steps += 1
+    steps += 1  # noqa: SIM113
 
   lr_scheduler.step()
   epochs += 1
@@ -171,11 +171,12 @@ Path(checkpoint_path).mkdir(parents=True, exist_ok=True)
 
 save_optimizer(checkpoint_path, optimizer)
 
-with Path(f"{checkpoint_path}/scheduler.json").open("w") as f:
-  f.write(json.dumps(lr_scheduler.state_dict()))
+Path(f"{checkpoint_path}/scheduler.json").write_text(
+  json.dumps(lr_scheduler.state_dict()),
+  encoding="utf-8",
+)
 
-with Path(f"{checkpoint_path}/model.safetensors").open("wb") as f:
-  f.write(save(model.state_dict()))
+Path(f"{checkpoint_path}/model.safetensors").write_bytes(save(model.state_dict()))
 
 # %%
 epochs = 20
@@ -183,11 +184,10 @@ checkpoint_path = f"./checkpoint-{epochs}"
 
 load_optimizer(checkpoint_path, optimizer)
 
-with Path(f"{checkpoint_path}/scheduler.json").open("r") as f:
-  lr_scheduler.load_state_dict(json.loads(f.read()))
+scheduler_json = Path(f"{checkpoint_path}/scheduler.json").read_text(encoding="utf-8")
+lr_scheduler.load_state_dict(json.loads(scheduler_json))
 
-with Path(f"{checkpoint_path}/model.safetensors").open("rb") as f:
-  model.load_state_dict(load(f.read()))
+model.load_state_dict(load(Path(f"{checkpoint_path}/model.safetensors").read_bytes()))
 
 # %%
 # %%time

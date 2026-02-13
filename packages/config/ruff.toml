@@ -4,7 +4,69 @@ indent-width = 2
 line-ending = "lf"
 
 [lint]
-select = ["ALL"]
+preview = true
+select = [
+  "AIR",
+  # "ERA",  # commented-out-code
+  "FAST",
+  "YTT",
+  "ANN",
+  "ASYNC",
+  "S",
+  "BLE",
+  "FBT",
+  "B",
+  "A",
+  "COM",
+  "C4",
+  # "CPY",  # missing-copyright-notice
+  "DTZ",
+  "T10",
+  "DJ",
+  "EM",
+  "EXE",
+  "FIX",
+  "FA",
+  "INT",
+  "ISC",
+  "ICN",
+  "LOG",
+  "G",
+  # "INP",  # implicit-namespace-package
+  "PIE",
+  # "T20",  # print, p-print
+  "PYI",
+  "PT",
+  "Q",
+  "RSE",
+  "RET",
+  # "SLF",  # private-member-access
+  "SIM",
+  "SLOT",
+  "TID",
+  "TD",
+  "TC",
+  "ARG",
+  "PTH",
+  "FLY",
+  "I",
+  "C90",
+  "NPY",
+  "PD",
+  "N",
+  "PERF",
+  "E",
+  "W",
+  # "DOC",
+  "D",
+  "F",
+  "PGH",
+  "PL",
+  "UP",
+  "FURB",
+  "RUF",
+  "TRY"
+]
 ignore = [
   "D100",  # undocumented-public-module
   "D101",  # undocumented-public-class
@@ -12,6 +74,8 @@ ignore = [
   "D103",  # undocumented-public-function
   "D105",  # undocumented-magic-method
   "D107",  # undocumented-public-init
+  "E111",  # indentation-with-invalid-multiple
+  "E114",  # indentation-with-invalid-multiple-comment
   "E501",  # line-too-long
   "E731",  # lambda-assignment
   "E741",  # ambiguous-variable-name
@@ -20,16 +84,17 @@ ignore = [
   "N806",  # non-lowercase-variable-in-function
   "N812",  # lowercase-imported-as-non-lowercase
   "S101",  # assert
-  "T201",  # print
-  "ERA001",  # commented-out-code
+  "S403",  # suspicious-pickle-import
+  "S404",  # suspicious-subprocess-import
   "FBT001",  # boolean-type-hint-positional-argument
   "FBT002",  # boolean-default-value-positional-argument
-  "INP001",  # implicit-namespace-package
-  "SLF001",  # private-member-access
   "PERF401",  # manual-list-comprehension
+  "PLC2701",  # import-private-name
+  "PLR0914",  # too-many-locals
   "PLR2004",  # magic-value-comparison
 ]
 allowed-confusables = [
+  "µ",
   "σ",
   "∗",
 ]

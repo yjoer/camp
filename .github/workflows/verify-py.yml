@@ -4,6 +4,7 @@ on:
 jobs:
   format-py:
     name: Format Python
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -102,7 +102,7 @@ for i in range(n_epochs):
     loss.backward()
     optimizer.step()
 
-    steps += 1
+    steps += 1  # noqa: SIM113
 
 # %%
 metrics = MetricCollection(

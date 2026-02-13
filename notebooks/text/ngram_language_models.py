@@ -228,7 +228,7 @@ del memory_buffer
 
 # %%
 def generate(text_seed: list[str], random_seed: int) -> str:
-  sentence = text_seed[:]
+  sentence = text_seed.copy()
   random_seed = random.Random(random_seed)  # noqa: S311
 
   while True:
