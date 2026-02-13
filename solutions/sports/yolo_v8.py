@@ -337,7 +337,7 @@ for i in range(epochs, n_epochs):
     optimizer.zero_grad()
 
     ema.update(yolo.model)
-    steps += 1
+    steps += 1  # noqa: SIM113
 
   train_loss = {}
   train_loss["cls"] = pbar._values["cls_loss"][0]

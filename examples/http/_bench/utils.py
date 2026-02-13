@@ -167,7 +167,7 @@ def save_result(result: BenchmarkResult, results_file: Path) -> None:
     "mean_latency_us": result.mean_latency_us,
   }
 
-  with results_file.open("a") as f:
+  with results_file.open("a", encoding="utf-8") as f:
     f.write(json.dumps(data) + "\n")
 
 

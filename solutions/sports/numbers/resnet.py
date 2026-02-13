@@ -181,7 +181,7 @@ for i in range(n_epochs):
 
     optimizer.zero_grad()
 
-    step += 1
+    step += 1  # noqa: SIM113
 
   if ((epoch + 1) % save_epochs) == 0:
     save_checkpoint(

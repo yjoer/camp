@@ -31,7 +31,7 @@ env = gym.make("LunarLander-v3", render_mode="rgb_array")
 # %%
 class ReplayBuffer:
   def __init__(self, capacity: int) -> None:
-    self.buffer = deque([], maxlen=capacity)
+    self.buffer = deque(maxlen=capacity)
 
   def __len__(self) -> int:
     return len(self.buffer)

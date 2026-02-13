@@ -33,13 +33,13 @@ class FashionMNIST:
 
     mnist = FashionMNIST()
     buffers = mnist._load(path, storage_options)
-    arrays = mnist._parse(buffers)
+    arrays = _parse(buffers)
 
     if return_tensors == "np":
       return arrays
 
     if return_tensors == "pt":
-      return mnist._to_tensor(arrays)
+      return _to_tensor(arrays)
 
     return None
 
@@ -52,37 +52,36 @@ class FashionMNIST:
 
     return buffers
 
-  def _parse(self, buffers: dict[str, bytes]) -> dict[str, np.ndarray]:
-    arrays = {}
 
-    for subset in ["train", "test"]:
-      header = struct.unpack(">IIII", buffers[subset][0:16])
-      _magic_number, n_items, n_rows, n_cols = header
+def _parse(buffers: dict[str, bytes]) -> dict[str, np.ndarray]:
+  arrays = {}
 
-      images = np.frombuffer(buffers[subset][16:], dtype=np.uint8)
-      images = images.reshape(n_items, n_rows * n_cols)
+  for subset in ["train", "test"]:
+    header = struct.unpack(">IIII", buffers[subset][0:16])
+    _magic_number, n_items, n_rows, n_cols = header
 
-      arrays[subset] = images
+    images = np.frombuffer(buffers[subset][16:], dtype=np.uint8)
+    images = images.reshape(n_items, n_rows * n_cols)
 
-    for subset in ["train_labels", "test_labels"]:
-      _magic_number, n_items = struct.unpack(">II", buffers[subset][0:8])
-      labels = np.frombuffer(buffers[subset][8:], dtype=np.uint8)
+    arrays[subset] = images
 
-      arrays[subset] = labels
+  for subset in ["train_labels", "test_labels"]:
+    _magic_number, n_items = struct.unpack(">II", buffers[subset][0:8])
+    labels = np.frombuffer(buffers[subset][8:], dtype=np.uint8)
 
-    return arrays
+    arrays[subset] = labels
 
-  def _to_tensor(
-    self,
-    arrays: dict[str, np.ndarray],
-  ) -> dict[str, torch.Tensor] | None:
-    if torch is None:
-      print("cannot convert to tensors because torch is not installed.")
-      return None
+  return arrays
 
-    tensors = {}
 
-    for k, v in arrays.items():
-      tensors[k] = torch.from_numpy(v)
+def _to_tensor(arrays: dict[str, np.ndarray]) -> dict[str, torch.Tensor] | None:
+  if torch is None:
+    print("cannot convert to tensors because torch is not installed.")
+    return None
 
-    return tensors
+  tensors = {}
+
+  for k, v in arrays.items():
+    tensors[k] = torch.from_numpy(v)
+
+  return tensors

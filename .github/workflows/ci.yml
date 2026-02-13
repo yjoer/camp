@@ -51,6 +51,6 @@ jobs:
       - name: Install Pango
         run: sudo apt-get update && sudo apt-get install libpango1.0-dev
       - name: Install Dependencies
-        run: uv sync --extra torch --extra torch-common --extra vision
+        run: uv sync --extra torch --extra torch-extras --extra vision
       - name: Test
         run: uv run pytest
