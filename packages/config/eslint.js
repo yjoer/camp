@@ -244,6 +244,12 @@ function stylistic() {
     }),
     {
       rules: {
+        '@stylistic/indent': ['error', 2, {
+          ignoredNodes: ['TSUnionType', 'TSIntersectionType'],
+          SwitchCase: 1,
+          MemberExpression: 0,
+          offsetTernaryExpressions: true,
+        }],
         '@stylistic/jsx-one-expression-per-line': ['error', { allow: 'non-jsx' }],
         '@stylistic/jsx-closing-bracket-location': ['error', { nonEmpty: 'after-props', selfClosing: 'tag-aligned' }],
         '@stylistic/jsx-wrap-multilines': ['error', {
@@ -256,6 +262,7 @@ function stylistic() {
           prop: 'ignore',
           propertyValue: 'ignore',
         }],
+        '@stylistic/multiline-ternary': ['error', 'never'],
         '@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
         '@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
       },

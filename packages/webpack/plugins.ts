@@ -49,11 +49,11 @@ export class OptionalModulesPlugin {
     const logger = compiler.getInfrastructureLogger('OptionalModulesPlugin');
 
     compiler.resolverFactory.hooks.resolver
-      .for('normal')
-      .tap('OptionalModulesPlugin', (resolver) => {
-        const plugin = new OptionalModulesResolverPlugin(logger);
-        plugin.apply(resolver);
-      });
+    .for('normal')
+    .tap('OptionalModulesPlugin', (resolver) => {
+      const plugin = new OptionalModulesResolverPlugin(logger);
+      plugin.apply(resolver);
+    });
   }
 }
 
