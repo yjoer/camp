@@ -234,16 +234,19 @@ function unicorn() {
 }
 
 function stylistic() {
+  const config = stylistic_plugin.configs.customize({
+    indent: 2,
+    quotes: 'single',
+    semi: true,
+    jsx: true,
+    braceStyle: '1tbs',
+  });
+
   return [
-    stylistic_plugin.configs.customize({
-      indent: 2,
-      quotes: 'single',
-      semi: true,
-      jsx: true,
-      braceStyle: '1tbs',
-    }),
     {
+      plugins: { '@stylistic': stylistic_plugin },
       rules: {
+        ...config.rules,
         '@stylistic/indent': ['error', 2, {
           ignoredNodes: ['TSUnionType', 'TSIntersectionType'],
           SwitchCase: 1,
