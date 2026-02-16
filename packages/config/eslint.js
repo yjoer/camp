@@ -309,6 +309,7 @@ function perfectionist() {
       'perfectionist/sort-sets': 'warn',
       'perfectionist/sort-switch-case': 'warn',
       'perfectionist/sort-union-types': ['warn', {
+        type: 'unsorted',
         groups: ['unknown', 'named', 'nullish'],
       }],
     },
