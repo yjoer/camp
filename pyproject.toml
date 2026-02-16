@@ -89,7 +89,7 @@ dev = [
   "pytest-xdist==3.8.0",
   "ruff==0.15.1",
   "scalene==1.5.55",
-  "ty==0.0.16",
+  "ty==0.0.17",
 ]
 
 [build-system]

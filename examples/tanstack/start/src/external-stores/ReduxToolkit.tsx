@@ -72,23 +72,23 @@ const counter_slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(decrement, (state) => {
-        state.value -= 1;
-      })
-      .addCase(increment_async_a.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(increment_async_a.fulfilled, (state, action) => {
-        state.value += action.payload;
-        state.loading = false;
-      })
-      .addCase(increment_async_b.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(increment_async_b.rejected, (state) => {
-        state.value = -1;
-        state.loading = false;
-      });
+    .addCase(decrement, (state) => {
+      state.value -= 1;
+    })
+    .addCase(increment_async_a.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(increment_async_a.fulfilled, (state, action) => {
+      state.value += action.payload;
+      state.loading = false;
+    })
+    .addCase(increment_async_b.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(increment_async_b.rejected, (state) => {
+      state.value = -1;
+      state.loading = false;
+    });
   },
 });
 

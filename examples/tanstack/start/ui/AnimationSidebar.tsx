@@ -104,11 +104,11 @@ function SidebarWAAPI() {
     animation_ref.current.play();
 
     animation_ref.current.finished
-      .then(() => {
-        if (state === 'opening') set_state('opened');
-        if (state === 'closing') set_state('closed');
-      })
-      .catch(() => {});
+    .then(() => {
+      if (state === 'opening') set_state('opened');
+      if (state === 'closing') set_state('closed');
+    })
+    .catch(() => {});
   }, [state]);
 
   return (
