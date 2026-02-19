@@ -25,7 +25,7 @@ segments: dict[int, int] = {
 def generate_led_digit(
   digit: int | None = None,
   segment: int | None = None,
-  shape: tuple = (11, 6),
+  shape: tuple[int, int] = (11, 6),
   pad: int = 1,
 ) -> np.ndarray:
   if digit is not None: segment = segments[digit]
