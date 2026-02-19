@@ -168,7 +168,7 @@ unsafe extern "system" fn handle_win_event(
         .map(|s| s.to_string_lossy().to_lowercase())
         .unwrap_or_default();
 
-    let set = IndexSet::from(["idea64.exe", "zed.exe"]);
+    let set = IndexSet::from(["code.exe", "idea64.exe", "zed.exe"]);
 
     if set.contains(exe_file_name.as_str()) {
         set_brightness_wmi(25).unwrap();
