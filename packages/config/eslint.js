@@ -15,17 +15,6 @@ import unicorn_plugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 
-const getImportGroups = () => [
-  'builtin',
-  'external',
-  'internal',
-  'parent',
-  'sibling',
-  'index',
-  'object',
-  'type',
-];
-
 function eslint() {
   return {
     // https://github.com/typescript-eslint/typescript-eslint/blob/v8.34.1/packages/eslint-plugin/src/configs/eslint-recommended-raw.ts
@@ -69,12 +58,9 @@ function import_x() {
       'import-x/no-unresolved': ['error', { ignore: [String.raw`^@\/build`] }], // x
       'import-x/order': ['error', {
         'alphabetize': { order: 'asc' },
-        'groups': getImportGroups(),
+        'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
         'pathGroups': [
-          {
-            pattern: '@/**',
-            group: 'internal',
-          },
+          { pattern: '@/**', group: 'internal' },
         ],
         'pathGroupsExcludedImportTypes': ['type'],
         'newlines-between': 'always',
@@ -332,7 +318,7 @@ function compat() {
   };
 }
 
-export default defineConfig([
+export const eslint_config = defineConfig([
   gitignore(),
   eslint(),
   import_x(),

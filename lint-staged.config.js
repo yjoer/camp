@@ -1,9 +1,10 @@
-import config from '@camp/config/lint-staged.js';
+// oxlint-disable import/no-default-export
+import { lint_staged_config } from '@camp/config/lint-staged.js';
 
 export default {
-  ...config,
+  ...lint_staged_config,
   '*.rs': [
-    () => 'cargo clippy -- --deny warnings', //
+    () => 'cargo clippy -- --deny warnings',
     () => 'cargo fmt --check',
   ],
 };

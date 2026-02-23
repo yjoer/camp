@@ -1,5 +1,5 @@
 /** @type {import("prettier").Config} */
-export default {
+export const prettier_config = {
   plugins: [
     // '@prettier/plugin-oxc',
     '@prettier/plugin-xml',

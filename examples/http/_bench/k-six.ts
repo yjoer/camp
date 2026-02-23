@@ -1,5 +1,6 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
 /* eslint-disable perfectionist/sort-switch-case */
+// oxlint-disable import/no-default-export
 import http from 'k6/http';
 
 const url = __ENV.URL;

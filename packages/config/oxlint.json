@@ -122,11 +122,12 @@
     "no-unexpected-multiline": "error",
     "no-unused-expressions": "error",
     //
+    "import/no-default-export": "error",
     "react/exhaustive-deps": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "react/no-unknown-property": "off",
     "typescript/no-explicit-any": "off",
-    "unicorn/filename-case": ["off", { "cases": { "kebabCase": true, "pascalCase": true } }],
+    "unicorn/filename-case": ["error", { "cases": { "kebabCase": true } }],
     "no-console": "warn",
     "no-unassigned-vars": "off",
     "preserve-caught-error": "error"

@@ -1,11 +1,11 @@
 /* eslint-disable import-x/extensions */
 /* eslint-disable import-x/no-unresolved */
-import { createRouter as createTanStackRouter } from '@tanstack/react-router';
+import { createRouter } from '@tanstack/react-router';
 
 import { routeTree } from './routeTree.gen';
 
 export function getRouter() {
-  return createTanStackRouter({
+  return createRouter({
     routeTree,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,

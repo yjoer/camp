@@ -1,19 +1,19 @@
 /* eslint-disable import-x/extensions */
 /* eslint-disable import-x/no-unresolved */
 import { QueryClient } from '@tanstack/react-query';
-import { createRouter as createTanStackRouter } from '@tanstack/react-router';
+import { createRouter } from '@tanstack/react-router';
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query';
 import { createIsomorphicFn } from '@tanstack/react-start';
-import { getHeader } from '@tanstack/react-start/server';
+import { getRequestHeader } from '@tanstack/react-start/server';
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
 
-import { TRPCProvider } from '@/lib/TRPCProvider';
+import { TRPCProvider } from '@/lib/trpc-provider';
 
 import { routeTree } from './routeTree.gen';
 
 import type { AppRouter } from '../server';
 
-export function createRouter() {
+export function getRouter() {
   const queryClient = new QueryClient();
 
   const trpcClient = createTRPCClient<AppRouter>({
@@ -34,7 +34,7 @@ export function createRouter() {
     ],
   });
 
-  const router = createTanStackRouter({
+  const router = createRouter({
     routeTree,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
@@ -53,10 +53,4 @@ export function createRouter() {
   return router;
 }
 
-const getCookie = createIsomorphicFn().server(() => ({ cookie: getHeader('cookie') }));
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: ReturnType<typeof createRouter>;
-  }
-}
+const getCookie = createIsomorphicFn().server(() => ({ cookie: getRequestHeader('cookie') }));

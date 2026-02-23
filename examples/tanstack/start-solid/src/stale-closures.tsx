@@ -3,7 +3,7 @@ import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/solid-router';
 import { createSignal, onCleanup, onMount } from 'solid-js';
 
-import { button_styles } from '../components/button';
+import { button_styles } from '@/components/button';
 
 export const Route = createFileRoute('/stale-closures')({
   component: StaleClosures,

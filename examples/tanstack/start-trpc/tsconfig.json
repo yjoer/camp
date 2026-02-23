@@ -2,11 +2,10 @@
   "compilerOptions": {
     "strict": true,
 
-    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@/lib/*": ["lib/*"]
+      "@/lib/*": ["./_lib/*"]
     },
 
     "forceConsistentCasingInFileNames": true,

@@ -1,10 +1,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 import cookies from 'js-cookie';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { useTRPC } from '@/lib/TRPCProvider';
+import { useTRPC } from '@/lib/trpc-provider';
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/')({
   component: LandingPage,
 });
 

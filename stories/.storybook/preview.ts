@@ -1,3 +1,4 @@
+// oxlint-disable import/no-default-export
 import type { Preview } from '@storybook/react-vite';
 
 import './global.css';

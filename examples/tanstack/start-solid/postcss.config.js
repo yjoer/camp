@@ -1,3 +1,4 @@
+// oxlint-disable import/no-default-export
 import stylex from '@stylexjs/postcss-plugin';
 import autoprefixer from 'autoprefixer';
 

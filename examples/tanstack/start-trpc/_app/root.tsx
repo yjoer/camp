@@ -10,7 +10,7 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     ],
     links: [
-      { rel: 'stylesheet', href: styles }, //
+      { rel: 'stylesheet', href: styles },
     ],
   }),
   component: RootComponent,
