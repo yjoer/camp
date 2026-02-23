@@ -1,4 +1,5 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
+// oxlint-disable import/no-default-export
 import * as pkg from '@xcamp/webpack/config.ts';
 
 import type { getServerConfig as GSC } from '@xcamp/webpack/config.ts';

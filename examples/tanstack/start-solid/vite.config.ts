@@ -1,3 +1,4 @@
+// oxlint-disable import/no-default-export
 import tailwindcss from '@tailwindcss/vite';
 import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin';
 import { tanstackStart } from '@tanstack/solid-start/plugin/vite';
@@ -6,12 +7,15 @@ import { defineConfig } from 'vite';
 import solid from 'vite-plugin-solid';
 
 const routes = rootRoute('root.tsx', [
-  route('/', '../src/Gallery.tsx'), //
-  route('/stale-closures', '../src/StaleClosures.tsx'),
-  route('/transition-signal', '../src/TransitionSignal.tsx'),
+  route('/', '../src/gallery.tsx'),
+  route('/stale-closures', '../src/stale-closures.tsx'),
+  route('/transition-signal', '../src/transition-signal.tsx'),
 ]);
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   server: {
     port: 3000,
   },

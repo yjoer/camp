@@ -1,4 +1,5 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
+// oxlint-disable import/no-default-export
 import http from 'k6/http';
 
 export const options = {

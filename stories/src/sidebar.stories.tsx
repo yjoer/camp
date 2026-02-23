@@ -1,3 +1,4 @@
+// oxlint-disable import/no-default-export
 import { cva } from 'cva';
 import { useRef, useState } from 'react';
 

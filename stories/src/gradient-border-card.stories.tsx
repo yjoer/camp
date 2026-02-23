@@ -1,3 +1,4 @@
+// oxlint-disable import/no-default-export
 /* eslint-disable better-tailwindcss/no-unknown-classes */
 import type { Meta, StoryObj } from '@storybook/react-vite';
 

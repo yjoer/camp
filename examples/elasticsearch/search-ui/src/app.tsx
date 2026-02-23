@@ -58,15 +58,13 @@ const config: SearchDriverOptions = {
   alwaysSearchOnInitialLoad: true,
 };
 
-function App() {
+export function App() {
   return (
     <SearchProvider config={config}>
       <SearchPage />
     </SearchProvider>
   );
 }
-
-export default App;
 
 interface SearchPageCoreProps {
   wasSearched: boolean;

@@ -1,3 +1,4 @@
+// oxlint-disable import/no-default-export
 'use client';
 
 function HomePage() {

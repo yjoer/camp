@@ -1,5 +1,5 @@
 /** @type {import('stylelint').Config} */
-export default {
+export const stylelint_config = {
   extends: [
     'stylelint-config-standard',
     'stylelint-config-recess-order', //
