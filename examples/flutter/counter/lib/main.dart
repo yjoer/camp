@@ -11,9 +11,15 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetsApp(
       color: const Color(0xffffffff),
-      home: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-        child: Column(children: [Counter()]),
+      home: ColoredBox(
+        color: const Color(0xffffffff),
+        child: DefaultTextStyle(
+          style: TextStyle(color: const Color(0xff000000)),
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            child: Column(children: [Counter()]),
+          ),
+        ),
       ),
       pageRouteBuilder: <T>(settings, builder) => PageRouteBuilder(
         pageBuilder: (context, _, _) => builder(context),
@@ -112,7 +118,10 @@ class _ButtonState extends State<Button> {
             child: Container(
               alignment: Alignment.center,
               height: 24,
-              child: Text(widget.text, style: TextStyle(fontSize: 16)),
+              child: Text(
+                widget.text,
+                style: TextStyle(fontSize: 16, height: 1),
+              ),
             ),
           ),
         ),
