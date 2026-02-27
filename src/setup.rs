@@ -201,12 +201,9 @@ pub fn setup_cpu_priority() -> Result<(), Box<dyn Error>> {
 	let selections = MultiSelect::new("Select programs to set up:", options).prompt()?;
 
 	for selection in selections {
-		match selection {
-			"Microsoft Defender" => {
-				let key = LOCAL_MACHINE.create("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\MsMpEng.exe\\PerfOptions")?;
-				key.set_u32("CpuPriorityClass", 1)?;
-			}
-			_ => {}
+		if selection == "Microsoft Defender" {
+			let key = LOCAL_MACHINE.create("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\MsMpEng.exe\\PerfOptions")?;
+			key.set_u32("CpuPriorityClass", 1)?;
 		}
 	}
 

@@ -5,6 +5,6 @@ export default {
   ...lint_staged_config,
   '*.rs': [
     () => 'cargo clippy -- --deny warnings',
-    () => 'cargo fmt --check',
+    () => 'cargo +nightly fmt --check',
   ],
 };

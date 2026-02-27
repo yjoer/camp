@@ -382,9 +382,8 @@ unsafe fn spawn_user_process(command_line: String) -> Result<HANDLE, windows::co
 				continue;
 			}
 
-			match WTSQueryUserToken(session.SessionId, &mut user_token) {
-				Ok(_) => break 'retry,
-				Err(_) => {}
+			if WTSQueryUserToken(session.SessionId, &mut user_token).is_ok() {
+				break 'retry;
 			}
 		}
 

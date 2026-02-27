@@ -43,15 +43,8 @@ impl<T: PartialEq> Graph<T> {
 }
 
 fn dijkstra<T: Clone + PartialEq>(graph: &Graph<T>, start: T, end: T) -> Option<(Vec<T>, u32)> {
-	let start_index = match graph.labels.iter().position(|r| r == &start) {
-		Some(i) => i,
-		None => return None,
-	};
-
-	let end_index = match graph.labels.iter().position(|r| r == &end) {
-		Some(i) => i,
-		None => return None,
-	};
+	let start_index = graph.labels.iter().position(|r| r == &start)?;
+	let end_index = graph.labels.iter().position(|r| r == &end)?;
 
 	let mut previous = vec![u32::MAX; graph.adjacency_list.len()];
 	let mut distance = vec![u32::MAX; graph.adjacency_list.len()];
