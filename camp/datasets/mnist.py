@@ -2,6 +2,7 @@ import gzip
 import struct
 from typing import ClassVar
 from typing import Literal
+from typing import overload
 
 import fsspec
 import numpy as np
@@ -22,12 +23,27 @@ class FashionMNIST:
     "test_labels": "t10k-labels-idx1-ubyte.gz",
   }
 
+  @overload
+  @staticmethod
+  def load(
+    path: str,
+    storage_options: dict | None = None,
+    *,
+    return_tensors: Literal["np"],
+  ) -> dict[str, np.ndarray]: ...
+  @overload
+  @staticmethod
+  def load(
+    path: str,
+    storage_options: dict | None = None,
+    return_tensors: Literal["pt"] = "pt",
+  ) -> dict[str, torch.Tensor]: ...
   @staticmethod
   def load(
     path: str,
     storage_options: dict | None = None,
     return_tensors: TensorType = "pt",
-  ) -> dict[str, np.ndarray] | dict[str, torch.Tensor] | None:
+  ):
     if storage_options is None:
       storage_options = {}
 

@@ -1,11 +1,13 @@
 # %%
+from __future__ import annotations
+
 import io
+from typing import TYPE_CHECKING
 
 import altair as alt
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from mpl_toolkits.mplot3d import Axes3D
 from scipy import stats
 from sklearn.datasets import load_iris
 from sklearn.datasets import make_moons
@@ -19,6 +21,10 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import r2_score
 from sklearn.metrics import recall_score
 from sklearn.model_selection import train_test_split
+
+if TYPE_CHECKING:
+  from matplotlib.axes import Axes
+  from mpl_toolkits.mplot3d import Axes3D
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -275,7 +281,7 @@ cm
 
 # %%
 fig = plt.figure(figsize=(4, 4))
-ax = fig.gca()
+ax: Axes = fig.gca()
 
 ConfusionMatrixDisplay(cm).plot(ax=ax)
 

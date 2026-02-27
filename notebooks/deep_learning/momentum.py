@@ -1,4 +1,6 @@
 # %%
+from typing import overload
+
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,8 +12,12 @@ from ipywidgets import interact
 
 
 # %%
-def f(x: torch.Tensor) -> torch.Tensor:
-  return x**4 + x**3 - 5 * x**2  # ty: ignore[unsupported-operator]
+@overload
+def f(x: np.ndarray) -> np.ndarray: ...
+@overload
+def f(x: torch.Tensor) -> torch.Tensor: ...
+def f(x: np.ndarray | torch.Tensor):
+  return x**4 + x**3 - 5 * x**2
 
 
 # %%
@@ -25,6 +31,7 @@ def optimize(lr: float = 0.01, momentum: float = 0.0) -> list[tuple[float, float
     values.append((x.item(), y.item()))
 
     y.backward()
+    assert x.grad is not None
     d_p = x.grad.data
 
     if momentum != 0:
