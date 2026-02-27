@@ -155,6 +155,9 @@ class IKCESTDetectionDataset(Dataset):
     storage_options: dict | None = None,
     transforms: Callable | None = None,
   ) -> None:
+    if storage_options is None:
+      storage_options = {}
+
     frames, tracklet_labels, annotations_dict = IKCEST.load(path, storage_options)
 
     self.storage_options = storage_options
@@ -197,6 +200,9 @@ class IKCESTDetectionTestDataset(Dataset):
     storage_options: dict | None = None,
     transforms: Callable | None = None,
   ) -> None:
+    if storage_options is None:
+      storage_options = {}
+
     frames, seq_metadata = IKCEST.load_test(path, storage_options)
 
     self.frames = frames
