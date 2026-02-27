@@ -31,7 +31,7 @@ fn collatz(mut n: u64) -> u16 {
 	let mut steps = 0;
 
 	while n != 1 {
-		if n % 2 == 0 {
+		if n.is_multiple_of(2) {
 			n /= 2;
 		} else {
 			n = 3 * n + 1;

@@ -9,7 +9,6 @@ use clap::{Parser, Subcommand};
 use git2::Repository;
 use inquire::MultiSelect;
 use regex::Regex;
-use reqwest;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
@@ -312,10 +311,7 @@ fn setup_context_menu() -> Result<(), Box<dyn Error>> {
 			}
 			"WSL" => {
 				let key = CLASSES_ROOT.create("Directory\\background\\shell\\WSL")?;
-				match key.remove_value("Extended") {
-					Ok(_) => {}
-					Err(_) => {}
-				};
+				let _ = key.remove_value("Extended");
 				key.set_expand_string("Icon", "wsl.exe")?;
 			}
 			_ => {}
@@ -498,7 +494,7 @@ fn fixup() -> Result<(), Box<dyn Error>> {
 				&sig,
 				&format!("fixup! {}", message),
 				&tree,
-				&vec![&head_commit],
+				&[&head_commit],
 			)?;
 
 			let commit = repo.find_commit(commit_oid)?;
@@ -518,9 +514,9 @@ fn squash() -> Result<(), Box<dyn Error>> {
 	let mut cmd = Command::new("git");
 	cmd.arg("rebase").arg("--autosquash").arg("--autostash");
 
-	if let Ok(_) = repo.refname_to_id("refs/remotes/origin/master") {
+	if repo.refname_to_id("refs/remotes/origin/master").is_ok() {
 		cmd.arg("origin/master");
-	} else if let Ok(_) = repo.refname_to_id("refs/remotes/origin/main") {
+	} else if repo.refname_to_id("refs/remotes/origin/main").is_ok() {
 		cmd.arg("origin/main");
 	} else {
 		cmd.arg("--root");
