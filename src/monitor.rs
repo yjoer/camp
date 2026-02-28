@@ -2,7 +2,7 @@ use std::ffi::{c_void, OsString};
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
-use std::sync::mpsc;
+use std::sync::{mpsc, LazyLock};
 use std::thread::sleep;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use std::{ptr, slice};
@@ -181,9 +181,11 @@ unsafe extern "system" fn handle_win_event(
 		.map(|s| s.to_string_lossy().to_lowercase())
 		.unwrap_or_default();
 
-	let set = IndexSet::from(["code.exe", "idea64.exe", "zed.exe"]);
+	static BRIGHT_EXES: LazyLock<IndexSet<&str>> = LazyLock::new(|| {
+		IndexSet::from(["code.exe", "idea64.exe", "studio64.exe", "zed.exe"]) //
+	});
 
-	if set.contains(exe_file_name.as_str()) {
+	if BRIGHT_EXES.contains(exe_file_name.as_str()) {
 		set_brightness_wmi(25).unwrap();
 	} else {
 		set_brightness_wmi(20).unwrap();
