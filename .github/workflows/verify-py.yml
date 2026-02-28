@@ -2,19 +2,16 @@ on:
   workflow_call:
 
 jobs:
-  format-py:
-    name: Format Python
-    if: false
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Ruff
-        uses: astral-sh/ruff-action@v3
-      - name: Check Formatting
-        run: ruff format --check .
-      - name: Check Import Ordering
-        run: ruff check --select I .
+  # format-py:
+  #   name: Format Python
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Setup Ruff
+  #       uses: astral-sh/ruff-action@v3
+  #     - name: Check Formatting
+  #       run: ruff format --check .
 
   lint-py:
     name: Lint Python
