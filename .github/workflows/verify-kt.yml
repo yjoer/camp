@@ -1,0 +1,16 @@
+on:
+  workflow_call:
+
+jobs:
+  format-kt:
+    name: Format Kotlin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Ktlint
+        run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint
+          chmod +x ktlint
+      - name: Check Formatting
+        run: ./ktlint .
