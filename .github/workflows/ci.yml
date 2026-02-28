@@ -19,6 +19,9 @@ jobs:
   verify-java:
     uses: ./.github/workflows/verify-java.yml
 
+  verify-kt:
+    uses: ./.github/workflows/verify-kt.yml
+
   verify-js:
     uses: ./.github/workflows/verify-js.yml
 
