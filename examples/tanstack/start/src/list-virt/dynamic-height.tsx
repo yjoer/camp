@@ -34,7 +34,7 @@ function DynamicHeight() {
   const uwrap_count = useEffectEvent(() => {
     if (wrap && wrap !== 'uwrap') return;
 
-    let ctx = document.createElement('canvas').getContext('2d')!;
+    const ctx = document.createElement('canvas').getContext('2d')!;
     ctx.font = "16px 'Roboto Variable', sans-serif";
     const width = ref.current.clientWidth / 6 - (16 + 8 * 5) / 6;
     const { count } = varPreLine(ctx);
@@ -54,7 +54,7 @@ function DynamicHeight() {
   const canvas_hypertxt_split = useEffectEvent(() => {
     if (wrap !== 'canvas-hypertxt') return;
 
-    let ctx = document.createElement('canvas').getContext('2d')!;
+    const ctx = document.createElement('canvas').getContext('2d')!;
     ctx.font = "16px 'Roboto Variable', sans-serif";
     const width = ref.current.clientWidth / 6 - (16 + 8 * 5) / 6;
 

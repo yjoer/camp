@@ -47,7 +47,7 @@ server.on('request', async function (req, res) {
       ({ renderStream } = await import('./.output/server/entry-server.js'));
     }
 
-    let { pipe } = renderStream({
+    const { pipe } = renderStream({
       onShellReady() {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');

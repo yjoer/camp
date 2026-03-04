@@ -145,7 +145,7 @@ async function* readChunks(fp: string) {
 
   const buf = Buffer.alloc(8 * 1024 * 1024);
   const blocks = Math.ceil(stats.size / buf.length);
-  let end = stats.size % buf.length;
+  const end = stats.size % buf.length;
 
   for (let i = 0; i < blocks; i++) {
     await fd.read(buf);

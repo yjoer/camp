@@ -115,6 +115,7 @@
     "no-case-declarations": "error",
     "no-empty": "error",
     "no-fallthrough": "error",
+    "no-misleading-character-class": "error",
     "no-negated-condition": "error",
     "no-prototype-builtins": "error",
     "no-redeclare": "error",
@@ -133,6 +134,33 @@
     "preserve-caught-error": "error"
   },
   "overrides": [
+    {
+      "files": ["**/*.{ts,tsx,mts,cts}"],
+      "rules": {
+        // https://github.com/typescript-eslint/typescript-eslint/blob/v8.56.1/packages/eslint-plugin/src/configs/eslint-recommended-raw.ts
+        "constructor-super": "off",
+        "getter-return": "off",
+        "no-class-assign": "off",
+        "no-const-assign": "off",
+        "no-dupe-class-members": "off",
+        "no-dupe-keys": "off",
+        "no-func-assign": "off",
+        "no-import-assign": "off",
+        "no-new-native-nonconstructor": "off",
+        "no-obj-calls": "off",
+        "no-redeclare": "off",
+        "no-setter-return": "off",
+        "no-this-before-super": "off",
+        "no-undef": "off",
+        "no-unreachable": "off",
+        "no-unsafe-negation": "off",
+        "no-var": "error",
+        "no-with": "off",
+        "prefer-const": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error"
+      }
+    },
     {
       "files": ["**/*.{jsx,tsx}"],
       "rules": {
