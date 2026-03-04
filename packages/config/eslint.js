@@ -1,5 +1,7 @@
 import stylex_plugin from '@stylexjs/eslint-plugin';
 import stylistic_plugin from '@stylistic/eslint-plugin';
+import query_plugin from '@tanstack/eslint-plugin-query';
+import router_plugin from '@tanstack/eslint-plugin-router';
 import { defineConfig } from 'eslint/config';
 import gitignore from 'eslint-config-flat-gitignore';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
@@ -103,7 +105,35 @@ function react_hooks() {
 function react_you_might_not_need_an_effect() {
   return {
     name: 'react/you-might-not-need-an-effect/recommended',
+    files: ['**/*.{jsx,tsx}'],
     extends: [react_you_might_not_need_an_effect_plugin.configs.recommended],
+  };
+}
+
+function tanstack_query() {
+  return {
+    name: '@tanstack/query',
+    plugins: { '@tanstack/query': query_plugin },
+    rules: {
+      '@tanstack/query/exhaustive-deps': 'error',
+      '@tanstack/query/infinite-query-property-order': 'error',
+      '@tanstack/query/mutation-property-order': 'error',
+      '@tanstack/query/no-rest-destructuring': 'error',
+      '@tanstack/query/no-unstable-deps': 'error',
+      '@tanstack/query/no-void-query-fn': 'error',
+      '@tanstack/query/stable-query-client': 'error',
+    },
+  };
+}
+
+function tanstack_router() {
+  return {
+    name: '@tanstack/router',
+    plugins: { '@tanstack/router': router_plugin },
+    rules: {
+      '@tanstack/router/create-route-property-order': 'error',
+      '@tanstack/router/route-param-names': 'error',
+    },
   };
 }
 
@@ -219,6 +249,7 @@ function stylistic() {
 
   return [
     {
+      name: 'stylistic',
       plugins: { '@stylistic': stylistic_plugin },
       rules: {
         ...config.rules,
@@ -246,6 +277,7 @@ function stylistic() {
       },
     },
     {
+      name: 'stylistic/react',
       files: ['**/*.{jsx,tsx}'],
       rules: {
         '@stylistic/quote-props': ['error', 'as-needed'],
@@ -314,6 +346,8 @@ export const eslint_config = defineConfig([
   react(),
   react_hooks(),
   react_you_might_not_need_an_effect(),
+  tanstack_query(),
+  tanstack_router(),
   stylex(),
   tailwind(),
   jsx_a11y(),
