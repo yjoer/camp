@@ -8,6 +8,8 @@
     "@prettier/plugin-xml": "3.4.2",
     "@stylexjs/eslint-plugin": "0.18.0",
     "@stylistic/eslint-plugin": "5.9.0",
+    "@tanstack/eslint-plugin-query": "5.91.4",
+    "@tanstack/eslint-plugin-router": "1.161.4",
     "eslint": "9.39.2",
     "eslint-config-flat-gitignore": "2.2.1",
     "eslint-import-resolver-typescript": "4.4.4",
