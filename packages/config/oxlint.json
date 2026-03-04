@@ -111,17 +111,16 @@
     "unicorn/switch-case-braces": "error",
     "unicorn/text-encoding-identifier-case": "error",
     "unicorn/throw-new-error": "error",
-    "no-array-constructor": "error",
+    "getter-return": "error", // nursery
     "no-case-declarations": "error",
     "no-empty": "error",
     "no-fallthrough": "error",
-    "no-misleading-character-class": "error",
-    "no-negated-condition": "error",
     "no-prototype-builtins": "error",
     "no-redeclare": "error",
     "no-regex-spaces": "error",
+    "no-undef": "off", // nursery
     "no-unexpected-multiline": "error",
-    "no-unused-expressions": "error",
+    "no-unreachable": "error", // nursery
     //
     "import/no-default-export": "error",
     "react/exhaustive-deps": "off",
@@ -129,7 +128,9 @@
     "react/no-unknown-property": "off",
     "typescript/no-explicit-any": "off",
     "unicorn/filename-case": ["error", { "cases": { "kebabCase": true } }],
+    "no-array-constructor": "error",
     "no-console": "warn",
+    "no-negated-condition": "error",
     "no-unassigned-vars": "off",
     "preserve-caught-error": "error"
   },
