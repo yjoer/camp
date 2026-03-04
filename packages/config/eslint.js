@@ -113,6 +113,10 @@ function stylex() {
     files: ['**/*.{jsx,tsx}'],
     plugins: { '@stylexjs': stylex_plugin },
     rules: {
+      '@stylexjs/enforce-extension': 'error',
+      '@stylexjs/no-conflicting-props': 'error',
+      '@stylexjs/no-legacy-contextual-styles': 'error',
+      '@stylexjs/no-nonstandard-styles': 'error',
       '@stylexjs/no-unused': 'error',
       '@stylexjs/sort-keys': ['warn', {
         validImports: ['stylex', '@stylexjs/stylex', { from: 'react-strict-dom', as: 'css' }],
