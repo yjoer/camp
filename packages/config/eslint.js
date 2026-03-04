@@ -15,21 +15,6 @@ import unicorn_plugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 
-function eslint() {
-  return {
-    // https://github.com/typescript-eslint/typescript-eslint/blob/v8.34.1/packages/eslint-plugin/src/configs/eslint-recommended-raw.ts
-    rules: {
-      'constructor-super': 'off',
-      'getter-return': 'off', // nursery
-      'no-dupe-args': 'off', // x
-      'no-misleading-character-class': 'error',
-      'no-octal': 'error', // x
-      'no-undef': 'off', // nursery
-      'no-unreachable': 'off', // nursery
-    },
-  };
-}
-
 function import_x() {
   return {
     name: 'import/recommended',
@@ -320,7 +305,6 @@ function compat() {
 
 export const eslint_config = defineConfig([
   gitignore(),
-  eslint(),
   import_x(),
   typescript(),
   react(),

@@ -74,7 +74,7 @@ interface SlowPostProps {
 }
 
 function SlowPost({ post_id }: SlowPostProps) {
-  let start_time = performance.now();
+  const start_time = performance.now();
   while (performance.now() - start_time < 50);
 
   return <div>Slow Post #{post_id}</div>;

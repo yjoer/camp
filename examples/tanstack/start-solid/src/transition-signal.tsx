@@ -71,10 +71,8 @@ function SlowPost(props: SlowPostProps) {
 }
 
 const block = () => {
-  let start_time = performance.now();
-  while (performance.now() - start_time < 50) {
-    //
-  }
+  const start_time = performance.now();
+  while (performance.now() - start_time < 50);
 
   return null;
 };
