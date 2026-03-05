@@ -3,7 +3,12 @@ import altair as alt
 import pandas as pd
 
 # %%
+SERVER_PREFIX = ""
+
+# %%
 df = pd.read_json(".build/results.jsonl", lines=True)
+df = df[df["server_name"].str.startswith(SERVER_PREFIX)]
+df["server_name"] = df["server_name"].str.removeprefix(SERVER_PREFIX)
 df_expanded = df.explode("measurements")
 
 # %%
