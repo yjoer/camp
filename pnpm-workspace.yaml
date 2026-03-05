@@ -4,7 +4,7 @@ packages:
   - examples/hatchet/*
   - examples/http/*
   - examples/node/*
-  - examples/react/*
+  - examples/react-server/*
   - examples/tanstack/*
   - examples/temporal/*
   - examples/typescript/*

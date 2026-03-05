@@ -1,0 +1,24 @@
+{
+  "name": "@camp/examples-react-server-tanstack-start",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev",
+    "start": "cross-env NODE_ENV=production node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "1.166.2",
+    "@tanstack/react-start": "1.166.2",
+    "@tanstack/virtual-file-routes": "1.161.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tanstack/nitro-v2-vite-plugin": "1.154.7",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
+    "cross-env": "10.1.0",
+    "vite": "8.0.0-beta.16"
+  }
+}
