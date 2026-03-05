@@ -3,7 +3,7 @@ import altair as alt
 import pandas as pd
 
 # %%
-df = pd.read_json(".build/results.json", lines=True)
+df = pd.read_json(".build/results.jsonl", lines=True)
 df_expanded = df.explode("measurements")
 
 # %%

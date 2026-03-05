@@ -1,4 +1,4 @@
-# %%
+import argparse
 import datetime as dt
 from pathlib import Path
 
@@ -17,58 +17,16 @@ from examples.http._bench.utils import stop_server
 from examples.http._bench.utils import verify_server
 from examples.http._bench.utils import wait_for_server
 
-# %load_ext autoreload
-# %autoreload 2
-
-# %%
 script_dir = Path().cwd()
 http_dir = script_dir.parent
+react_server_dir = http_dir.parent / "react-server"
 
-RESULTS_FILE = script_dir / ".build" / "results.json"
+RESULTS_FILE = script_dir / ".build" / "results.jsonl"
 WARMUP_ROUNDS = 1
 TARGET_MEASUREMENTS = 10
 IQR_MULTIPLIER = 1.25
 MAX_STD_RATIO = 0.05
 
-
-# %%
-hello = Endpoint(
-  name="hello",
-  path="/",
-  method="GET",
-  expected_response={"hello": "world"},
-)
-
-trpc_hello = Endpoint(
-  name="hello",
-  path="/trpc/hello",
-  method="GET",
-  expected_response={"result": {"data": {"hello": "world"}}},
-)
-
-orpc_hello = Endpoint(
-  name="hello",
-  path="/hello",
-  method="GET",
-  expected_response={"json": {"hello": "world"}},
-)
-
-orpc_rpc_hello = Endpoint(
-  name="hello",
-  path="/rpc/hello",
-  method="GET",
-  expected_response={"json": {"hello": "world"}},
-)
-
-axum_connect_hello = Endpoint(
-  name="hello",
-  path="/hello.v1.HelloService/Hello",
-  method="POST",
-  expected_response={"hello": "world"},
-  request_body={},
-)
-
-# %%
 servers: list[ServerConfig] = [
   ServerConfig(
     name="node",
@@ -77,7 +35,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "server.ts"],
     cwd=http_dir / "node",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="express",
@@ -86,7 +46,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "server.ts"],
     cwd=http_dir / "express",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="fastify",
@@ -95,7 +57,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "server.ts"],
     cwd=http_dir / "fastify",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="h-three",
@@ -104,7 +68,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "server.ts"],
     cwd=http_dir / "h-three",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="trpc",
@@ -113,7 +79,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "node.ts"],
     cwd=http_dir / "trpc",
     base_url="http://127.0.0.1:3000",
-    endpoints=[trpc_hello],
+    endpoints=[
+      Endpoint(name="hello", path="/trpc/hello", method="GET", expected_json={"result": {"data": {"hello": "world"}}}),
+    ],
   ),
   ServerConfig(
     name="trpc-fastify",
@@ -122,7 +90,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "fastify.ts"],
     cwd=http_dir / "trpc",
     base_url="http://127.0.0.1:3000",
-    endpoints=[trpc_hello],
+    endpoints=[
+      Endpoint(name="hello", path="/trpc/hello", method="GET", expected_json={"result": {"data": {"hello": "world"}}}),
+    ],
   ),
   ServerConfig(
     name="orpc",
@@ -131,7 +101,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "node.ts"],
     cwd=http_dir / "orpc",
     base_url="http://127.0.0.1:3000",
-    endpoints=[orpc_hello],
+    endpoints=[
+      Endpoint(name="hello", path="/hello", method="GET", expected_json={"json": {"hello": "world"}}),
+    ],
   ),
   ServerConfig(
     name="orpc-fastify",
@@ -140,7 +112,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "fastify.ts"],
     cwd=http_dir / "orpc",
     base_url="http://127.0.0.1:3000",
-    endpoints=[orpc_rpc_hello],
+    endpoints=[
+      Endpoint(name="hello", path="/rpc/hello", method="GET", expected_json={"json": {"hello": "world"}}),
+    ],
   ),
   ServerConfig(
     name="orpc-h-three",
@@ -149,7 +123,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "h-three.ts"],
     cwd=http_dir / "orpc",
     base_url="http://127.0.0.1:3000",
-    endpoints=[orpc_rpc_hello],
+    endpoints=[
+      Endpoint(name="hello", path="/rpc/hello", method="GET", expected_json={"json": {"hello": "world"}}),
+    ],
   ),
   ServerConfig(
     name="orpc-openapi-node",
@@ -158,7 +134,9 @@ servers: list[ServerConfig] = [
     run_cmd=["node", "openapi-node.ts"],
     cwd=http_dir / "orpc",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="fastapi",
@@ -167,7 +145,9 @@ servers: list[ServerConfig] = [
     run_cmd=["uv", "run", "python", "server.py"],
     cwd=http_dir / "fastapi",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="spring-boot",
@@ -181,7 +161,9 @@ servers: list[ServerConfig] = [
     ],
     cwd=http_dir / "spring-boot",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="axum",
@@ -190,7 +172,9 @@ servers: list[ServerConfig] = [
     run_cmd=["cargo", "run", "--release"],
     cwd=http_dir / "axum",
     base_url="http://127.0.0.1:3000",
-    endpoints=[hello],
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_json={"hello": "world"}),
+    ],
   ),
   ServerConfig(
     name="axum-connect",
@@ -199,21 +183,81 @@ servers: list[ServerConfig] = [
     run_cmd=["cargo", "run", "--release"],
     cwd=http_dir / "axum-connect",
     base_url="http://127.0.0.1:3000",
-    endpoints=[axum_connect_hello],
+    endpoints=[
+      Endpoint(name="hello", path="/hello.v1.HelloService/Hello", method="POST", request_body={}, expected_json={"hello": "world"}),
+    ],
+  ),
+  ServerConfig(
+    name="react-server-vite",
+    language="typescript",
+    build_cmd=["pnpm", "build"],
+    run_cmd=["pnpm", "start"],
+    cwd=react_server_dir / "vite",
+    base_url="http://127.0.0.1:3000",
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_regex="Hello, World!"),
+    ],
+  ),
+  ServerConfig(
+    name="react-server-vite-stream",
+    language="typescript",
+    build_cmd=["pnpm", "build"],
+    run_cmd=["pnpm", "start:stream"],
+    cwd=react_server_dir / "vite",
+    base_url="http://127.0.0.1:3000",
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_regex="Hello, World!"),
+    ],
+  ),
+  ServerConfig(
+    name="react-server-next-pages",
+    language="typescript",
+    build_cmd=["pnpm", "build"],
+    run_cmd=["pnpm", "start"],
+    cwd=react_server_dir / "next",
+    base_url="http://127.0.0.1:3000",
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_regex="Hello, World!"),
+    ],
+  ),
+  ServerConfig(
+    name="react-server-next-app",
+    language="typescript",
+    build_cmd=["pnpm", "build"],
+    run_cmd=["pnpm", "start"],
+    cwd=react_server_dir / "next",
+    base_url="http://127.0.0.1:3000",
+    endpoints=[
+      Endpoint(name="hello", path="/app", method="GET", expected_regex="Hello, World!"),
+    ],
+  ),
+  ServerConfig(
+    name="react-server-tanstack-start",
+    language="typescript",
+    build_cmd=["pnpm", "build"],
+    run_cmd=["pnpm", "start"],
+    cwd=react_server_dir / "tanstack-start",
+    base_url="http://127.0.0.1:3000",
+    endpoints=[
+      Endpoint(name="hello", path="/", method="GET", expected_regex="Hello, World!"),
+    ],
   ),
 ]
 
-# %%
+parser = argparse.ArgumentParser()
+parser.add_argument("--server", type=str, default=None)
+parser.add_argument("--verify-only", action="store_true")
+args = parser.parse_args()
+
 with status() as update:
   for server in servers:
+    if args.server and not server.name.startswith(args.server): continue
     update(f"building {server.name}")
     build_server(server)
 
-# %%
-results: list[BenchmarkResult] = []
-
 with status() as update:
   for server in servers:
+    if args.server and not server.name.startswith(args.server): continue
     update(f"starting {server.name}")
     process = start_server(server)
 
@@ -223,11 +267,11 @@ with status() as update:
 
       update(f"verifying {server.name}")
       verify_server(server)
+      if args.verify_only: continue
 
       for endpoint in server.endpoints:
         update(f"warming up {server.name}/{endpoint.name}")
-        for _ in range(WARMUP_ROUNDS):
-          run_benchmark(server, endpoint, script_dir)
+        for _ in range(WARMUP_ROUNDS): run_benchmark(server, endpoint, script_dir)
 
         update(f"benchmarking {server.name}/{endpoint.name}")
         measurements: list[float] = []
@@ -272,5 +316,3 @@ with status() as update:
     finally:
       update(f"stopping {server.name}")
       stop_server(process)
-
-# %%

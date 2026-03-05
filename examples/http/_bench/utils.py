@@ -1,5 +1,6 @@
 # ruff: noqa: S602
 import json
+import re
 import subprocess
 import time
 from collections.abc import Callable
@@ -21,8 +22,9 @@ class Endpoint:
   name: str
   path: str
   method: str
-  expected_response: dict
   request_body: dict | None = None
+  expected_json: dict | None = None
+  expected_regex: str | None = None
 
 
 @dataclass
@@ -123,8 +125,12 @@ def verify_endpoint(server: ServerConfig, endpoint: Endpoint) -> bool:
       msg = f"endpoint {endpoint.path} returned {response.status_code}"
       raise RuntimeError(msg)
 
-    if response.json() != endpoint.expected_response:
+    if endpoint.expected_json is not None and response.json() != endpoint.expected_json:
       msg = f"endpoint {endpoint.path} returned unexpected response"
+      raise RuntimeError(msg)
+
+    if endpoint.expected_regex is not None and not re.search(endpoint.expected_regex, response.text):
+      msg = f"endpoint {endpoint.path} response did not match expected regex"
       raise RuntimeError(msg)
 
     return True
