@@ -12,15 +12,12 @@ const router = {
 
 const handler = new RPCHandler(router);
 
-const server = createServer(async (req, res) => {
-  const result = await handler.handle(req, res, {
-    context: { headers: req.headers },
-  });
-
-  if (!result.matched) {
+const server = createServer((req, res) => {
+  void handler.handle(req, res, { context: { headers: req.headers } }).then(({ matched }) => {
+    if (matched) return;
     res.statusCode = 404;
     res.end('no procedure matched');
-  }
+  });
 });
 
 server.listen({ port: 3000 });

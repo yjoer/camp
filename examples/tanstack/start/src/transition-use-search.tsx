@@ -25,7 +25,7 @@ function TransitionSearch() {
   const [is_pending, start_transition] = useTransition();
 
   const handle_click = () => {
-    navigate({
+    void navigate({
       search: prev => ({ page: (Number(prev.page) + 1).toString() }),
     });
 

@@ -13,7 +13,7 @@ const enabled = true;
 if (enabled && import.meta.webpackHot) {
   let oldRouter = router;
 
-  import.meta.webpackHot.accept('./router.ts', async () => {
+  import.meta.webpackHot.accept('./router.ts', () => {
     console.log('♻️ HMR: Hot-Reloading');
 
     // const mod = await import('./router.ts');

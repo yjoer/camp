@@ -9,7 +9,7 @@ export function create_shader(
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
 
-  const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS) as boolean;
   if (!success) {
     const log = gl.getShaderInfoLog(shader);
     gl.deleteShader(shader);
@@ -29,7 +29,7 @@ export function create_program(
   gl.attachShader(program, fragment_shader);
   gl.linkProgram(program);
 
-  const success = gl.getProgramParameter(program, gl.LINK_STATUS);
+  const success = gl.getProgramParameter(program, gl.LINK_STATUS) as boolean;
   if (!success) {
     const log = gl.getProgramInfoLog(program);
     gl.deleteProgram(program);

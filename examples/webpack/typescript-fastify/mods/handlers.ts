@@ -21,7 +21,7 @@ export async function chunked(request: FastifyRequest, reply: FastifyReply) {
   reply.raw.end();
 }
 
-export async function stream(request: FastifyRequest, reply: FastifyReply) {
+export function stream(request: FastifyRequest, reply: FastifyReply) {
   async function* generate() {
     yield '<div>First</div>';
     await sleep(1000);
@@ -42,7 +42,7 @@ export async function missingPackages(request: FastifyRequest, reply: FastifyRep
     // eslint-disable-next-line import-x/no-unresolved
     await import('missing-package');
   } catch (error) {
-    reply.code(500).send({ error: error.message });
+    reply.code(500).send({ error: (error as Error).message });
     return;
   }
 

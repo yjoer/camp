@@ -40,13 +40,13 @@ function Counter() {
         </button>
       </div>
       <div className="mt-2 flex flex-col items-start gap-1">
-        <button onClick={() => dispatch(increment_async())} {...stylex.props(button_styles.base)}>
+        <button onClick={() => void dispatch(increment_async())} {...stylex.props(button_styles.base)}>
           Async
         </button>
-        <button onClick={() => dispatch(increment_async_a())} {...stylex.props(button_styles.base)}>
+        <button onClick={() => void dispatch(increment_async_a())} {...stylex.props(button_styles.base)}>
           {loading ? 'Loading' : 'Async Fulfilled'}
         </button>
-        <button onClick={() => dispatch(increment_async_b())} {...stylex.props(button_styles.base)}>
+        <button onClick={() => void dispatch(increment_async_b())} {...stylex.props(button_styles.base)}>
           {loading ? 'Loading' : 'Async Rejected'}
         </button>
       </div>

@@ -58,15 +58,12 @@ await main();
 
 async function measure(callback: () => Promise<void>) {
   let gc = false;
-  const usages: any[] = [];
-  const usagesGC: any[] = [];
+  const usages: NodeJS.MemoryUsage[] = [];
+  const usages_gc: NodeJS.MemoryUsage[] = [];
 
   const interval = setInterval(() => {
-    if (gc) {
-      usagesGC.push(process.memoryUsage());
-    } else {
-      usages.push(process.memoryUsage());
-    }
+    if (gc) usages_gc.push(process.memoryUsage());
+    else usages.push(process.memoryUsage());
   }, 50);
 
   await Promise.resolve(callback());
@@ -86,7 +83,7 @@ async function measure(callback: () => Promise<void>) {
     }, 3000);
   });
 
-  return [usages, usagesGC];
+  return [usages, usages_gc];
 }
 
 async function prepare() {
@@ -121,9 +118,7 @@ async function usingReadStream() {
   const stream = createReadStream(fp, { highWaterMark: 8 * 1024 * 1024 });
 
   let length = 0;
-  for await (const chunk of stream) {
-    length += chunk.length;
-  }
+  for await (const chunk of stream) length += (chunk as Buffer).length;
 
   console.log(`read ${length} bytes using read stream`);
 }

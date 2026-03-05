@@ -4,13 +4,13 @@ import { posts } from './handlers/posts.ts';
 
 import type { IncomingMessage, ServerResponse } from 'node:http';
 
-export async function router(req: IncomingMessage, res: ServerResponse) {
+export function router(req: IncomingMessage, res: ServerResponse) {
   if (req.url === '/') {
-    await home(req, res);
-  } else if (req.url.startsWith('/posts')) {
-    await posts(req, res);
-  } else if (req.url.startsWith('/about')) {
-    await about(req, res);
+    home(req, res);
+  } else if (req.url?.startsWith('/posts')) {
+    posts(req, res);
+  } else if (req.url?.startsWith('/about')) {
+    about(req, res);
   } else {
     res.end();
   }

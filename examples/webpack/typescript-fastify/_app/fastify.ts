@@ -14,8 +14,8 @@ function createApp() {
   return fst;
 }
 
-export function dispose() {
-  app.close();
+export async function dispose() {
+  await app.close();
   app = createApp();
 }
 

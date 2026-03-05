@@ -14,9 +14,9 @@ try {
 
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept();
-  import.meta.webpackHot.dispose(() => dispose());
+  import.meta.webpackHot.dispose(() => void dispose());
 
   import.meta.webpackHot.addStatusHandler((status) => {
-    if (status === 'fail') process.exit();
+    if (status === webpack.HotUpdateStatus.fail) process.exit();
   });
 }

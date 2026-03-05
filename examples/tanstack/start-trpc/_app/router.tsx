@@ -24,6 +24,7 @@ export function getRouter() {
           return fetch(url, {
             ...options,
             headers: {
+              // oxlint-disable-next-line typescript/no-misused-spread
               ...options?.headers,
               ...getCookie(),
             },

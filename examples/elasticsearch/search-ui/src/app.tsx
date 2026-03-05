@@ -17,9 +17,9 @@ import '@elastic/react-search-ui-views/lib/styles/styles.css';
 import type { SearchDriverOptions } from '@elastic/search-ui';
 
 const connector = new ElasticsearchAPIConnector({
-  host: import.meta.env.VITE_ELASTICSEARCH_HOST,
-  apiKey: import.meta.env.VITE_ELASTICSEARCH_API_KEY,
-  index: import.meta.env.VITE_ELASTICSEARCH_INDEX,
+  host: import.meta.env.VITE_ELASTICSEARCH_HOST as string,
+  apiKey: import.meta.env.VITE_ELASTICSEARCH_API_KEY as string,
+  index: import.meta.env.VITE_ELASTICSEARCH_INDEX as string,
 });
 
 const config: SearchDriverOptions = {

@@ -48,11 +48,7 @@ function MultipleRectangles() {
     gl.bindVertexArray(vao);
 
     const block_idx = gl.getUniformBlockIndex(program, 'GlobalParams_std140');
-    const block_size = gl.getActiveUniformBlockParameter(
-      program,
-      block_idx,
-      gl.UNIFORM_BLOCK_DATA_SIZE,
-    );
+    const block_size = gl.getActiveUniformBlockParameter(program, block_idx, gl.UNIFORM_BLOCK_DATA_SIZE) as number;
 
     const ubo = gl.createBuffer();
     gl.bindBuffer(gl.UNIFORM_BUFFER, ubo);
@@ -63,7 +59,7 @@ function MultipleRectangles() {
 
     const uniform_names = ['GlobalParams_std140.u_resolution'];
     const uniform_idx = gl.getUniformIndices(program, uniform_names)!;
-    const uniform_offsets = gl.getActiveUniforms(program, uniform_idx, gl.UNIFORM_OFFSET);
+    const uniform_offsets = gl.getActiveUniforms(program, uniform_idx, gl.UNIFORM_OFFSET) as number[];
     const u_resolution_offset = uniform_offsets[0];
 
     gl.bufferSubData(

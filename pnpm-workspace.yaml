@@ -17,12 +17,12 @@ patchedDependencies:
 publicHoistPattern:
   - '*commitlint*'
   - '*eslint*'
+  - '*oxlint*'
   - '*postcss*'
   - '*prettier*'
   - '*stylelint*'
   - '*tailwind*'
   - lint-staged
-  - oxlint
   - sort-package-json
 
 dangerouslyAllowAllBuilds: true

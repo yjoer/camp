@@ -8,6 +8,7 @@
     "resolveJsonModule": true,
 
     "declaration": true,
+    "outDir": ".build",
     "sourceMap": true,
 
     "allowJs": true,

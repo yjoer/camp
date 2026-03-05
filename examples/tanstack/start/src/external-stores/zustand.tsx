@@ -43,13 +43,13 @@ function Counter({ store }: CounterProps) {
         </button>
       </div>
       <div className="mt-2 flex flex-col items-start gap-1">
-        <button onClick={() => increment_async()} {...stylex.props(button_styles.base)}>
+        <button onClick={() => void increment_async()} {...stylex.props(button_styles.base)}>
           Async
         </button>
-        <button onClick={() => increment_async_a()} {...stylex.props(button_styles.base)}>
+        <button onClick={() => void increment_async_a()} {...stylex.props(button_styles.base)}>
           {loading ? 'Loading' : 'Async Fulfilled'}
         </button>
-        <button onClick={() => increment_async_b()} {...stylex.props(button_styles.base)}>
+        <button onClick={() => void increment_async_b()} {...stylex.props(button_styles.base)}>
           {loading ? 'Loading' : 'Async Rejected'}
         </button>
       </div>
