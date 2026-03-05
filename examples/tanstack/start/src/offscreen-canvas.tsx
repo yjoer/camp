@@ -20,11 +20,12 @@ function OffscreenCanvas() {
   const worker_ref = useRef<CanvasWorkerClient>(null);
   const [date, set_date] = useState<string>('');
 
-  const handle_click = async () => {
+  const handle_click = () => {
     if (!worker_ref.current) return;
 
-    const date = await worker_ref.current.get_date();
-    set_date(date.toISOString());
+    void worker_ref.current.get_date().then((date) => {
+      set_date(date.toISOString());
+    });
   };
 
   useEffect(() => {
@@ -36,7 +37,7 @@ function OffscreenCanvas() {
     worker_ref.current = worker;
 
     transferables.add(offscreen);
-    worker.render({ canvas: offscreen });
+    void worker.render({ canvas: offscreen });
 
     return () => {
       canvas.remove();
@@ -61,26 +62,26 @@ function OffscreenCanvas() {
   );
 }
 
-const transferables = new WeakSet<any>();
+const transferables = new WeakSet<Transferable>();
 
-function get_worker_client() {
+function get_worker_client(): CanvasWorkerClient {
   const link = new RPCLink({
     port: new CanvasWorker(),
     experimental_transfer: (message) => {
       const [_id, type, payload] = message;
       if (type !== MessageType.REQUEST) return [];
 
-      const transfer: any[] = [];
-      const body = payload.body as { json: Record<string, any> };
+      const transfer: Transferable[] = [];
+      const body = payload.body as { json: Record<string, unknown> };
       for (const v of Object.values(body.json ?? {})) {
-        if (transferables.has(v)) transfer.push(v);
+        if (transferables.has(v as object)) transfer.push(v as Transferable);
       }
 
       return transfer;
     },
   });
 
-  return createORPCClient(link) as RouterClient<typeof router>;
+  return createORPCClient(link);
 }
 
 type CanvasWorkerClient = RouterClient<typeof router>;

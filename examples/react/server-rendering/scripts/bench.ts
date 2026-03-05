@@ -16,5 +16,5 @@ const urls = {
 };
 
 export default function bench() {
-  http.get(urls[__ENV.SERVER]);
+  http.get(urls[__ENV.SERVER as keyof typeof urls]);
 }

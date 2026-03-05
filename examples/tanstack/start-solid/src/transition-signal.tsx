@@ -17,7 +17,7 @@ function TransitionSignal() {
   const handle_click = () => {
     set_page(prev => prev + 1);
 
-    start_transition(() => {
+    void start_transition(() => {
       set_page_slow(prev => prev + 1);
     });
   };

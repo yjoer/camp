@@ -16,7 +16,7 @@ function MediaSourceExtensions() {
     const ms = new MediaSource();
     video.src = URL.createObjectURL(ms);
 
-    ms.addEventListener('sourceopen', async (e) => {
+    ms.addEventListener('sourceopen', (e) => {
       URL.revokeObjectURL(video.src);
       const ms = e.target as MediaSource;
       const sb = ms.addSourceBuffer('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
@@ -24,9 +24,11 @@ function MediaSourceExtensions() {
         if (!sb.updating && ms.readyState === 'open') ms.endOfStream();
       });
 
-      const res = await fetch('https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4');
-      const buf = await res.arrayBuffer();
-      sb.appendBuffer(buf);
+      void fetch('https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4').then((res) => {
+        return res.arrayBuffer();
+      }).then((buf) => {
+        sb.appendBuffer(buf);
+      });
     });
 
     return () => {

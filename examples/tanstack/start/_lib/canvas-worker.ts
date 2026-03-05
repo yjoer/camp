@@ -1,6 +1,8 @@
 import { os, type } from '@orpc/server';
 import { RPCHandler } from '@orpc/server/message-port';
 
+import type { SupportedMessagePort } from '@orpc/client/message-port';
+
 const get_date = os.handler(() => {
   return new Date();
 });
@@ -63,6 +65,6 @@ const handler = new RPCHandler(router, {
   },
 });
 
-handler.upgrade(globalThis as any, {
+handler.upgrade(globalThis as unknown as SupportedMessagePort, {
   context: {},
 });

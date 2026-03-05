@@ -2,11 +2,11 @@
 // oxlint-disable no-null
 // oxlint-disable no-this-alias
 // oxlint-disable no-this-assignment
+// oxlint-disable typescript/unbound-method
 import cp from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// @ts-expect-error no-types-available
 import relocateLoader from '@vercel/webpack-asset-relocator-loader';
 
 import type { Compiler, Resolver } from 'webpack';
@@ -70,13 +70,13 @@ export class OptionalModulesResolverPlugin {
     const resolve = resolver.resolve;
 
     resolver.resolve = function (context, fp, request, resolveContext, callback) {
-      const boundResolve: typeof resolve = resolve.bind(this);
+      const boundResolve = resolve.bind(this);
 
       boundResolve(context, fp, request, resolveContext, (err, innerPath, result) => {
         if (result) return callback(null, innerPath, result);
         if (err && !err.message.startsWith("Can't resolve")) return callback(err);
 
-        const issuer = (context as any)?.issuer;
+        const issuer = (context as { issuer?: string })?.issuer;
         const fromTS = issuer?.endsWith('.ts') || issuer?.endsWith('.tsx');
 
         if (request.endsWith('.js') && fromTS) {

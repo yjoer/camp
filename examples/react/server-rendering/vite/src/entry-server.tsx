@@ -8,6 +8,6 @@ export function render() {
   return ReactDOMServer.renderToString(<App />);
 }
 
-export function renderStream(options: RenderToPipeableStreamOptions) {
+export function render_stream(options: RenderToPipeableStreamOptions) {
   return ReactDOMServer.renderToPipeableStream(<App />, options);
 }

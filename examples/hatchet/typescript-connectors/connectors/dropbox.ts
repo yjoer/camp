@@ -3,7 +3,7 @@ import { ConcurrencyLimitStrategy } from '@hatchet-dev/typescript-sdk';
 import { es } from '../elasticsearch.ts';
 import { hatchet } from '../hatchet-client.ts';
 
-const baseUrl = 'https://api.dropboxapi.com';
+const base_url = 'https://api.dropboxapi.com';
 
 export const dropbox = hatchet.workflow({
   name: 'dropbox',
@@ -15,46 +15,46 @@ export const dropbox = hatchet.workflow({
   },
 });
 
-const getAccessToken = dropbox.task({
+const get_access_token = dropbox.task({
   name: 'get_access_token',
   fn: async () => {
-    const refreshToken = process.env.DROPBOX_REFRESH_TOKEN;
-    if (!refreshToken) throw new Error('Refresh token is missing');
+    const refresh_token = process.env.DROPBOX_REFRESH_TOKEN;
+    if (!refresh_token) throw new Error('Refresh token is missing');
 
-    const clientId = process.env.DROPBOX_CLIENT_ID;
-    if (!clientId) throw new Error('Client ID is missing');
+    const client_id = process.env.DROPBOX_CLIENT_ID;
+    if (!client_id) throw new Error('Client ID is missing');
 
-    const clientSecret = process.env.DROPBOX_CLIENT_SECRET;
-    if (!clientSecret) throw new Error('Client secret is missing');
+    const client_secret = process.env.DROPBOX_CLIENT_SECRET;
+    if (!client_secret) throw new Error('Client secret is missing');
 
-    const response = await fetch(`${baseUrl}/oauth2/token`, {
+    const response = await fetch(`${base_url}/oauth2/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-        client_id: clientId,
-        client_secret: clientSecret,
+        refresh_token,
+        client_id,
+        client_secret,
       }),
     });
 
-    if (!response.ok) throw new Error(`Error fetching access token: ${response.body}`);
-    const data = await response.json();
+    if (!response.ok) throw new Error(`Error fetching access token: ${JSON.stringify(response.body, undefined, 2)}`);
+    const data = await response.json() as { access_token: string };
 
     return data;
   },
 });
 
-const listFolder = dropbox.task({
+const list_folder = dropbox.task({
   name: 'list_folder',
-  parents: [getAccessToken],
+  parents: [get_access_token],
   fn: async (input, ctx) => {
-    const token = await ctx.parentOutput(getAccessToken);
+    const token = await ctx.parentOutput(get_access_token);
 
-    ctx.logger.info('Retrieving a list of files and folders recursively.');
-    let response = await fetch(`${baseUrl}/2/files/list_folder`, {
+    void ctx.logger.info('Retrieving a list of files and folders recursively.');
+    let response = await fetch(`${base_url}/2/files/list_folder`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -66,19 +66,17 @@ const listFolder = dropbox.task({
       }),
     });
 
-    if (!response.ok) throw new Error(`Error fetching data: ${response.body}`);
+    if (!response.ok) throw new Error(`Error fetching data: ${JSON.stringify(response.body, undefined, 2)}`);
 
-    let data = await response.json();
+    let data = await response.json() as { cursor: string; entries: FileMetadata[]; has_more: boolean };
     if (data.entries.length === 0) throw new Error('No entries found');
 
-    const entriesAll: any[] = [];
-    entriesAll.push(...data.entries);
+    const entries = [...data.entries];
+    let { has_more, cursor } = data;
 
-    let { has_more: hasMore, cursor } = data;
-
-    while (hasMore) {
-      ctx.logger.info('Retrieving a list of files and folders recursively (cont).');
-      response = await fetch(`${baseUrl}/2/files/list_folder/continue`, {
+    while (has_more) {
+      void ctx.logger.info('Retrieving a list of files and folders recursively (cont).');
+      response = await fetch(`${base_url}/2/files/list_folder/continue`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,60 +87,56 @@ const listFolder = dropbox.task({
         }),
       });
 
-      if (!response.ok) throw new Error(`Error fetching data: ${response.body}`);
+      if (!response.ok) throw new Error(`Error fetching data: ${JSON.stringify(response.body, undefined, 2)}`);
 
-      data = await response.json();
+      data = await response.json() as { cursor: string; entries: FileMetadata[]; has_more: boolean };
       if (data.entries.length === 0) throw new Error('No entries found');
 
-      entriesAll.push(...data.entries);
-      ({ has_more: hasMore, cursor } = data);
+      entries.push(...data.entries);
+      ({ has_more, cursor } = data);
     }
 
-    ctx.logger.info(`Total entries found: ${entriesAll.length}`);
+    void ctx.logger.info(`Total entries found: ${entries.length}`);
 
     return {
-      entries: entriesAll,
+      entries,
     };
   },
 });
 
-const enrichEntries = dropbox.task({
+const enrich_entries = dropbox.task({
   name: 'enrich_entries_with_metadata',
-  parents: [listFolder],
+  parents: [list_folder],
   fn: async (input, ctx) => {
-    const token = await ctx.parentOutput(getAccessToken);
-    const { entries } = await ctx.parentOutput(listFolder);
+    const token = await ctx.parentOutput(get_access_token);
+    const { entries } = await ctx.parentOutput(list_folder);
 
-    const paperFiles = entries.filter(f => f.name.endsWith('.paper'));
-    if (paperFiles.length === 0) return entries;
+    const paper_files = entries.filter(f => f.name.endsWith('.paper'));
+    if (paper_files.length === 0) return entries;
 
-    ctx.logger.info(`Retrieving metadata for ${paperFiles.length} files.`);
-    const response = await fetch(`${baseUrl}/2/sharing/get_file_metadata/batch`, {
+    void ctx.logger.info(`Retrieving metadata for ${paper_files.length} files.`);
+    const response = await fetch(`${base_url}/2/sharing/get_file_metadata/batch`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token.access_token}`,
       },
       body: JSON.stringify({
-        files: paperFiles.map(f => f.path_lower),
+        files: paper_files.map(f => f.path_lower),
       }),
     });
 
-    if (!response.ok) throw new Error(`Error fetching metadata: ${response.body}`);
+    if (!response.ok) throw new Error(`Error fetching metadata: ${JSON.stringify(response.body, undefined, 2)}`);
 
-    const files = await response.json();
+    const files = await response.json() as { result: { id: string; preview_url: string } }[];
     if (files.length === 0) throw new Error('No files found');
 
-    const filesMap = new Map();
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      filesMap.set(file.result.id, file.result);
-    }
+    const files_map = new Map<string, typeof files[0]['result']>();
+    for (const file of files) files_map.set(file.result.id, file.result);
 
     for (let i = 0; i < entries.length; i++) {
-      if (!filesMap.has(entries[i].id)) continue;
-      entries[i].preview_url = filesMap.get(entries[i].id).preview_url;
+      if (!files_map.has(entries[i].id)) continue;
+      entries[i].preview_url = files_map.get(entries[i].id)!.preview_url;
     }
 
     return {
@@ -153,19 +147,19 @@ const enrichEntries = dropbox.task({
 
 dropbox.task({
   name: 'export_and_index_paper_files',
-  parents: [enrichEntries],
+  parents: [enrich_entries],
   executionTimeout: '10m',
   fn: async (input, ctx) => {
-    const token = await ctx.parentOutput(getAccessToken);
-    const { entries } = await ctx.parentOutput(enrichEntries);
+    const token = await ctx.parentOutput(get_access_token);
+    const { entries } = await ctx.parentOutput(enrich_entries);
 
-    const paperFiles = entries.filter(f => f.name.endsWith('.paper'));
-    if (paperFiles.length === 0) return;
+    const paper_files = entries.filter(f => f.name.endsWith('.paper'));
+    if (paper_files.length === 0) return;
 
-    for (let i = 0; i < paperFiles.length; i++) {
-      const file = paperFiles[i];
+    for (let i = 0; i < paper_files.length; i++) {
+      const file = paper_files[i];
 
-      ctx.logger.info(`Exporting ${file.path_lower} to markdown.`);
+      void ctx.logger.info(`Exporting ${file.path_lower} to markdown.`);
       const response = await fetch(`https://content.dropboxapi.com/2/files/export`, {
         method: 'POST',
         headers: {
@@ -177,13 +171,12 @@ dropbox.task({
         },
       });
 
-      if (!response.ok) throw new Error(`Failed to export ${file.path_lower}: ${response.body}`);
+      if (!response.ok) throw new Error(`Failed to export ${file.path_lower}: ${JSON.stringify(response.body, undefined, 2)}`);
 
-      const result = JSON.parse(response.headers.get('Dropbox-Api-Result') ?? '{}');
-      const metadata = result.export_metadata;
-      if (!metadata) throw new Error(`Failed to get metadata for ${file.path_lower}`);
+      const { export_metadata } = JSON.parse(response.headers.get('Dropbox-Api-Result') ?? '{}') as { export_metadata: ExportMetadata };
+      if (!export_metadata) throw new Error(`Failed to get metadata for ${file.path_lower}`);
 
-      ctx.logger.info(`Indexing ${file.path_lower}.`);
+      void ctx.logger.info(`Indexing ${file.path_lower}.`);
       await es.update({
         id: file.id,
         index: 'dropbox',
@@ -192,8 +185,8 @@ dropbox.task({
           name: file.name,
           path_lower: file.path_lower,
           path_display: file.path_display,
-          revision: metadata.paper_revision,
-          size: metadata.size,
+          revision: export_metadata.paper_revision,
+          size: export_metadata.size,
           type: file['.tag'],
           updated_at: file.server_modified,
           url: file.preview_url,
@@ -204,3 +197,20 @@ dropbox.task({
     }
   },
 });
+
+type FileMetadata = {
+  '.tag': 'file' | 'folder';
+  'id': string;
+  'name': string;
+  'path_lower': string;
+  'path_display': string;
+  'server_modified': string;
+  'preview_url': string;
+};
+
+type ExportMetadata = {
+  name: string;
+  size: number;
+  export_hash: string;
+  paper_revision: number;
+};

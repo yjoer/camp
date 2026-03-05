@@ -1,5 +1,3 @@
-/* eslint-disable import-x/no-unresolved */
-/* eslint-disable import-x/no-extraneous-dependencies */
 // oxlint-disable no-console
 import { createReadStream } from 'node:fs';
 import fs from 'node:fs/promises';
@@ -7,51 +5,58 @@ import { createServer } from 'node:http';
 import path from 'node:path';
 import { Transform } from 'node:stream';
 
+import type * as EntryServer from './src/entry-server';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { ViteDevServer } from 'vite';
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
+const is_development = process.env.NODE_ENV !== 'production';
 const server = createServer();
 
 let vite: ViteDevServer;
-if (isDevelopment) {
-  const { createServer: createViteServer } = await import('vite');
-  vite = await createViteServer({
+if (is_development) {
+  // eslint-disable-next-line import-x/no-extraneous-dependencies
+  const { createServer: create_vite_server } = await import('vite');
+
+  vite = await create_vite_server({
     server: { middlewareMode: { server } },
     appType: 'custom',
   });
 }
 
 const p = path.resolve(import.meta.dirname, '.output', 'client', 'index.html');
-let template = isDevelopment ? '' : await fs.readFile(p, 'utf8');
-let [templateStart, templateEnd] = template.split('<!--app-html-->');
+let template = is_development ? '' : await fs.readFile(p, 'utf8');
+let [template_start, template_end] = template.split('<!--app-html-->');
 
-server.on('request', async function (req, res) {
+server.on('request', function (req, res) {
+  void handler(req, res);
+});
+
+async function handler(req: IncomingMessage, res: ServerResponse) {
   try {
     const url = req.url ?? '';
 
-    let renderStream;
-    if (isDevelopment) {
+    let render_stream: typeof EntryServer.render_stream;
+    if (is_development) {
       await new Promise(resolve => vite.middlewares(req, res, resolve));
 
       template = await fs.readFile(path.resolve(import.meta.dirname, 'index.html'), 'utf8');
       template = await vite.transformIndexHtml(url, template);
-      [templateStart, templateEnd] = template.split('<!--app-html-->');
+      [template_start, template_end] = template.split('<!--app-html-->');
 
-      ({ renderStream } = await vite.ssrLoadModule('/src/entry-server.tsx'));
+      ({ render_stream } = await vite.ssrLoadModule('/src/entry-server.tsx') as typeof EntryServer);
     } else {
-      if (url.startsWith('/assets/')) return staticFiles(req, res);
+      if (url.startsWith('/assets/')) return static_files(req, res);
 
       // @ts-expect-error build-time generated
-      ({ renderStream } = await import('./.output/server/entry-server.js'));
+      // eslint-disable-next-line import-x/no-unresolved
+      ({ render_stream } = await import('./.output/server/entry-server.js') as typeof EntryServer);
     }
 
-    const { pipe } = renderStream({
+    const { pipe } = render_stream({
       onShellReady() {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
-        res.write(templateStart);
+        res.write(template_start);
 
         const transform = new Transform({
           transform(chunk, encoding, callback) {
@@ -61,7 +66,7 @@ server.on('request', async function (req, res) {
         });
 
         transform.on('finish', () => {
-          res.end(templateEnd);
+          res.end(template_end);
         });
 
         pipe(transform);
@@ -73,14 +78,14 @@ server.on('request', async function (req, res) {
     res.statusCode = 500;
     res.end(error.stack);
   }
-});
+}
 
-async function staticFiles(req: IncomingMessage, res: ServerResponse) {
+async function static_files(req: IncomingMessage, res: ServerResponse) {
   const url = req.url ?? '/';
-  const assetPath = path.resolve(import.meta.dirname, '.output', 'client', url.slice(1));
+  const asset_path = path.resolve(import.meta.dirname, '.output', 'client', url.slice(1));
 
   try {
-    const stat = await fs.stat(assetPath);
+    const stat = await fs.stat(asset_path);
     if (!stat.isFile()) {
       res.statusCode = 404;
       res.end('not found');
@@ -96,7 +101,7 @@ async function staticFiles(req: IncomingMessage, res: ServerResponse) {
   if (url.endsWith('.js')) res.setHeader('Content-Type', 'text/javascript');
   else if (url.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
 
-  const stream = createReadStream(assetPath);
+  const stream = createReadStream(asset_path);
   stream.pipe(res);
 }
 

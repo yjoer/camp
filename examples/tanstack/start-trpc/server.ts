@@ -11,7 +11,7 @@ import type {
   FastifyTRPCPluginOptions,
 } from '@trpc/server/adapters/fastify';
 
-const createContext = async (opts: CreateFastifyContextOptions) => {
+const createContext = (opts: CreateFastifyContextOptions) => {
   return {
     req: opts.req,
     res: opts.res,

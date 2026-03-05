@@ -16,17 +16,12 @@ const handler = new RPCHandler(router);
 
 const app = fastify({
   logger: false,
-  serverFactory: (fastifyHandler) => {
-    const server = createServer(async (req, res) => {
-      const { matched } = await handler.handle(req, res, {
-        prefix: '/rpc',
+  serverFactory: (fastify_handler) => {
+    const server = createServer((req, res) => {
+      void handler.handle(req, res, { prefix: '/rpc' }).then(({ matched }) => {
+        if (matched) return;
+        fastify_handler(req, res);
       });
-
-      if (matched) {
-        return;
-      }
-
-      fastifyHandler(req, res);
     });
 
     return server;
