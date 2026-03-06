@@ -6,7 +6,7 @@ import autoprefixer from 'autoprefixer';
 const config = {
   plugins: [
     stylex({
-      include: ['components/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
+      include: ['_components/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
       useCSSLayers: true,
     }),
     autoprefixer,

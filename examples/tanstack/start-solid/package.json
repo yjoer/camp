@@ -8,21 +8,21 @@
   },
   "dependencies": {
     "@fontsource-variable/roboto": "5.2.10",
-    "@stylexjs/stylex": "0.17.5",
-    "@tanstack/solid-router": "1.162.4",
-    "@tanstack/solid-start": "1.162.4",
+    "@stylexjs/stylex": "0.18.1",
+    "@tanstack/solid-router": "1.166.2",
+    "@tanstack/solid-start": "1.166.2",
     "@tanstack/virtual-file-routes": "1.161.4",
     "solid-js": "1.9.11"
   },
   "devDependencies": {
-    "@stylexjs/babel-plugin": "0.17.5",
-    "@stylexjs/postcss-plugin": "0.17.5",
-    "@tailwindcss/vite": "4.2.0",
+    "@stylexjs/babel-plugin": "0.18.1",
+    "@stylexjs/postcss-plugin": "0.18.1",
+    "@tailwindcss/vite": "4.2.1",
     "@tanstack/nitro-v2-vite-plugin": "1.154.7",
-    "autoprefixer": "10.4.24",
-    "tailwindcss": "4.2.0",
+    "autoprefixer": "10.4.27",
+    "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
-    "vite": "npm:rolldown-vite@7.3.1",
+    "vite": "8.0.0-beta.16",
     "vite-plugin-solid": "2.11.10"
   }
 }
