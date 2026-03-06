@@ -29,7 +29,7 @@ function TransitionUseState() {
     <div className="mx-2 my-1">
       <div>Page: {page}</div>
       <div>Pending: {is_pending ? 'true' : 'false'}</div>
-      <button onClick={handle_click} {...stylex.props(button_styles.base)}>
+      <button sx={button_styles.base} onClick={handle_click}>
         Next Page
       </button>
       <Posts page={page_slow} />

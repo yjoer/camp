@@ -111,9 +111,11 @@
     "no-prototype-builtins": "error",
     "no-redeclare": "error",
     "no-regex-spaces": "error",
+    "no-unassigned-vars": "off",
     "no-undef": "off", // nursery
     "no-unexpected-multiline": "error",
     "no-unreachable": "error", // nursery
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_|stylex" }],
     //
     "import/no-default-export": "error",
     "react/exhaustive-deps": "off",
@@ -123,7 +125,6 @@
     "no-array-constructor": "error",
     "no-console": "warn",
     "no-negated-condition": "error",
-    "no-unassigned-vars": "off",
     "preserve-caught-error": "error"
   },
   "overrides": [

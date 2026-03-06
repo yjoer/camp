@@ -50,7 +50,7 @@ function OffscreenCanvas() {
         <span className="bg-[#ffdd00]">Date</span>
         <div className="h-6">{date}</div>
         <div className="mt-1">
-          <button onClick={handle_click} {...stylex.props(button_styles.base)}>
+          <button sx={button_styles.base} onClick={handle_click}>
             Get Date
           </button>
         </div>

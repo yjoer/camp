@@ -31,22 +31,22 @@ function Counter() {
   return (
     <div className="mx-2 my-1">
       <div className="flex items-center gap-2">
-        <button onClick={() => dispatch(increment())} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => dispatch(increment())}>
           Increment
         </button>
         <span className="min-w-12 text-center">{count}</span>
-        <button onClick={() => dispatch(decrement())} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => dispatch(decrement())}>
           Decrement
         </button>
       </div>
       <div className="mt-2 flex flex-col items-start gap-1">
-        <button onClick={() => void dispatch(increment_async())} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => void dispatch(increment_async())}>
           Async
         </button>
-        <button onClick={() => void dispatch(increment_async_a())} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => void dispatch(increment_async_a())}>
           {loading ? 'Loading' : 'Async Fulfilled'}
         </button>
-        <button onClick={() => void dispatch(increment_async_b())} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => void dispatch(increment_async_b())}>
           {loading ? 'Loading' : 'Async Rejected'}
         </button>
       </div>
