@@ -65,13 +65,13 @@ function DependencyArray() {
       <div ref={logRef}>Log:</div>
       <div ref={logStaleRef}>Log - Stale:</div>
       <div className="mt-1 flex gap-2">
-        <button onClick={() => setCount(prev => prev + 1)} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => setCount(prev => prev + 1)}>
           Increment
         </button>
-        <button onClick={handleClick} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handleClick}>
           Log
         </button>
-        <button onClick={handleClickStale} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handleClickStale}>
           Log - Stale
         </button>
       </div>
@@ -103,7 +103,7 @@ function EffectEvents() {
       <div>Count: {count}</div>
       <div ref={timedLogRef}>Timed Log:</div>
       <div className="mt-1 flex gap-2">
-        <button onClick={() => setCount(prev => prev + 1)} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={() => setCount(prev => prev + 1)}>
           Increment
         </button>
       </div>
@@ -144,10 +144,10 @@ function RefSync() {
       <div ref={timedLogRef}>Timed Log:</div>
       <div ref={logRef}>Log:</div>
       <div className="mt-1 flex gap-2">
-        <button onClick={handleIncrement} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handleIncrement}>
           Increment
         </button>
-        <button onClick={handleClick} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handleClick}>
           Log
         </button>
       </div>
@@ -186,10 +186,10 @@ function StateRefHook() {
       <div ref={timedLogRef}>Timed Log:</div>
       <div ref={logRef}>Log:</div>
       <div className="mt-1 flex gap-2">
-        <button onClick={handleIncrement} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handleIncrement}>
           Increment
         </button>
-        <button onClick={handleClick} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handleClick}>
           Log
         </button>
       </div>

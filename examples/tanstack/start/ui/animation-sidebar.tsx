@@ -54,7 +54,7 @@ function SidebarTransition() {
     <div>
       <span className="bg-[#ffa500]">CSS Transform</span>
       <div className="mt-1">
-        <button onClick={handle_toggle} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handle_toggle}>
           Toggle
         </button>
       </div>
@@ -115,7 +115,7 @@ function SidebarWAAPI() {
     <div>
       <span className="bg-[#ffa500]">WAAPI Transform</span>
       <div className="mt-1">
-        <button onClick={handle_toggle} {...stylex.props(button_styles.base)}>
+        <button sx={button_styles.base} onClick={handle_toggle}>
           Toggle
         </button>
       </div>
@@ -136,11 +136,11 @@ interface SidebarProps {
 
 function Sidebar({ ref }: SidebarProps) {
   return (
-    <div ref={ref} {...stylex.props(sidebar_sx.base)}>
+    <div ref={ref} sx={sidebar_sx.base}>
       {Array.from({ length: 5 }).map((_, idx) => (
         <div key={idx} className="flex gap-2 px-2 py-1">
-          <div {...stylex.props(sidebar_sx.icon)} />
-          <div {...stylex.props(sidebar_sx.label)} />
+          <div sx={sidebar_sx.icon} />
+          <div sx={sidebar_sx.label} />
         </div>
       ))}
     </div>
