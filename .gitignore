@@ -27,6 +27,7 @@ target/
 .env
 .project
 Cargo.lock
+bun.lock
 next-env.d.ts
 pixi.lock
 pnpm-lock.yaml
