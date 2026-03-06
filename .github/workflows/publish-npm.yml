@@ -21,10 +21,8 @@ jobs:
         working-directory: ${{ github.event.inputs.package }}
     steps:
       - uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -33,9 +31,9 @@ jobs:
       - name: Install Dependencies
         run: |
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          pnpm install --filter "$PACKAGE_NAME"
+          bun install --filter "$PACKAGE_NAME"
       - name: Build Project Artifacts
-        run: pnpm build
+        run: bun run build
       - name: Publish
         run: npm publish --provenance --access public
         env:

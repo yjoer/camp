@@ -1,6 +1,21 @@
 {
   "name": "camp",
   "type": "module",
+  "workspaces": {
+    "packages": [
+      "examples/elasticsearch/*",
+      "examples/hatchet/*",
+      "examples/http/*",
+      "examples/node/*",
+      "examples/react-server/*",
+      "examples/tanstack/*",
+      "examples/temporal/*",
+      "examples/typescript/*",
+      "examples/webpack/*",
+      "packages/*",
+      "stories"
+    ]
+  },
   "scripts": {
     "jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab",
     "jupyverse": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyverse --set frontend.collaborative=true --set kernels.require_yjs=true --set jupyterlab.server_side_execution=true"
@@ -14,5 +29,8 @@
     "@xcamp/config": {
       "injected": true
     }
+  },
+  "patchedDependencies": {
+    "vite-plugin-solid@2.11.10": "patches/vite-plugin-solid@2.11.10.patch"
   }
 }
