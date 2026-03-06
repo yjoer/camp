@@ -2,12 +2,12 @@
   "name": "@camp/examples-http-orpc",
   "type": "module",
   "dependencies": {
-    "@orpc/openapi": "1.13.2",
-    "@orpc/server": "1.13.2",
-    "fastify": "5.6.2",
-    "h3": "2.0.1-rc.6"
+    "@orpc/openapi": "1.13.6",
+    "@orpc/server": "1.13.6",
+    "fastify": "5.8.1",
+    "h3": "2.0.1-rc.14"
   },
   "devDependencies": {
-    "@types/node": "25.3.3"
+    "@types/node": "25.3.5"
   }
 }

@@ -25,4 +25,6 @@ publicHoistPattern:
   - lint-staged
   - sort-package-json
 
+nodeLinker: 'hoisted'
+
 dangerouslyAllowAllBuilds: true
