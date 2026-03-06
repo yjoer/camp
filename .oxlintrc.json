@@ -1,5 +1,5 @@
 {
-  "extends": ["node_modules/@camp/config/oxlint.json"],
+  "extends": ["node_modules/@xcamp/config/oxlint.json"],
   "options": {
     "typeAware": true
   }
