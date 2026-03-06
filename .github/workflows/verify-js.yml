@@ -46,7 +46,7 @@ jobs:
       - name: Install Dependencies
         # run: |
         #   if [ ${{ github.repository }} = "yjoer/camp" ]; then
-        #     npm i --workspace @camp/config --include-workspace-root true
+        #     npm i --workspace @xcamp/config --include-workspace-root true
         #   else
         #     npm i --workspaces false --include-workspace-root true
         #   fi

@@ -7,11 +7,11 @@
   },
   "browserslist": "defaults and not op_mini all",
   "devDependencies": {
-    "@camp/config": "workspace:*",
+    "@xcamp/config": "workspace:*",
     "cross-env": "10.1.0"
   },
   "dependenciesMeta": {
-    "@camp/config": {
+    "@xcamp/config": {
       "injected": true
     }
   }

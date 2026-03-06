@@ -1,7 +1,17 @@
 {
-  "name": "@camp/config",
-  "version": "0.0.0",
+  "name": "@xcamp/config",
+  "version": "2026.3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yjoer/camp.git"
+  },
   "type": "module",
+  "exports": {
+    "./*": "./*"
+  },
+  "scripts": {
+    "build": ":"
+  },
   "dependencies": {
     "@commitlint/cli": "20.4.3",
     "@commitlint/config-conventional": "20.4.3",
