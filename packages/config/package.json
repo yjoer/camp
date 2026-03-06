@@ -10,7 +10,7 @@
     "./*": "./*"
   },
   "scripts": {
-    "build": ":"
+    "build": "node -e \"\""
   },
   "dependencies": {
     "@commitlint/cli": "20.4.3",
