@@ -7,6 +7,7 @@ on:
         description: Package to publish
         type: choice
         options:
+          - packages/config
           - packages/webpack
 
 jobs:
