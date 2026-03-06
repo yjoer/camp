@@ -1,8 +1,8 @@
 // oxlint-disable import/no-default-export
 import tailwindcss from '@tailwindcss/vite';
-import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin';
 import { tanstackStart } from '@tanstack/solid-start/plugin/vite';
 import { rootRoute, route } from '@tanstack/virtual-file-routes';
+import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
 import solid from 'vite-plugin-solid';
 
@@ -27,7 +27,7 @@ export default defineConfig({
         routesDirectory: '.',
       },
     }),
-    nitroV2Plugin({ preset: process.env.TSS_TARGET }),
+    nitro({ preset: process.env.TSS_TARGET }),
     solid({ ssr: true }),
     tailwindcss(),
   ],

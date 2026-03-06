@@ -14,11 +14,11 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@tanstack/nitro-v2-vite-plugin": "1.154.7",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.4",
     "cross-env": "10.1.0",
+    "nitro": "npm:nitro-nightly@3.0.1-20260227-181935-bfbb207c",
     "vite": "8.0.0-beta.16"
   }
 }

@@ -17,6 +17,6 @@ if (import.meta.webpackHot) {
   import.meta.webpackHot.dispose(() => void dispose());
 
   import.meta.webpackHot.addStatusHandler((status) => {
-    if (status === webpack.HotUpdateStatus.fail) process.exit();
+    if (status === 'fail' as webpack.HotUpdateStatus.fail) process.exit(1);
   });
 }
