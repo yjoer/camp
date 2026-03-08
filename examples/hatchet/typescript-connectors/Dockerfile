@@ -3,7 +3,7 @@ FROM node:23-slim
 WORKDIR /app
 COPY . .
 
-RUN npm install -g pnpm@latest-10
-RUN pnpm install --prod
+RUN corepack enable
+RUN yarn workspaces focus --production
 
-CMD ["pnpm", "start:worker"]
+CMD ["yarn", "start:worker"]

@@ -23,10 +23,14 @@ jobs:
     environment: ${{ github.event.inputs.package }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          version: 10
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: '**/package.json'
       - name: Setup Mise
         uses: jdx/mise-action@v3
       - name: Install Vercel CLI
@@ -34,7 +38,7 @@ jobs:
       - name: Install Dependencies
         run: |
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          pnpm install --filter "$PACKAGE_NAME"
+          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --no-immutable
       - name: Build Project Artifacts
         run: mise run build:vercel
       - name: Deploy Project Artifacts to Vercel
