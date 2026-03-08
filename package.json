@@ -21,16 +21,15 @@
     "jupyverse": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyverse --set frontend.collaborative=true --set kernels.require_yjs=true --set jupyterlab.server_side_execution=true"
   },
   "browserslist": "defaults and not op_mini all",
+  "resolutions": {
+    "vite-plugin-solid": "patch:vite-plugin-solid@2.11.10#./patches/vite-plugin-solid@2.11.10.patch"
+  },
   "devDependencies": {
     "@xcamp/config": "workspace:*",
     "cross-env": "10.1.0"
   },
   "dependenciesMeta": {
-    "@xcamp/config": {
-      "injected": true
-    }
+    "@xcamp/config": {}
   },
-  "patchedDependencies": {
-    "vite-plugin-solid@2.11.10": "patches/vite-plugin-solid@2.11.10.patch"
-  }
+  "packageManager": "yarn@4.13.0"
 }

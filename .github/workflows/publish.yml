@@ -17,10 +17,10 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - run: npm install -g pnpm@latest-10
-      - run: |
-          pnpm config set recursive-install false
-          pnpm i
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install Dependencies
+        run: yarn workspaces focus
         working-directory: ${{ github.event.inputs.package }}
       - run: npx jsr publish
         working-directory: ${{ github.event.inputs.package }}

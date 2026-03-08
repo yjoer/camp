@@ -1,3 +1,3 @@
 [tasks."build:vercel"]
 env = { TSS_TARGET = "vercel" }
-run = "pnpm vite build"
+run = "yarn vite build"

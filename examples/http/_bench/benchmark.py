@@ -190,8 +190,8 @@ servers: list[ServerConfig] = [
   ServerConfig(
     name="react-server-vite",
     language="typescript",
-    build_cmd=["pnpm", "build"],
-    run_cmd=["pnpm", "start"],
+    build_cmd=["yarn", "build"],
+    run_cmd=["yarn", "start"],
     cwd=react_server_dir / "vite",
     base_url="http://127.0.0.1:3000",
     endpoints=[
@@ -201,8 +201,8 @@ servers: list[ServerConfig] = [
   ServerConfig(
     name="react-server-vite-stream",
     language="typescript",
-    build_cmd=["pnpm", "build"],
-    run_cmd=["pnpm", "start:stream"],
+    build_cmd=["yarn", "build"],
+    run_cmd=["yarn", "start:stream"],
     cwd=react_server_dir / "vite",
     base_url="http://127.0.0.1:3000",
     endpoints=[
@@ -212,8 +212,8 @@ servers: list[ServerConfig] = [
   ServerConfig(
     name="react-server-next-pages",
     language="typescript",
-    build_cmd=["pnpm", "build"],
-    run_cmd=["pnpm", "start"],
+    build_cmd=["yarn", "build"],
+    run_cmd=["yarn", "start"],
     cwd=react_server_dir / "next",
     base_url="http://127.0.0.1:3000",
     endpoints=[
@@ -223,8 +223,8 @@ servers: list[ServerConfig] = [
   ServerConfig(
     name="react-server-next-app",
     language="typescript",
-    build_cmd=["pnpm", "build"],
-    run_cmd=["pnpm", "start"],
+    build_cmd=["yarn", "build"],
+    run_cmd=["yarn", "start"],
     cwd=react_server_dir / "next",
     base_url="http://127.0.0.1:3000",
     endpoints=[
@@ -234,8 +234,8 @@ servers: list[ServerConfig] = [
   ServerConfig(
     name="react-server-tanstack-start",
     language="typescript",
-    build_cmd=["pnpm", "build"],
-    run_cmd=["pnpm", "start"],
+    build_cmd=["yarn", "build"],
+    run_cmd=["yarn", "start"],
     cwd=react_server_dir / "tanstack-start",
     base_url="http://127.0.0.1:3000",
     endpoints=[

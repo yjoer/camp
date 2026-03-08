@@ -21,19 +21,21 @@ jobs:
         working-directory: ${{ github.event.inputs.package }}
     steps:
       - uses: actions/checkout@v6
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Enable Corepack
+        run: corepack enable
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
+          cache: yarn
+          cache-dependency-path: '**/package.json'
           registry-url: https://registry.npmjs.org
       - name: Install Dependencies
         run: |
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          bun install --filter "$PACKAGE_NAME"
+          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --no-immutable
       - name: Build Project Artifacts
-        run: bun run build
+        run: yarn build
       - name: Publish
         run: npm publish --provenance --access public
         env:

@@ -8,24 +8,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
+      - name: Enable Corepack
+        run: corepack enable
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
+          cache: yarn
           cache-dependency-path: '**/package.json'
       - name: Install Dependencies
-        run: |
-          pnpm config set recursive-install false
-          pnpm i
-          pnpm add tailwindcss -w
-          git restore .
+        run: yarn workspaces focus
       - name: Format
-        run: pnpm prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,md,mdx,yml,yaml}"
+        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,md,mdx,yml,yaml}"
 
   lint-js:
     name: Lint JS
@@ -33,15 +27,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
+      - name: Enable Corepack
+        run: corepack enable
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
+          cache: yarn
           cache-dependency-path: '**/package.json'
       - name: Install Dependencies
         # run: |
@@ -50,8 +42,8 @@ jobs:
         #   else
         #     npm i --workspaces false --include-workspace-root true
         #   fi
-        run: pnpm i
+        run: yarn install --no-immutable
       - name: Oxlint
-        run: pnpm oxlint
+        run: npx --no -- oxlint
       - name: ESLint
-        run: pnpm eslint --ext js,cjs,mjs,jsx,ts,tsx .
+        run: npx --no -- eslint --ext js,cjs,mjs,jsx,ts,tsx .
