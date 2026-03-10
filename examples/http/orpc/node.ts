@@ -5,19 +5,19 @@ import { os } from '@orpc/server';
 import { RPCHandler } from '@orpc/server/node';
 
 const router = {
-  hello: os.route({ method: 'GET' }).handler(function () {
-    return { hello: 'world' };
-  }),
+	hello: os.route({ method: 'GET' }).handler(function () {
+		return { hello: 'world' };
+	}),
 };
 
 const handler = new RPCHandler(router);
 
 const server = createServer((req, res) => {
-  void handler.handle(req, res, { context: { headers: req.headers } }).then(({ matched }) => {
-    if (matched) return;
-    res.statusCode = 404;
-    res.end('no procedure matched');
-  });
+	void handler.handle(req, res, { context: { headers: req.headers } }).then(({ matched }) => {
+		if (matched) return;
+		res.statusCode = 404;
+		res.end('no procedure matched');
+	});
 });
 
 server.listen({ port: 3000 });

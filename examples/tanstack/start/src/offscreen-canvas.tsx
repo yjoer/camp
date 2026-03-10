@@ -12,76 +12,76 @@ import type { router } from '@/lib/canvas-worker';
 import type { RouterClient } from '@orpc/server';
 
 export const Route = createFileRoute('/worker-offscreen-canvas')({
-  component: OffscreenCanvas,
+	component: OffscreenCanvas,
 });
 
 function OffscreenCanvas() {
-  const ref = useRef<HTMLDivElement>(null!);
-  const worker_ref = useRef<CanvasWorkerClient>(null);
-  const [date, set_date] = useState<string>('');
+	const ref = useRef<HTMLDivElement>(null!);
+	const worker_ref = useRef<CanvasWorkerClient>(null);
+	const [date, set_date] = useState<string>('');
 
-  const handle_click = () => {
-    if (!worker_ref.current) return;
+	const handle_click = () => {
+		if (!worker_ref.current) return;
 
-    void worker_ref.current.get_date().then((date) => {
-      set_date(date.toISOString());
-    });
-  };
+		void worker_ref.current.get_date().then((date) => {
+			set_date(date.toISOString());
+		});
+	};
 
-  useEffect(() => {
-    const canvas = document.createElement('canvas');
-    ref.current.append(canvas);
+	useEffect(() => {
+		const canvas = document.createElement('canvas');
+		ref.current.append(canvas);
 
-    const offscreen = canvas.transferControlToOffscreen();
-    const worker = get_worker_client();
-    worker_ref.current = worker;
+		const offscreen = canvas.transferControlToOffscreen();
+		const worker = get_worker_client();
+		worker_ref.current = worker;
 
-    transferables.add(offscreen);
-    void worker.render({ canvas: offscreen });
+		transferables.add(offscreen);
+		void worker.render({ canvas: offscreen });
 
-    return () => {
-      canvas.remove();
-    };
-  }, []);
+		return () => {
+			canvas.remove();
+		};
+	}, []);
 
-  return (
-    <div className="mx-2 my-1 flex flex-col gap-4">
-      <div>
-        <span className="bg-[#ffdd00]">Date</span>
-        <div className="h-6">{date}</div>
-        <div className="mt-1">
-          <button sx={button_styles.base} onClick={handle_click}>
-            Get Date
-          </button>
-        </div>
-      </div>
-      <div ref={ref}>
-        <span className="bg-[#ffdd00]">Canvas</span>
-      </div>
-    </div>
-  );
+	return (
+		<div className="mx-2 my-1 flex flex-col gap-4">
+			<div>
+				<span className="bg-[#ffdd00]">Date</span>
+				<div className="h-6">{date}</div>
+				<div className="mt-1">
+					<button sx={button_styles.base} onClick={handle_click}>
+						Get Date
+					</button>
+				</div>
+			</div>
+			<div ref={ref}>
+				<span className="bg-[#ffdd00]">Canvas</span>
+			</div>
+		</div>
+	);
 }
 
 const transferables = new WeakSet<Transferable>();
 
 function get_worker_client(): CanvasWorkerClient {
-  const link = new RPCLink({
-    port: new CanvasWorker(),
-    experimental_transfer: (message) => {
-      const [_id, type, payload] = message;
-      if (type !== MessageType.REQUEST) return [];
+	const link = new RPCLink({
+		port: new CanvasWorker(),
+		experimental_transfer: (message) => {
+			const [_id, type, payload] = message;
+			if (type !== MessageType.REQUEST) return [];
 
-      const transfer: Transferable[] = [];
-      const body = payload.body as { json: Record<string, unknown> } | undefined;
-      for (const v of Object.values(body?.json ?? {})) {
-        if (transferables.has(v as object)) transfer.push(v as Transferable);
-      }
+			const transfer: Transferable[] = [];
+			const body = payload.body as { json: Record<string, unknown> } | undefined;
+			for (const v of Object.values(body?.json ?? {})) {
+				if (transferables.has(v as object)) transfer.push(v as Transferable);
+			}
 
-      return transfer;
-    },
-  });
+			return transfer;
+		},
+	});
 
-  return createORPCClient(link);
+	return createORPCClient(link);
 }
 
 type CanvasWorkerClient = RouterClient<typeof router>;

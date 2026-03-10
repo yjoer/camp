@@ -11,10 +11,10 @@ const { getServerConfig } = pkg.default as { getServerConfig: typeof GSC };
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 const config = getServerConfig({
-  entry: ['./server.ts'],
-  mode,
-  projectPath: import.meta.dirname,
-  configPath: import.meta.filename,
+	entry: ['./server.ts'],
+	mode,
+	projectPath: import.meta.dirname,
+	configPath: import.meta.filename,
 });
 
 export default config;

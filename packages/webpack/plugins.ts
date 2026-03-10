@@ -12,110 +12,110 @@ import relocateLoader from '@vercel/webpack-asset-relocator-loader';
 import type { Compiler, Resolver } from 'webpack';
 
 export class AssetRelocatorCachePlugin {
-  apply(compiler: Compiler) {
-    const outputAssetBase = 'assets';
+	apply(compiler: Compiler) {
+		const outputAssetBase = 'assets';
 
-    compiler.hooks.compilation.tap('AssetRelocatorCachePlugin', (compilation) => {
-      relocateLoader.initAssetCache(compilation, outputAssetBase);
-    });
-  }
+		compiler.hooks.compilation.tap('AssetRelocatorCachePlugin', (compilation) => {
+			relocateLoader.initAssetCache(compilation, outputAssetBase);
+		});
+	}
 }
 
 export class RunScriptPlugin {
-  subprocess?: cp.ChildProcess;
+	subprocess?: cp.ChildProcess;
 
-  apply(compiler: Compiler) {
-    compiler.hooks.afterEmit.tap('RunScriptPlugin', (compilation) => {
-      if (this.subprocess?.connected) return;
+	apply(compiler: Compiler) {
+		compiler.hooks.afterEmit.tap('RunScriptPlugin', (compilation) => {
+			if (this.subprocess?.connected) return;
 
-      // find the asset of the first entry file.
-      const entry = compilation.entrypoints.keys().next().value;
-      const assets = compilation.getAssets();
-      const asset = assets.find(asset => asset.name === `${entry}.js`);
-      if (!asset) return;
+			// find the asset of the first entry file.
+			const entry = compilation.entrypoints.keys().next().value;
+			const assets = compilation.getAssets();
+			const asset = assets.find(asset => asset.name === `${entry}.js`);
+			if (!asset) return;
 
-      // const { filename } = compiler.options.output;
-      const { path: outputPath } = compiler.options.output;
-      if (!outputPath) return;
+			// const { filename } = compiler.options.output;
+			const { path: outputPath } = compiler.options.output;
+			if (!outputPath) return;
 
-      const entrypoint = path.join(outputPath, asset.name);
-      this.subprocess = cp.fork(entrypoint);
-    });
-  }
+			const entrypoint = path.join(outputPath, asset.name);
+			this.subprocess = cp.fork(entrypoint);
+		});
+	}
 }
 
 export class OptionalModulesPlugin {
-  apply(compiler: Compiler) {
-    const logger = compiler.getInfrastructureLogger('OptionalModulesPlugin');
+	apply(compiler: Compiler) {
+		const logger = compiler.getInfrastructureLogger('OptionalModulesPlugin');
 
-    compiler.resolverFactory.hooks.resolver
-    .for('normal')
-    .tap('OptionalModulesPlugin', (resolver) => {
-      const plugin = new OptionalModulesResolverPlugin(logger);
-      plugin.apply(resolver);
-    });
-  }
+		compiler.resolverFactory.hooks.resolver
+		.for('normal')
+		.tap('OptionalModulesPlugin', (resolver) => {
+			const plugin = new OptionalModulesResolverPlugin(logger);
+			plugin.apply(resolver);
+		});
+	}
 }
 
 export class OptionalModulesResolverPlugin {
-  logger: ReturnType<Compiler['getInfrastructureLogger']>;
+	logger: ReturnType<Compiler['getInfrastructureLogger']>;
 
-  constructor(logger: ReturnType<Compiler['getInfrastructureLogger']>) {
-    this.logger = logger;
-  }
+	constructor(logger: ReturnType<Compiler['getInfrastructureLogger']>) {
+		this.logger = logger;
+	}
 
-  apply(resolver: Resolver) {
-    const self = this;
-    const dirname = path.dirname(fileURLToPath(import.meta.url));
-    const resolve = resolver.resolve;
+	apply(resolver: Resolver) {
+		const self = this;
+		const dirname = path.dirname(fileURLToPath(import.meta.url));
+		const resolve = resolver.resolve;
 
-    resolver.resolve = function (context, fp, request, resolveContext, callback) {
-      const boundResolve = resolve.bind(this);
+		resolver.resolve = function (context, fp, request, resolveContext, callback) {
+			const boundResolve = resolve.bind(this);
 
-      boundResolve(context, fp, request, resolveContext, (err, innerPath, result) => {
-        if (result) {
-          callback(null, innerPath, result);
-          return;
-        }
+			boundResolve(context, fp, request, resolveContext, (err, innerPath, result) => {
+				if (result) {
+					callback(null, innerPath, result);
+					return;
+				}
 
-        if (err && !err.message.startsWith("Can't resolve")) {
-          callback(err);
-          return;
-        }
+				if (err && !err.message.startsWith("Can't resolve")) {
+					callback(err);
+					return;
+				}
 
-        const issuer = (context as { issuer?: string } | undefined)?.issuer;
-        const fromTS = issuer?.endsWith('.ts') || issuer?.endsWith('.tsx');
+				const issuer = (context as { issuer?: string } | undefined)?.issuer;
+				const fromTS = issuer?.endsWith('.ts') || issuer?.endsWith('.tsx');
 
-        if (request.endsWith('.js') && fromTS) {
-          boundResolve(
-            context,
-            fp,
-            request.slice(0, -3),
-            resolveContext,
-            (err, innerPath, result) => {
-              if (result) {
-                callback(null, innerPath, result);
-                return;
-              }
+				if (request.endsWith('.js') && fromTS) {
+					boundResolve(
+						context,
+						fp,
+						request.slice(0, -3),
+						resolveContext,
+						(err, innerPath, result) => {
+							if (result) {
+								callback(null, innerPath, result);
+								return;
+							}
 
-              if (err && !err.message.startsWith("Can't resolve")) {
-                callback(err);
-                return;
-              }
+							if (err && !err.message.startsWith("Can't resolve")) {
+								callback(err);
+								return;
+							}
 
-              const ctx = { path: request };
-              callback(null, path.join(dirname, `__missing.js?${request}`), ctx);
-              self.logger.warn(`${request} is missing, using __missing.js instead.`);
-            },
-          );
+							const ctx = { path: request };
+							callback(null, path.join(dirname, `__missing.js?${request}`), ctx);
+							self.logger.warn(`${request} is missing, using __missing.js instead.`);
+						},
+					);
 
-          return;
-        }
+					return;
+				}
 
-        const ctx = { path: request };
-        callback(null, path.join(dirname, `__missing.js?${request}`), ctx);
-        self.logger.warn(`${request} is missing, using __missing.js instead.`);
-      });
-    };
-  }
+				const ctx = { path: request };
+				callback(null, path.join(dirname, `__missing.js?${request}`), ctx);
+				self.logger.warn(`${request} is missing, using __missing.js instead.`);
+			});
+		};
+	}
 }

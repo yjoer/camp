@@ -6,23 +6,23 @@ import { router } from './router.ts';
 const app = createServer(router);
 
 app.listen(3000, '::', () => {
-  console.log(`server is now listening on port 3000`);
+	console.log(`server is now listening on port 3000`);
 });
 
 const enabled = true;
 // oxlint-disable-next-line typescript/no-unnecessary-condition
 if (enabled && import.meta.webpackHot) {
-  let oldRouter = router;
+	let oldRouter = router;
 
-  import.meta.webpackHot.accept('./router.ts', () => {
-    console.log('♻️ HMR: Hot-Reloading');
+	import.meta.webpackHot.accept('./router.ts', () => {
+		console.log('♻️ HMR: Hot-Reloading');
 
-    // const mod = await import('./router.ts');
-    // app.removeAllListeners('request');
-    app.removeListener('request', oldRouter);
-    app.on('request', router);
-    oldRouter = router;
+		// const mod = await import('./router.ts');
+		// app.removeAllListeners('request');
+		app.removeListener('request', oldRouter);
+		app.on('request', router);
+		oldRouter = router;
 
-    console.log('listeners', app.listenerCount('request'));
-  });
+		console.log('listeners', app.listenerCount('request'));
+	});
 }

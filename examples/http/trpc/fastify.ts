@@ -11,29 +11,29 @@ const router = t.router;
 const procedure = t.procedure;
 
 const appRouter = router({
-  hello: procedure.query(function () {
-    return { hello: 'world' };
-  }),
+	hello: procedure.query(function () {
+		return { hello: 'world' };
+	}),
 });
 
 const app = fastify({
-  logger: false,
+	logger: false,
 });
 
 app.register(fastifyTRPCPlugin, {
-  prefix: '/trpc',
-  trpcOptions: {
-    router: appRouter,
-    onError({ path, error }) {
-      console.error(`Error in tRPC handler on path '${path}':`, error);
-    },
-  } satisfies FastifyTRPCPluginOptions<typeof appRouter>['trpcOptions'],
+	prefix: '/trpc',
+	trpcOptions: {
+		router: appRouter,
+		onError({ path, error }) {
+			console.error(`Error in tRPC handler on path '${path}':`, error);
+		},
+	} satisfies FastifyTRPCPluginOptions<typeof appRouter>['trpcOptions'],
 });
 
 try {
-  const address = await app.listen({ port: 3000 });
-  console.log(`server listening at ${address}`);
+	const address = await app.listen({ port: 3000 });
+	console.log(`server listening at ${address}`);
 } catch (error) {
-  app.log.error(error);
-  process.exit(1);
+	app.log.error(error);
+	process.exit(1);
 }

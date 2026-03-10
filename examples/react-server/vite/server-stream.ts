@@ -14,13 +14,13 @@ const server = createServer();
 
 let vite: ViteDevServer | undefined;
 if (is_development) {
-  // eslint-disable-next-line import-x/no-extraneous-dependencies
-  const { createServer: create_vite_server } = await import('vite');
+	// eslint-disable-next-line import-x/no-extraneous-dependencies
+	const { createServer: create_vite_server } = await import('vite');
 
-  vite = await create_vite_server({
-    server: { middlewareMode: { server } },
-    appType: 'custom',
-  });
+	vite = await create_vite_server({
+		server: { middlewareMode: { server } },
+		appType: 'custom',
+	});
 }
 
 const p = path.resolve(import.meta.dirname, '.output', 'client', 'index.html');
@@ -28,86 +28,86 @@ let template = is_development ? '' : await fs.readFile(p, 'utf8');
 let [template_start, template_end] = template.split('<!--app-html-->');
 
 server.on('request', function (req, res) {
-  void handler(req, res);
+	void handler(req, res);
 });
 
 async function handler(req: IncomingMessage, res: ServerResponse) {
-  try {
-    const url = req.url ?? '';
+	try {
+		const url = req.url ?? '';
 
-    let render_stream: typeof EntryServer.render_stream;
-    if (is_development) {
-      await new Promise(resolve => vite!.middlewares(req, res, resolve));
+		let render_stream: typeof EntryServer.render_stream;
+		if (is_development) {
+			await new Promise(resolve => vite!.middlewares(req, res, resolve));
 
-      template = await fs.readFile(path.resolve(import.meta.dirname, 'index.html'), 'utf8');
-      template = await vite!.transformIndexHtml(url, template);
-      [template_start, template_end] = template.split('<!--app-html-->');
+			template = await fs.readFile(path.resolve(import.meta.dirname, 'index.html'), 'utf8');
+			template = await vite!.transformIndexHtml(url, template);
+			[template_start, template_end] = template.split('<!--app-html-->');
 
-      ({ render_stream } = await vite!.ssrLoadModule('/src/entry-server.tsx') as typeof EntryServer);
-    } else {
-      if (url.startsWith('/assets/')) {
-        await static_files(req, res);
-        return;
-      }
+			({ render_stream } = await vite!.ssrLoadModule('/src/entry-server.tsx') as typeof EntryServer);
+		} else {
+			if (url.startsWith('/assets/')) {
+				await static_files(req, res);
+				return;
+			}
 
-      // @ts-expect-error build-time generated
-      // eslint-disable-next-line import-x/no-unresolved
-      ({ render_stream } = await import('./.output/server/entry-server.js') as typeof EntryServer);
-    }
+			// @ts-expect-error build-time generated
+			// eslint-disable-next-line import-x/no-unresolved
+			({ render_stream } = await import('./.output/server/entry-server.js') as typeof EntryServer);
+		}
 
-    const { pipe } = render_stream({
-      onShellReady() {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'text/html');
-        res.write(template_start);
+		const { pipe } = render_stream({
+			onShellReady() {
+				res.statusCode = 200;
+				res.setHeader('Content-Type', 'text/html');
+				res.write(template_start);
 
-        const transform = new Transform({
-          transform(chunk, encoding, callback) {
-            res.write(chunk, encoding);
-            callback();
-          },
-        });
+				const transform = new Transform({
+					transform(chunk, encoding, callback) {
+						res.write(chunk, encoding);
+						callback();
+					},
+				});
 
-        transform.on('finish', () => {
-          res.end(template_end);
-        });
+				transform.on('finish', () => {
+					res.end(template_end);
+				});
 
-        pipe(transform);
-      },
-    });
-  } catch (error) {
-    if (!(error instanceof Error)) return;
-    vite?.ssrFixStacktrace(error);
-    res.statusCode = 500;
-    res.end(error.stack);
-  }
+				pipe(transform);
+			},
+		});
+	} catch (error) {
+		if (!(error instanceof Error)) return;
+		vite?.ssrFixStacktrace(error);
+		res.statusCode = 500;
+		res.end(error.stack);
+	}
 }
 
 async function static_files(req: IncomingMessage, res: ServerResponse) {
-  const url = req.url ?? '/';
-  const asset_path = path.resolve(import.meta.dirname, '.output', 'client', url.slice(1));
+	const url = req.url ?? '/';
+	const asset_path = path.resolve(import.meta.dirname, '.output', 'client', url.slice(1));
 
-  try {
-    const stat = await fs.stat(asset_path);
-    if (!stat.isFile()) {
-      res.statusCode = 404;
-      res.end('not found');
-      return;
-    }
-  } catch {
-    res.statusCode = 404;
-    res.end('not found');
-    return;
-  }
+	try {
+		const stat = await fs.stat(asset_path);
+		if (!stat.isFile()) {
+			res.statusCode = 404;
+			res.end('not found');
+			return;
+		}
+	} catch {
+		res.statusCode = 404;
+		res.end('not found');
+		return;
+	}
 
-  res.statusCode = 200;
-  if (url.endsWith('.js')) res.setHeader('Content-Type', 'text/javascript');
-  else if (url.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
+	res.statusCode = 200;
+	if (url.endsWith('.js')) res.setHeader('Content-Type', 'text/javascript');
+	else if (url.endsWith('.css')) res.setHeader('Content-Type', 'text/css');
 
-  const stream = createReadStream(asset_path);
-  stream.pipe(res);
+	const stream = createReadStream(asset_path);
+	stream.pipe(res);
 }
 
 server.listen({ port: 3000 }, function () {
-  console.log('server listening on port 3000');
+	console.log('server listening on port 3000');
 });
