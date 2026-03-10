@@ -4,7 +4,7 @@ import { createFileRoute } from '@tanstack/react-router';
 export const Route = createFileRoute('/list-virt-fixed-height')({
   validateSearch: (search: Record<string, unknown>) => {
     return {
-      variant: (search.variant as 'content-visibility' | 'default') ?? 'default',
+      variant: (search.variant as 'content-visibility' | 'default' | undefined) ?? 'default',
     };
   },
   component: FixedHeight,

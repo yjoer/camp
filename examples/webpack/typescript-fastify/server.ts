@@ -12,6 +12,7 @@ try {
   process.exit(1);
 }
 
+// oxlint-disable-next-line typescript/no-unnecessary-condition
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept();
   import.meta.webpackHot.dispose(() => void dispose());

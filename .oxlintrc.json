@@ -1,6 +1,0 @@
-{
-  "extends": ["node_modules/@xcamp/config/oxlint.json"],
-  "options": {
-    "typeAware": true
-  }
-}

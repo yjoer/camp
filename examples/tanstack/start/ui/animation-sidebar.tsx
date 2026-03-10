@@ -37,7 +37,7 @@ function SidebarTransition() {
       el.style.transition = 'transform 250ms';
       void el.clientWidth; // reflow
       el.style.transform = 'translateX(0)';
-    } else if (state === 'closing') {
+    } else {
       el.style.transform = 'translateX(100%)';
     }
 

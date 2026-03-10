@@ -72,8 +72,8 @@ function get_worker_client(): CanvasWorkerClient {
       if (type !== MessageType.REQUEST) return [];
 
       const transfer: Transferable[] = [];
-      const body = payload.body as { json: Record<string, unknown> };
-      for (const v of Object.values(body.json ?? {})) {
+      const body = payload.body as { json: Record<string, unknown> } | undefined;
+      for (const v of Object.values(body?.json ?? {})) {
         if (transferables.has(v as object)) transfer.push(v as Transferable);
       }
 

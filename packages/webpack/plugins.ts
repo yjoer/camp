@@ -73,27 +73,43 @@ export class OptionalModulesResolverPlugin {
       const boundResolve = resolve.bind(this);
 
       boundResolve(context, fp, request, resolveContext, (err, innerPath, result) => {
-        if (result) return callback(null, innerPath, result);
-        if (err && !err.message.startsWith("Can't resolve")) return callback(err);
+        if (result) {
+          callback(null, innerPath, result);
+          return;
+        }
 
-        const issuer = (context as { issuer?: string })?.issuer;
+        if (err && !err.message.startsWith("Can't resolve")) {
+          callback(err);
+          return;
+        }
+
+        const issuer = (context as { issuer?: string } | undefined)?.issuer;
         const fromTS = issuer?.endsWith('.ts') || issuer?.endsWith('.tsx');
 
         if (request.endsWith('.js') && fromTS) {
-          return boundResolve(
+          boundResolve(
             context,
             fp,
             request.slice(0, -3),
             resolveContext,
             (err, innerPath, result) => {
-              if (result) return callback(null, innerPath, result);
-              if (err && !err.message.startsWith("Can't resolve")) return callback(err);
+              if (result) {
+                callback(null, innerPath, result);
+                return;
+              }
+
+              if (err && !err.message.startsWith("Can't resolve")) {
+                callback(err);
+                return;
+              }
 
               const ctx = { path: request };
               callback(null, path.join(dirname, `__missing.js?${request}`), ctx);
               self.logger.warn(`${request} is missing, using __missing.js instead.`);
             },
           );
+
+          return;
         }
 
         const ctx = { path: request };

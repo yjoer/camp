@@ -2,7 +2,7 @@
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "plugins": ["import", "jsx-a11y", "react", "unicorn"],
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
   },
   "rules": {
     "import/named": "error",
@@ -122,16 +122,18 @@
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
     "react/no-unknown-property": "off",
     "unicorn/filename-case": ["error", { "cases": { "kebabCase": true } }],
-    "no-array-constructor": "error",
+    "no-array-constructor": "error", // ts recommended
     "no-console": "warn",
     "no-negated-condition": "error",
-    "preserve-caught-error": "error"
+    "no-useless-constructor": "off", // ts strict, not type-aware
+    "preserve-caught-error": "error",
   },
   "overrides": [
     {
       "files": ["**/*.{ts,tsx,mts,cts}"],
       "plugins": ["typescript"],
       "rules": {
+        // recommended
         "typescript/ban-ts-comment": "error",
         "typescript/no-empty-object-type": "error",
         "typescript/no-explicit-any": "off",
@@ -151,6 +153,29 @@
         "typescript/prefer-promise-reject-errors": "error",
         "typescript/require-await": "error",
         "typescript/restrict-plus-operands": "error",
+        // strict
+        "typescript/no-confusing-void-expression": ["error", { "ignoreArrowShorthand": true }],
+        "typescript/no-deprecated": "warn",
+        "typescript/no-dynamic-delete": "error",
+        "typescript/no-extraneous-class": "error",
+        "typescript/no-invalid-void-type": "error",
+        "typescript/no-mixed-enums": "error",
+        "typescript/no-non-null-asserted-nullish-coalescing": "error",
+        "typescript/no-non-null-assertion": "off",
+        "typescript/no-unnecessary-boolean-literal-compare": "error",
+        "typescript/no-unnecessary-condition": "error", // nursery
+        "typescript/no-unnecessary-template-expression": "error",
+        "typescript/no-unnecessary-type-arguments": "error",
+        "typescript/no-unnecessary-type-conversion": "off", // nursery, conflicts with react/jsx-no-leaked-render
+        "typescript/no-unnecessary-type-parameters": "error", // nursery
+        "typescript/no-useless-default-assignment": "error", // nursery
+        "typescript/prefer-literal-enum-members": "error",
+        "typescript/prefer-reduce-type-parameter": "error",
+        "typescript/prefer-return-this-type": "error",
+        "typescript/related-getter-setter-pairs": "error",
+        "typescript/return-await": ["error", "in-try-catch"],
+        "typescript/unified-signatures": "error",
+        "typescript/use-unknown-in-catch-callback-variable": "error",
         // https://github.com/typescript-eslint/typescript-eslint/blob/v8.56.1/packages/eslint-plugin/src/configs/eslint-recommended-raw.ts
         "constructor-super": "off",
         "getter-return": "off",
@@ -172,14 +197,14 @@
         "no-with": "off",
         "prefer-const": "error",
         "prefer-rest-params": "error",
-        "prefer-spread": "error"
-      }
+        "prefer-spread": "error",
+      },
     },
     {
       "files": ["**/*.{jsx,tsx}"],
       "rules": {
-        "unicorn/no-null": "off"
-      }
-    }
-  ]
+        "unicorn/no-null": "off",
+      },
+    },
+  ],
 }

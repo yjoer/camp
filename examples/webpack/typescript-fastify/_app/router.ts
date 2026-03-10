@@ -25,6 +25,7 @@ export const router: FastifyPluginAsyncZod = async (app, _opts) => {
   });
 };
 
+// oxlint-disable-next-line typescript/no-unnecessary-condition
 if (import.meta.webpackHot) {
   import.meta.webpackHot.accept('../mods/handlers.ts');
 }

@@ -228,7 +228,7 @@ function unicorn() {
       'unicorn/prefer-module': 'error',
       'unicorn/prefer-single-call': 'error',
       'unicorn/prefer-switch': 'error',
-      'unicorn/prefer-ternary': 'error',
+      'unicorn/prefer-ternary': 'off',
       'unicorn/relative-url-style': 'error',
       'unicorn/template-indent': 'error',
       //

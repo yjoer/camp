@@ -17,7 +17,7 @@ const ignored_packages: Record<string, boolean> = {
 const custom_config = {
   plugins: [
     new rspack.IgnorePlugin({
-      checkResource: resource => !!ignored_packages[resource],
+      checkResource: resource => ignored_packages[resource],
     }),
   ],
 };

@@ -173,8 +173,10 @@ dropbox.task({
 
       if (!response.ok) throw new Error(`Failed to export ${file.path_lower}: ${JSON.stringify(response.body, undefined, 2)}`);
 
-      const { export_metadata } = JSON.parse(response.headers.get('Dropbox-Api-Result') ?? '{}') as { export_metadata: ExportMetadata };
-      if (!export_metadata) throw new Error(`Failed to get metadata for ${file.path_lower}`);
+      const result = response.headers.get('Dropbox-Api-Result');
+      if (!result) throw new Error(`Failed to get export metadata for ${file.path_lower}`);
+
+      const { export_metadata } = JSON.parse(result) as { export_metadata: ExportMetadata };
 
       void ctx.logger.info(`Indexing ${file.path_lower}.`);
       await es.update({

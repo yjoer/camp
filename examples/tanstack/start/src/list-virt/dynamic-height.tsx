@@ -9,7 +9,7 @@ import { varPreLine } from 'uwrap';
 export const Route = createFileRoute('/list-virt-dynamic-height')({
   validateSearch: (search: Record<string, unknown>) => {
     return {
-      wrap: search.wrap as 'canvas-hypertxt' | 'uwrap',
+      wrap: search.wrap as 'canvas-hypertxt' | 'uwrap' | undefined,
     };
   },
   component: DynamicHeight,
