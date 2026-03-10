@@ -10,6 +10,7 @@ app.listen(3000, '::', () => {
 });
 
 const enabled = true;
+// oxlint-disable-next-line typescript/no-unnecessary-condition
 if (enabled && import.meta.webpackHot) {
   let oldRouter = router;
 

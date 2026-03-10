@@ -11,7 +11,7 @@ import type { ViteDevServer } from 'vite';
 const is_development = process.env.NODE_ENV !== 'production';
 const server = createServer();
 
-let vite: ViteDevServer;
+let vite: ViteDevServer | undefined;
 if (is_development) {
   // eslint-disable-next-line import-x/no-extraneous-dependencies
   const { createServer: create_vite_server } = await import('vite');
@@ -35,13 +35,16 @@ async function handler(req: IncomingMessage, res: ServerResponse) {
 
     let render: typeof EntryServer.render;
     if (is_development) {
-      await new Promise(resolve => vite.middlewares(req, res, resolve));
+      await new Promise(resolve => vite!.middlewares(req, res, resolve));
 
       template = await fs.readFile(path.resolve(import.meta.dirname, 'index.html'), 'utf8');
-      template = await vite.transformIndexHtml(url, template);
-      ({ render } = await vite.ssrLoadModule('/src/entry-server.tsx') as typeof EntryServer);
+      template = await vite!.transformIndexHtml(url, template);
+      ({ render } = await vite!.ssrLoadModule('/src/entry-server.tsx') as typeof EntryServer);
     } else {
-      if (url.startsWith('/assets/')) return static_files(req, res);
+      if (url.startsWith('/assets/')) {
+        await static_files(req, res);
+        return;
+      }
 
       // @ts-expect-error build-time generated
       // eslint-disable-next-line import-x/no-unresolved

@@ -77,7 +77,7 @@ function RouteComponent() {
           return (
             <div key={idx}>
               <span className="bg-[#ffdd00]">{section.label}</span>
-              {section?.children?.map((child, idx) => {
+              {section.children.map((child, idx) => {
                 return (
                   <Link key={idx} className="block" to={child.to}>
                     {child.label}
@@ -95,7 +95,7 @@ function RouteComponent() {
               <div>
                 <span className="bg-[#ffa500]">{section.label}</span>
               </div>
-              {section?.children?.map((child, idx) => {
+              {section.children.map((child, idx) => {
                 return (
                   <Link key={idx} to={child.to}>
                     {child.label}

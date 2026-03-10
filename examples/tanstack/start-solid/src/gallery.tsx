@@ -30,7 +30,7 @@ function Gallery() {
               <div>
                 <span class="bg-[#ffdd00]">{section.label}</span>
               </div>
-              <For each={section?.children}>
+              <For each={section.children}>
                 {(child) => {
                   return <Link to={child.to}>{child.label}</Link>;
                 }}

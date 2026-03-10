@@ -36,7 +36,7 @@ export const getServerConfig = ({
     }
   }
 
-  const commonConfig: Configuration = {
+  const common_config = {
     entry,
     mode,
     module: {
@@ -72,14 +72,14 @@ export const getServerConfig = ({
       extensions: ['.js', '.ts'],
     },
     plugins: [
-      new webpack.ProgressPlugin(), //
+      new webpack.ProgressPlugin(),
       new AssetRelocatorCachePlugin(),
       new OptionalModulesPlugin(),
     ],
     target: 'node',
-  };
+  } satisfies Configuration;
 
-  const developmentConfig: Configuration = {
+  const dev_config = {
     entry: ['webpack/hot/poll?100'],
     output: {
       path: path.join(projectPath, 'node_modules', '.camp', 'build'),
@@ -87,7 +87,7 @@ export const getServerConfig = ({
       clean: true,
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin(), //
+      new webpack.HotModuleReplacementPlugin(),
       new RunScriptPlugin(),
     ],
     cache: {
@@ -101,9 +101,9 @@ export const getServerConfig = ({
         allowlist: ['webpack/hot/poll?100', ...transpilePackages],
       }),
     ],
-  };
+  } satisfies Configuration;
 
-  const productionConfig: Configuration = {
+  const prod_config = {
     output: {
       path: path.join(projectPath, '.camp', 'build'),
       filename: '[name].js',
@@ -115,13 +115,8 @@ export const getServerConfig = ({
     experiments: {
       outputModule: true,
     },
-  };
+  } satisfies Configuration;
 
-  if (mode === 'development') {
-    return merge(commonConfig, developmentConfig);
-  } else if (mode === 'production') {
-    return merge(commonConfig, productionConfig);
-  }
-
-  return {};
+  if (mode === 'development') return merge<Configuration>(common_config, dev_config);
+  else return merge<Configuration>(common_config, prod_config);
 };

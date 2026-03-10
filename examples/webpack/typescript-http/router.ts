@@ -17,6 +17,7 @@ export function router(req: IncomingMessage, res: ServerResponse) {
 }
 
 const enabled = true;
+// oxlint-disable-next-line typescript/no-unnecessary-condition
 if (enabled && import.meta.webpackHot) {
   import.meta.webpackHot.accept('./handlers/home.ts');
   import.meta.webpackHot.accept('./handlers/posts.ts');
