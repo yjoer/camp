@@ -1,4 +1,5 @@
 // oxlint-disable import/no-default-export
+import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { rootRoute, route } from '@tanstack/virtual-file-routes';
@@ -28,6 +29,18 @@ const routes = rootRoute('root.tsx', [
   route('/ui/animations/sidebar', '../ui/animation-sidebar.tsx'),
 ]);
 
+export const babelConfig = {
+  plugins: [
+    ['@stylexjs/babel-plugin', {
+      debug: process.env.NODE_ENV === 'development',
+      unstable_moduleResolution: { type: 'commonJS' },
+    }],
+  ],
+  parserOpts: {
+    plugins: ['jsx', 'typescript'],
+  },
+} satisfies Parameters<typeof babel>[0];
+
 export default defineConfig({
   resolve: {
     tsconfigPaths: true,
@@ -44,7 +57,8 @@ export default defineConfig({
       },
     }),
     nitro({ preset: process.env.TSS_TARGET }),
-    react({ babel: { configFile: true } }),
+    react(),
+    babel(babelConfig),
     tailwindcss(),
   ],
 });

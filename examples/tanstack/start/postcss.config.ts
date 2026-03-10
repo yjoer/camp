@@ -2,15 +2,20 @@
 import stylex from '@stylexjs/postcss-plugin';
 import autoprefixer from 'autoprefixer';
 
-/** @type {import('postcss-load-config').Config} */
+// @ts-expect-error ext
+import { babelConfig } from './vite.config.ts';
+
+import type { Config } from 'postcss-load-config';
+
 const config = {
   plugins: [
     stylex({
       include: ['_components/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}', 'ui/**/*.{ts,tsx}'],
       useCSSLayers: true,
+      babelConfig,
     }),
-    autoprefixer,
+    autoprefixer(),
   ],
-};
+} satisfies Config;
 
 export default config;

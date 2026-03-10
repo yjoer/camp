@@ -30,14 +30,16 @@
     "zustand": "5.0.11"
   },
   "devDependencies": {
+    "@rolldown/plugin-babel": "0.2.0",
     "@stylexjs/babel-plugin": "0.18.1",
     "@stylexjs/postcss-plugin": "0.18.1",
     "@tailwindcss/vite": "4.2.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "5.1.4",
+    "@vitejs/plugin-react": "6.0.0-beta.0",
     "autoprefixer": "10.4.27",
     "nitro": "npm:nitro-nightly@3.0.1-20260227-181935-bfbb207c",
+    "postcss-load-config": "6.0.1",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
     "vite": "8.0.0-beta.16"
