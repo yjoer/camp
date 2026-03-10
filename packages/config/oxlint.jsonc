@@ -10,10 +10,13 @@
     "import/no-named-as-default": "warn",
     "import/no-named-as-default-member": "warn",
     "import/no-named-default": "error", // unicorn recommended
+    "react/display-name": "error",
     "react/jsx-no-comment-textnodes": "error",
+    "react/jsx-no-target-blank": "error",
     "react/no-unescaped-entities": "error",
+    "react/no-unknown-property": ["error", { "ignore": ["class", "sx"], "requireDataLowercase": true }],
     "react/no-unsafe": "error",
-    "react/require-render-return": "error",
+    "react/require-render-return": "error", // nursery
     "unicorn/catch-error-name": "error",
     "unicorn/consistent-assert": "error",
     "unicorn/consistent-date-clone": "error",
@@ -126,9 +129,11 @@
     "unicorn/text-encoding-identifier-case": "error",
     "unicorn/throw-new-error": "error",
     "getter-return": "error", // nursery
+    "no-array-constructor": "error", // ts recommended
     "no-case-declarations": "error",
     "no-empty": "error",
     "no-fallthrough": "error",
+    "no-negated-condition": "error", // unicorn recommended
     "no-prototype-builtins": "error",
     "no-redeclare": "error",
     "no-regex-spaces": "error",
@@ -136,17 +141,14 @@
     "no-undef": "off", // nursery
     "no-unexpected-multiline": "error",
     "no-unreachable": "error", // nursery
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_|stylex" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_|stylex" }], // handles react/jsx-uses-vars
+    "no-useless-constructor": "off", // ts strict, not type-aware
+    "preserve-caught-error": "error",
     //
     "import/no-default-export": "error",
     "react/exhaustive-deps": "off",
     "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".tsx"] }],
-    "react/no-unknown-property": "off",
-    "no-array-constructor": "error", // ts recommended
     "no-console": "warn",
-    "no-negated-condition": "error", // unicorn recommended
-    "no-useless-constructor": "off", // ts strict, not type-aware
-    "preserve-caught-error": "error",
   },
   "overrides": [
     {

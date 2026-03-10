@@ -83,8 +83,6 @@ function react() {
       globals: { ...globals.browser, ...globals.serviceworker },
     },
     rules: {
-      'react/display-name': 'error',
-      'react/jsx-uses-vars': 'error',
       'react/no-deprecated': 'error',
       'react/prop-types': 'error',
       //

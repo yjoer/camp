@@ -18,4 +18,10 @@ export const prettier_config = {
   // tailwindFunctions: ['clsx', 'cva'],
   // customFunctions: ['clsx', 'cva'],
   // endingPosition: 'absolute',
+  overrides: [{
+    files: '*.jsonc',
+    options: {
+      printWidth: 120,
+    },
+  }],
 };
