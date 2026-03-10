@@ -8,82 +8,82 @@
 namespace xcling {
 class xoutput_buffer : public std::streambuf {
 public:
-  using callback_type = std::function<void(const std::string &, const std::string &)>;
+	using callback_type = std::function<void(const std::string &, const std::string &)>;
 
-  xoutput_buffer(std::string name, std::streambuf *buff, bool tee, callback_type callback)
-      : m_name(name), m_buff(buff), m_tee(tee), m_callback(std::move(callback)) {};
+	xoutput_buffer(std::string name, std::streambuf *buff, bool tee, callback_type callback)
+	    : m_name(name), m_buff(buff), m_tee(tee), m_callback(std::move(callback)) {};
 
 protected:
-  traits_type::int_type overflow(traits_type::int_type c) override {
-    std::lock_guard<std::mutex> lock(m_mutex);
+	traits_type::int_type overflow(traits_type::int_type c) override {
+		std::lock_guard<std::mutex> lock(m_mutex);
 
-    if (traits_type::eq_int_type(c, traits_type::eof()))
-      return c;
+		if (traits_type::eq_int_type(c, traits_type::eof()))
+			return c;
 
-    m_buffer.push_back(traits_type::to_char_type(c));
+		m_buffer.push_back(traits_type::to_char_type(c));
 
-    if (m_tee)
-      m_buff->sputc(c);
+		if (m_tee)
+			m_buff->sputc(c);
 
-    return c;
-  }
+		return c;
+	}
 
-  std::streamsize xsputn(const char *s, std::streamsize count) override {
-    std::lock_guard<std::mutex> lock(m_mutex);
+	std::streamsize xsputn(const char *s, std::streamsize count) override {
+		std::lock_guard<std::mutex> lock(m_mutex);
 
-    m_buffer.append(s, count);
+		m_buffer.append(s, count);
 
-    if (m_tee)
-      m_buff->sputn(s, count);
+		if (m_tee)
+			m_buff->sputn(s, count);
 
-    return count;
-  };
+		return count;
+	};
 
-  traits_type::int_type sync() override {
-    std::lock_guard<std::mutex> lock(m_mutex);
+	traits_type::int_type sync() override {
+		std::lock_guard<std::mutex> lock(m_mutex);
 
-    if (m_buffer.empty())
-      return 0;
+		if (m_buffer.empty())
+			return 0;
 
-    m_callback(m_name, m_buffer);
-    m_buffer.clear();
+		m_callback(m_name, m_buffer);
+		m_buffer.clear();
 
-    if (m_tee)
-      m_buff->pubsync();
+		if (m_tee)
+			m_buff->pubsync();
 
-    return 0;
-  }
+		return 0;
+	}
 
-  std::string m_name;
-  std::streambuf *m_buff;
-  bool m_tee;
-  callback_type m_callback;
+	std::string m_name;
+	std::streambuf *m_buff;
+	bool m_tee;
+	callback_type m_callback;
 
-  std::mutex m_mutex;
-  std::string m_buffer;
+	std::mutex m_mutex;
+	std::string m_buffer;
 };
 
 class xinput_buffer : public std::streambuf {
 public:
-  using callback_type = std::function<void(std::string &)>;
+	using callback_type = std::function<void(std::string &)>;
 
-  xinput_buffer(callback_type callback) : m_callback(std::move(callback)), m_buffer() {
-    char *buffer = static_cast<char *>(m_buffer.data());
-    setg(buffer, buffer, buffer);
-  }
+	xinput_buffer(callback_type callback) : m_callback(std::move(callback)), m_buffer() {
+		char *buffer = static_cast<char *>(m_buffer.data());
+		setg(buffer, buffer, buffer);
+	}
 
 protected:
-  traits_type::int_type underflow() override {
-    m_callback(m_buffer);
-    m_buffer += '\n';
-    char *buffer = static_cast<char *>(m_buffer.data());
-    setg(buffer, buffer, buffer + m_buffer.size());
+	traits_type::int_type underflow() override {
+		m_callback(m_buffer);
+		m_buffer += '\n';
+		char *buffer = static_cast<char *>(m_buffer.data());
+		setg(buffer, buffer, buffer + m_buffer.size());
 
-    return traits_type::to_int_type(*gptr());
-  }
+		return traits_type::to_int_type(*gptr());
+	}
 
-  callback_type m_callback;
-  std::string m_buffer;
+	callback_type m_callback;
+	std::string m_buffer;
 };
 } // namespace xcling
 

@@ -1,3 +1,5 @@
 BasedOnStyle: LLVM
+TabWidth: 2
+UseTab: ForIndentation
 AllowShortFunctionsOnASingleLine: Empty
 ColumnLimit: 88
