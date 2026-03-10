@@ -4,29 +4,29 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-
 export let app = createApp();
 
 function createApp() {
-  const fst = fastify({
-    logger: true,
-  }).withTypeProvider<ZodTypeProvider>();
+	const fst = fastify({
+		logger: true,
+	}).withTypeProvider<ZodTypeProvider>();
 
-  fst.setValidatorCompiler(validatorCompiler);
-  fst.setSerializerCompiler(serializerCompiler);
+	fst.setValidatorCompiler(validatorCompiler);
+	fst.setSerializerCompiler(serializerCompiler);
 
-  return fst;
+	return fst;
 }
 
 export async function dispose() {
-  await app.close();
-  app = createApp();
+	await app.close();
+	app = createApp();
 }
 
 export type FastifyInstance = typeof app;
 
 type FastifyHandlerOptions = Parameters<typeof app.route>[0]['handler'] extends (
-  request: infer Request,
-  reply: infer Reply,
+	request: infer Request,
+	reply: infer Reply,
 ) => any
-  ? { Reply: Reply; Request: Request }
-  : never;
+	? { Reply: Reply; Request: Request }
+	: never;
 
 export type FastifyRequest = FastifyHandlerOptions['Request'];
 export type FastifyReply = FastifyHandlerOptions['Reply'];

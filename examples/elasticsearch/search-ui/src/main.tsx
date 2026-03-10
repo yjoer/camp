@@ -5,7 +5,7 @@ import { App } from './app';
 
 // oxlint-disable-next-line prefer-query-selector
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+	<StrictMode>
+		<App />
+	</StrictMode>,
 );

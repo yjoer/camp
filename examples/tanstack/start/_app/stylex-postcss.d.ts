@@ -1,11 +1,11 @@
 declare module '@stylexjs/postcss-plugin' {
-  import type { ConfigPlugin } from 'postcss-load-config';
+	import type { ConfigPlugin } from 'postcss-load-config';
 
-  interface StylexOptions {
-    include: string[];
-    useCSSLayers?: boolean;
-    babelConfig?: object;
-  }
+	interface StylexOptions {
+		include: string[];
+		useCSSLayers?: boolean;
+		babelConfig?: object;
+	}
 
-  export default function stylex(options: StylexOptions): ConfigPlugin;
+	export default function stylex(options: StylexOptions): ConfigPlugin;
 }

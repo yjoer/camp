@@ -9,49 +9,49 @@ import { thunk } from 'redux-thunk';
 import { button_styles } from '@/components/button';
 
 export const Route = createFileRoute('/external-stores/redux')({
-  component: Redux,
+	component: Redux,
 });
 
 function Redux() {
-  const [store] = useState<AppStore>(create_store);
+	const [store] = useState<AppStore>(create_store);
 
-  return (
-    <Provider store={store}>
-      <Counter />
-    </Provider>
-  );
+	return (
+		<Provider store={store}>
+			<Counter />
+		</Provider>
+	);
 }
 
 function Counter() {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const loading = useAppSelector(state => state.counter.loading);
-  const count = useAppSelector(state => state.counter.value);
+	const loading = useAppSelector(state => state.counter.loading);
+	const count = useAppSelector(state => state.counter.value);
 
-  return (
-    <div className="mx-2 my-1">
-      <div className="flex items-center gap-2">
-        <button sx={button_styles.base} onClick={() => dispatch(increment())}>
-          Increment
-        </button>
-        <span className="min-w-12 text-center">{count}</span>
-        <button sx={button_styles.base} onClick={() => dispatch(decrement())}>
-          Decrement
-        </button>
-      </div>
-      <div className="mt-2 flex flex-col items-start gap-1">
-        <button sx={button_styles.base} onClick={() => void dispatch(increment_async())}>
-          Async
-        </button>
-        <button sx={button_styles.base} onClick={() => void dispatch(increment_async_a())}>
-          {loading ? 'Loading' : 'Async Fulfilled'}
-        </button>
-        <button sx={button_styles.base} onClick={() => void dispatch(increment_async_b())}>
-          {loading ? 'Loading' : 'Async Rejected'}
-        </button>
-      </div>
-    </div>
-  );
+	return (
+		<div className="mx-2 my-1">
+			<div className="flex items-center gap-2">
+				<button sx={button_styles.base} onClick={() => dispatch(increment())}>
+					Increment
+				</button>
+				<span className="min-w-12 text-center">{count}</span>
+				<button sx={button_styles.base} onClick={() => dispatch(decrement())}>
+					Decrement
+				</button>
+			</div>
+			<div className="mt-2 flex flex-col items-start gap-1">
+				<button sx={button_styles.base} onClick={() => void dispatch(increment_async())}>
+					Async
+				</button>
+				<button sx={button_styles.base} onClick={() => void dispatch(increment_async_a())}>
+					{loading ? 'Loading' : 'Async Fulfilled'}
+				</button>
+				<button sx={button_styles.base} onClick={() => void dispatch(increment_async_b())}>
+					{loading ? 'Loading' : 'Async Rejected'}
+				</button>
+			</div>
+		</div>
+	);
 }
 
 const INCREMENT = 'INCREMENT';
@@ -63,99 +63,99 @@ const INCREMENT_FULFILLED = 'INCREMENT_FULFILLED';
 const INCREMENT_REJECTED = 'INCREMENT_REJECTED';
 
 type CounterAction =
-  | { type: typeof INCREMENT }
-  | { type: typeof DECREMENT }
-  | { type: typeof INCREMENT_BY_AMOUNT; payload: number }
-  | { type: typeof INCREMENT_PENDING }
-  | { type: typeof INCREMENT_FULFILLED; payload: number }
-  | { type: typeof INCREMENT_REJECTED };
+	| { type: typeof INCREMENT }
+	| { type: typeof DECREMENT }
+	| { type: typeof INCREMENT_BY_AMOUNT; payload: number }
+	| { type: typeof INCREMENT_PENDING }
+	| { type: typeof INCREMENT_FULFILLED; payload: number }
+	| { type: typeof INCREMENT_REJECTED };
 
 function increment(): CounterAction {
-  return { type: INCREMENT };
+	return { type: INCREMENT };
 }
 
 function increment_by_amount(value: number): CounterAction {
-  return { type: INCREMENT_BY_AMOUNT, payload: value };
+	return { type: INCREMENT_BY_AMOUNT, payload: value };
 }
 
 function decrement(): CounterAction {
-  return { type: DECREMENT };
+	return { type: DECREMENT };
 }
 
 function increment_async() {
-  return async (dispatch: AppDispatch) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    dispatch(increment_by_amount(2));
-  };
+	return async (dispatch: AppDispatch) => {
+		await new Promise(resolve => setTimeout(resolve, 500));
+		dispatch(increment_by_amount(2));
+	};
 }
 
 function increment_async_a() {
-  return async (dispatch: AppDispatch) => {
-    dispatch({ type: INCREMENT_PENDING });
-    dispatch(increment_by_amount(1));
+	return async (dispatch: AppDispatch) => {
+		dispatch({ type: INCREMENT_PENDING });
+		dispatch(increment_by_amount(1));
 
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      dispatch({ type: INCREMENT_FULFILLED, payload: 1 });
-    } catch {
-      dispatch({ type: INCREMENT_REJECTED });
-    }
-  };
+		try {
+			await new Promise(resolve => setTimeout(resolve, 500));
+			dispatch({ type: INCREMENT_FULFILLED, payload: 1 });
+		} catch {
+			dispatch({ type: INCREMENT_REJECTED });
+		}
+	};
 }
 
 function increment_async_b() {
-  return async (dispatch: AppDispatch) => {
-    dispatch({ type: INCREMENT_PENDING });
-    dispatch(increment_by_amount(1));
+	return async (dispatch: AppDispatch) => {
+		dispatch({ type: INCREMENT_PENDING });
+		dispatch(increment_by_amount(1));
 
-    try {
-      await new Promise((_, reject) => setTimeout(() => reject(new Error('failed')), 500));
-      dispatch({ type: INCREMENT_FULFILLED, payload: 1 });
-    } catch {
-      dispatch({ type: INCREMENT_REJECTED });
-    }
-  };
+		try {
+			await new Promise((_, reject) => setTimeout(() => reject(new Error('failed')), 500));
+			dispatch({ type: INCREMENT_FULFILLED, payload: 1 });
+		} catch {
+			dispatch({ type: INCREMENT_REJECTED });
+		}
+	};
 }
 
 const initial_state = {
-  loading: false,
-  value: 0,
+	loading: false,
+	value: 0,
 };
 
 function counter_reducer(state = initial_state, action: CounterAction) {
-  switch (action.type) {
-    case INCREMENT: {
-      return { ...state, value: state.value + 1 };
-    }
-    case DECREMENT: {
-      return { ...state, value: state.value - 1 };
-    }
-    case INCREMENT_BY_AMOUNT: {
-      return { ...state, value: state.value + action.payload };
-    }
-    case INCREMENT_PENDING: {
-      return { ...state, loading: true };
-    }
-    case INCREMENT_FULFILLED: {
-      return { ...state, loading: false, value: state.value + action.payload };
-    }
-    case INCREMENT_REJECTED: {
-      return { ...state, loading: false, value: -1 };
-    }
-    default: {
-      return state;
-    }
-  }
+	switch (action.type) {
+		case INCREMENT: {
+			return { ...state, value: state.value + 1 };
+		}
+		case DECREMENT: {
+			return { ...state, value: state.value - 1 };
+		}
+		case INCREMENT_BY_AMOUNT: {
+			return { ...state, value: state.value + action.payload };
+		}
+		case INCREMENT_PENDING: {
+			return { ...state, loading: true };
+		}
+		case INCREMENT_FULFILLED: {
+			return { ...state, loading: false, value: state.value + action.payload };
+		}
+		case INCREMENT_REJECTED: {
+			return { ...state, loading: false, value: -1 };
+		}
+		default: {
+			return state;
+		}
+	}
 }
 
 function create_store() {
-  const middlewares = applyMiddleware(thunk);
+	const middlewares = applyMiddleware(thunk);
 
-  const reducer = combineReducers({
-    counter: counter_reducer,
-  });
+	const reducer = combineReducers({
+		counter: counter_reducer,
+	});
 
-  return legacy_createStore(reducer, undefined, middlewares);
+	return legacy_createStore(reducer, undefined, middlewares);
 }
 
 type AppStore = ReturnType<typeof create_store>;

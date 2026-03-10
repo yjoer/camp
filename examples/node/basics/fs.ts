@@ -9,149 +9,149 @@ import * as asciichart from 'asciichart';
 const fp = path.join(os.tmpdir(), 'camp', 'examples-node-basic', 'test.bin');
 
 async function main() {
-  const args = process.argv.slice(2);
-  if (args.length === 0) return;
+	const args = process.argv.slice(2);
+	if (args.length === 0) return;
 
-  switch (args[0]) {
-    case 'bench': {
-      const [u1] = await measure(usingReadFile);
-      const [u2] = await measure(usingReadStream);
-      const [u3] = await measure(usingSharedBuffer);
+	switch (args[0]) {
+		case 'bench': {
+			const [u1] = await measure(usingReadFile);
+			const [u2] = await measure(usingReadStream);
+			const [u3] = await measure(usingSharedBuffer);
 
-      const t1 = u1.map(u => u.arrayBuffers / 1_000_000);
-      const t2 = u2.map(u => u.arrayBuffers / 1_000_000);
-      const t3 = u3.map(u => u.arrayBuffers / 1_000_000);
+			const t1 = u1.map(u => u.arrayBuffers / 1_000_000);
+			const t2 = u2.map(u => u.arrayBuffers / 1_000_000);
+			const t3 = u3.map(u => u.arrayBuffers / 1_000_000);
 
-      console.log(
-        asciichart.plot([t1, t2, t3], {
-          colors: [asciichart.lightblue, asciichart.lightgreen, asciichart.lightmagenta],
-          height: 10,
-        }),
-      );
+			console.log(
+				asciichart.plot([t1, t2, t3], {
+					colors: [asciichart.lightblue, asciichart.lightgreen, asciichart.lightmagenta],
+					height: 10,
+				}),
+			);
 
-      break;
-    }
-    case 'clean': {
-      await clean();
-      break;
-    }
-    case 'prepare': {
-      await prepare();
-      break;
-    }
-    case 'read-file': {
-      await usingReadFile();
-      break;
-    }
-    case 'read-stream': {
-      await usingReadStream();
-      break;
-    }
-    case 'shared-buffer': {
-      await usingSharedBuffer();
-      break;
-    }
-  }
+			break;
+		}
+		case 'clean': {
+			await clean();
+			break;
+		}
+		case 'prepare': {
+			await prepare();
+			break;
+		}
+		case 'read-file': {
+			await usingReadFile();
+			break;
+		}
+		case 'read-stream': {
+			await usingReadStream();
+			break;
+		}
+		case 'shared-buffer': {
+			await usingSharedBuffer();
+			break;
+		}
+	}
 }
 
 await main();
 
 async function measure(callback: () => Promise<void>) {
-  let gc = false;
-  const usages: NodeJS.MemoryUsage[] = [];
-  const usages_gc: NodeJS.MemoryUsage[] = [];
+	let gc = false;
+	const usages: NodeJS.MemoryUsage[] = [];
+	const usages_gc: NodeJS.MemoryUsage[] = [];
 
-  const interval = setInterval(() => {
-    if (gc) usages_gc.push(process.memoryUsage());
-    else usages.push(process.memoryUsage());
-  }, 50);
+	const interval = setInterval(() => {
+		if (gc) usages_gc.push(process.memoryUsage());
+		else usages.push(process.memoryUsage());
+	}, 50);
 
-  await Promise.resolve(callback());
+	await Promise.resolve(callback());
 
-  await new Promise<void>((resolve) => {
-    setTimeout(() => {
-      if (!globalThis.gc) return;
+	await new Promise<void>((resolve) => {
+		setTimeout(() => {
+			if (!globalThis.gc) return;
 
-      console.log('forcing garbage collection');
-      globalThis.gc();
-      gc = true;
-    }, 1000);
+			console.log('forcing garbage collection');
+			globalThis.gc();
+			gc = true;
+		}, 1000);
 
-    setTimeout(() => {
-      resolve();
-      clearInterval(interval);
-    }, 3000);
-  });
+		setTimeout(() => {
+			resolve();
+			clearInterval(interval);
+		}, 3000);
+	});
 
-  return [usages, usages_gc];
+	return [usages, usages_gc];
 }
 
 async function prepare() {
-  const buf = Buffer.alloc(1 * 1024 * 1024);
-  const blocks = 512;
+	const buf = Buffer.alloc(1 * 1024 * 1024);
+	const blocks = 512;
 
-  await mkdir(path.dirname(fp), { recursive: true });
-  const stream = createWriteStream(fp);
+	await mkdir(path.dirname(fp), { recursive: true });
+	const stream = createWriteStream(fp);
 
-  let count = 0;
+	let count = 0;
 
-  while (count < blocks) {
-    stream.write(buf);
-    count++;
-  }
+	while (count < blocks) {
+		stream.write(buf);
+		count++;
+	}
 
-  stream.end(() => {
-    console.log(`successfully wrote ${blocks} blocks to ${fp}`);
-  });
+	stream.end(() => {
+		console.log(`successfully wrote ${blocks} blocks to ${fp}`);
+	});
 }
 
 async function clean() {
-  await unlink(fp);
+	await unlink(fp);
 }
 
 async function usingReadFile() {
-  const buf = await readFile(fp);
-  console.log(`read ${buf.length} bytes`);
+	const buf = await readFile(fp);
+	console.log(`read ${buf.length} bytes`);
 }
 
 async function usingReadStream() {
-  const stream = createReadStream(fp, { highWaterMark: 8 * 1024 * 1024 });
+	const stream = createReadStream(fp, { highWaterMark: 8 * 1024 * 1024 });
 
-  let length = 0;
-  for await (const chunk of stream) length += (chunk as Buffer).length;
+	let length = 0;
+	for await (const chunk of stream) length += (chunk as Buffer).length;
 
-  console.log(`read ${length} bytes using read stream`);
+	console.log(`read ${length} bytes using read stream`);
 }
 
 async function usingSharedBuffer() {
-  const chunks = readChunks(fp);
+	const chunks = readChunks(fp);
 
-  let length = 0;
-  for await (const chunk of chunks) {
-    length += chunk.length;
-  }
+	let length = 0;
+	for await (const chunk of chunks) {
+		length += chunk.length;
+	}
 
-  console.log(`read ${length} bytes using shared buffer`);
+	console.log(`read ${length} bytes using shared buffer`);
 }
 
 async function* readChunks(fp: string) {
-  const fd = await open(fp, 'r');
-  const stats = await fd.stat();
+	const fd = await open(fp, 'r');
+	const stats = await fd.stat();
 
-  const buf = Buffer.alloc(8 * 1024 * 1024);
-  const blocks = Math.ceil(stats.size / buf.length);
-  const end = stats.size % buf.length;
+	const buf = Buffer.alloc(8 * 1024 * 1024);
+	const blocks = Math.ceil(stats.size / buf.length);
+	const end = stats.size % buf.length;
 
-  for (let i = 0; i < blocks; i++) {
-    await fd.read(buf);
+	for (let i = 0; i < blocks; i++) {
+		await fd.read(buf);
 
-    if (i == blocks - 1 && end > 0) {
-      yield buf.subarray(0, end);
-      continue;
-    }
+		if (i == blocks - 1 && end > 0) {
+			yield buf.subarray(0, end);
+			continue;
+		}
 
-    yield buf;
-  }
+		yield buf;
+	}
 
-  await fd.close();
+	await fd.close();
 }

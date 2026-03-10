@@ -7,6 +7,6 @@ import { defineImportResolver, eslint_config } from '@xcamp/config/eslint.js';
 process.chdir(import.meta.dirname);
 
 export default defineConfig([
-  ...eslint_config,
-  ...defineImportResolver(['examples/tanstack/start', 'examples/tanstack/start-solid', 'examples/tanstack/start-trpc']),
+	...eslint_config,
+	...defineImportResolver(['examples/tanstack/start', 'examples/tanstack/start-solid', 'examples/tanstack/start-trpc']),
 ]);

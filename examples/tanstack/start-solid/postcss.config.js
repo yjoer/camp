@@ -4,13 +4,13 @@ import autoprefixer from 'autoprefixer';
 
 /** @type {import('postcss-load-config').Config} */
 const config = {
-  plugins: [
-    stylex({
-      include: ['_components/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
-      useCSSLayers: true,
-    }),
-    autoprefixer,
-  ],
+	plugins: [
+		stylex({
+			include: ['_components/**/*.{ts,tsx}', 'src/**/*.{ts,tsx}'],
+			useCSSLayers: true,
+		}),
+		autoprefixer,
+	],
 };
 
 export default config;

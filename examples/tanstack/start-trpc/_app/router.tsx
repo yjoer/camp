@@ -14,44 +14,44 @@ import { routeTree } from './routeTree.gen';
 import type { AppRouter } from '../server';
 
 export function getRouter() {
-  const queryClient = new QueryClient();
+	const queryClient = new QueryClient();
 
-  const trpcClient = createTRPCClient<AppRouter>({
-    links: [
-      httpBatchLink({
-        url: 'http://localhost:3001/trpc',
-        fetch(url, options) {
-          return fetch(url, {
-            ...options,
-            headers: {
-              // oxlint-disable-next-line typescript/no-misused-spread
-              ...options?.headers,
-              ...getCookie(),
-            },
-            credentials: 'include',
-          });
-        },
-      }),
-    ],
-  });
+	const trpcClient = createTRPCClient<AppRouter>({
+		links: [
+			httpBatchLink({
+				url: 'http://localhost:3001/trpc',
+				fetch(url, options) {
+					return fetch(url, {
+						...options,
+						headers: {
+							// oxlint-disable-next-line typescript/no-misused-spread
+							...options?.headers,
+							...getCookie(),
+						},
+						credentials: 'include',
+					});
+				},
+			}),
+		],
+	});
 
-  const router = createRouter({
-    routeTree,
-    defaultPreload: 'intent',
-    defaultPreloadStaleTime: 0,
-    scrollRestoration: true,
-    Wrap: ({ children }: { children: React.ReactNode }) => {
-      return (
-        <TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
-          {children}
-        </TRPCProvider>
-      );
-    },
-  });
+	const router = createRouter({
+		routeTree,
+		defaultPreload: 'intent',
+		defaultPreloadStaleTime: 0,
+		scrollRestoration: true,
+		Wrap: ({ children }: { children: React.ReactNode }) => {
+			return (
+				<TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
+					{children}
+				</TRPCProvider>
+			);
+		},
+	});
 
-  setupRouterSsrQueryIntegration({ router, queryClient });
+	setupRouterSsrQueryIntegration({ router, queryClient });
 
-  return router;
+	return router;
 }
 
 const getCookie = createIsomorphicFn().server(() => ({ cookie: getRequestHeader('cookie') }));

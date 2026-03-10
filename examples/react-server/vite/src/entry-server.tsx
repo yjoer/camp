@@ -5,9 +5,9 @@ import { App } from './app';
 import type { RenderToPipeableStreamOptions } from 'react-dom/server';
 
 export function render() {
-  return ReactDOMServer.renderToString(<App />);
+	return ReactDOMServer.renderToString(<App />);
 }
 
 export function render_stream(options: RenderToPipeableStreamOptions) {
-  return ReactDOMServer.renderToPipeableStream(<App />, options);
+	return ReactDOMServer.renderToPipeableStream(<App />, options);
 }

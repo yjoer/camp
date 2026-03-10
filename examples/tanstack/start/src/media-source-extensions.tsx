@@ -2,40 +2,40 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef } from 'react';
 
 export const Route = createFileRoute('/media-source-extensions')({
-  component: MediaSourceExtensions,
+	component: MediaSourceExtensions,
 });
 
 function MediaSourceExtensions() {
-  const ref = useRef<HTMLDivElement>(null!);
+	const ref = useRef<HTMLDivElement>(null!);
 
-  useEffect(() => {
-    const video = document.createElement('video');
-    video.controls = true;
-    ref.current.append(video);
+	useEffect(() => {
+		const video = document.createElement('video');
+		video.controls = true;
+		ref.current.append(video);
 
-    const ms = new MediaSource();
-    video.src = URL.createObjectURL(ms);
+		const ms = new MediaSource();
+		video.src = URL.createObjectURL(ms);
 
-    ms.addEventListener('sourceopen', (e) => {
-      URL.revokeObjectURL(video.src);
-      const ms = e.target as MediaSource;
-      const sb = ms.addSourceBuffer('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
-      sb.addEventListener('updateend', () => {
-        if (!sb.updating && ms.readyState === 'open') ms.endOfStream();
-      });
+		ms.addEventListener('sourceopen', (e) => {
+			URL.revokeObjectURL(video.src);
+			const ms = e.target as MediaSource;
+			const sb = ms.addSourceBuffer('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
+			sb.addEventListener('updateend', () => {
+				if (!sb.updating && ms.readyState === 'open') ms.endOfStream();
+			});
 
-      void fetch('https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4').then((res) => {
-        return res.arrayBuffer();
-      }).then((buf) => {
-        sb.appendBuffer(buf);
-      });
-    });
+			void fetch('https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4').then((res) => {
+				return res.arrayBuffer();
+			}).then((buf) => {
+				sb.appendBuffer(buf);
+			});
+		});
 
-    return () => {
-      video.remove();
-      if (ms.readyState === 'open') ms.endOfStream();
-    };
-  }, []);
+		return () => {
+			video.remove();
+			if (ms.readyState === 'open') ms.endOfStream();
+		};
+	}, []);
 
-  return <div ref={ref} className="mx-2 my-1" />;
+	return <div ref={ref} className="mx-2 my-1" />;
 }

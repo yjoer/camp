@@ -7,14 +7,14 @@ const router = t.router;
 const procedure = t.procedure;
 
 const appRouter = router({
-  hello: procedure.query(function () {
-    return { hello: 'world' };
-  }),
+	hello: procedure.query(function () {
+		return { hello: 'world' };
+	}),
 });
 
 const server = createHTTPServer({
-  router: appRouter,
-  basePath: '/trpc/',
+	router: appRouter,
+	basePath: '/trpc/',
 });
 
 server.listen({ port: 3000 });

@@ -12,98 +12,98 @@ import type { Action, ThunkAction } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 
 export const Route = createFileRoute('/transition-redux')({
-  component: TransitionRedux,
+	component: TransitionRedux,
 });
 
 function TransitionRedux() {
-  console.log('render');
+	console.log('render');
 
-  const [store] = useState<AppStore>(create_store);
+	const [store] = useState<AppStore>(create_store);
 
-  return (
-    <Provider store={store}>
-      <div className="mx-2 my-1">
-        <SettingsPanel />
-        <Posts />
-      </div>
-    </Provider>
-  );
+	return (
+		<Provider store={store}>
+			<div className="mx-2 my-1">
+				<SettingsPanel />
+				<Posts />
+			</div>
+		</Provider>
+	);
 }
 
 function SettingsPanel() {
-  const page = useAppSelector(state => state.posts.page);
+	const page = useAppSelector(state => state.posts.page);
 
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const [is_pending, start_transition] = useTransition();
+	const [is_pending, start_transition] = useTransition();
 
-  const handle_click = () => {
-    dispatch(set_page());
+	const handle_click = () => {
+		dispatch(set_page());
 
-    start_transition(() => {
-      dispatch(set_page_slow());
-    });
-  };
+		start_transition(() => {
+			dispatch(set_page_slow());
+		});
+	};
 
-  return (
-    <>
-      <div>Page: {page}</div>
-      <div>Pending: {is_pending ? 'true' : 'false'}</div>
-      <button sx={button_styles.base} onClick={handle_click}>
-        Next Page
-      </button>
-    </>
-  );
+	return (
+		<>
+			<div>Page: {page}</div>
+			<div>Pending: {is_pending ? 'true' : 'false'}</div>
+			<button sx={button_styles.base} onClick={handle_click}>
+				Next Page
+			</button>
+		</>
+	);
 }
 
 const Posts = function Posts() {
-  const page = useAppSelector(state => state.posts.page_slow);
+	const page = useAppSelector(state => state.posts.page_slow);
 
-  return (
-    <div className="mt-4">
-      {Array.from({ length: 10 }, (_, i) => {
-        const post_id = (page - 1) * 10 + i + 1;
-        return <SlowPost key={post_id} post_id={post_id} />;
-      })}
-    </div>
-  );
+	return (
+		<div className="mt-4">
+			{Array.from({ length: 10 }, (_, i) => {
+				const post_id = (page - 1) * 10 + i + 1;
+				return <SlowPost key={post_id} post_id={post_id} />;
+			})}
+		</div>
+	);
 };
 
 interface SlowPostProps {
-  post_id: number;
+	post_id: number;
 }
 
 function SlowPost({ post_id }: SlowPostProps) {
-  const start_time = performance.now();
-  while (performance.now() - start_time < 50);
+	const start_time = performance.now();
+	while (performance.now() - start_time < 50);
 
-  return <div>Slow Post #{post_id}</div>;
+	return <div>Slow Post #{post_id}</div>;
 }
 
 const posts_slice = createSlice({
-  name: 'posts',
-  initialState: {
-    page: 1,
-    page_slow: 1,
-  },
-  reducers: {
-    set_page: (state) => {
-      state.page += 1;
-    },
-    set_page_slow: (state) => {
-      state.page_slow += 1;
-    },
-  },
+	name: 'posts',
+	initialState: {
+		page: 1,
+		page_slow: 1,
+	},
+	reducers: {
+		set_page: (state) => {
+			state.page += 1;
+		},
+		set_page_slow: (state) => {
+			state.page_slow += 1;
+		},
+	},
 });
 
 const { set_page, set_page_slow } = posts_slice.actions;
 
 function create_store() {
-  const reducer = {
-    posts: posts_slice.reducer,
-  };
+	const reducer = {
+		posts: posts_slice.reducer,
+	};
 
-  return configureStore({ reducer });
+	return configureStore({ reducer });
 }
 
 type AppStore = ReturnType<typeof create_store>;
