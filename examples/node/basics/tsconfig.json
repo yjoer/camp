@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "strict": true,
+	"compilerOptions": {
+		"strict": true,
 
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 
-    "esModuleInterop": true,
+		"esModuleInterop": true,
 
-    "target": "ES2024",
+		"target": "ES2024",
 
-    "skipLibCheck": true
-  }
+		"skipLibCheck": true
+	}
 }

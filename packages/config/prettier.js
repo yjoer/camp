@@ -11,6 +11,7 @@ export const prettier_config = {
 	],
 	bracketSameLine: true,
 	printWidth: 100,
+	useTabs: true,
 	quoteProps: 'as-needed',
 	singleQuote: true,
 	//

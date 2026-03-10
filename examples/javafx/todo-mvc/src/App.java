@@ -4,13 +4,13 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-  @Override
-  public void start(Stage stage) {
-    TodoController controller = new TodoController();
-    Scene scene = new Scene(controller.view(), 640, 480);
+	@Override
+	public void start(Stage stage) {
+		TodoController controller = new TodoController();
+		Scene scene = new Scene(controller.view(), 640, 480);
 
-    stage.setTitle("Todo MVC");
-    stage.setScene(scene);
-    stage.show();
-  }
+		stage.setTitle("Todo MVC");
+		stage.setScene(scene);
+		stage.show();
+	}
 }

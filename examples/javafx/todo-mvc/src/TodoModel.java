@@ -3,5 +3,5 @@ import javafx.collections.ObservableList;
 
 class TodoModel {
 
-  ObservableList<String> items = FXCollections.observableArrayList();
+	ObservableList<String> items = FXCollections.observableArrayList();
 }

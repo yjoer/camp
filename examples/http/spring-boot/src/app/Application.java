@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-  public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
-  }
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
 
-  @GetMapping("/thread")
-  public String thread() {
-    return Thread.currentThread().toString();
-  }
+	@GetMapping("/thread")
+	public String thread() {
+		return Thread.currentThread().toString();
+	}
 
-  @GetMapping("/")
-  public Map<String, String> hello() {
-    return Map.of("hello", "world");
-  }
+	@GetMapping("/")
+	public Map<String, String> hello() {
+		return Map.of("hello", "world");
+	}
 }

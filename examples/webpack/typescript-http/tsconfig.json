@@ -1,12 +1,12 @@
 {
-  "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "types": ["webpack/module"],
+	"compilerOptions": {
+		"allowImportingTsExtensions": true,
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"types": ["webpack/module"],
 
-    "noEmit": true,
+		"noEmit": true,
 
-    "target": "ES2024"
-  }
+		"target": "ES2024"
+	}
 }

@@ -1,23 +1,23 @@
 {
-  "compilerOptions": {
-    "strict": true,
+	"compilerOptions": {
+		"strict": true,
 
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "paths": {
-      "@/build/*": ["./.build/*"],
-      "@/components/*": ["./_components/*"],
-      "@/lib/*": ["./_lib/*"],
-      "@/state/*": ["./_state/*"]
-    },
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"paths": {
+			"@/build/*": ["./.build/*"],
+			"@/components/*": ["./_components/*"],
+			"@/lib/*": ["./_lib/*"],
+			"@/state/*": ["./_state/*"]
+		},
 
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
 
-    "jsx": "react-jsx",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "target": "ES2022",
+		"jsx": "react-jsx",
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
+		"target": "ES2022",
 
-    "skipLibCheck": true
-  }
+		"skipLibCheck": true
+	}
 }

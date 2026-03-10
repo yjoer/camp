@@ -1,33 +1,33 @@
 {
-  "name": "@camp/examples-webpack-typescript-fastify",
-  "type": "module",
-  "scripts": {
-    "build": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' webpack",
-    "build:rspack": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' rspack build",
-    "dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch",
-    "dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch",
-    "dev:rspack": "cross-env NODE_ENV='development' NODE_OPTIONS='--import=tsx' rspack --watch"
-  },
-  "dependencies": {
-    "bcrypt": "6.0.0",
-    "fastify": "5.8.1",
-    "fastify-type-provider-zod": "6.1.0",
-    "zod": "4.3.6"
-  },
-  "devDependencies": {
-    "@rspack/cli": "1.7.7",
-    "@rspack/core": "1.7.7",
-    "@types/bcrypt": "6.0.0",
-    "@xcamp/webpack": "workspace:*",
-    "cross-env": "10.1.0",
-    "jiti": "2.6.1",
-    "tsx": "4.21.0",
-    "typescript": "5.9.3",
-    "webpack": "5.105.4",
-    "webpack-cli": "6.0.1",
-    "webpack-merge": "6.0.1"
-  },
-  "dependenciesMeta": {
-    "@xcamp/webpack": {}
-  }
+	"name": "@camp/examples-webpack-typescript-fastify",
+	"type": "module",
+	"scripts": {
+		"build": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' webpack",
+		"build:rspack": "cross-env NODE_ENV='production' NODE_OPTIONS='--import=tsx' rspack build",
+		"dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch",
+		"dev:jiti": "cross-env NODE_OPTIONS='--import=jiti/register' webpack --disable-interpret -c ./webpack.jiti.ts --watch",
+		"dev:rspack": "cross-env NODE_ENV='development' NODE_OPTIONS='--import=tsx' rspack --watch"
+	},
+	"dependencies": {
+		"bcrypt": "6.0.0",
+		"fastify": "5.8.1",
+		"fastify-type-provider-zod": "6.1.0",
+		"zod": "4.3.6"
+	},
+	"devDependencies": {
+		"@rspack/cli": "1.7.7",
+		"@rspack/core": "1.7.7",
+		"@types/bcrypt": "6.0.0",
+		"@xcamp/webpack": "workspace:*",
+		"cross-env": "10.1.0",
+		"jiti": "2.6.1",
+		"tsx": "4.21.0",
+		"typescript": "5.9.3",
+		"webpack": "5.105.4",
+		"webpack-cli": "6.0.1",
+		"webpack-merge": "6.0.1"
+	},
+	"dependenciesMeta": {
+		"@xcamp/webpack": {}
+	}
 }
