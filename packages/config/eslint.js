@@ -181,7 +181,6 @@ function jsx_a11y() {
     name: 'jsx-a11y/recommended',
     plugins: { 'jsx-a11y': jsx_a11y_plugin },
     rules: {
-      'jsx-a11y/aria-proptypes': 'error',
       'jsx-a11y/interactive-supports-focus': ['error', {
         tabbable: ['button', 'checkbox', 'link', 'searchbox', 'spinbutton', 'switch', 'textbox'],
       }],
@@ -218,22 +217,17 @@ function unicorn() {
     name: 'unicorn/recommended',
     plugins: { unicorn: unicorn_plugin },
     rules: {
+      'unicorn/consistent-template-literal-escape': 'off',
       'unicorn/expiring-todo-comments': 'error',
       'unicorn/import-style': 'error',
-      'unicorn/no-named-default': 'error',
+      'unicorn/isolated-functions': 'error',
+      'unicorn/no-for-loop': 'off', // x
       'unicorn/no-unnecessary-polyfills': 'error',
-      'unicorn/prefer-default-parameters': 'error',
       'unicorn/prefer-export-from': 'error',
-      'unicorn/prefer-keyboard-event-key': 'error',
-      'unicorn/prefer-module': 'error',
       'unicorn/prefer-single-call': 'error',
       'unicorn/prefer-switch': 'error',
-      'unicorn/prefer-ternary': 'off',
-      'unicorn/relative-url-style': 'error',
-      'unicorn/template-indent': 'error',
-      //
-      'unicorn/no-for-loop': 'off', // x
       'unicorn/prevent-abbreviations': 'off',
+      'unicorn/template-indent': 'error',
     },
   };
 }
