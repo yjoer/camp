@@ -33,8 +33,8 @@ int p = 1;
 std::cout << p << std::endl;
 
 {
-  int p = 2;
-  std::cout << p << std::endl;
+	int p = 2;
+	std::cout << p << std::endl;
 }
 
 std::cout << p << std::endl;
@@ -44,7 +44,7 @@ std::cout << p << std::endl;
 
 // %%
 int add(int a, int b) {
-  return a + b;
+	return a + b;
 }
 
 // %%
@@ -52,15 +52,15 @@ std::cout << add(1, 2);
 
 // %%
 class Rectangle {
-  int width;
-  int height;
+	int width;
+	int height;
 
 public:
-  Rectangle(int w, int h) : width(w), height(h) {}
+	Rectangle(int w, int h) : width(w), height(h) {}
 
-  int area() {
-    return width * height;
-  }
+	int area() {
+		return width * height;
+	}
 }
 
 // %%
@@ -75,7 +75,7 @@ int k = 0;
 
 // %%
 for (int end = k + 5; k < end; k++) {
-  std::cout << k << std::endl;
+	std::cout << k << std::endl;
 }
 
 // %% [markdown]
@@ -88,9 +88,9 @@ for (int end = k + 5; k < end; k++) {
 template <class T> class A {};
 
 template <class T> std::string print_value(A<T> *) {
-  std::ostringstream oss;
-  oss << "Hello, World!";
-  return oss.str();
+	std::ostringstream oss;
+	oss << "Hello, World!";
+	return oss.str();
 }
 
 // %%
@@ -112,37 +112,37 @@ float *c = new float[dim * dim];
 
 // %%
 for (int i = 0; i < dim; ++i) {
-  a[i] = static_cast<float>(i + 1);
-  b[i] = static_cast<float>(i + 1);
+	a[i] = static_cast<float>(i + 1);
+	b[i] = static_cast<float>(i + 1);
 }
 
 // %%
 void matmul(float const *const a, float const *const b, float *const c, const int dim) {
-  float sum = 0.f;
-  for (int i = 0; i < dim; ++i) {
-    for (int j = 0; j < dim; ++j) {
-      for (int k = 0; k < dim; ++k) {
-        sum += a[i * dim + k] * b[k * dim + j];
-      }
-      c[i * dim + j] = sum;
-      sum = 0.f;
-    }
-  }
+	float sum = 0.f;
+	for (int i = 0; i < dim; ++i) {
+		for (int j = 0; j < dim; ++j) {
+			for (int k = 0; k < dim; ++k) {
+				sum += a[i * dim + k] * b[k * dim + j];
+			}
+			c[i * dim + j] = sum;
+			sum = 0.f;
+		}
+	}
 }
 
 // %%
 template <int dim>
 void matmul_t(float const *const a, float const *const b, float *const c) {
-  float sum = 0.f;
-  for (int i = 0; i < dim; ++i) {
-    for (int j = 0; j < dim; ++j) {
-      for (int k = 0; k < dim; ++k) {
-        sum += a[i * dim + k] * b[k * dim + j];
-      }
-      c[i * dim + j] = sum;
-      sum = 0.f;
-    }
-  }
+	float sum = 0.f;
+	for (int i = 0; i < dim; ++i) {
+		for (int j = 0; j < dim; ++j) {
+			for (int k = 0; k < dim; ++k) {
+				sum += a[i * dim + k] * b[k * dim + j];
+			}
+			c[i * dim + j] = sum;
+			sum = 0.f;
+		}
+	}
 }
 
 // %%
@@ -170,8 +170,8 @@ std::cout << "v_matmul: " << v_diff.count() << "s" << std::endl
 
 // %%
 struct Point {
-  int x;
-  int y;
+	int x;
+	int y;
 };
 
 Point q;
