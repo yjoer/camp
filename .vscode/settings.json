@@ -1,4 +1,4 @@
 {
-  "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["-c", "pyproject.toml"]
+	"python.testing.pytestEnabled": true,
+	"python.testing.pytestArgs": ["-c", "pyproject.toml"]
 }

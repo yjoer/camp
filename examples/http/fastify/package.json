@@ -1,7 +1,7 @@
 {
-  "name": "@camp/examples-http-fastify",
-  "type": "module",
-  "dependencies": {
-    "fastify": "5.8.1"
-  }
+	"name": "@camp/examples-http-fastify",
+	"type": "module",
+	"dependencies": {
+		"fastify": "5.8.1"
+	}
 }

@@ -5,14 +5,14 @@ import lib.LocalDatabase;
 
 public class App extends Application {
 
-  @Override
-  public void start(Stage stage) {
-    LocalDatabase.get_instance();
+	@Override
+	public void start(Stage stage) {
+		LocalDatabase.get_instance();
 
-    Scene scene = new SignInPage();
+		Scene scene = new SignInPage();
 
-    stage.setTitle("Lab Booking");
-    stage.setScene(scene);
-    stage.show();
-  }
+		stage.setTitle("Lab Booking");
+		stage.setScene(scene);
+		stage.show();
+	}
 }

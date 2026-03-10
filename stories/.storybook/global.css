@@ -3,5 +3,5 @@
 @import 'tailwindcss';
 
 @utility mask-clip-* {
-  mask-clip: --value([*]);
+	mask-clip: --value([*]);
 }

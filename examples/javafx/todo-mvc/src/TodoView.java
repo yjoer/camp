@@ -12,31 +12,31 @@ import javafx.scene.text.Text;
 
 class TodoView extends VBox {
 
-  TextField input = new TextField();
-  ListView<String> list = new ListView<>();
+	TextField input = new TextField();
+	ListView<String> list = new ListView<>();
 
-  TodoView(Runnable on_add, Runnable on_delete) {
-    Text title = new Text("Todo MVC");
+	TodoView(Runnable on_add, Runnable on_delete) {
+		Text title = new Text("Todo MVC");
 
-    VBox.setMargin(input, new Insets(4, 0, 0, 0));
-    VBox.setMargin(list, new Insets(16, 0, 0, 0));
+		VBox.setMargin(input, new Insets(4, 0, 0, 0));
+		VBox.setMargin(list, new Insets(16, 0, 0, 0));
 
-    Button add_button = new Button("Add");
-    ButtonBar.setButtonData(add_button, ButtonData.LEFT);
-    add_button.setOnAction(e -> on_add.run());
+		Button add_button = new Button("Add");
+		ButtonBar.setButtonData(add_button, ButtonData.LEFT);
+		add_button.setOnAction(e -> on_add.run());
 
-    Button delete_button = new Button("Delete");
-    ButtonBar.setButtonData(delete_button, ButtonData.LEFT);
-    delete_button.setOnAction(e -> on_delete.run());
+		Button delete_button = new Button("Delete");
+		ButtonBar.setButtonData(delete_button, ButtonData.LEFT);
+		delete_button.setOnAction(e -> on_delete.run());
 
-    Region pad = new Region();
-    HBox.setHgrow(pad, Priority.ALWAYS);
+		Region pad = new Region();
+		HBox.setHgrow(pad, Priority.ALWAYS);
 
-    ButtonBar buttons = new ButtonBar();
-    buttons.setPadding(new Insets(8, 0, 0, 0));
-    buttons.getButtons().addAll(add_button, delete_button, pad);
+		ButtonBar buttons = new ButtonBar();
+		buttons.setPadding(new Insets(8, 0, 0, 0));
+		buttons.getButtons().addAll(add_button, delete_button, pad);
 
-    this.setPadding(new Insets(8, 16, 8, 16));
-    this.getChildren().addAll(title, input, buttons, list);
-  }
+		this.setPadding(new Insets(8, 16, 8, 16));
+		this.getChildren().addAll(title, input, buttons, list);
+	}
 }

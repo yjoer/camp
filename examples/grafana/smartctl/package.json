@@ -1,7 +1,7 @@
 {
-  "name": "@camp/examples-grafana-smartctl",
-  "scripts": {
-    "apply": "uv run python apply.py",
-    "dev": "grafanactl resources serve --script \"uv run python smartctl.py\" --watch ."
-  }
+	"name": "@camp/examples-grafana-smartctl",
+	"scripts": {
+		"apply": "uv run python apply.py",
+		"dev": "grafanactl resources serve --script \"uv run python smartctl.py\" --watch ."
+	}
 }

@@ -4,12 +4,12 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-  @Override
-  public void start(Stage stage) {
-    Scene scene = new Scene(new TodoView(), 640, 480);
+	@Override
+	public void start(Stage stage) {
+		Scene scene = new Scene(new TodoView(), 640, 480);
 
-    stage.setTitle("Todo MVVM");
-    stage.setScene(scene);
-    stage.show();
-  }
+		stage.setTitle("Todo MVVM");
+		stage.setScene(scene);
+		stage.show();
+	}
 }
