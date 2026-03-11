@@ -17,50 +17,50 @@ language_order = df["language"].unique().tolist()
 
 # %%
 rps_chart = (
-  alt.Chart(df_expanded, title="Requests per Second")
-  .mark_circle(size=24)
-  .encode(
-    x=alt.X(
-      shorthand="server_name:N",
-      axis=alt.Axis(grid=True, gridOpacity=0.25, labelAngle=-45),
-      sort=server_order,
-    ),
-    y=alt.Y("measurements:Q", scale=alt.Scale(padding=15, zero=False)),
-    xOffset="jitter:Q",
-    color=alt.Color("language:N", sort=language_order),
-  )
-  .transform_calculate(jitter="random()")
-  .properties(width=300)
+	alt.Chart(df_expanded, title="Requests per Second")
+	.mark_circle(size=24)
+	.encode(
+		x=alt.X(
+			shorthand="server_name:N",
+			axis=alt.Axis(grid=True, gridOpacity=0.25, labelAngle=-45),
+			sort=server_order,
+		),
+		y=alt.Y("measurements:Q", scale=alt.Scale(padding=15, zero=False)),
+		xOffset="jitter:Q",
+		color=alt.Color("language:N", sort=language_order),
+	)
+	.transform_calculate(jitter="random()")
+	.properties(width=300)
 )
 
 # %%
 latency_chart = (
-  alt.Chart(df_expanded, title="Latency (μs)")
-  .mark_circle(size=24)
-  .encode(
-    x=alt.X(
-      shorthand="server_name:N",
-      axis=alt.Axis(grid=True, gridOpacity=0.25, labelAngle=-45),
-      sort=server_order,
-    ),
-    y=alt.Y("latency_us:Q", scale=alt.Scale(padding=15, zero=False)),
-    xOffset="jitter:Q",
-    color=alt.Color("language:N", sort=language_order),
-  )
-  .transform_calculate(
-    jitter="random()",
-    latency_us="1000000 / datum.measurements",
-  )
-  .properties(width=300)
+	alt.Chart(df_expanded, title="Latency (μs)")
+	.mark_circle(size=24)
+	.encode(
+		x=alt.X(
+			shorthand="server_name:N",
+			axis=alt.Axis(grid=True, gridOpacity=0.25, labelAngle=-45),
+			sort=server_order,
+		),
+		y=alt.Y("latency_us:Q", scale=alt.Scale(padding=15, zero=False)),
+		xOffset="jitter:Q",
+		color=alt.Color("language:N", sort=language_order),
+	)
+	.transform_calculate(
+		jitter="random()",
+		latency_us="1000000 / datum.measurements",
+	)
+	.properties(width=300)
 )
 
 # %%
 (rps_chart | latency_chart).configure_title(fontSize=14).configure_axis(
-  labelFontSize=14,
-  titleFontSize=14,
+	labelFontSize=14,
+	titleFontSize=14,
 ).configure_legend(
-  labelFontSize=14,
-  titleFontSize=14,
+	labelFontSize=14,
+	titleFontSize=14,
 )
 
 # %%
