@@ -2,27 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  format-js:
-    name: Format JS
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Enable Corepack
-        run: corepack enable
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: yarn
-          cache-dependency-path: '**/package.json'
-      - name: Install Dependencies
-        run: yarn workspaces focus
-      - name: Format
-        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,md,mdx,yml,yaml}"
-
-  lint-js:
-    name: Lint JS
+  oxlint:
+    name: oxlint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

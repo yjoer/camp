@@ -6,21 +6,21 @@ version = "2025.7.0"
 
 [tasks.configure]
 cmd = [
-  "cmake",
-  "-G",
-  "Ninja",
-  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
-  "-DCMAKE_INSTALL_PREFIX=.build/install",
-  "-DCMAKE_BUILD_TYPE=Release",
-  "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
-  "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
-  "-DCMAKE_C_COMPILER=clang-cl",
-  "-DCMAKE_CXX_COMPILER=clang-cl",
-  "-DOPENSSL_ROOT_DIR=$CONDA_PREFIX/Library",
-  "-S",
-  ".",
-  "-B",
-  ".build",
+	"cmake",
+	"-G",
+	"Ninja",
+	"-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+	"-DCMAKE_INSTALL_PREFIX=.build/install",
+	"-DCMAKE_BUILD_TYPE=Release",
+	"-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+	"-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+	"-DCMAKE_C_COMPILER=clang-cl",
+	"-DCMAKE_CXX_COMPILER=clang-cl",
+	"-DOPENSSL_ROOT_DIR=$CONDA_PREFIX/Library",
+	"-S",
+	".",
+	"-B",
+	".build",
 ]
 
 [tasks.build]

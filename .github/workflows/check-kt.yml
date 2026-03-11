@@ -2,8 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  format-kt:
-    name: Format Kotlin
+  ktlint:
+    name: ktlint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -12,5 +12,5 @@ jobs:
         run: |
           curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint
           chmod +x ktlint
-      - name: Check Formatting
+      - name: Format
         run: ./ktlint .

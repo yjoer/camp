@@ -2,8 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  format-cpp:
-    name: Format C++
+  clang-format:
+    name: clang-format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

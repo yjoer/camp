@@ -6,16 +6,16 @@ version = "2025.7.0"
 
 [tasks.configure]
 cmd = [
-  "cmake",
-  "-G",
-  "Ninja",
-  "-DCMAKE_BUILD_TYPE=Release",
-  "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
-  "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
-  "-S",
-  ".",
-  "-B",
-  ".build",
+	"cmake",
+	"-G",
+	"Ninja",
+	"-DCMAKE_BUILD_TYPE=Release",
+	"-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+	"-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+	"-S",
+	".",
+	"-B",
+	".build",
 ]
 
 [tasks.build]

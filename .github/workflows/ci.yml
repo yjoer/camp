@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: CI
 
 on:
   pull_request:
@@ -10,29 +10,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verify-commit-msg:
-    uses: ./.github/workflows/verify-commit-msg.yml
+  check-commit-msg:
+    uses: ./.github/workflows/check-commit-msg.yml
 
-  verify-cpp:
-    uses: ./.github/workflows/verify-cpp.yml
+  check-cpp:
+    uses: ./.github/workflows/check-cpp.yml
 
-  verify-java:
-    uses: ./.github/workflows/verify-java.yml
+  check-java:
+    uses: ./.github/workflows/check-java.yml
 
-  verify-kt:
-    uses: ./.github/workflows/verify-kt.yml
+  check-kt:
+    uses: ./.github/workflows/check-kt.yml
 
-  verify-js:
-    uses: ./.github/workflows/verify-js.yml
+  check-js:
+    uses: ./.github/workflows/check-js.yml
 
-  verify-py:
-    uses: ./.github/workflows/verify-py.yml
+  check-misc:
+    uses: ./.github/workflows/check-misc.yml
 
-  verify-rs:
-    uses: ./.github/workflows/verify-rs.yml
+  check-py:
+    uses: ./.github/workflows/check-py.yml
 
-  test:
-    name: Test
+  check-rs:
+    uses: ./.github/workflows/check-rs.yml
+
+  pytest:
+    name: pytest
     runs-on: ubuntu-latest
     env:
       KERAS_BACKEND: torch

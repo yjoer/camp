@@ -2,8 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  format-rs:
-    name: Format Rust
+  cargo-fmt:
+    name: cargo fmt
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -14,5 +14,5 @@ jobs:
         run: |
           cargo --version
           cargo +nightly fmt --version
-      - name: Check Formatting
+      - name: Format
         run: cargo +nightly fmt --all --check

@@ -2,8 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  lint-commit-msg:
-    name: Lint Commit Message
+  commitlint:
+    name: commitlint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

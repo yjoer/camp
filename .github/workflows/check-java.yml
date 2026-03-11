@@ -2,8 +2,8 @@ on:
   workflow_call:
 
 jobs:
-  format-java:
-    name: Format Java
+  prettier:
+    name: prettier
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,4 +19,4 @@ jobs:
       - name: Install Dependencies
         run: yarn workspaces focus
       - name: Format
-        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{java,fxml}"
+        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.java"
