@@ -157,7 +157,7 @@
 			"rules": {
 				// recommended
 				"typescript/ban-ts-comment": "error",
-				"typescript/no-empty-object-type": "error",
+				"typescript/no-empty-object-type": ["error", { "allowInterfaces": "with-single-extends" }],
 				"typescript/no-explicit-any": "off",
 				"typescript/no-misused-promises": "error",
 				"typescript/no-namespace": "error",
