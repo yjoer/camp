@@ -264,6 +264,7 @@ function stylistic() {
 					propertyValue: 'ignore',
 				}],
 				'@stylistic/multiline-ternary': ['error', 'never'],
+				'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 				'@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
 				'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
 			},

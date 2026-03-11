@@ -2,19 +2,19 @@ on:
   workflow_call:
 
 jobs:
-  # format-py:
-  #   name: Format Python
+  # ruff-format:
+  #   name: ruff format
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v4
   #     - name: Setup Ruff
   #       uses: astral-sh/ruff-action@v3
-  #     - name: Check Formatting
+  #     - name: Format
   #       run: ruff format --check .
 
-  lint-py:
-    name: Lint Python
+  ruff-check:
+    name: ruff check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

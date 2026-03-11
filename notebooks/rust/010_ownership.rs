@@ -1,16 +1,16 @@
 // %%
 macro_rules! call {
-    ($func_name:ident $(, $args:expr)*) => {
-        $func_name($($args),*)
-    };
+	($func_name:ident $(, $args:expr)*) => {
+		$func_name($($args),*)
+	};
 }
 
 // %%
 fn mutate_strings() {
-    let mut s = String::from("hello");
-    s.push_str(", world!");
+	let mut s = String::from("hello");
+	s.push_str(", world!");
 
-    println!("{s}");
+	println!("{s}");
 }
 
 call!(mutate_strings);
@@ -20,11 +20,11 @@ call!(mutate_strings);
 
 // %%
 fn move_semantics() {
-    let s1 = String::from("hello");
-    let s2 = s1;
+	let s1 = String::from("hello");
+	let s2 = s1;
 
-    // println!("{s1}, world!");
-    println!("{s2}, world!");
+	// println!("{s1}, world!");
+	println!("{s2}, world!");
 }
 
 call!(move_semantics);
@@ -34,20 +34,20 @@ call!(move_semantics);
 
 // %%
 fn clone_heap_data() {
-    let s1 = String::from("hello");
-    let s2 = s1.clone();
+	let s1 = String::from("hello");
+	let s2 = s1.clone();
 
-    println!("s1 = {s1}, s2 = {s2}");
+	println!("s1 = {s1}, s2 = {s2}");
 }
 
 call!(clone_heap_data);
 
 // %%
 fn copy_stack_data() {
-    let x = 5;
-    let y = x;
+	let x = 5;
+	let y = x;
 
-    println!("x = {x}, y = {y}");
+	println!("x = {x}, y = {y}");
 }
 
 call!(copy_stack_data);
@@ -57,36 +57,36 @@ call!(copy_stack_data);
 
 // %%
 fn makes_copy(int: i32) {
-    println!("{int}");
+	println!("{int}");
 }
 
 fn takes_ownership(str: String) {
-    println!("{str}");
+	println!("{str}");
 }
 
 fn gives_ownership() -> String {
-    let str = String::from("hello");
-    str
+	let str = String::from("hello");
+	str
 }
 
 fn takes_and_gives_ownership(str: String) -> String {
-    str
+	str
 }
 
 fn fn_ownership() {
-    let x = 5;
-    makes_copy(x);
-    println!("{x}");
+	let x = 5;
+	makes_copy(x);
+	println!("{x}");
 
-    let s = String::from("hello");
-    takes_ownership(s);
+	let s = String::from("hello");
+	takes_ownership(s);
 
-    let s1 = gives_ownership();
-    println!("{s1}");
+	let s1 = gives_ownership();
+	println!("{s1}");
 
-    let s2 = String::from("hello");
-    let s2 = takes_and_gives_ownership(s2);
-    println!("{s2}");
+	let s2 = String::from("hello");
+	let s2 = takes_and_gives_ownership(s2);
+	println!("{s2}");
 }
 
 call!(fn_ownership);
@@ -96,28 +96,28 @@ call!(fn_ownership);
 
 // %%
 fn calculate_length(str: &String) -> usize {
-    str.len()
+	str.len()
 }
 
 fn references() {
-    let s = String::from("hello");
-    let len = calculate_length(&s);
+	let s = String::from("hello");
+	let len = calculate_length(&s);
 
-    println!("the length of '{s}' is {len}");
+	println!("the length of '{s}' is {len}");
 }
 
 call!(references);
 
 // %%
 fn change(str: &mut String) {
-    str.push_str(", world");
+	str.push_str(", world");
 }
 
 fn mutable_references() {
-    let mut s = String::from("hello");
-    change(&mut s);
+	let mut s = String::from("hello");
+	change(&mut s);
 
-    println!("{s}");
+	println!("{s}");
 }
 
 call!(mutable_references);
@@ -127,22 +127,22 @@ call!(mutable_references);
 
 // %%
 fn first_word(str: &String) -> &str {
-    let bytes = str.as_bytes();
+	let bytes = str.as_bytes();
 
-    for (i, &item) in bytes.iter().enumerate() {
-        if item == b' ' {
-            return &str[0..i];
-        }
-    }
+	for (i, &item) in bytes.iter().enumerate() {
+		if item == b' ' {
+			return &str[0..i];
+		}
+	}
 
-    &str[..]
+	&str[..]
 }
 
 fn slices() {
-    let s = String::from("hello world");
-    let word = first_word(&s);
+	let s = String::from("hello world");
+	let word = first_word(&s);
 
-    println!("the first word is: {word}");
+	println!("the first word is: {word}");
 }
 
 call!(slices);

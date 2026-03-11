@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+
+jobs:
+  prettier:
+    name: prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: '**/package.json'
+      - name: Install Dependencies
+        run: yarn workspaces focus
+      - name: Format
+        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,jsonc,md,mdx,xml,fxml,yml,yaml}"
+
+  tombi:
+    name: tombi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Tombi
+        uses: tombi-toml/setup-tombi@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint
+        run: tombi lint
+      - name: Format
+        run: tombi format --check
