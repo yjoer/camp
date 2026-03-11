@@ -74,6 +74,7 @@ ignore = [
   "D103",  # undocumented-public-function
   "D105",  # undocumented-magic-method
   "D107",  # undocumented-public-init
+  "D206",  # docstring-tab-indentation
   "E111",  # indentation-with-invalid-multiple
   "E114",  # indentation-with-invalid-multiple-comment
   "E501",  # line-too-long
@@ -87,6 +88,7 @@ ignore = [
   "S101",  # assert
   "S403",  # suspicious-pickle-import
   "S404",  # suspicious-subprocess-import
+  "W191",  # tab-indentation
   "FBT001",  # boolean-type-hint-positional-argument
   "FBT002",  # boolean-default-value-positional-argument
   "PERF401",  # manual-list-comprehension

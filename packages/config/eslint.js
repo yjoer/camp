@@ -162,7 +162,7 @@ function tailwind() {
 		files: ['**/*.{jsx,tsx}'],
 		plugins: { 'better-tailwindcss': tailwind_plugin },
 		rules: {
-			'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100, preferSingleLine: true }],
+			'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100, preferSingleLine: true, indent: 'tab' }],
 			'better-tailwindcss/enforce-consistent-class-order': 'warn',
 			'better-tailwindcss/enforce-canonical-classes': 'warn',
 			'better-tailwindcss/no-duplicate-classes': 'warn',
