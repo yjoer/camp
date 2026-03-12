@@ -99,7 +99,6 @@ ignore = [
 allowed-confusables = [
 	"µ",
 	"σ",
-	"∗",
 ]
 
 [lint.isort]

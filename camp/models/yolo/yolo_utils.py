@@ -293,7 +293,7 @@ class YOLOv8PosePredictor:
 
 		dim = self.keypoint_shape[1]
 
-		# b, n_keypoints ∗ n_dims, hw
+		# b, n_keypoints * n_dims, hw
 		if dim == 3:
 			# Normalize every third tensor in the second dimension, visibility in the
 			# (x, y, visibility) tuple with a sigmoid function.
