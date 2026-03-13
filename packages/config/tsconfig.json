@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"noImplicitOverride": true,
+		"noUncheckedIndexedAccess": true,
+		"strict": true,
+
+		"module": "NodeNext",
+		"resolveJsonModule": true,
+
+		"declaration": true,
+		"outDir": ".build",
+		"sourceMap": true,
+
+		"allowJs": true,
+
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+
+		"moduleDetection": "force",
+
+		"lib": ["ES2024"],
+		"target": "ES2024",
+
+		"skipLibCheck": true
+	}
+}

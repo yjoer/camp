@@ -10,11 +10,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Enable Corepack
         run: corepack enable
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Vite Plus
+        uses: voidzero-dev/setup-vp@v1
         with:
           node-version: 24
-          cache: yarn
+          run-install: false
+          cache: true
           cache-dependency-path: '**/package.json'
       - name: Install Dependencies
         # run: |
@@ -24,7 +25,9 @@ jobs:
         #     npm i --workspaces false --include-workspace-root true
         #   fi
         run: yarn install --no-immutable
+      - name: Generate Types
+        run: vp run -r gen-types
       - name: Oxlint
-        run: npx --no -- oxlint
+        run: vp lint
       - name: ESLint
         run: npx --no -- eslint --ext js,cjs,mjs,jsx,ts,tsx .

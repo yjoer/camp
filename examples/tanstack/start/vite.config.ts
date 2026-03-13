@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
 
-const routes = rootRoute('root.tsx', [
+export const routes = rootRoute('root.tsx', [
 	route('/', '../src/gallery.tsx'),
 	route('/stale-closures', '../src/stale-closures.tsx'),
 	route('/external-stores/redux', '../src/external-stores/redux.tsx'),

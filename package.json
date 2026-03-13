@@ -26,7 +26,8 @@
 	},
 	"devDependencies": {
 		"@xcamp/config": "workspace:*",
-		"cross-env": "10.1.0"
+		"cross-env": "10.1.0",
+		"vite-plus": "0.1.11"
 	},
 	"dependenciesMeta": {
 		"@xcamp/config": {}

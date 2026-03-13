@@ -1,4 +1,5 @@
-/** @type {import("prettier").Config} */
+import type { Config } from 'prettier';
+
 export const prettier_config = {
 	plugins: [
 		// '@prettier/plugin-oxc',
@@ -25,4 +26,4 @@ export const prettier_config = {
 			printWidth: 120,
 		},
 	}],
-};
+} satisfies Config;

@@ -6,7 +6,7 @@ import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
 import solid from 'vite-plugin-solid';
 
-const routes = rootRoute('root.tsx', [
+export const routes = rootRoute('root.tsx', [
 	route('/', '../src/gallery.tsx'),
 	route('/stale-closures', '../src/stale-closures.tsx'),
 	route('/transition-signal', '../src/transition-signal.tsx'),

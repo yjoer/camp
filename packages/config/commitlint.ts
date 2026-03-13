@@ -1,10 +1,11 @@
-/** @type {import('@commitlint/types').UserConfig} */
+import type { UserConfig } from '@commitlint/types';
+
 export const commitlint_config = {
 	extends: [
-		'@commitlint/config-conventional', //
+		'@commitlint/config-conventional',
 	],
 	rules: {
 		'header-max-length': [2, 'always', 100],
 		'subject-case': [2, 'always', 'lower-case'],
 	},
-};
+} satisfies UserConfig;
