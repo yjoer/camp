@@ -37,6 +37,6 @@ jobs:
       - name: Build Project Artifacts
         run: yarn build
       - name: Publish
-        run: npm publish --provenance --access public
+        run: yarn npm publish --provenance --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
