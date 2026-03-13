@@ -1,6 +1,6 @@
 {
 	"name": "@xcamp/config",
-	"version": "2026.3.9",
+	"version": "2026.3.10",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -72,6 +72,11 @@
 		},
 		"typescript": {
 			"optional": true
+		}
+	},
+	"publishConfig": {
+		"bin": {
+			"generate-routes": "./.build/bin/generate-routes.js"
 		}
 	}
 }
