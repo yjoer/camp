@@ -5,6 +5,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { useTRPC } from '@/lib/trpc-provider';
 
+import type { FallbackProps } from 'react-error-boundary';
+
 export const Route = createFileRoute('/')({
 	component: LandingPage,
 });
@@ -48,10 +50,6 @@ function Protected() {
 	return <div className="flex bg-neutral-100 px-2 py-1 font-mono">{JSON.stringify(data)}</div>;
 }
 
-interface ProtectedErrorProps {
-	error: Error;
-}
-
-function ProtectedError({ error }: ProtectedErrorProps) {
-	return <div className="flex bg-neutral-100 px-2 py-1 font-mono">{error.message}</div>;
+function ProtectedError({ error }: FallbackProps) {
+	return <div className="flex bg-neutral-100 px-2 py-1 font-mono">{(error as Error).message}</div>;
 }

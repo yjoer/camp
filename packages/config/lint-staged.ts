@@ -1,4 +1,5 @@
-/** @type {import('lint-staged').Configuration} */
+import type { Configuration } from 'lint-staged';
+
 export const lint_staged_config = {
 	'*.{js,cjs,mjs,jsx,ts,tsx}': [
 		'eslint --cache --cache-location node_modules/.cache/.eslintcache --max-warnings 0',
@@ -18,4 +19,4 @@ export const lint_staged_config = {
 		// 'uv run ruff format --check',
 		// 'uv run mypy',
 	],
-};
+} satisfies Configuration;

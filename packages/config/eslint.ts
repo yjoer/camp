@@ -17,6 +17,8 @@ import unicorn_plugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 
+import type { ConfigWithExtends, ConfigWithExtendsArray, Plugin } from '@eslint/config-helpers';
+
 function import_x() {
 	return {
 		name: 'import/recommended',
@@ -56,7 +58,7 @@ function import_x() {
 		settings: {
 			'import-x/resolver-next': [createTypeScriptImportResolver()],
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function typescript() {
@@ -71,14 +73,14 @@ function typescript() {
 		rules: {
 			'@typescript-eslint/member-ordering': 'error',
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function react() {
 	return {
 		name: 'react/recommended',
 		files: ['**/*.{jsx,tsx}'],
-		extends: [react_plugin.configs.flat['jsx-runtime']],
+		extends: [react_plugin.configs.flat['jsx-runtime']!],
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.serviceworker },
 		},
@@ -89,7 +91,7 @@ function react() {
 			'react/jsx-no-leaked-render': 'error',
 			'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }],
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function react_hooks() {
@@ -97,7 +99,7 @@ function react_hooks() {
 		name: 'react-hooks/recommended',
 		files: ['**/*.{jsx,tsx}'],
 		extends: [react_hooks_plugin.configs.flat['recommended-latest']],
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function react_you_might_not_need_an_effect() {
@@ -105,13 +107,13 @@ function react_you_might_not_need_an_effect() {
 		name: 'react/you-might-not-need-an-effect/recommended',
 		files: ['**/*.{jsx,tsx}'],
 		extends: [react_you_might_not_need_an_effect_plugin.configs.recommended],
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function tanstack_query() {
 	return {
 		name: '@tanstack/query',
-		plugins: { '@tanstack/query': query_plugin },
+		plugins: { '@tanstack/query': query_plugin as unknown as Plugin },
 		rules: {
 			'@tanstack/query/exhaustive-deps': 'error',
 			'@tanstack/query/infinite-query-property-order': 'error',
@@ -121,25 +123,25 @@ function tanstack_query() {
 			'@tanstack/query/no-void-query-fn': 'error',
 			'@tanstack/query/stable-query-client': 'error',
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function tanstack_router() {
 	return {
 		name: '@tanstack/router',
-		plugins: { '@tanstack/router': router_plugin },
+		plugins: { '@tanstack/router': router_plugin as unknown as Plugin },
 		rules: {
 			'@tanstack/router/create-route-property-order': 'error',
 			'@tanstack/router/route-param-names': 'error',
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function stylex() {
 	return {
 		name: 'stylex/recommended',
 		files: ['**/*.{jsx,tsx}'],
-		plugins: { '@stylexjs': stylex_plugin },
+		plugins: { '@stylexjs': stylex_plugin as unknown as Plugin },
 		rules: {
 			'@stylexjs/enforce-extension': 'error',
 			'@stylexjs/no-conflicting-props': 'error',
@@ -153,7 +155,7 @@ function stylex() {
 			'@stylexjs/valid-shorthands': 'warn',
 			'@stylexjs/valid-styles': 'error',
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function tailwind() {
@@ -171,7 +173,7 @@ function tailwind() {
 			'better-tailwindcss/no-unknown-classes': 'error',
 			'better-tailwindcss/no-conflicting-classes': 'error',
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function jsx_a11y() {
@@ -207,7 +209,7 @@ function jsx_a11y() {
 				handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
 			}],
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function unicorn() {
@@ -227,7 +229,7 @@ function unicorn() {
 			'unicorn/prevent-abbreviations': 'off',
 			'unicorn/template-indent': 'error',
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function stylistic() {
@@ -277,7 +279,7 @@ function stylistic() {
 				'@stylistic/quote-props': ['error', 'as-needed'],
 			},
 		},
-	];
+	] satisfies ConfigWithExtendsArray;
 }
 
 function perfectionist() {
@@ -323,7 +325,7 @@ function perfectionist() {
 				ignoreCase: false,
 			},
 		},
-	};
+	} satisfies ConfigWithExtends;
 }
 
 function compat() {
@@ -363,7 +365,7 @@ export const eslint_config = defineConfig([
 	},
 ]);
 
-export function defineImportResolver(pkgs, options = {}) {
+export function defineImportResolver(pkgs: string[], options = {}) {
 	return pkgs.map(pkg => ({
 		files: [`./${pkg}/**/*`],
 		settings: {

@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
 
-const routes = rootRoute('root.tsx', [
+export const routes = rootRoute('root.tsx', [
 	route('/', '../src/landing-page.tsx'),
 ]);
 
@@ -26,7 +26,7 @@ export default defineConfig({
 			},
 		}),
 		nitro({ preset: process.env.TSS_TARGET, serverEntry: false }),
-		react({ babel: { configFile: true } }),
+		react(),
 		tailwindcss(),
 	],
 });
