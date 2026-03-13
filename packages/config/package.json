@@ -48,11 +48,14 @@
 		"stylelint": "17.4.0",
 		"stylelint-config-recess-order": "7.6.1",
 		"stylelint-config-standard": "40.0.0",
-		"stylelint-order": "8.0.0",
+		"stylelint-order": "8.1.0",
 		"typescript-eslint": "8.57.0"
 	},
 	"devDependencies": {
+		"@tanstack/router-generator": "1.166.7",
+		"@tanstack/virtual-file-routes": "1.161.4",
 		"@types/eslint-plugin-jsx-a11y": "6.10.1",
+		"@types/node": "25.5.0",
 		"typescript": "5.9.3"
 	},
 	"peerDependencies": {
