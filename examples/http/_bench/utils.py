@@ -1,4 +1,4 @@
-# ruff: noqa: S602
+# ruff: noqa: S603
 import json
 import re
 import subprocess
@@ -51,10 +51,8 @@ class BenchmarkResult:
 
 
 def build_server(server: ServerConfig) -> None:
-	if server.build_cmd is None:
-		return
-
-	subprocess.run(server.build_cmd, shell=True, cwd=server.cwd, timeout=300, check=True)
+	if server.build_cmd is None: return
+	subprocess.run(server.build_cmd, shell=False, cwd=server.cwd, timeout=300, check=True)
 
 
 def start_server(server: ServerConfig) -> subprocess.Popen:
@@ -62,7 +60,7 @@ def start_server(server: ServerConfig) -> subprocess.Popen:
 		server.run_cmd,
 		stdout=subprocess.PIPE,
 		stderr=subprocess.PIPE,
-		shell=True,
+		shell=False,
 		cwd=server.cwd,
 	)
 
@@ -86,10 +84,9 @@ def wait_for_server(server: ServerConfig, timeout: int = 30) -> None:
 		try:
 			with httpx.Client(timeout=1) as client:
 				response = client.get(f"{server.base_url}{endpoint.path}")
-				if response.status_code in {200, 405}:
-					return
-		except httpx.ConnectTimeout:
-			pass
+				if response.status_code in {200, 405}: return
+		except httpx.ConnectError: pass
+		except httpx.ConnectTimeout: pass
 
 		time.sleep(0.5)
 
@@ -155,7 +152,7 @@ def run_benchmark(server: ServerConfig, endpoint: Endpoint, script_dir: Path) ->
 		cmd.insert(7, "--env")
 		cmd.insert(8, f"BODY={json.dumps(endpoint.request_body)}")
 
-	subprocess.run(cmd, shell=True, timeout=120, check=True)
+	subprocess.run(cmd, shell=False, timeout=120, check=True)
 
 	with (script_dir / ".build" / "summary.json").open() as f:
 		return json.loads(f.read())
