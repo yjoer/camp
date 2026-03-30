@@ -1,18 +1,16 @@
-use std::ffi::{c_void, OsString};
-use std::fs::File;
-use std::io::Write;
-use std::path::Path;
-use std::sync::{mpsc, LazyLock};
-use std::thread::sleep;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
-use std::{ptr, slice};
-
-use indexmap::IndexSet;
-
 #[cfg(target_os = "windows")]
 mod windows_imports {
+	pub use std::ffi::{c_void, OsString};
+	pub use std::fs::File;
+	pub use std::io::Write;
 	pub use std::os::windows::ffi::{OsStrExt, OsStringExt};
+	pub use std::path::Path;
+	pub use std::sync::{mpsc, LazyLock};
+	pub use std::thread::sleep;
+	pub use std::time::{Duration, SystemTime, UNIX_EPOCH};
+	pub use std::{ptr, slice};
 
+	pub use indexmap::IndexSet;
 	pub use windows::core::{BSTR, PWSTR};
 	pub use windows::Win32::Devices::Display::{
 		DestroyPhysicalMonitors,
@@ -114,7 +112,10 @@ mod windows_imports {
 #[cfg(target_os = "windows")]
 use windows_imports::*;
 
+#[cfg(target_os = "windows")]
 const SERVICE_NAME: &str = "CampMonitor";
+
+#[cfg(target_os = "windows")]
 const SERVICE_TYPE: ServiceType = ServiceType::OWN_PROCESS;
 
 #[cfg(target_os = "windows")]
@@ -157,6 +158,7 @@ pub fn monitor() {
 #[cfg(not(target_os = "windows"))]
 pub fn monitor() {}
 
+#[cfg(target_os = "windows")]
 unsafe extern "system" fn handle_win_event(
 	_hwineventhook: HWINEVENTHOOK, _event: u32, hwnd: HWND, _idobject: i32, _idchild: i32,
 	_ideventthread: u32, _dwmseventtime: u32,
@@ -192,6 +194,7 @@ unsafe extern "system" fn handle_win_event(
 	}
 }
 
+#[cfg(target_os = "windows")]
 unsafe fn set_brightness_wmi(brightness: i32) -> Result<(), windows::core::Error> {
 	let locator: IWbemLocator = CoCreateInstance(&WbemLocator, None, CLSCTX_INPROC_SERVER)?;
 	let services = locator.ConnectServer(
@@ -270,6 +273,7 @@ unsafe fn set_brightness_wmi(brightness: i32) -> Result<(), windows::core::Error
 	Ok(())
 }
 
+#[cfg(target_os = "windows")]
 unsafe fn _set_brightness_ddc(hwnd: HWND, brightness: u32) {
 	let hmonitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTOPRIMARY);
 
@@ -314,6 +318,7 @@ fn monitor_service(_arguments: Vec<OsString>) {
 	}
 }
 
+#[cfg(target_os = "windows")]
 fn monitor_service_handler() -> Result<(), Box<dyn std::error::Error>> {
 	let (shutdown_tx, shutdown_rx) = mpsc::channel();
 
@@ -370,6 +375,7 @@ fn monitor_service_handler() -> Result<(), Box<dyn std::error::Error>> {
 	Ok(())
 }
 
+#[cfg(target_os = "windows")]
 unsafe fn spawn_user_process(command_line: String) -> Result<HANDLE, windows::core::Error> {
 	let mut sessions: *mut WTS_SESSION_INFOW = ptr::null_mut();
 	let mut session_count: u32 = 0;

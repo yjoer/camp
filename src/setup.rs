@@ -5,12 +5,12 @@ use std::process::Command;
 use std::{env, fs};
 
 use git2::Config;
-use inquire::MultiSelect;
 
 use crate::doctor::GIT_ALIASES;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
+	pub use inquire::MultiSelect;
 	pub use windows_registry::LOCAL_MACHINE;
 }
 
