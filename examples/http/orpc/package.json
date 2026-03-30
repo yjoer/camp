@@ -2,9 +2,9 @@
 	"name": "@camp/examples-http-orpc",
 	"type": "module",
 	"dependencies": {
-		"@orpc/openapi": "1.13.7",
-		"@orpc/server": "1.13.7",
-		"fastify": "5.8.2",
+		"@orpc/openapi": "1.13.13",
+		"@orpc/server": "1.13.13",
+		"fastify": "5.8.4",
 		"h3": "2.0.1-rc.14"
 	},
 	"devDependencies": {

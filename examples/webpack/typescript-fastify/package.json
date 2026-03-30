@@ -10,13 +10,13 @@
 	},
 	"dependencies": {
 		"bcrypt": "6.0.0",
-		"fastify": "5.8.2",
+		"fastify": "5.8.4",
 		"fastify-type-provider-zod": "6.1.0",
 		"zod": "4.3.6"
 	},
 	"devDependencies": {
-		"@rspack/cli": "1.7.8",
-		"@rspack/core": "1.7.8",
+		"@rspack/cli": "1.7.10",
+		"@rspack/core": "1.7.10",
 		"@types/bcrypt": "6.0.0",
 		"@xcamp/webpack": "workspace:*",
 		"cross-env": "10.1.0",
@@ -24,7 +24,7 @@
 		"tsx": "4.21.0",
 		"typescript": "6.0.2",
 		"webpack": "5.105.4",
-		"webpack-cli": "6.0.1",
+		"webpack-cli": "7.0.2",
 		"webpack-merge": "6.0.1"
 	},
 	"dependenciesMeta": {

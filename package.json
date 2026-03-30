@@ -22,7 +22,7 @@
 	},
 	"browserslist": "defaults and not op_mini all",
 	"resolutions": {
-		"vite-plugin-solid": "patch:vite-plugin-solid@2.11.10#./patches/vite-plugin-solid@2.11.10.patch"
+		"vite-plugin-solid": "patch:vite-plugin-solid@2.11.11#./patches/vite-plugin-solid@2.11.11.patch"
 	},
 	"devDependencies": {
 		"@xcamp/config": "workspace:*",
