@@ -1,20 +1,20 @@
 #![cfg_attr(feature = "windows_subsystem", windows_subsystem = "windows")]
 
 use std::error::Error;
-use std::fs;
-use std::path::Path;
 use std::process::Command;
 
 use clap::{Parser, Subcommand};
 use git2::Repository;
-use inquire::MultiSelect;
 use regex::Regex;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
 	pub use std::env::current_exe;
+	pub use std::fs;
 	pub use std::os::windows::process::CommandExt;
+	pub use std::path::Path;
 
+	pub use inquire::MultiSelect;
 	pub use which::which;
 	pub use windows::Win32::Foundation::HWND;
 	pub use windows::Win32::System::Console::GetConsoleWindow;
@@ -261,7 +261,9 @@ fn main() {
 						.arg(&remote)
 						.arg(&new_path)
 						.spawn()
-						.expect("");
+						.unwrap()
+						.wait()
+						.unwrap();
 				}
 			}
 		},
