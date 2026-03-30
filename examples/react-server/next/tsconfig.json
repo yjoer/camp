@@ -3,8 +3,8 @@
 		"strict": false,
 		"strictNullChecks": true,
 
-		"module": "esnext",
-		"moduleResolution": "node",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
 		"resolveJsonModule": true,
 
 		"noEmit": true,

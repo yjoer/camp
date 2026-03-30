@@ -23,6 +23,7 @@ target/
 *.db-journal
 *.gen.ts
 *.pyd
+*.so
 .classpath
 .env
 .project
