@@ -2,8 +2,9 @@
 	"compilerOptions": {
 		"strict": true,
 
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"types": ["node"],
 
 		"esModuleInterop": true,
 
