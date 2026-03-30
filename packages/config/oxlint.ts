@@ -6,6 +6,7 @@ export const oxlint_config = defineConfig({
 		correctness: 'error',
 	},
 	rules: {
+		'import/default': 'off',
 		'import/named': 'error',
 		'import/no-duplicates': 'warn',
 		'import/no-named-as-default': 'warn',

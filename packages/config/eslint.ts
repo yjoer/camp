@@ -217,16 +217,19 @@ function unicorn() {
 		name: 'unicorn/recommended',
 		plugins: { unicorn: unicorn_plugin },
 		rules: {
-			'unicorn/consistent-template-literal-escape': 'off',
+			'unicorn/consistent-template-literal-escape': 'error',
 			'unicorn/expiring-todo-comments': 'error',
 			'unicorn/import-style': 'error',
 			'unicorn/isolated-functions': 'error',
 			'unicorn/no-for-loop': 'off', // x
 			'unicorn/no-unnecessary-polyfills': 'error',
+			'unicorn/no-useless-iterator-to-array': 'error',
 			'unicorn/prefer-export-from': 'error',
+			'unicorn/prefer-simple-condition-first': 'error',
 			'unicorn/prefer-single-call': 'error',
 			'unicorn/prefer-switch': 'error',
 			'unicorn/prevent-abbreviations': 'off',
+			'unicorn/switch-case-break-position': 'error',
 			'unicorn/template-indent': 'error',
 		},
 	} satisfies ConfigWithExtends;

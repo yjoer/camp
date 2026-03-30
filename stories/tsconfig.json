@@ -4,6 +4,7 @@
 
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
+		"types": ["vite/client"],
 
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
@@ -13,5 +14,6 @@
 		"target": "ES2022",
 
 		"skipLibCheck": true
-	}
+	},
+	"include": ["**/*", ".storybook/**/*"]
 }

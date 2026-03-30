@@ -9,7 +9,7 @@
 		"@xcamp/webpack": "workspace:*",
 		"cross-env": "10.1.0",
 		"tsx": "4.20.3",
-		"typescript": "5.9.3",
+		"typescript": "6.0.2",
 		"webpack": "5.105.4",
 		"webpack-cli": "6.0.1"
 	},
