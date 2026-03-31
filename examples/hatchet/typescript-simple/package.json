@@ -5,7 +5,7 @@
 		"start:worker": "node --env-file-if-exists .env worker.ts"
 	},
 	"dependencies": {
-		"@hatchet-dev/typescript-sdk": "1.1.2"
+		"@hatchet-dev/typescript-sdk": "1.19.0"
 	},
 	"devDependencies": {
 		"dotenv": "17.3.1",
