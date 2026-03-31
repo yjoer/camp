@@ -7,7 +7,7 @@
 	},
 	"dependencies": {
 		"@elastic/elasticsearch": "9.3.4",
-		"@hatchet-dev/typescript-sdk": "1.9.7"
+		"@hatchet-dev/typescript-sdk": "1.19.0"
 	},
 	"devDependencies": {
 		"dotenv": "17.3.1",

@@ -193,7 +193,7 @@ export const oxlint_config = defineConfig({
 				'typescript/no-unnecessary-type-conversion': 'off', // nursery, conflicts with react/jsx-no-leaked-render
 				'typescript/no-unnecessary-type-parameters': 'error', // nursery
 				'typescript/no-useless-default-assignment': 'error', // nursery
-				'typescript/prefer-literal-enum-members': 'error',
+				'typescript/prefer-literal-enum-member': 'error',
 				'typescript/prefer-reduce-type-parameter': 'error',
 				'typescript/prefer-return-this-type': 'error',
 				'typescript/related-getter-setter-pairs': 'error',
