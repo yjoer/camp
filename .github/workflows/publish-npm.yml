@@ -20,20 +20,19 @@ jobs:
       run:
         working-directory: ${{ github.event.inputs.package }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 24
           cache: yarn
-          cache-dependency-path: '**/package.json'
           registry-url: https://registry.npmjs.org
       - name: Install Dependencies
         run: |
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --no-immutable
+          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --immutable
       - name: Build Project Artifacts
         run: yarn build
       - name: Publish

@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           repository: KhronosGroup/SPIRV-Cross
           ref: vulkan-sdk-${{ env.VERSION }}
@@ -33,7 +33,7 @@ jobs:
       - name: Package
         run: tar -acvf spirv-cross-windows-x64.zip -C ../build/install *
       - name: Upload Artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@c6a366c94c3e0affe28c06c8df20a878f24da3cf
         with:
           name: spirv-cross-windows-x64
           path: spirv-cross-windows-x64.zip
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           repository: KhronosGroup/SPIRV-Cross
           ref: vulkan-sdk-${{ env.VERSION }}
@@ -69,7 +69,7 @@ jobs:
       - name: Set Environment
         run: echo "artifacts_path=$(realpath ../build/install)" >> $GITHUB_ENV
       - name: Upload Artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@c6a366c94c3e0affe28c06c8df20a878f24da3cf
         with:
           name: spirv-cross-linux-x64
           path: ${{ env.artifacts_path }}/spirv-cross-linux-x64.tar.gz
@@ -80,11 +80,11 @@ jobs:
     needs: [build-windows, build-linux]
     steps:
       - name: Download Windows Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@ad191675b41f6a5b46da9a048cb6893812da158b
         with:
           name: spirv-cross-windows-x64
       - name: Download Linux Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@ad191675b41f6a5b46da9a048cb6893812da158b
         with:
           name: spirv-cross-linux-x64
       - name: Release
