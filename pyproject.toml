@@ -136,11 +136,29 @@ extend = "packages/config/ruff.toml"
 	"B018",  # useless-expression
 ]
 
-[tool.tombi.format.rules]
+[tool.tombi.files]
+include = ["**/*.toml", "uv.lock"]
+
+[[tool.tombi.overrides]]
+[tool.tombi.overrides.files]
+include = ["**/*.toml"]
+
+[tool.tombi.overrides.format.rules]
 indent-style = "tab"
 
+[[tool.tombi.overrides]]
+[tool.tombi.overrides.files]
+include = ["uv.lock"]
+
+[tool.tombi.overrides.format]
+enabled = false
+
+[tool.tombi.overrides.format.rules]
+indent-style = "space"
+indent-width = 4
+line-width = 200
+
 [tool.uv]
-managed = true
 build-constraint-dependencies = ["setuptools==77.0.3"]
 conflicts = [
 	[
@@ -148,6 +166,9 @@ conflicts = [
 		{ extra = "torch-cu129" },
 	],
 ]
+managed = true
+exclude-newer = "P3D"
+exclude-newer-package = { torch = false, torchvision = false }
 
 [tool.uv.workspace]
 members = ["examples/grafana/*", "examples/http/fastapi"]
