@@ -7,16 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Vite Plus
-        uses: voidzero-dev/setup-vp@v1
+        uses: voidzero-dev/setup-vp@e34774bccb4e7d7f2e23514ca980177a71425e43
         with:
           node-version: 24
           run-install: false
           cache: true
-          cache-dependency-path: '**/package.json'
       - name: Install Dependencies
         # run: |
         #   if [ ${{ github.repository }} = "yjoer/camp" ]; then
@@ -24,7 +23,7 @@ jobs:
         #   else
         #     npm i --workspaces false --include-workspace-root true
         #   fi
-        run: yarn install --no-immutable
+        run: yarn install --immutable
       - name: Generate Types
         run: vp run -r gen-types
       - name: Oxlint

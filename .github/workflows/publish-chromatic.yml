@@ -13,23 +13,22 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 24
           cache: yarn
-          cache-dependency-path: '**/package.json'
       - name: Install Dependencies
         run: |
           PACKAGE_NAME=$(jq -r ".name" ${{ github.event.inputs.package }}/package.json)
-          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --no-immutable
+          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --immutable
       - name: Publish to Chromatic
-        uses: chromaui/action@latest
+        uses: chromaui/action@f191a0224b10e1a38b2091cefb7b7a2337009116
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: ${{ github.event.inputs.package }}
