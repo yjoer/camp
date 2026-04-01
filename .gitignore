@@ -33,8 +33,6 @@ next-env.d.ts
 pixi.lock
 pnpm-lock.yaml
 pubspec.lock
-uv.lock
-yarn.lock
 
 **/.vercel/**
 !**/.vercel/output/

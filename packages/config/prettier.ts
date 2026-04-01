@@ -25,5 +25,12 @@ export const prettier_config = {
 		options: {
 			printWidth: 120,
 		},
+	}, {
+		files: 'yarn.lock',
+		options: {
+			useTabs: false,
+			singleQuote: false,
+			parser: 'yaml',
+		},
 	}],
 } satisfies Config;
