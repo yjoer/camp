@@ -121,6 +121,7 @@ function tanstack_query() {
 			'@tanstack/query/no-rest-destructuring': 'error',
 			'@tanstack/query/no-unstable-deps': 'error',
 			'@tanstack/query/no-void-query-fn': 'error',
+			'@tanstack/query/prefer-query-options': 'error',
 			'@tanstack/query/stable-query-client': 'error',
 		},
 	} satisfies ConfigWithExtends;

@@ -8,6 +8,6 @@
 		"h3": "2.0.1-rc.14"
 	},
 	"devDependencies": {
-		"@types/node": "25.5.0"
+		"@types/node": "25.5.2"
 	}
 }
