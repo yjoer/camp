@@ -18,7 +18,7 @@ export const Route = createFileRoute('/worker-offscreen-canvas')({
 function OffscreenCanvas() {
 	const ref = useRef<HTMLDivElement>(null!);
 	const worker_ref = useRef<CanvasWorkerClient>(null);
-	const [date, set_date] = useState<string>('');
+	const [date, set_date] = useState('');
 
 	const handle_click = () => {
 		if (!worker_ref.current) return;
@@ -62,6 +62,7 @@ function OffscreenCanvas() {
 	);
 }
 
+// oxlint-disable-next-line typescript/no-unnecessary-type-arguments
 const transferables = new WeakSet<Transferable>();
 
 function get_worker_client(): CanvasWorkerClient {
