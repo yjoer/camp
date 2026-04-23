@@ -9,8 +9,8 @@
 		"@xcamp/webpack": "workspace:*",
 		"cross-env": "10.1.0",
 		"tsx": "4.21.0",
-		"typescript": "6.0.2",
-		"webpack": "5.105.4",
+		"typescript": "6.0.3",
+		"webpack": "5.106.2",
 		"webpack-cli": "7.0.2"
 	},
 	"dependenciesMeta": {
