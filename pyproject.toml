@@ -27,10 +27,10 @@ dependencies = [
 
 [project.optional-dependencies]
 distributed = [
-	"pyspark==4.1.1",
+	"pyspark==4.2.0.dev4",
 ]
 gym = [
-	"gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.2.3",
+	"gymnasium[atari,box2d,classic-control,mujoco,toy-text]==1.3.0",
 ]
 tensorflow = [
 	"tensorflow==2.20.0",
@@ -60,7 +60,6 @@ tree = [
 	"xgboost==3.2.0",
 ]
 vision = [
-	"mmcv>=2.2.0",
 	"mmdet>=3.3.0",
 	"mmengine>=0.10.4",
 	"motmetrics @ git+https://github.com/cheind/py-motmetrics@057504b",
@@ -74,22 +73,22 @@ vision = [
 dev = [
 	# "jedi-language-server==0.46.0",
 	# "jupyterlab-lsp==5.2.0",
-	"jjava==1.0a6",
-	"jupyter-collaboration==4.2.1",
+	"jjava==1.0a7",
+	"jupyter-collaboration==4.3.0",
 	"jupyter-ruff @ git+https://github.com/leotaku/jupyter-ruff@991d3a5",
-	"jupyterlab==4.5.5",
-	"jupyterlab-git==0.51.4",
+	"jupyterlab==4.5.6",
+	"jupyterlab-git==0.52.0",
 	"jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
 	"jupytext==1.19.1",
-	"jupyverse[jupyterlab,auth]==0.13.4",
-	"marimo==0.20.2",
-	"maturin==1.12.4",
-	"notebook-intelligence==4.3.1",
-	"pytest==9.0.2",
+	"jupyverse[jupyterlab,auth]==0.14.9",
+	"marimo==0.23.1",
+	"maturin==1.13.1",
+	"notebook-intelligence==4.5.0",
+	"pytest==9.0.3",
 	"pytest-xdist==3.8.0",
-	"ruff==0.15.4",
-	"scalene==1.5.55",
-	"ty==0.0.19",
+	"ruff==0.15.11",
+	"scalene==2.2.1",
+	"ty==0.0.31",
 ]
 
 [build-system]
@@ -159,7 +158,7 @@ indent-width = 4
 line-width = 200
 
 [tool.uv]
-build-constraint-dependencies = ["setuptools==77.0.3"]
+build-constraint-dependencies = []
 conflicts = [
 	[
 		{ extra = "torch" },
@@ -168,7 +167,7 @@ conflicts = [
 ]
 managed = true
 exclude-newer = "P3D"
-exclude-newer-package = { torch = false, torchvision = false }
+exclude-newer-package = { gymnasium = false }
 
 [tool.uv.workspace]
 members = ["examples/grafana/*", "examples/http/fastapi"]
