@@ -65,13 +65,9 @@ function typescript() {
 	return {
 		name: 'typescript',
 		files: ['**/*.{ts,cts,mts,tsx}'],
-		plugins: { '@typescript-eslint': ts.plugin },
 		extends: [imp.flatConfigs.typescript],
 		languageOptions: {
 			parser: ts.parser,
-		},
-		rules: {
-			'@typescript-eslint/member-ordering': 'error',
 		},
 	} satisfies ConfigWithExtends;
 }
@@ -86,7 +82,6 @@ function react() {
 		},
 		rules: {
 			'react/no-deprecated': 'error',
-			'react/prop-types': 'error',
 			//
 			'react/jsx-no-leaked-render': 'error',
 			'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }],
@@ -167,6 +162,9 @@ function tailwind() {
 		rules: {
 			'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100, preferSingleLine: true, indent: 'tab' }],
 			'better-tailwindcss/enforce-consistent-class-order': 'warn',
+			'better-tailwindcss/enforce-consistent-variant-order': 'warn',
+			'better-tailwindcss/enforce-consistent-variable-syntax': 'warn',
+			'better-tailwindcss/enforce-consistent-important-position': 'warn',
 			'better-tailwindcss/enforce-canonical-classes': 'warn',
 			'better-tailwindcss/no-duplicate-classes': 'warn',
 			'better-tailwindcss/no-deprecated-classes': 'warn',
@@ -218,13 +216,11 @@ function unicorn() {
 		name: 'unicorn/recommended',
 		plugins: { unicorn: unicorn_plugin },
 		rules: {
-			'unicorn/consistent-template-literal-escape': 'error',
 			'unicorn/expiring-todo-comments': 'error',
 			'unicorn/import-style': 'error',
 			'unicorn/isolated-functions': 'error',
 			'unicorn/no-for-loop': 'off', // x
 			'unicorn/no-unnecessary-polyfills': 'error',
-			'unicorn/no-useless-iterator-to-array': 'error',
 			'unicorn/prefer-export-from': 'error',
 			'unicorn/prefer-simple-condition-first': 'error',
 			'unicorn/prefer-single-call': 'error',
