@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
 import { createContext, useContextSelector, useContextUpdate } from 'use-context-selector';

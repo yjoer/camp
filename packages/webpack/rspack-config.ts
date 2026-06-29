@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
-// import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 import { rspack } from '@rspack/core';
 import { merge } from 'webpack-merge';
@@ -25,7 +25,7 @@ export const getServerConfig = ({
 	entry = [],
 	mode,
 	projectPath,
-	// configPath,
+	configPath,
 	transpilePackages = [],
 	minimize = false,
 }: Options): Configuration => {
@@ -90,12 +90,14 @@ export const getServerConfig = ({
 			new rspack.HotModuleReplacementPlugin(),
 			new RunScriptPlugin(),
 		],
-		// cache: {
-		//   buildDependencies: {
-		//     config: [fileURLToPath(import.meta.url), configPath],
-		//   },
-		//   type: 'filesystem',
-		// },
+		cache: {
+			buildDependencies: [
+				fileURLToPath(import.meta.url),
+				configPath,
+				path.join(projectPath, 'tsconfig.json'),
+			],
+			type: 'persistent',
+		},
 		externals: [
 			// nodeExternals({
 			//   allowlist: ['@rspack/core/hot/poll?100', ...transpilePackages],
@@ -108,12 +110,10 @@ export const getServerConfig = ({
 			path: path.join(projectPath, '.camp', 'build'),
 			filename: '[name].js',
 			clean: true,
+			module: true,
 		},
 		optimization: {
 			minimize,
-		},
-		experiments: {
-			outputModule: true,
 		},
 	} satisfies Configuration;
 

@@ -69,7 +69,7 @@ export class OptionalModulesResolverPlugin {
 		const dirname = path.dirname(fileURLToPath(import.meta.url));
 		const resolve = resolver.resolve;
 
-		resolver.resolve = function (context, fp, request, resolveContext, callback) {
+		resolver.resolve = function (this: Resolver, context, fp, request: string, resolveContext, callback) {
 			const boundResolve = resolve.bind(this);
 
 			boundResolve(context, fp, request, resolveContext, (err, innerPath, result) => {
@@ -116,6 +116,6 @@ export class OptionalModulesResolverPlugin {
 				callback(null, path.join(dirname, `__missing.js?${request}`), ctx);
 				self.logger.warn(`${request} is missing, using __missing.js instead.`);
 			});
-		};
+		} as Resolver['resolve'];
 	}
 }

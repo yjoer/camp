@@ -1,5 +1,4 @@
 /* eslint-disable perfectionist/sort-switch-case */
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
