@@ -28,7 +28,6 @@ jobs:
         with:
           node-version: 24
           cache: yarn
-          registry-url: https://registry.npmjs.org
       - name: Install Dependencies
         run: |
           PACKAGE_NAME=$(jq -r ".name" package.json)
@@ -39,3 +38,4 @@ jobs:
         run: yarn npm publish --provenance --access public
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          YARN_NPM_PUBLISH_REGISTRY: https://registry.npmjs.org
