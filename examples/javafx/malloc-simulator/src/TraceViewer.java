@@ -98,19 +98,17 @@ class TracesTab extends VBox {
 	}
 
 	void remove_job(String name) {
-		jobs
-			.getChildren()
-			.removeIf(node -> {
-				if (node instanceof HBox hbox) {
-					if (hbox.getChildren().getFirst() instanceof Label label) {
-						if (label.getText().equals(name)) {
-							return true;
-						}
+		jobs.getChildren().removeIf(node -> {
+			if (node instanceof HBox hbox) {
+				if (hbox.getChildren().getFirst() instanceof Label label) {
+					if (label.getText().equals(name)) {
+						return true;
 					}
 				}
+			}
 
-				return false;
-			});
+			return false;
+		});
 
 		_resize_children(jobs);
 	}
@@ -133,19 +131,17 @@ class TracesTab extends VBox {
 	}
 
 	void remove_waiting_job(String name) {
-		waiting_list
-			.getChildren()
-			.removeIf(node -> {
-				if (node instanceof HBox hbox) {
-					if (hbox.getChildren().getFirst() instanceof Label label) {
-						if (label.getText().equals(name)) {
-							return true;
-						}
+		waiting_list.getChildren().removeIf(node -> {
+			if (node instanceof HBox hbox) {
+				if (hbox.getChildren().getFirst() instanceof Label label) {
+					if (label.getText().equals(name)) {
+						return true;
 					}
 				}
+			}
 
-				return false;
-			});
+			return false;
+		});
 
 		_resize_children(waiting_list);
 	}

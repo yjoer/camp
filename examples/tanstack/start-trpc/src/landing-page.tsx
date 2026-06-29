@@ -15,21 +15,13 @@ function LandingPage() {
 	const trpc = useTRPC();
 	const { data } = useSuspenseQuery(trpc.public.queryOptions());
 
-	const handleSetCookie = () => {
-		cookies.set('session_token', '123', { expires: 365 });
-	};
-
-	const handleClearCookie = () => {
-		cookies.remove('session_token');
-	};
-
 	return (
 		<div className="mx-2 my-1">
 			<div className="flex gap-2">
-				<button className="font-medium" onClick={handleSetCookie}>
+				<button className="font-medium" onClick={handle_set_cookie}>
 					Set Cookie
 				</button>
-				<button className="font-medium" onClick={handleClearCookie}>
+				<button className="font-medium" onClick={handle_clear_cookie}>
 					Clear Cookie
 				</button>
 			</div>
@@ -42,6 +34,14 @@ function LandingPage() {
 		</div>
 	);
 }
+
+const handle_set_cookie = () => {
+	cookies.set('session_token', '123', { expires: 365 });
+};
+
+const handle_clear_cookie = () => {
+	cookies.remove('session_token');
+};
 
 function Protected() {
 	const trpc = useTRPC();

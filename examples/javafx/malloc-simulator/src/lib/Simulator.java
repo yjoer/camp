@@ -203,7 +203,7 @@ public class Simulator implements Iterator<ArrayList<SimulatorOps.Ops>> {
 		};
 
 		Runnable compact = () -> {
-			DynamicPartitionScheme dp = ((DynamicPartitionScheme) partitioner);
+			DynamicPartitionScheme dp = (DynamicPartitionScheme) partitioner;
 			DynamicPartitionScheme.CompactionResult compaction_result = dp.compact();
 
 			if (compaction_result.updated().isEmpty()) return;

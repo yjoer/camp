@@ -145,7 +145,7 @@ export const oxlint_config = defineConfig({
 		'no-undef': 'off', // nursery
 		'no-unexpected-multiline': 'error',
 		'no-unreachable': 'error', // nursery
-		'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_|stylex' }], // handles react/jsx-uses-vars
+		'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }], // handles react/jsx-uses-vars
 		'no-useless-constructor': 'off', // ts strict, not type-aware
 		'preserve-caught-error': 'error',
 		//

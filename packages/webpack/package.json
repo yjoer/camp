@@ -1,6 +1,6 @@
 {
 	"name": "@xcamp/webpack",
-	"version": "2026.3.3",
+	"version": "2026.6.0",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -22,18 +22,18 @@
 	},
 	"dependencies": {
 		"@vercel/webpack-asset-relocator-loader": "1.10.0",
-		"ts-loader": "9.5.7",
+		"ts-loader": "9.6.2",
 		"webpack-merge": "^6",
 		"webpack-node-externals": "3.0.0"
 	},
 	"devDependencies": {
-		"@rspack/core": "1.7.11",
+		"@rspack/core": "2.1.0",
 		"@types/webpack-node-externals": "3.0.4",
 		"typescript": "6.0.3",
-		"webpack": "5.106.2"
+		"webpack": "5.108.1"
 	},
 	"peerDependencies": {
-		"@rspack/core": "^1",
+		"@rspack/core": "^2",
 		"webpack": "^5",
 		"webpack-merge": "^6"
 	},

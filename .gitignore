@@ -31,7 +31,6 @@ target/
 Cargo.lock
 next-env.d.ts
 pixi.lock
-pnpm-lock.yaml
 pubspec.lock
 
 **/.vercel/**

@@ -1,7 +1,6 @@
 import { createORPCClient } from '@orpc/client';
 import { RPCLink } from '@orpc/client/message-port';
 import { MessageType } from '@orpc/standard-server-peer';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 

@@ -1,5 +1,4 @@
 import { configureStore, createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
