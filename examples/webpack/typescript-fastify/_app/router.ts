@@ -1,6 +1,6 @@
-import { bcryptHash, chunked, hello, missingPackages, stream } from '../mods/handlers.ts';
-
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+
+import { bcryptHash, chunked, hello, missingPackages, stream } from '../mods/handlers.ts';
 
 // oxlint-disable-next-line typescript/require-await
 export const router: FastifyPluginAsyncZod = async (app, _opts) => {

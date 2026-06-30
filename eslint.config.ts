@@ -1,8 +1,7 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
 // oxlint-disable import/no-default-export
-import { defineConfig } from 'eslint/config';
-
 import { defineImportResolver, eslint_config } from '@xcamp/config/eslint.ts';
+import { defineConfig } from 'eslint/config';
 
 process.chdir(import.meta.dirname);
 

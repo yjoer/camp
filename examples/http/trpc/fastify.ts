@@ -1,10 +1,10 @@
 // oxlint-disable no-console
 // oxlint-disable no-process-exit
+import type { FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify';
+
 import { initTRPC } from '@trpc/server';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 import { fastify } from 'fastify';
-
-import type { FastifyTRPCPluginOptions } from '@trpc/server/adapters/fastify';
 
 const t = initTRPC.create();
 const router = t.router;

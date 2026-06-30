@@ -1,8 +1,7 @@
 // oxlint-disable no-console
-import { createServer } from 'node:http';
-
 import { OpenAPIHandler } from '@orpc/openapi/node';
 import { os } from '@orpc/server';
+import { createServer } from 'node:http';
 
 const router = {
 	hello: os.route({ method: 'GET', path: '/' }).handler(function () {

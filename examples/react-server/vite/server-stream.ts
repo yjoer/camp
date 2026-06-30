@@ -1,4 +1,7 @@
 // oxlint-disable no-console
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { ViteDevServer } from 'vite';
+
 import { createReadStream } from 'node:fs';
 import fs from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -6,8 +9,6 @@ import path from 'node:path';
 import { Transform } from 'node:stream';
 
 import type * as EntryServer from './src/entry-server';
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { ViteDevServer } from 'vite';
 
 const is_development = process.env.NODE_ENV !== 'production';
 const server = createServer();

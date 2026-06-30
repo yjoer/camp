@@ -1,8 +1,8 @@
 // oxlint-disable import/no-default-export
+import type { Meta, StoryObj } from '@storybook/react-vite';
+
 import { cva } from 'cva';
 import { useRef, useState } from 'react';
-
-import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
 	title: 'Components/Sidebar',

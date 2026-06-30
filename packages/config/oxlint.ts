@@ -7,6 +7,7 @@ export const oxlint_config = defineConfig({
 	},
 	rules: {
 		'import/default': 'off',
+		'import/export': 'error', // nursery
 		'import/named': 'error',
 		'import/no-duplicates': 'warn',
 		'import/no-named-as-default': 'warn',

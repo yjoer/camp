@@ -1,10 +1,9 @@
 // oxlint-disable no-console
+import * as asciichart from 'asciichart';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { mkdir, open, readFile, unlink } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-
-import * as asciichart from 'asciichart';
 
 const fp = path.join(os.tmpdir(), 'camp', 'examples-node-basic', 'test.bin');
 

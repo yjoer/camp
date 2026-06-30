@@ -1,10 +1,9 @@
 // oxlint-disable no-process-exit
 // oxlint-disable no-console
-import { createServer } from 'node:http';
-
 import { os } from '@orpc/server';
 import { RPCHandler } from '@orpc/server/node';
 import { fastify } from 'fastify';
+import { createServer } from 'node:http';
 
 const router = {
 	hello: os.route({ method: 'GET' }).handler(function () {

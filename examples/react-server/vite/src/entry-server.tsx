@@ -1,8 +1,8 @@
+import type { RenderToPipeableStreamOptions } from 'react-dom/server';
+
 import ReactDOMServer from 'react-dom/server';
 
 import { App } from './app';
-
-import type { RenderToPipeableStreamOptions } from 'react-dom/server';
 
 export function render() {
 	return ReactDOMServer.renderToString(<App />);

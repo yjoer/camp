@@ -1,15 +1,15 @@
 // oxlint-disable no-process-exit
 // oxlint-disable no-console
+import type {
+	CreateFastifyContextOptions,
+	FastifyTRPCPluginOptions,
+} from '@trpc/server/adapters/fastify';
+
 import { fastifyCookie } from '@fastify/cookie';
 import { fastifyCors } from '@fastify/cors';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 import { fastify } from 'fastify';
-
-import type {
-	CreateFastifyContextOptions,
-	FastifyTRPCPluginOptions,
-} from '@trpc/server/adapters/fastify';
 
 const createContext = (opts: CreateFastifyContextOptions) => {
 	return {

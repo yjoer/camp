@@ -3,13 +3,12 @@
 // oxlint-disable no-this-alias
 // oxlint-disable no-this-assignment
 // oxlint-disable typescript/unbound-method
+import type { Compiler, Resolver } from 'webpack';
+
+import relocateLoader from '@vercel/webpack-asset-relocator-loader';
 import cp from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import relocateLoader from '@vercel/webpack-asset-relocator-loader';
-
-import type { Compiler, Resolver } from 'webpack';
 
 export class AssetRelocatorCachePlugin {
 	apply(compiler: Compiler) {

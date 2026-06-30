@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 // oxlint-disable no-console
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import type { VirtualRootRoute } from '@tanstack/virtual-file-routes';
 
 /* eslint-disable-next-line import-x/no-extraneous-dependencies */
 import { Generator, getConfig } from '@tanstack/router-generator';
-
-import type { VirtualRootRoute } from '@tanstack/virtual-file-routes';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const cwd = process.cwd();
 const vite_config_file = path.resolve(cwd, 'vite.config.ts');

@@ -1,11 +1,11 @@
+import type { PayloadAction } from '@reduxjs/toolkit';
+
 import { configureStore, createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
 
 import { button_styles } from '@/components/button';
-
-import type { PayloadAction } from '@reduxjs/toolkit';
 
 export const Route = createFileRoute('/external-stores/redux-toolkit')({
 	component: ReduxToolkit,

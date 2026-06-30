@@ -1,4 +1,3 @@
-/* eslint-disable import-x/extensions */
 /* eslint-disable import-x/no-unresolved */
 import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';
@@ -9,9 +8,9 @@ import { createTRPCClient, httpBatchLink } from '@trpc/client';
 
 import { TRPCProvider } from '@/lib/trpc-provider';
 
-import { routeTree } from './routeTree.gen';
-
 import type { AppRouter } from '../server';
+
+import { routeTree } from './routeTree.gen';
 
 export function getRouter() {
 	const queryClient = new QueryClient();
