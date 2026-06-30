@@ -48,7 +48,6 @@ async function handler(req: IncomingMessage, res: ServerResponse) {
 			}
 
 			// @ts-expect-error build-time generated
-			// eslint-disable-next-line import-x/no-unresolved
 			({ render } = await import('./.output/server/entry-server.js') as typeof EntryServer);
 		}
 
