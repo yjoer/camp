@@ -132,7 +132,6 @@ export const oxlint_config = defineConfig({
 		'unicorn/switch-case-braces': 'error',
 		'unicorn/text-encoding-identifier-case': 'error',
 		'unicorn/throw-new-error': 'error',
-		'getter-return': 'error', // nursery
 		'no-array-constructor': 'error', // ts recommended
 		'no-case-declarations': 'error',
 		'no-empty': 'error',
@@ -161,7 +160,7 @@ export const oxlint_config = defineConfig({
 			// recommended
 			'typescript/ban-ts-comment': 'error',
 			'typescript/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
-			'typescript/no-explicit-any': 'off',
+			'typescript/no-explicit-any': 'warn',
 			'typescript/no-misused-promises': 'error',
 			'typescript/no-namespace': 'error',
 			'typescript/no-require-imports': 'error',
