@@ -8,7 +8,6 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import tailwind_plugin from 'eslint-plugin-better-tailwindcss';
 import compat_plugin from 'eslint-plugin-compat';
 import * as imp from 'eslint-plugin-import-x';
-import jsx_a11y_plugin from 'eslint-plugin-jsx-a11y';
 import perfectionist_plugin from 'eslint-plugin-perfectionist';
 import react_plugin from 'eslint-plugin-react';
 import react_hooks_plugin from 'eslint-plugin-react-hooks';
@@ -175,42 +174,6 @@ function tailwind() {
 	} satisfies ConfigWithExtends;
 }
 
-function jsx_a11y() {
-	return {
-		name: 'jsx-a11y/recommended',
-		plugins: { 'jsx-a11y': jsx_a11y_plugin },
-		rules: {
-			'jsx-a11y/interactive-supports-focus': ['error', {
-				tabbable: ['button', 'checkbox', 'link', 'searchbox', 'spinbutton', 'switch', 'textbox'],
-			}],
-			'jsx-a11y/no-interactive-element-to-noninteractive-role': ['error', {
-				tr: ['none', 'presentation'],
-				canvas: ['img'],
-			}],
-			'jsx-a11y/no-noninteractive-element-interactions': ['error', {
-				handlers: ['onClick', 'onError', 'onLoad', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
-				alert: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
-				body: ['onError', 'onLoad'],
-				dialog: ['onKeyUp', 'onKeyDown', 'onKeyPress'],
-				iframe: ['onError', 'onLoad'],
-				img: ['onError', 'onLoad'],
-			}],
-			'jsx-a11y/no-noninteractive-element-to-interactive-role': ['error', {
-				ul: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
-				ol: ['listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid'],
-				li: ['menuitem', 'menuitemradio', 'menuitemcheckbox', 'option', 'row', 'tab', 'treeitem'],
-				table: ['grid'],
-				td: ['gridcell'],
-				fieldset: ['radiogroup', 'presentation'],
-			}],
-			'jsx-a11y/no-static-element-interactions': ['error', {
-				allowExpressionValues: true,
-				handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
-			}],
-		},
-	} satisfies ConfigWithExtends;
-}
-
 function unicorn() {
 	return {
 		name: 'unicorn/recommended',
@@ -346,7 +309,6 @@ export const eslint_config = defineConfig([
 	tanstack_router(),
 	stylex(),
 	tailwind(),
-	jsx_a11y(),
 	unicorn(),
 	stylistic(),
 	perfectionist(),
