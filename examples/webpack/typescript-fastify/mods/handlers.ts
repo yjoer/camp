@@ -38,7 +38,6 @@ export function stream(request: FastifyRequest, reply: FastifyReply) {
 export async function missingPackages(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		// @ts-expect-error missing package
-		// eslint-disable-next-line import-x/no-unresolved
 		await import('missing-package');
 	} catch (error) {
 		reply.code(500).send({ error: (error as Error).message });

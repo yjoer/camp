@@ -1,4 +1,3 @@
-/* eslint-disable import-x/no-unresolved */
 import { createRouter } from '@tanstack/solid-router';
 
 import { routeTree } from './routeTree.gen';

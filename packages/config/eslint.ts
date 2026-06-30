@@ -39,7 +39,6 @@ function import_x() {
 					'**/webpack.config.*s',
 				],
 			}],
-			'import-x/no-unresolved': ['error', { ignore: [String.raw`^@\/build`] }], // x
 		},
 		settings: {
 			'import-x/resolver-next': [createTypeScriptImportResolver()],
@@ -312,12 +311,6 @@ export const eslint_config = defineConfig([
 		files: ['**/*.{js,cjs,mjs,ts,cts,mts}'],
 		languageOptions: {
 			globals: { ...globals.node },
-		},
-	},
-	{
-		files: ['**/router.tsx'],
-		linterOptions: {
-			reportUnusedDisableDirectives: false,
 		},
 	},
 ]);
