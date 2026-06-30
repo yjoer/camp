@@ -1,8 +1,8 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
+
 import { about } from './handlers/about.ts';
 import { home } from './handlers/home.ts';
 import { posts } from './handlers/posts.ts';
-
-import type { IncomingMessage, ServerResponse } from 'node:http';
 
 export function router(req: IncomingMessage, res: ServerResponse) {
 	if (req.url === '/') {

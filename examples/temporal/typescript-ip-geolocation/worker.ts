@@ -1,8 +1,7 @@
 // oxlint-disable no-console
 // oxlint-disable no-process-exit
-import { fileURLToPath } from 'node:url';
-
 import { NativeConnection, Worker } from '@temporalio/worker';
+import { fileURLToPath } from 'node:url';
 
 import * as activities from './activities.ts';
 

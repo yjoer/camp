@@ -1,3 +1,5 @@
+import type { ConfigWithExtends, ConfigWithExtendsArray, Plugin } from '@eslint/config-helpers';
+
 import stylex_plugin from '@stylexjs/eslint-plugin';
 import stylistic_plugin from '@stylistic/eslint-plugin';
 import query_plugin from '@tanstack/eslint-plugin-query';
@@ -9,6 +11,7 @@ import tailwind_plugin from 'eslint-plugin-better-tailwindcss';
 import compat_plugin from 'eslint-plugin-compat';
 import * as imp from 'eslint-plugin-import-x';
 import perfectionist_plugin from 'eslint-plugin-perfectionist';
+import { Alphabet } from 'eslint-plugin-perfectionist/alphabet';
 import react_plugin from 'eslint-plugin-react';
 import react_hooks_plugin from 'eslint-plugin-react-hooks';
 import react_you_might_not_need_an_effect_plugin from 'eslint-plugin-react-you-might-not-need-an-effect';
@@ -16,18 +19,11 @@ import unicorn_plugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import ts from 'typescript-eslint';
 
-import type { ConfigWithExtends, ConfigWithExtendsArray, Plugin } from '@eslint/config-helpers';
-
 function import_x() {
 	return {
 		name: 'import/recommended',
 		plugins: { 'import-x': imp.importX },
 		rules: {
-			'import-x/export': 'error', // nursery
-			// 'import-x/extensions': [
-			//   'error',
-			//   { js: 'ignorePackages', jsx: 'never', ts: 'ignorePackages', tsx: 'never' },
-			// ],
 			'import-x/no-extraneous-dependencies': ['error', {
 				devDependencies: [
 					'**/babel.config.*s',
@@ -44,15 +40,6 @@ function import_x() {
 				],
 			}],
 			'import-x/no-unresolved': ['error', { ignore: [String.raw`^@\/build`] }], // x
-			'import-x/order': ['error', {
-				'alphabetize': { order: 'asc' },
-				'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-				'pathGroups': [
-					{ pattern: '@/**', group: 'internal' },
-				],
-				'pathGroupsExcludedImportTypes': ['type'],
-				'newlines-between': 'always',
-			}],
 		},
 		settings: {
 			'import-x/resolver-next': [createTypeScriptImportResolver()],
@@ -253,6 +240,14 @@ function perfectionist() {
 			'perfectionist/sort-array-includes': 'warn',
 			'perfectionist/sort-enums': 'warn',
 			'perfectionist/sort-heritage-clauses': 'warn',
+			'perfectionist/sort-imports': ['error', {
+				type: 'custom',
+				alphabet: Alphabet.generateRecommendedAlphabet()
+				.sortByNaturalSort()
+				.placeCharacterBefore({ characterBefore: '/', characterAfter: '-' })
+				.placeCharacterBefore({ characterBefore: '.', characterAfter: '/' })
+				.getCharacters(),
+			}],
 			'perfectionist/sort-interfaces': ['warn', {
 				type: 'unsorted',
 				groups: ['property', 'method'],

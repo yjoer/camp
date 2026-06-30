@@ -1,3 +1,5 @@
+import type { SearchDriverOptions } from '@elastic/search-ui';
+
 import {
 	ErrorBoundary,
 	Facet,
@@ -13,8 +15,6 @@ import {
 import { Layout } from '@elastic/react-search-ui-views';
 import ElasticsearchAPIConnector from '@elastic/search-ui-elasticsearch-connector';
 import '@elastic/react-search-ui-views/lib/styles/styles.css';
-
-import type { SearchDriverOptions } from '@elastic/search-ui';
 
 const connector = new ElasticsearchAPIConnector({
 	host: import.meta.env.VITE_ELASTICSEARCH_HOST as string,

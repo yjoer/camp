@@ -1,10 +1,10 @@
+import type { StateCreator } from 'zustand';
+
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { create } from 'zustand';
 
 import { button_styles } from '@/components/button';
-
-import type { StateCreator } from 'zustand';
 
 export const Route = createFileRoute('/external-stores/zustand')({
 	component: Zustand,

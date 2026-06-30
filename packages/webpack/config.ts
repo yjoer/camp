@@ -1,14 +1,13 @@
+import type { Configuration } from 'webpack';
+
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import nodeExternals from 'webpack-node-externals';
 
 import { AssetRelocatorCachePlugin, OptionalModulesPlugin, RunScriptPlugin } from './plugins.js';
-
-import type { Configuration } from 'webpack';
 
 const require = createRequire(import.meta.url);
 

@@ -1,4 +1,3 @@
-/* eslint-disable import-x/extensions */
 /* eslint-disable import-x/no-unresolved */
 import { createRouter } from '@tanstack/react-router';
 

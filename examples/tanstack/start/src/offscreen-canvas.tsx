@@ -1,14 +1,15 @@
+import type { RouterClient } from '@orpc/server';
+
 import { createORPCClient } from '@orpc/client';
 import { RPCLink } from '@orpc/client/message-port';
 import { MessageType } from '@orpc/standard-server-peer';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 
+import type { router } from '@/lib/canvas-worker';
+
 import { button_styles } from '@/components/button';
 import CanvasWorker from '@/lib/canvas-worker?worker';
-
-import type { router } from '@/lib/canvas-worker';
-import type { RouterClient } from '@orpc/server';
 
 export const Route = createFileRoute('/worker-offscreen-canvas')({
 	component: OffscreenCanvas,

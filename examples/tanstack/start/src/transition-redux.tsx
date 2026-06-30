@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import type { Action, ThunkAction } from '@reduxjs/toolkit';
+import type { TypedUseSelectorHook } from 'react-redux';
+
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
 import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
 
 import { button_styles } from '@/components/button';
-
-import type { Action, ThunkAction } from '@reduxjs/toolkit';
-import type { TypedUseSelectorHook } from 'react-redux';
 
 export const Route = createFileRoute('/transition-redux')({
 	component: TransitionRedux,

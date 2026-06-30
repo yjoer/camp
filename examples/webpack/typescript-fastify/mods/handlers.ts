@@ -1,9 +1,8 @@
-import { Readable } from 'node:stream';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import bcrypt from 'bcrypt';
+import { Readable } from 'node:stream';
 import { z } from 'zod/v4';
-
-import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export function hello(request: FastifyRequest, reply: FastifyReply) {
 	reply.send({ hello: 'world' });

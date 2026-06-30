@@ -1,11 +1,11 @@
+import type { FallbackProps } from 'react-error-boundary';
+
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import cookies from 'js-cookie';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { useTRPC } from '@/lib/trpc-provider';
-
-import type { FallbackProps } from 'react-error-boundary';
 
 export const Route = createFileRoute('/')({
 	component: LandingPage,

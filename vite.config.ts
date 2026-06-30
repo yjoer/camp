@@ -1,7 +1,6 @@
 // oxlint-disable import/no-default-export
-import { defineConfig } from 'vite-plus';
-
 import { oxlint_config } from '@xcamp/config/oxlint.ts';
+import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
 	lint: {

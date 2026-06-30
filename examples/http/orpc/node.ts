@@ -1,8 +1,7 @@
 // oxlint-disable no-console
-import { createServer } from 'node:http';
-
 import { os } from '@orpc/server';
 import { RPCHandler } from '@orpc/server/node';
+import { createServer } from 'node:http';
 
 const router = {
 	hello: os.route({ method: 'GET' }).handler(function () {

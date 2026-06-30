@@ -1,11 +1,11 @@
 // oxlint-disable import/no-default-export
+import type { Config } from 'postcss-load-config';
+
 import stylex from '@stylexjs/postcss-plugin';
 import autoprefixer from 'autoprefixer';
 
 // @ts-expect-error ext
 import { babelConfig } from './vite.config.ts';
-
-import type { Config } from 'postcss-load-config';
 
 const config = {
 	plugins: [

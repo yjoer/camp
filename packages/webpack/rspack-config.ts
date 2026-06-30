@@ -1,14 +1,13 @@
+import type { Configuration } from '@rspack/core';
+
+import { rspack } from '@rspack/core';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-import { rspack } from '@rspack/core';
 import { merge } from 'webpack-merge';
 // import nodeExternals from 'webpack-node-externals';
 
 import { AssetRelocatorCachePlugin, RunScriptPlugin } from './plugins.js';
-
-import type { Configuration } from '@rspack/core';
 
 const require = createRequire(import.meta.url);
 
