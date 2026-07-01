@@ -11,7 +11,7 @@
 	"dependencies": {
 		"@fastify/cookie": "11.0.2",
 		"@fastify/cors": "11.2.0",
-		"@tanstack/react-query": "5.101.1",
+		"@tanstack/react-query": "5.101.2",
 		"@tanstack/react-router": "1.170.16",
 		"@tanstack/react-router-ssr-query": "1.167.1",
 		"@tanstack/react-start": "1.168.26",
@@ -19,7 +19,7 @@
 		"@trpc/client": "11.18.0",
 		"@trpc/server": "11.18.0",
 		"@trpc/tanstack-react-query": "11.18.0",
-		"fastify": "5.8.5",
+		"fastify": "5.9.0",
 		"js-cookie": "3.0.8",
 		"react": "19.2.7",
 		"react-dom": "19.2.7",
