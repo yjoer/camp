@@ -84,5 +84,5 @@ function Rectangle() {
 		};
 	}, []);
 
-	return <div ref={ref} className="mx-2 my-1"></div>;
+	return <div ref={ref} className="mx-2 my-1" />;
 }

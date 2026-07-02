@@ -202,8 +202,9 @@ function stylistic() {
 					MemberExpression: 0,
 					offsetTernaryExpressions: true,
 				}],
-				'@stylistic/jsx-one-expression-per-line': ['error', { allow: 'non-jsx' }],
 				'@stylistic/jsx-closing-bracket-location': ['error', { nonEmpty: 'after-props', selfClosing: 'tag-aligned' }],
+				'@stylistic/jsx-one-expression-per-line': ['error', { allow: 'non-jsx' }],
+				'@stylistic/jsx-self-closing-comp': 'error',
 				'@stylistic/jsx-wrap-multilines': ['error', {
 					declaration: 'parens-new-line',
 					assignment: 'parens-new-line',
@@ -218,15 +219,14 @@ function stylistic() {
 				'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 				'@stylistic/no-tabs': ['error', { allowIndentationTabs: true }],
 				'@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
+				'@stylistic/quote-props': ['error', 'as-needed'],
 				'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
 			},
 		},
 		{
 			name: 'stylistic/react',
 			files: ['**/*.{jsx,tsx}'],
-			rules: {
-				'@stylistic/quote-props': ['error', 'as-needed'],
-			},
+			rules: {},
 		},
 	] satisfies ConfigWithExtendsArray;
 }
