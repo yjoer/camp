@@ -196,6 +196,7 @@ function stylistic() {
 			plugins: { '@stylistic': stylistic_plugin },
 			rules: {
 				...config.rules,
+				'@stylistic/implicit-arrow-linebreak': ['error', 'beside'],
 				'@stylistic/indent': ['error', 'tab', {
 					ignoredNodes: ['TSUnionType', 'TSIntersectionType'],
 					SwitchCase: 1,
