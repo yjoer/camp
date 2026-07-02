@@ -196,6 +196,7 @@ function stylistic() {
 			plugins: { '@stylistic': stylistic_plugin },
 			rules: {
 				...config.rules,
+				'@stylistic/array-bracket-newline': ['error', 'consistent'],
 				'@stylistic/implicit-arrow-linebreak': ['error', 'beside'],
 				'@stylistic/indent': ['error', 'tab', {
 					ignoredNodes: ['TSUnionType', 'TSIntersectionType'],
@@ -219,6 +220,7 @@ function stylistic() {
 				'@stylistic/multiline-ternary': ['error', 'never'],
 				'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 				'@stylistic/no-tabs': ['error', { allowIndentationTabs: true }],
+				'@stylistic/object-curly-newline': ['error', { consistent: true }],
 				'@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
 				'@stylistic/quote-props': ['error', 'as-needed'],
 				'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
