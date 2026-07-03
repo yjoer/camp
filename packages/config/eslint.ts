@@ -148,8 +148,6 @@ function tailwind() {
 			'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100, preferSingleLine: true, indent: 'tab' }],
 			'better-tailwindcss/enforce-consistent-class-order': 'warn',
 			'better-tailwindcss/enforce-consistent-variant-order': 'warn',
-			'better-tailwindcss/enforce-consistent-variable-syntax': 'warn',
-			'better-tailwindcss/enforce-consistent-important-position': 'warn',
 			'better-tailwindcss/enforce-canonical-classes': 'warn',
 			'better-tailwindcss/no-duplicate-classes': 'warn',
 			'better-tailwindcss/no-deprecated-classes': 'warn',

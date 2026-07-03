@@ -8,4 +8,13 @@ process.chdir(import.meta.dirname);
 export default defineConfig([
 	...eslint_config,
 	...defineImportResolver(['examples/tanstack/start', 'examples/tanstack/start-solid', 'examples/tanstack/start-trpc']),
+	{
+		files: ['stories/**/*.tsx'],
+		settings: {
+			'better-tailwindcss': {
+				entryPoint: '.storybook/global.css',
+				cwd: './stories',
+			},
+		},
+	},
 ]);
