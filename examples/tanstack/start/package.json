@@ -34,15 +34,15 @@
 		"@rolldown/plugin-babel": "0.2.3",
 		"@stylexjs/babel-plugin": "0.19.0",
 		"@stylexjs/postcss-plugin": "0.19.0",
-		"@tailwindcss/vite": "4.3.1",
+		"@tailwindcss/vite": "4.3.2",
 		"@types/react": "19.2.17",
 		"@types/react-dom": "19.2.3",
 		"@vitejs/plugin-react": "6.0.3",
 		"autoprefixer": "10.5.2",
 		"nitro": "3.0.260415-beta",
 		"postcss-load-config": "6.0.1",
-		"tailwindcss": "4.3.1",
+		"tailwindcss": "4.3.2",
 		"typescript": "6.0.3",
-		"vite": "8.1.0"
+		"vite": "8.1.1"
 	}
 }

@@ -50,7 +50,6 @@ function typescript() {
 	return {
 		name: 'typescript',
 		files: ['**/*.{ts,cts,mts,tsx}'],
-		extends: [imp.flatConfigs.typescript],
 		languageOptions: {
 			parser: ts.parser,
 		},
