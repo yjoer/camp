@@ -15,15 +15,15 @@
 		"zod": "4.4.3"
 	},
 	"devDependencies": {
-		"@rspack/cli": "2.1.1",
-		"@rspack/core": "2.1.1",
+		"@rspack/cli": "2.1.2",
+		"@rspack/core": "2.1.2",
 		"@types/bcrypt": "6.0.0",
 		"@xcamp/webpack": "workspace:*",
 		"cross-env": "10.1.0",
 		"jiti": "2.7.0",
 		"tsx": "4.22.4",
 		"typescript": "6.0.3",
-		"webpack": "5.108.1",
+		"webpack": "5.108.3",
 		"webpack-cli": "7.1.0",
 		"webpack-merge": "6.0.1"
 	},

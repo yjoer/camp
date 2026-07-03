@@ -1,6 +1,6 @@
 {
 	"name": "@xcamp/config",
-	"version": "2026.6.2",
+	"version": "2026.7.0",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -17,8 +17,8 @@
 		"build": "tsc"
 	},
 	"dependencies": {
-		"@commitlint/cli": "21.1.0",
-		"@commitlint/config-conventional": "21.1.0",
+		"@commitlint/cli": "21.2.0",
+		"@commitlint/config-conventional": "21.2.0",
 		"@prettier/plugin-xml": "3.4.2",
 		"@stylexjs/eslint-plugin": "0.19.0",
 		"@stylistic/eslint-plugin": "5.10.0",
@@ -40,13 +40,13 @@
 		"postcss-scss": "4.0.9",
 		"postcss-styled-syntax": "0.7.2",
 		"prettier": "3.8.5",
-		"prettier-plugin-java": "2.10.1",
+		"prettier-plugin-java": "2.10.2",
 		"prettier-plugin-packagejson": "3.0.2",
 		"stylelint": "17.14.0",
 		"stylelint-config-recess-order": "7.7.0",
 		"stylelint-config-standard": "40.0.0",
 		"stylelint-order": "8.1.1",
-		"typescript-eslint": "8.62.0"
+		"typescript-eslint": "8.62.1"
 	},
 	"devDependencies": {
 		"@tanstack/router-generator": "1.167.17",

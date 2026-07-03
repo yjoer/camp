@@ -27,10 +27,10 @@
 		"webpack-node-externals": "3.0.0"
 	},
 	"devDependencies": {
-		"@rspack/core": "2.1.1",
+		"@rspack/core": "2.1.2",
 		"@types/webpack-node-externals": "3.0.4",
 		"typescript": "6.0.3",
-		"webpack": "5.108.1"
+		"webpack": "5.108.3"
 	},
 	"peerDependencies": {
 		"@rspack/core": "^2",

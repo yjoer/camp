@@ -10,7 +10,7 @@
 		"cross-env": "10.1.0",
 		"tsx": "4.22.4",
 		"typescript": "6.0.3",
-		"webpack": "5.108.1",
+		"webpack": "5.108.3",
 		"webpack-cli": "7.1.0"
 	},
 	"dependenciesMeta": {
