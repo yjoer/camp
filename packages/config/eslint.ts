@@ -194,14 +194,25 @@ function stylistic() {
 			plugins: { '@stylistic': stylistic_plugin },
 			rules: {
 				...config.rules,
+				// spacing
+				'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
+				// line breaks
 				'@stylistic/array-bracket-newline': ['error', 'consistent'],
 				'@stylistic/implicit-arrow-linebreak': ['error', 'beside'],
+				'@stylistic/multiline-ternary': ['error', 'never'],
+				'@stylistic/object-curly-newline': ['error', { consistent: true }],
+				'@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
+				// indent
 				'@stylistic/indent': ['error', 'tab', {
 					ignoredNodes: ['TSUnionType', 'TSIntersectionType'],
 					SwitchCase: 1,
 					MemberExpression: 0,
 					offsetTernaryExpressions: true,
 				}],
+				// quotes
+				'@stylistic/quote-props': ['error', 'as-needed'],
+				'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
+				// jsx
 				'@stylistic/jsx-closing-bracket-location': ['error', { nonEmpty: 'after-props', selfClosing: 'tag-aligned' }],
 				'@stylistic/jsx-one-expression-per-line': ['error', { allow: 'non-jsx' }],
 				'@stylistic/jsx-self-closing-comp': 'error',
@@ -215,13 +226,8 @@ function stylistic() {
 					prop: 'ignore',
 					propertyValue: 'ignore',
 				}],
-				'@stylistic/multiline-ternary': ['error', 'never'],
-				'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
+				// disallow
 				'@stylistic/no-tabs': ['error', { allowIndentationTabs: true }],
-				'@stylistic/object-curly-newline': ['error', { consistent: true }],
-				'@stylistic/operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before', '|': 'before' } }],
-				'@stylistic/quote-props': ['error', 'as-needed'],
-				'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
 			},
 		},
 		{
