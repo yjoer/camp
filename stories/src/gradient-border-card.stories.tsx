@@ -1,5 +1,4 @@
 // oxlint-disable import/no-default-export
-/* eslint-disable better-tailwindcss/no-unknown-classes */
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta = {
@@ -50,9 +49,10 @@ function GradientBorderCard({ image }: GradientBorderCardProps) {
 				/>
 				<div
 					className="
-						mask-clip-[content-box,border-box] pointer-events-none absolute inset-0 rounded-[11px]
+						pointer-events-none absolute inset-0 rounded-[11px]
 						bg-[linear-gradient(180deg,rgb(255_255_255/16%),rgb(255_255_255/2%))]
-						mask-[linear-gradient(#fff_0_0),linear-gradient(#fff_0_0)] mask-exclude p-px
+						mask-[linear-gradient(#fff_0_0),linear-gradient(#fff_0_0)] mask-exclude
+						mask-clip-[content-box,border-box] p-px
 					"
 				/>
 			</div>
