@@ -34,28 +34,28 @@ public class LocalDatabase {
 			statement.executeUpdate("insert into roles values('administrator')");
 
 			String users_table = """
-				create table users (
-				  user_id integer primary key autoincrement,
-				  first_name text not null,
-				  last_name text not null,
-				  email_address text not null unique,
-				  password text not null,
-				  phone_number text,
-				  role_name text not null,
-				  foreign key (role_name) references roles(role_name)
-				)
-				""";
+			create table users (
+			  user_id integer primary key autoincrement,
+			  first_name text not null,
+			  last_name text not null,
+			  email_address text not null unique,
+			  password text not null,
+			  phone_number text,
+			  role_name text not null,
+			  foreign key (role_name) references roles(role_name)
+			)
+			""";
 
 			String bookings_table = """
-				create table bookings (
-				  booking_id integer primary key autoincrement,
-				  seat_id text not null unique,
-				  name text not null,
-				  matric_number text not null,
-				  check_in_date text not null,
-				  supervisor_name text not null
-				)
-				""";
+			create table bookings (
+			  booking_id integer primary key autoincrement,
+			  seat_id text not null unique,
+			  name text not null,
+			  matric_number text not null,
+			  check_in_date text not null,
+			  supervisor_name text not null
+			)
+			""";
 
 			statement.executeUpdate(users_table);
 			statement.executeUpdate(bookings_table);

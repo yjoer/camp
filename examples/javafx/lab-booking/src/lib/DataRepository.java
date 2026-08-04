@@ -64,9 +64,9 @@ public class DataRepository {
 		String role_name
 	) {
 		String query = """
-			insert into users (first_name, last_name, email_address, password, phone_number, role_name)
-			values(?, ?, ?, ?, ?, ?)
-			""";
+		insert into users (first_name, last_name, email_address, password, phone_number, role_name)
+		values(?, ?, ?, ?, ?, ?)
+		""";
 
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
 			statement.setString(1, first_name);
@@ -105,10 +105,10 @@ public class DataRepository {
 
 	public Booking find_booking(String seat_id) {
 		String query = """
-			select name, matric_number, check_in_date, supervisor_name
-			from bookings
-			where seat_id = ?
-			""";
+		select name, matric_number, check_in_date, supervisor_name
+		from bookings
+		where seat_id = ?
+		""";
 
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
 			statement.setString(1, seat_id);
@@ -137,14 +137,14 @@ public class DataRepository {
 		String supervisor_name
 	) {
 		String query = """
-			insert into bookings (seat_id, name, matric_number, check_in_date, supervisor_name)
-			values(?, ?, ?, ?, ?)
-			on conflict (seat_id) do update set
-			  name = excluded.name,
-			  matric_number = excluded.matric_number,
-			  check_in_date = excluded.check_in_date,
-			  supervisor_name = excluded.supervisor_name
-			""";
+		insert into bookings (seat_id, name, matric_number, check_in_date, supervisor_name)
+		values(?, ?, ?, ?, ?)
+		on conflict (seat_id) do update set
+		  name = excluded.name,
+		  matric_number = excluded.matric_number,
+		  check_in_date = excluded.check_in_date,
+		  supervisor_name = excluded.supervisor_name
+		""";
 
 		try (PreparedStatement statement = conn.prepareStatement(query)) {
 			statement.setString(1, seat_id);

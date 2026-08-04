@@ -148,6 +148,7 @@ function tailwind() {
 			'better-tailwindcss/enforce-consistent-class-order': 'warn',
 			'better-tailwindcss/enforce-consistent-variant-order': 'warn',
 			'better-tailwindcss/enforce-canonical-classes': 'warn',
+			'better-tailwindcss/no-concatenated-classes': 'warn',
 			'better-tailwindcss/no-duplicate-classes': 'warn',
 			'better-tailwindcss/no-deprecated-classes': 'warn',
 			'better-tailwindcss/no-unnecessary-whitespace': 'warn',
