@@ -35,7 +35,6 @@ jobs:
       - name: Build Project Artifacts
         run: yarn build
       - name: Publish
-        run: yarn npm publish --provenance --access public
+        run: yarn npm publish --provenance --access public --staged
         env:
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           YARN_NPM_PUBLISH_REGISTRY: https://registry.npmjs.org
