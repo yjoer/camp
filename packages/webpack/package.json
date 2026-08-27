@@ -21,13 +21,13 @@
 		"build": "tsc"
 	},
 	"dependencies": {
-		"@vercel/webpack-asset-relocator-loader": "1.10.0",
+		"@vercel/webpack-asset-relocator-loader": "1.11.0",
 		"ts-loader": "9.6.2",
 		"webpack-merge": "^6",
 		"webpack-node-externals": "3.0.0"
 	},
 	"devDependencies": {
-		"@rspack/core": "2.1.7",
+		"@rspack/core": "2.1.10",
 		"@types/webpack-node-externals": "3.0.4",
 		"typescript": "6.0.3",
 		"webpack": "5.109.2"

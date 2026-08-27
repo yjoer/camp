@@ -27,10 +27,10 @@
 	"devDependencies": {
 		"@xcamp/config": "workspace:*",
 		"cross-env": "10.1.0",
-		"vite-plus": "0.2.7"
+		"vite-plus": "0.3.0"
 	},
 	"dependenciesMeta": {
 		"@xcamp/config": {}
 	},
-	"packageManager": "yarn@4.17.0"
+	"packageManager": "yarn@4.18.0"
 }

@@ -1,6 +1,6 @@
 // oxlint-disable no-console
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { ViteDevServer } from 'vite';
+import type { ViteDevServer } from 'vite-plus';
 
 import { createReadStream } from 'node:fs';
 import fs from 'node:fs/promises';
@@ -15,8 +15,7 @@ const server = createServer();
 
 let vite: ViteDevServer | undefined;
 if (is_development) {
-	// eslint-disable-next-line import-x/no-extraneous-dependencies
-	const { createServer: create_vite_server } = await import('vite');
+	const { createServer: create_vite_server } = await import('vite-plus');
 
 	vite = await create_vite_server({
 		server: { middlewareMode: { server } },
