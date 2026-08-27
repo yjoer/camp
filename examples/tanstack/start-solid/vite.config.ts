@@ -3,8 +3,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/solid-start/plugin/vite';
 import { rootRoute, route } from '@tanstack/virtual-file-routes';
 import { nitro } from 'nitro/vite';
-import { defineConfig } from 'vite';
 import solid from 'vite-plugin-solid';
+import { defineConfig } from 'vite-plus';
 
 export const routes = rootRoute('root.tsx', [
 	route('/', '../src/gallery.tsx'),

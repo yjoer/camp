@@ -38,6 +38,7 @@ function import_x() {
 					'**/vitest.config.*s',
 					'**/webpack.config.*s',
 				],
+				whitelist: ['vite-plus'],
 			}],
 		},
 		settings: {

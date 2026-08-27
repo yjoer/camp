@@ -2,9 +2,9 @@
 	"name": "@camp/examples-elasticsearch-search-ui",
 	"type": "module",
 	"scripts": {
-		"build": "tsc -b && vite build",
-		"dev": "vite",
-		"preview": "vite preview"
+		"build": "vp build",
+		"dev": "vp dev",
+		"preview": "vp preview"
 	},
 	"dependencies": {
 		"@elastic/react-search-ui": "1.24.2",
@@ -16,9 +16,7 @@
 	},
 	"devDependencies": {
 		"@types/react": "19.2.18",
-		"@types/react-dom": "19.2.4",
-		"@vitejs/plugin-react": "6.0.5",
-		"typescript": "6.0.3",
-		"vite": "8.2.0"
+		"@types/react-dom": "19.2.5",
+		"@vitejs/plugin-react": "6.1.0"
 	}
 }

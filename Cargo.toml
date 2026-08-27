@@ -9,7 +9,7 @@ members = [
 	"examples/http/axum-connect",
 	"examples/ratatui/counter",
 	"examples/ratatui/counter-elm",
-	"examples/ratatui/json-editor"
+	"examples/ratatui/json-editor",
 ]
 
 [lib]
@@ -57,7 +57,7 @@ features = [
 	"Win32_System_Variant",
 	"Win32_System_Wmi",
 	"Win32_UI_Accessibility",
-	"Win32_UI_WindowsAndMessaging"
+	"Win32_UI_WindowsAndMessaging",
 ]
 
 [features]
