@@ -6,7 +6,7 @@
 [tasks."build:vercel"]
 depends = ["build:shaders"]
 env = { TSS_TARGET = "vercel" }
-run = "yarn vite build"
+run = "yarn build"
 
 [tasks."build:shaders"]
 depends = ["build:triangle", "build:rectangle"]
