@@ -11,7 +11,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Vite Plus
-        uses: voidzero-dev/setup-vp@e34774bccb4e7d7f2e23514ca980177a71425e43
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754
         with:
           node-version: 24
           run-install: false

@@ -14,9 +14,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ github.event.inputs.package }}
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -25,20 +22,24 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Enable Corepack
         run: corepack enable
-      - name: Setup Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+      - name: Setup Vite Plus
+        uses: voidzero-dev/setup-vp@1b32467adbe183473499fd9d5d372c3ed9641754
         with:
           node-version: 24
-          cache: yarn
+          run-install: false
+          cache: true
       - name: Setup Mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
       - name: Install Dependencies
+        working-directory: ${{ github.event.inputs.package }}
         run: |
           PACKAGE_NAME=$(jq -r ".name" package.json)
           YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --immutable
       - name: Build Project Artifacts
+        working-directory: ${{ github.event.inputs.package }}
         run: mise run build:vercel
       - name: Deploy Project Artifacts to Vercel
+        working-directory: ${{ github.event.inputs.package }}
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
