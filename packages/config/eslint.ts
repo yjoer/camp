@@ -69,7 +69,6 @@ function react() {
 			'react/no-deprecated': 'error',
 			//
 			'react/jsx-no-leaked-render': 'error',
-			'react/require-default-props': ['error', { forbidDefaultForRequired: true, classes: 'ignore', functions: 'ignore' }],
 		},
 	} satisfies ConfigWithExtends;
 }
