@@ -1,4 +1,5 @@
 // oxlint-disable no-namespace
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { createIsomorphicFn } from '@tanstack/react-start';
 
@@ -8,11 +9,18 @@ export const Route = createFileRoute('/custom-elements')({
 
 function CustomElements() {
 	return (
-		<div className="mx-2 my-1">
+		<div sx={styles.container}>
 			<custom-element>This is a custom element!</custom-element>
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 createIsomorphicFn().client(() => {
 	return class Component extends HTMLElement {
@@ -38,21 +46,13 @@ createIsomorphicFn().client(() => {
 			this.#internals.states.add('--ready');
 			this.#controller = new AbortController();
 
-			this.addEventListener(
-				'mouseenter',
-				() => {
-					this.classList.add('bg-neutral-100');
-				},
-				{ signal: this.#controller.signal },
-			);
+			this.addEventListener('mouseenter', () => {
+				this.style.backgroundColor = 'oklch(97% 0 0)';
+			}, { signal: this.#controller.signal });
 
-			this.addEventListener(
-				'mouseleave',
-				() => {
-					this.classList.remove('bg-neutral-100');
-				},
-				{ signal: this.#controller.signal },
-			);
+			this.addEventListener('mouseleave', () => {
+				this.style.backgroundColor = '';
+			}, { signal: this.#controller.signal });
 		}
 
 		disconnectedCallback() {

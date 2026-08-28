@@ -11,11 +11,21 @@ export const Route = createFileRoute('/stale-closures')({
 
 function StaleClosures() {
 	return (
-		<div class="mx-2 my-1 flex flex-col gap-4">
+		<div {...stylex.props(styles.container)}>
 			<Signals />
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 16,
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 function Signals() {
 	const [count, set_count] = createSignal(0);
@@ -39,11 +49,11 @@ function Signals() {
 
 	return (
 		<div>
-			<span class="bg-[#ffdd00]">Signals</span>
+			<span {...stylex.props(signals_styles.label)}>Signals</span>
 			<div>Count: {count()}</div>
 			<div ref={timed_log_ref}>Timed Log: </div>
 			<div ref={log_ref}>Log: </div>
-			<div class="mt-1 flex gap-2">
+			<div {...stylex.props(signals_styles.actions)}>
 				<button onClick={() => set_count(prev => prev + 1)} {...stylex.props(button_styles.base)}>
 					Increment
 				</button>
@@ -54,3 +64,14 @@ function Signals() {
 		</div>
 	);
 }
+
+const signals_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffdd00',
+	},
+	actions: {
+		display: 'flex',
+		gap: 8,
+		marginTop: 4,
+	},
+});

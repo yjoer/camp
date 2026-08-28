@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
 import { create } from 'zustand';
@@ -16,12 +17,19 @@ function TransitionZustand() {
 	const [store] = useState(create_store);
 
 	return (
-		<div className="mx-2 my-1">
+		<div sx={styles.container}>
 			<SettingsPanel store={store} />
 			<Posts store={store} />
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 interface SettingsPanelProps {
 	store: ReturnType<typeof create_store>;
@@ -61,7 +69,7 @@ const Posts = function Posts({ store }: PostsProps) {
 	const page = store(state => state.page_slow);
 
 	return (
-		<div className="mt-4">
+		<div sx={posts_styles.container}>
 			{Array.from({ length: 10 }, (_, i) => {
 				const post_id = (page - 1) * 10 + i + 1;
 				return <SlowPost key={post_id} post_id={post_id} />;
@@ -69,6 +77,12 @@ const Posts = function Posts({ store }: PostsProps) {
 		</div>
 	);
 };
+
+const posts_styles = stylex.create({
+	container: {
+		marginTop: 16,
+	},
+});
 
 interface SlowPostProps {
 	post_id: number;

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
 import { createContext, useContextSelector, useContextUpdate } from 'use-context-selector';
@@ -15,13 +16,20 @@ function TransitionUseContextSelector() {
 
 	return (
 		<Provider>
-			<div className="mx-2 my-1">
+			<div sx={styles.container}>
 				<SettingsPanel />
 				<Posts />
 			</div>
 		</Provider>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 function SettingsPanel() {
 	const page = useContextSelector(Context, v => v.page);
@@ -57,7 +65,7 @@ const Posts = function Posts() {
 	const page = useContextSelector(Context, v => v.page_slow);
 
 	return (
-		<div className="mt-4">
+		<div sx={posts_styles.container}>
 			{Array.from({ length: 10 }, (_, i) => {
 				const post_id = (page - 1) * 10 + i + 1;
 				return <SlowPost key={post_id} post_id={post_id} />;
@@ -65,6 +73,12 @@ const Posts = function Posts() {
 		</div>
 	);
 };
+
+const posts_styles = stylex.create({
+	container: {
+		marginTop: 16,
+	},
+});
 
 interface SlowPostProps {
 	post_id: number;

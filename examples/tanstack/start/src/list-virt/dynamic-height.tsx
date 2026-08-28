@@ -1,5 +1,6 @@
 // oxlint-disable no-console
 import { faker } from '@faker-js/faker';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { split } from 'canvas-hypertxt';
@@ -90,8 +91,8 @@ function DynamicHeight() {
 	});
 
 	return (
-		<div ref={ref} className="h-dvh overflow-auto px-2 py-1" style={{ scrollbarGutter: 'stable' }}>
-			<div className="relative" style={{ height: virtualizer.getTotalSize() }}>
+		<div ref={ref} sx={styles.container}>
+			<div style={{ height: virtualizer.getTotalSize() }} sx={styles.masonry}>
 				{virtualizer.getVirtualItems().map((row) => {
 					return (
 						<div
@@ -102,8 +103,8 @@ function DynamicHeight() {
 								height: row.size,
 								translate: `${row.lane * cell_width + row.lane * 8}px ${row.start}px`,
 							}}>
-							<div className="w-full bg-neutral-200" style={{ height: heights[row.index] }} />
-							<div className="leading-tight">{titles[row.index]}</div>
+							<div style={{ height: heights[row.index] }} sx={styles.image} />
+							<div sx={styles.title}>{titles[row.index]}</div>
 						</div>
 					);
 				})}
@@ -111,3 +112,23 @@ function DynamicHeight() {
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		height: '100dvh',
+		paddingBlock: 4,
+		paddingInline: 8,
+		overflow: 'auto',
+		scrollbarGutter: 'stable',
+	},
+	masonry: {
+		position: 'relative',
+	},
+	image: {
+		width: '100%',
+		backgroundColor: 'oklch(92.2% 0 0)',
+	},
+	title: {
+		lineHeight: 1.25,
+	},
+});

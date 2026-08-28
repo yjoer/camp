@@ -4,6 +4,7 @@ import type { Action, ThunkAction } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState, useTransition } from 'react';
 import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
@@ -21,13 +22,20 @@ function TransitionRedux() {
 
 	return (
 		<Provider store={store}>
-			<div className="mx-2 my-1">
+			<div sx={styles.container}>
 				<SettingsPanel />
 				<Posts />
 			</div>
 		</Provider>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 function SettingsPanel() {
 	const page = useAppSelector(state => state.posts.page);
@@ -59,7 +67,7 @@ const Posts = function Posts() {
 	const page = useAppSelector(state => state.posts.page_slow);
 
 	return (
-		<div className="mt-4">
+		<div sx={posts_styles.container}>
 			{Array.from({ length: 10 }, (_, i) => {
 				const post_id = (page - 1) * 10 + i + 1;
 				return <SlowPost key={post_id} post_id={post_id} />;
@@ -67,6 +75,12 @@ const Posts = function Posts() {
 		</div>
 	);
 };
+
+const posts_styles = stylex.create({
+	container: {
+		marginTop: 16,
+	},
+});
 
 interface SlowPostProps {
 	post_id: number;
