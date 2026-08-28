@@ -1,5 +1,5 @@
 @import '@fontsource-variable/roboto';
-@import 'tailwindcss';
+@import 'tailwindcss/preflight.css' layer(base);
 
 body {
 	font-family: 'Roboto Variable', sans-serif;

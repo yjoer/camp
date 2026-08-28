@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand';
 
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { create } from 'zustand';
@@ -31,17 +32,17 @@ function Counter({ store }: CounterProps) {
 	const count = store(state => state.value);
 
 	return (
-		<div className="mx-2 my-1">
-			<div className="flex items-center gap-2">
+		<div sx={styles.container}>
+			<div sx={styles.row}>
 				<button sx={button_styles.base} onClick={() => increment()}>
 					Increment
 				</button>
-				<span className="min-w-12 text-center">{count}</span>
+				<span sx={styles.count}>{count}</span>
 				<button sx={button_styles.base} onClick={() => decrement()}>
 					Decrement
 				</button>
 			</div>
-			<div className="mt-2 flex flex-col items-start gap-1">
+			<div sx={styles.actions}>
 				<button sx={button_styles.base} onClick={() => void increment_async()}>
 					Async
 				</button>
@@ -55,6 +56,29 @@ function Counter({ store }: CounterProps) {
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+	row: {
+		display: 'flex',
+		gap: 8,
+		alignItems: 'center',
+	},
+	count: {
+		minWidth: 48,
+		textAlign: 'center',
+	},
+	actions: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 4,
+		alignItems: 'flex-start',
+		marginTop: 8,
+	},
+});
 
 interface CounterSlice {
 	loading: boolean;

@@ -1,3 +1,4 @@
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute, Link } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
@@ -71,15 +72,15 @@ const ui_sections = [
 
 function RouteComponent() {
 	return (
-		<div className="mx-2 my-1 inline-grid gap-4 md:grid-cols-2">
-			<div className="flex flex-col gap-4">
+		<div sx={styles.container}>
+			<div sx={styles.column}>
 				{sections.map((section, idx) => {
 					return (
 						<div key={idx}>
-							<span className="bg-[#ffdd00]">{section.label}</span>
+							<span sx={styles.label_yellow}>{section.label}</span>
 							{section.children.map((child, idx) => {
 								return (
-									<Link key={idx} className="block" to={child.to}>
+									<Link key={idx} to={child.to} {...stylex.props(styles.link)}>
 										{child.label}
 									</Link>
 								);
@@ -88,16 +89,14 @@ function RouteComponent() {
 					);
 				})}
 			</div>
-			<div className="flex flex-col gap-4">
+			<div sx={styles.column}>
 				{ui_sections.map((section, idx) => {
 					return (
-						<div key={idx} className="flex flex-col">
-							<div>
-								<span className="bg-[#ffa500]">{section.label}</span>
-							</div>
+						<div key={idx}>
+							<span sx={styles.label_orange}>{section.label}</span>
 							{section.children.map((child, idx) => {
 								return (
-									<Link key={idx} to={child.to}>
+									<Link key={idx} to={child.to} {...stylex.props(styles.link)}>
 										{child.label}
 									</Link>
 								);
@@ -109,3 +108,29 @@ function RouteComponent() {
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		display: 'inline-grid',
+		gridTemplateColumns: {
+			'@media (min-width: 768px)': 'repeat(2, minmax(0, 1fr))',
+		},
+		gap: 16,
+		marginBlock: 4,
+		marginInline: 8,
+	},
+	column: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 16,
+	},
+	label_yellow: {
+		backgroundColor: '#ffdd00',
+	},
+	label_orange: {
+		backgroundColor: '#ffa500',
+	},
+	link: {
+		display: 'block',
+	},
+});

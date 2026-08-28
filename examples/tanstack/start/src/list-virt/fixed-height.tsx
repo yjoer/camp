@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/list-virt-fixed-height')({
@@ -19,17 +20,38 @@ function FixedHeight() {
 	const { variant } = Route.useSearch();
 
 	return (
-		<div className="px-2 py-1" style={{ scrollbarGutter: 'stable' }}>
-			<div className="grid grid-cols-6 gap-2">
+		<div sx={styles.container}>
+			<div sx={styles.grid}>
 				{titles.map((title, index) => (
 					<div
 						key={index}
 						style={{ ...(variant === 'content-visibility' && { contentVisibility: 'auto' }) }}>
-						<div className="h-40 w-full bg-neutral-200" />
-						<div className="leading-tight">{title}</div>
+						<div sx={styles.image} />
+						<div sx={styles.title}>{title}</div>
 					</div>
 				))}
 			</div>
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		paddingBlock: 4,
+		paddingInline: 8,
+		scrollbarGutter: 'stable',
+	},
+	grid: {
+		display: 'grid',
+		gridTemplateColumns: 'repeat(6, minmax(0, 1fr))',
+		gap: 8,
+	},
+	image: {
+		width: '100%',
+		height: 160,
+		backgroundColor: 'oklch(92.2% 0 0)',
+	},
+	title: {
+		lineHeight: 1.25,
+	},
+});

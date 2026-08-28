@@ -1,3 +1,4 @@
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef } from 'react';
 
@@ -84,5 +85,12 @@ function Rectangle() {
 		};
 	}, []);
 
-	return <div ref={ref} className="mx-2 my-1" />;
+	return <div ref={ref} sx={styles.container} />;
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});

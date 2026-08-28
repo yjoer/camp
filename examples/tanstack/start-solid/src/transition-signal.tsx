@@ -23,7 +23,7 @@ function TransitionSignal() {
 	};
 
 	return (
-		<div class="mx-2 my-1">
+		<div {...stylex.props(styles.container)}>
 			<div>Page: {page()}</div>
 			<div>Pending: {pending() ? 'true' : 'false'}</div>
 			<button onClick={handle_click} {...stylex.props(button_styles.base)}>
@@ -33,6 +33,13 @@ function TransitionSignal() {
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 interface PostProps {
 	page: number;
@@ -47,7 +54,7 @@ function Posts(props: PostProps) {
 	};
 
 	return (
-		<div class="mt-4">
+		<div {...stylex.props(posts_styles.container)}>
 			<For each={posts()}>
 				{(post) => {
 					return <SlowPost post_id={post} />;
@@ -56,6 +63,12 @@ function Posts(props: PostProps) {
 		</div>
 	);
 }
+
+const posts_styles = stylex.create({
+	container: {
+		marginTop: 16,
+	},
+});
 
 interface SlowPostProps {
 	post_id: number;

@@ -11,12 +11,22 @@ export const Route = createFileRoute('/ui/animations/sidebar')({
 
 function AnimationSidebar() {
 	return (
-		<div className="mx-2 my-1 flex flex-col gap-4">
+		<div sx={styles.container}>
 			<SidebarTransition />
 			<SidebarWAAPI />
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 16,
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 function SidebarTransition() {
 	const ref = useRef<HTMLDivElement | null>(null);
@@ -52,15 +62,15 @@ function SidebarTransition() {
 
 	return (
 		<div>
-			<span className="bg-[#ffa500]">CSS Transform</span>
-			<div className="mt-1">
+			<span sx={st_styles.label}>CSS Transform</span>
+			<div sx={st_styles.actions}>
 				<button sx={button_styles.base} onClick={handle_toggle}>
 					Toggle
 				</button>
 			</div>
 			{state !== 'closed' &&
 				createPortal(
-					<div className="pointer-events-none absolute inset-0 overflow-hidden">
+					<div sx={st_styles.portal}>
 						<Sidebar ref={ref} />
 					</div>,
 					document.body,
@@ -68,6 +78,21 @@ function SidebarTransition() {
 		</div>
 	);
 }
+
+const st_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffa500',
+	},
+	actions: {
+		marginTop: 4,
+	},
+	portal: {
+		position: 'absolute',
+		inset: 0,
+		overflow: 'hidden',
+		pointerEvents: 'none',
+	},
+});
 
 function SidebarWAAPI() {
 	const ref = useRef<HTMLDivElement | null>(null);
@@ -113,15 +138,15 @@ function SidebarWAAPI() {
 
 	return (
 		<div>
-			<span className="bg-[#ffa500]">WAAPI Transform</span>
-			<div className="mt-1">
+			<span sx={sw_styles.label}>WAAPI Transform</span>
+			<div sx={sw_styles.actions}>
 				<button sx={button_styles.base} onClick={handle_toggle}>
 					Toggle
 				</button>
 			</div>
 			{state !== 'closed' &&
 				createPortal(
-					<div className="pointer-events-none absolute inset-0 overflow-hidden">
+					<div sx={sw_styles.portal}>
 						<Sidebar ref={ref} />
 					</div>,
 					document.body,
@@ -130,24 +155,39 @@ function SidebarWAAPI() {
 	);
 }
 
+const sw_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffa500',
+	},
+	actions: {
+		marginTop: 4,
+	},
+	portal: {
+		position: 'absolute',
+		inset: 0,
+		overflow: 'hidden',
+		pointerEvents: 'none',
+	},
+});
+
 interface SidebarProps {
 	ref: React.Ref<HTMLDivElement>;
 }
 
 function Sidebar({ ref }: SidebarProps) {
 	return (
-		<div ref={ref} sx={sidebar_sx.base}>
+		<div ref={ref} sx={sidebar_styles.base}>
 			{Array.from({ length: 5 }).map((_, idx) => (
-				<div key={idx} className="flex gap-2 px-2 py-1">
-					<div sx={sidebar_sx.icon} />
-					<div sx={sidebar_sx.label} />
+				<div key={idx} sx={sidebar_styles.item}>
+					<div sx={sidebar_styles.icon} />
+					<div sx={sidebar_styles.label} />
 				</div>
 			))}
 		</div>
 	);
 }
 
-const sidebar_sx = stylex.create({
+const sidebar_styles = stylex.create({
 	base: {
 		position: 'absolute',
 		top: 0,
@@ -159,6 +199,12 @@ const sidebar_sx = stylex.create({
 		borderLeftStyle: 'solid',
 		borderLeftWidth: 1,
 		transform: 'translateX(100%)',
+	},
+	item: {
+		display: 'flex',
+		gap: 8,
+		paddingBlock: 4,
+		paddingInline: 8,
 	},
 	icon: {
 		width: 24,

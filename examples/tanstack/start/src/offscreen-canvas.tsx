@@ -3,6 +3,7 @@ import type { RouterClient } from '@orpc/server';
 import { createORPCClient } from '@orpc/client';
 import { RPCLink } from '@orpc/client/message-port';
 import { MessageType } from '@orpc/standard-server-peer';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -45,22 +46,41 @@ function OffscreenCanvas() {
 	}, []);
 
 	return (
-		<div className="mx-2 my-1 flex flex-col gap-4">
+		<div sx={styles.container}>
 			<div>
-				<span className="bg-[#ffdd00]">Date</span>
-				<div className="h-6">{date}</div>
-				<div className="mt-1">
+				<span sx={styles.label}>Date</span>
+				<div sx={styles.date}>{date}</div>
+				<div sx={styles.actions}>
 					<button sx={button_styles.base} onClick={handle_click}>
 						Get Date
 					</button>
 				</div>
 			</div>
 			<div ref={ref}>
-				<span className="bg-[#ffdd00]">Canvas</span>
+				<span sx={styles.label}>Canvas</span>
 			</div>
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 16,
+		marginBlock: 4,
+		marginInline: 8,
+	},
+	label: {
+		backgroundColor: '#ffdd00',
+	},
+	date: {
+		height: 24,
+	},
+	actions: {
+		marginTop: 4,
+	},
+});
 
 // oxlint-disable-next-line typescript/no-unnecessary-type-arguments
 const transferables = new WeakSet<Transferable>();

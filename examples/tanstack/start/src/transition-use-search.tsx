@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/purity */
 // oxlint-disable no-console
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { memo, useState, useTransition } from 'react';
 
@@ -34,7 +35,7 @@ function TransitionSearch() {
 	};
 
 	return (
-		<div className="mx-2 my-1">
+		<div sx={styles.container}>
 			<div>Page: {page}</div>
 			<div>Pending: {is_pending ? 'true' : 'false'}</div>
 			<button sx={button_styles.base} onClick={handle_click}>
@@ -45,19 +46,32 @@ function TransitionSearch() {
 	);
 }
 
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
+
 interface PostProps {
 	page: number;
 }
 
 const Posts = memo(function Posts({ page }: PostProps) {
 	return (
-		<div className="mt-4">
+		<div sx={posts_styles.container}>
 			{Array.from({ length: 10 }, (_, i) => {
 				const post_id = (page - 1) * 10 + i + 1;
 				return <SlowPost key={post_id} post_id={post_id} />;
 			})}
 		</div>
 	);
+});
+
+const posts_styles = stylex.create({
+	container: {
+		marginTop: 16,
+	},
 });
 
 interface SlowPostProps {

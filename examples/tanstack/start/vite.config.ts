@@ -1,6 +1,5 @@
 // oxlint-disable import/no-default-export
 import babel from '@rolldown/plugin-babel';
-import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { rootRoute, route } from '@tanstack/virtual-file-routes';
 import react from '@vitejs/plugin-react';
@@ -59,6 +58,5 @@ export default defineConfig({
 		nitro({ preset: process.env.TSS_TARGET }),
 		react(),
 		babel(babelConfig),
-		tailwindcss(),
 	],
 });

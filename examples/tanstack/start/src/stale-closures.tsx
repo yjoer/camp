@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from 'react';
 
@@ -10,7 +11,7 @@ export const Route = createFileRoute('/stale-closures')({
 
 function StaleClosures() {
 	return (
-		<div className="mx-2 my-1 flex flex-col gap-4">
+		<div sx={styles.container}>
 			<DependencyArray />
 			<EffectEvents />
 			<RefSync />
@@ -18,6 +19,16 @@ function StaleClosures() {
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 16,
+		marginBlock: 4,
+		marginInline: 8,
+	},
+});
 
 function DependencyArray() {
 	const timedLogRef = useRef<HTMLDivElement>(null!);
@@ -57,13 +68,13 @@ function DependencyArray() {
 
 	return (
 		<div>
-			<span className="bg-[#ffdd00]">Dependency Array</span>
+			<span sx={da_styles.label}>Dependency Array</span>
 			<div>Count: {count}</div>
 			<div ref={timedLogRef}>Timed Log:</div>
 			<div ref={timedLogStaleRef}>Timed Log - Stale:</div>
 			<div ref={logRef}>Log:</div>
 			<div ref={logStaleRef}>Log - Stale:</div>
-			<div className="mt-1 flex gap-2">
+			<div sx={da_styles.actions}>
 				<button sx={button_styles.base} onClick={() => setCount(prev => prev + 1)}>
 					Increment
 				</button>
@@ -77,6 +88,17 @@ function DependencyArray() {
 		</div>
 	);
 }
+
+const da_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffdd00',
+	},
+	actions: {
+		display: 'flex',
+		gap: 8,
+		marginTop: 4,
+	},
+});
 
 function EffectEvents() {
 	const [count, setCount] = useState(0);
@@ -98,10 +120,10 @@ function EffectEvents() {
 
 	return (
 		<div>
-			<span className="bg-[#ffdd00]">Effect Events</span>
+			<span sx={ee_styles.label}>Effect Events</span>
 			<div>Count: {count}</div>
 			<div ref={timedLogRef}>Timed Log:</div>
-			<div className="mt-1 flex gap-2">
+			<div sx={ee_styles.actions}>
 				<button sx={button_styles.base} onClick={() => setCount(prev => prev + 1)}>
 					Increment
 				</button>
@@ -109,6 +131,17 @@ function EffectEvents() {
 		</div>
 	);
 }
+
+const ee_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffdd00',
+	},
+	actions: {
+		display: 'flex',
+		gap: 8,
+		marginTop: 4,
+	},
+});
 
 function RefSync() {
 	const [count, setCount] = useState(0);
@@ -138,11 +171,11 @@ function RefSync() {
 
 	return (
 		<div>
-			<span className="bg-[#ffdd00]">Ref Sync</span>
+			<span sx={rs_styles.label}>Ref Sync</span>
 			<div>Count: {count}</div>
 			<div ref={timedLogRef}>Timed Log:</div>
 			<div ref={logRef}>Log:</div>
-			<div className="mt-1 flex gap-2">
+			<div sx={rs_styles.actions}>
 				<button sx={button_styles.base} onClick={handleIncrement}>
 					Increment
 				</button>
@@ -153,6 +186,17 @@ function RefSync() {
 		</div>
 	);
 }
+
+const rs_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffdd00',
+	},
+	actions: {
+		display: 'flex',
+		gap: 8,
+		marginTop: 4,
+	},
+});
 
 function StateRefHook() {
 	const [count, setCount] = useStateRef(0);
@@ -180,11 +224,11 @@ function StateRefHook() {
 
 	return (
 		<div>
-			<span className="bg-[#ffdd00]">State Ref Hook</span>
+			<span sx={srh_styles.label}>State Ref Hook</span>
 			<div>Count: {count.current}</div>
 			<div ref={timedLogRef}>Timed Log:</div>
 			<div ref={logRef}>Log:</div>
-			<div className="mt-1 flex gap-2">
+			<div sx={srh_styles.actions}>
 				<button sx={button_styles.base} onClick={handleIncrement}>
 					Increment
 				</button>
@@ -195,6 +239,17 @@ function StateRefHook() {
 		</div>
 	);
 }
+
+const srh_styles = stylex.create({
+	label: {
+		backgroundColor: '#ffdd00',
+	},
+	actions: {
+		display: 'flex',
+		gap: 8,
+		marginTop: 4,
+	},
+});
 
 function useStateRef<T>(value: T): [React.RefObject<T>, (newState: T) => void] {
 	const ref = useRef(value);

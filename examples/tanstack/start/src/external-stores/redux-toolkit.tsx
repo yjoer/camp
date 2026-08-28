@@ -1,6 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { configureStore, createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Provider, useDispatch, useSelector, useStore } from 'react-redux';
@@ -28,17 +29,17 @@ function Counter() {
 	const count = useAppSelector(state => state.counter.value);
 
 	return (
-		<div className="mx-2 my-1">
-			<div className="flex items-center gap-2">
+		<div sx={styles.container}>
+			<div sx={styles.row}>
 				<button sx={button_styles.base} onClick={() => dispatch(increment())}>
 					Increment
 				</button>
-				<span className="min-w-12 text-center">{count}</span>
+				<span sx={styles.count}>{count}</span>
 				<button sx={button_styles.base} onClick={() => dispatch(decrement())}>
 					Decrement
 				</button>
 			</div>
-			<div className="mt-2 flex flex-col items-start gap-1">
+			<div sx={styles.actions}>
 				<button sx={button_styles.base} onClick={() => void dispatch(increment_async())}>
 					Async
 				</button>
@@ -52,6 +53,29 @@ function Counter() {
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		marginBlock: 4,
+		marginInline: 8,
+	},
+	row: {
+		display: 'flex',
+		gap: 8,
+		alignItems: 'center',
+	},
+	count: {
+		minWidth: 48,
+		textAlign: 'center',
+	},
+	actions: {
+		display: 'flex',
+		flexDirection: 'column',
+		gap: 4,
+		alignItems: 'flex-start',
+		marginTop: 8,
+	},
+});
 
 const decrement = createAction('counter/decrement');
 
