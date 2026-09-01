@@ -9,7 +9,7 @@ const sections = [
 	{
 		label: 'Managing State',
 		children: [
-			{ to: '/stale-closures', label: 'Stale Closures' }, //
+			{ to: '/stale-closures', label: 'Stale Closures' },
 		],
 	},
 	{
@@ -65,7 +65,7 @@ const ui_sections = [
 	{
 		label: 'Animations',
 		children: [
-			{ to: '/ui/animations/sidebar', label: 'Sidebar' }, //
+			{ to: '/ui/animations/sidebar', label: 'Sidebar' },
 		],
 	},
 ];

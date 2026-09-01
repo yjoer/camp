@@ -5,4 +5,5 @@ imports_layout = "HorizontalVertical"
 imports_granularity = "Module"
 reorder_impl_items = true
 group_imports = "StdExternalCrate"
+tab_spaces = 2
 wrap_comments = true

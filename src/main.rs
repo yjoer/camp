@@ -167,6 +167,7 @@ fn main() {
 			ContextMenuSubcommands::Legacy => {
 				#[cfg(target_os = "windows")]
 				{
+					#[rustfmt::skip]
 					let key = CURRENT_USER.create("Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32").unwrap();
 					key.set_string("", "").unwrap();
 				}
@@ -529,13 +530,15 @@ fn squash() -> Result<(), Box<dyn Error>> {
 	let mut stderr = String::from_utf8_lossy(&output.stderr).to_string();
 
 	// If a fixup to a commit results in the same commit as the previous one, the
-	// commit will be empty. In this case, a manual override is needed to continue.
+	// commit will be empty. In this case, a manual override is needed to
+	// continue.
 	while !success {
 		if stderr.contains("--allow-empty") {
 			println!("Empty commit detected. Continuing...");
 
 			let mut cmd = Command::new("git");
-			cmd.env("GIT_EDITOR", "true")
+			cmd
+				.env("GIT_EDITOR", "true")
 				.arg("rebase")
 				.arg("--continue");
 

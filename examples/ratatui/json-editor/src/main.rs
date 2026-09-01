@@ -214,9 +214,7 @@ fn ui(frame: &mut Frame, app: &App) {
 	let current_navigation_text = vec![
 		match app.current_screen {
 			CurrentScreen::Main => Span::styled("Normal Mode", Style::default().fg(Color::Green)),
-			CurrentScreen::Editing => {
-				Span::styled("Editing Mode", Style::default().fg(Color::Yellow))
-			}
+			CurrentScreen::Editing => Span::styled("Editing Mode", Style::default().fg(Color::Yellow)),
 			CurrentScreen::Exiting => Span::styled("Exiting", Style::default().fg(Color::LightRed)),
 		}
 		.to_owned(),

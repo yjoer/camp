@@ -112,28 +112,26 @@ function SidebarWAAPI() {
 
 		const effect = animation_ref.current?.effect as KeyframeEffect | undefined;
 		if (!animation_ref.current || effect?.target !== el) {
-			const animation = el.animate(
+			animation_ref.current = el.animate(
 				[{ transform: 'translateX(100%)' }, { transform: 'translateX(0)' }],
 				{
 					duration: 250,
 					easing: 'ease-in-out',
-					fill: 'forwards',
 				},
 			);
-
-			animation.pause();
-			animation_ref.current = animation;
+			animation_ref.current.pause();
 		}
 
 		animation_ref.current.playbackRate = state === 'opening' ? 1 : -1;
 		animation_ref.current.play();
 
-		animation_ref.current.finished
+		void animation_ref.current.finished
 		.then(() => {
+			animation_ref.current?.commitStyles();
+			animation_ref.current?.cancel();
 			if (state === 'opening') set_state('opened');
 			if (state === 'closing') set_state('closed');
-		})
-		.catch(() => {});
+		});
 	}, [state]);
 
 	return (

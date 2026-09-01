@@ -38,10 +38,7 @@ mod windows_imports {
 		RPC_C_AUTHN_LEVEL_PKT,
 		RPC_C_IMP_LEVEL_IMPERSONATE,
 	};
-	pub use windows::Win32::System::Environment::{
-		CreateEnvironmentBlock,
-		DestroyEnvironmentBlock,
-	};
+	pub use windows::Win32::System::Environment::{CreateEnvironmentBlock, DestroyEnvironmentBlock};
 	pub use windows::Win32::System::ProcessStatus::GetModuleFileNameExW;
 	pub use windows::Win32::System::RemoteDesktop::{
 		WTSActive,
@@ -102,11 +99,7 @@ mod windows_imports {
 	};
 	pub use windows_service::service_control_handler::ServiceControlHandlerResult;
 	pub use windows_service::service_manager::{ServiceManager, ServiceManagerAccess};
-	pub use windows_service::{
-		define_windows_service,
-		service_control_handler,
-		service_dispatcher,
-	};
+	pub use windows_service::{define_windows_service, service_control_handler, service_dispatcher};
 }
 
 #[cfg(target_os = "windows")]
