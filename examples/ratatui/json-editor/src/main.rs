@@ -252,8 +252,8 @@ fn ui(frame: &mut Frame, app: &App) {
 		}
 	};
 
-	let keynotes_footer =
-		Paragraph::new(Line::from(current_key_hint)).block(Block::default().borders(Borders::ALL));
+	let keynotes_footer = Paragraph::new(Line::from(current_key_hint)) //
+		.block(Block::default().borders(Borders::ALL));
 
 	let footer_chunk = Layout::default()
 		.direction(Direction::Horizontal)
