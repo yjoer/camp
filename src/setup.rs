@@ -133,7 +133,8 @@ fn setup_jupyter_cling_kernel() -> Result<(), Box<dyn Error>> {
 	}
 
 	let mut cmd = Command::new("jupyter-kernelspec");
-	cmd.arg("install")
+	cmd
+		.arg("install")
 		.arg("--user")
 		.arg("cling-cpp20")
 		.current_dir(&repo_kernel_path);
