@@ -26,6 +26,7 @@ export const routes = rootRoute('root.tsx', [
 	route('/webgl/rectangle', '../src/webgl/rectangle.tsx'),
 	route('/webgl/multiple-rectangles', '../src/webgl/multiple-rectangles.tsx'),
 	route('/ui/animations/sidebar', '../ui/animation-sidebar.tsx'),
+	route('/ui/animations/disclosure', '../ui/animation-disclosure.tsx'),
 ]);
 
 export const babelConfig = {
