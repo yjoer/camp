@@ -30,8 +30,9 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: |
+          ROOT_PACKAGE_NAME=$(jq -r ".name" "${{ github.workspace }}/package.json")
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --immutable
+          yarn workspaces focus $ROOT_PACKAGE_NAME $PACKAGE_NAME
       - name: Build Project Artifacts
         run: yarn build
       - name: Publish
