@@ -25,8 +25,9 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: |
+          ROOT_PACKAGE_NAME=$(jq -r ".name" "${{ github.workspace }}/package.json")
           PACKAGE_NAME=$(jq -r ".name" ${{ github.event.inputs.package }}/package.json)
-          YARN_NM_HOISTING_LIMITS=workspaces yarn workspace $PACKAGE_NAME install --immutable
+          yarn workspaces focus $ROOT_PACKAGE_NAME $PACKAGE_NAME
       - name: Publish to Chromatic
         uses: chromaui/action@f191a0224b10e1a38b2091cefb7b7a2337009116
         with:
