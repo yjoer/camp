@@ -1,6 +1,6 @@
 // oxlint-disable import/no-default-export
 import { rspack } from '@rspack/core';
-import { getServerConfig } from '@xcamp/webpack/rspack-config.ts';
+import { getServerConfig } from '@xcamp/webpack/rspack_config.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { merge } from 'webpack-merge';

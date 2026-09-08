@@ -5,7 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import cookies from 'js-cookie';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { useTRPC } from '@/lib/trpc-provider';
+import { useTRPC } from '@/lib/trpc_provider';
 
 export const Route = createFileRoute('/')({
 	component: LandingPage,

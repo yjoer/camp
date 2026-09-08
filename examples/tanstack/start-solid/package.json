@@ -18,8 +18,8 @@
 	"devDependencies": {
 		"@stylexjs/babel-plugin": "0.19.0",
 		"@stylexjs/postcss-plugin": "0.19.0",
-		"autoprefixer": "10.5.4",
-		"nitro": "3.0.260610-beta",
+		"autoprefixer": "10.5.5",
+		"nitro": "3.0.260903-beta",
 		"tailwindcss": "4.3.3",
 		"vite-plugin-solid": "2.11.11"
 	}

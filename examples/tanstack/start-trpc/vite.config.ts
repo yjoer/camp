@@ -7,7 +7,7 @@ import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite-plus';
 
 export const routes = rootRoute('root.tsx', [
-	route('/', '../src/landing-page.tsx'),
+	route('/', '../src/landing_page.tsx'),
 ]);
 
 export default defineConfig({

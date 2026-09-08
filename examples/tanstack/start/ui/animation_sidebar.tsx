@@ -68,13 +68,12 @@ function SidebarTransition() {
 					Toggle
 				</button>
 			</div>
-			{state !== 'closed' &&
-				createPortal(
-					<div sx={st_styles.portal}>
-						<Sidebar ref={ref} />
-					</div>,
-					document.body,
-				)}
+			{state !== 'closed' && createPortal(
+				<div sx={st_styles.portal}>
+					<Sidebar ref={ref} />
+				</div>,
+				document.body,
+			)}
 		</div>
 	);
 }
@@ -142,13 +141,12 @@ function SidebarWAAPI() {
 					Toggle
 				</button>
 			</div>
-			{state !== 'closed' &&
-				createPortal(
-					<div sx={sw_styles.portal}>
-						<Sidebar ref={ref} />
-					</div>,
-					document.body,
-				)}
+			{state !== 'closed' && createPortal(
+				<div sx={sw_styles.portal}>
+					<Sidebar ref={ref} />
+				</div>,
+				document.body,
+			)}
 		</div>
 	);
 }
@@ -177,8 +175,8 @@ function Sidebar({ ref }: SidebarProps) {
 		<div ref={ref} sx={sidebar_styles.base}>
 			{Array.from({ length: 5 }).map((_, idx) => (
 				<div key={idx} sx={sidebar_styles.item}>
-					<div sx={sidebar_styles.icon} />
-					<div sx={sidebar_styles.label} />
+					<div sx={sidebar_styles.item_icon} />
+					<div sx={sidebar_styles.item_label} />
 				</div>
 			))}
 		</div>
@@ -204,12 +202,12 @@ const sidebar_styles = stylex.create({
 		paddingBlock: 4,
 		paddingInline: 8,
 	},
-	icon: {
+	item_icon: {
 		width: 24,
 		height: 24,
 		backgroundColor: 'oklch(92% 0 0)',
 	},
-	label: {
+	item_label: {
 		width: 240,
 		height: 24,
 		backgroundColor: 'oklch(92% 0 0)',

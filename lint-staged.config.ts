@@ -1,5 +1,5 @@
 // oxlint-disable import/no-default-export
-import { lint_staged_config } from '@xcamp/config/lint-staged.ts';
+import { lint_staged_config } from '@xcamp/config/lint_staged.ts';
 
 export default {
 	...lint_staged_config,

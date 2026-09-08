@@ -12,15 +12,15 @@
 		"react": "19.2.8"
 	},
 	"devDependencies": {
-		"@storybook/addon-docs": "10.5.10",
-		"@storybook/addon-vitest": "10.5.10",
-		"@storybook/react-vite": "10.5.10",
+		"@storybook/addon-docs": "10.6.0",
+		"@storybook/addon-vitest": "10.6.0",
+		"@storybook/react-vite": "10.6.0",
 		"@tailwindcss/vite": "4.3.3",
 		"@types/react": "19.2.18",
 		"@vitest/browser-playwright": "4.1.11",
 		"@vitest/coverage-v8": "4.1.11",
-		"playwright": "1.62.1",
-		"storybook": "10.5.10",
+		"playwright": "1.63.0",
+		"storybook": "10.6.0",
 		"tailwindcss": "4.3.3"
 	}
 }

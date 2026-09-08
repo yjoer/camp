@@ -7,8 +7,8 @@ import { defineConfig } from 'vite-plus';
 
 export const routes = rootRoute('root.tsx', [
 	route('/', '../src/gallery.tsx'),
-	route('/stale-closures', '../src/stale-closures.tsx'),
-	route('/transition-signal', '../src/transition-signal.tsx'),
+	route('/stale-closures', '../src/stale_closures.tsx'),
+	route('/transition-signal', '../src/transition_signal.tsx'),
 ]);
 
 export default defineConfig({

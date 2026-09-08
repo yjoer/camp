@@ -4,6 +4,6 @@
 	"license": "MPL-2.0",
 	"exports": {
 		"./config": "./config.ts",
-		"./rspack-config": "./rspack-config.ts"
+		"./rspack_config": "./rspack_config.ts"
 	}
 }

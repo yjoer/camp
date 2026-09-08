@@ -2,11 +2,11 @@
 	"name": "@camp/examples-react-server-vite",
 	"type": "module",
 	"scripts": {
-		"build": "vp build --outDir .output/client && vp build --outDir .output/server --ssr src/entry-server.js",
+		"build": "vp build --outDir .output/client && vp build --outDir .output/server --ssr src/entry_server.js",
 		"dev": "node server.ts",
-		"dev:stream": "node server-stream.ts",
+		"dev:stream": "node server_stream.ts",
 		"start": "cross-env NODE_ENV=production node server.ts",
-		"start:stream": "cross-env NODE_ENV=production node server-stream.ts"
+		"start:stream": "cross-env NODE_ENV=production node server_stream.ts"
 	},
 	"dependencies": {
 		"react": "19.2.8",
@@ -14,7 +14,7 @@
 	},
 	"devDependencies": {
 		"@types/react": "19.2.18",
-		"@types/react-dom": "19.2.5",
+		"@types/react-dom": "19.2.7",
 		"@vitejs/plugin-react": "6.1.1",
 		"cross-env": "10.1.0"
 	}
