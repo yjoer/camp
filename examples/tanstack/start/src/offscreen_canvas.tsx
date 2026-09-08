@@ -7,10 +7,10 @@ import * as stylex from '@stylexjs/stylex';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 
-import type { router } from '@/lib/canvas-worker';
+import type { router } from '@/lib/canvas_worker';
 
 import { button_styles } from '@/components/button';
-import CanvasWorker from '@/lib/canvas-worker?worker';
+import CanvasWorker from '@/lib/canvas_worker?worker';
 
 export const Route = createFileRoute('/worker-offscreen-canvas')({
 	component: OffscreenCanvas,

@@ -5,7 +5,7 @@ import { createIsomorphicFn } from '@tanstack/react-start';
 import { getRequestHeader } from '@tanstack/react-start/server';
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
 
-import { TRPCProvider } from '@/lib/trpc-provider';
+import { TRPCProvider } from '@/lib/trpc_provider';
 
 import type { AppRouter } from '../server';
 

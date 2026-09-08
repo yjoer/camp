@@ -1,4 +1,4 @@
-import { hatchet } from './hatchet-client.ts';
+import { hatchet } from './hatchet_client.ts';
 
 export type HelloInput = {
 	message: string;

@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 
-import type * as EntryServer from './src/entry-server';
+import type * as EntryServer from './src/entry_server';
 
 const is_development = process.env.NODE_ENV !== 'production';
 const server = createServer();
@@ -39,7 +39,7 @@ async function handler(req: IncomingMessage, res: ServerResponse) {
 
 			template = await fs.readFile(path.resolve(import.meta.dirname, 'index.html'), 'utf8');
 			template = await vite!.transformIndexHtml(url, template);
-			({ render } = await vite!.ssrLoadModule('/src/entry-server.tsx') as typeof EntryServer);
+			({ render } = await vite!.ssrLoadModule('/src/entry_server.tsx') as typeof EntryServer);
 		} else {
 			if (url.startsWith('/assets/')) {
 				await static_files(req, res);
@@ -47,7 +47,7 @@ async function handler(req: IncomingMessage, res: ServerResponse) {
 			}
 
 			// @ts-expect-error build-time generated
-			({ render } = await import('./.output/server/entry-server.js') as typeof EntryServer);
+			({ render } = await import('./.output/server/entry_server.js') as typeof EntryServer);
 		}
 
 		let html = render();

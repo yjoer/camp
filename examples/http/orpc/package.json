@@ -4,10 +4,10 @@
 	"dependencies": {
 		"@orpc/openapi": "1.15.0",
 		"@orpc/server": "1.15.0",
-		"fastify": "5.12.1",
+		"fastify": "5.12.3",
 		"h3": "2.0.1-rc.20"
 	},
 	"devDependencies": {
-		"@types/node": "26.4.0"
+		"@types/node": "26.4.1"
 	}
 }

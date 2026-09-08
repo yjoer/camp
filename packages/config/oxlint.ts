@@ -31,7 +31,7 @@ export const oxlint_config = defineConfig({
 		'unicorn/error-message': 'error',
 		'unicorn/escape-case': 'error',
 		'unicorn/explicit-length-check': 'error',
-		'unicorn/filename-case': ['error', { cases: { kebabCase: true } }],
+		'unicorn/filename-case': ['error', { cases: { snakeCase: true } }],
 		'unicorn/new-for-builtins': 'error',
 		'unicorn/no-abusive-eslint-disable': 'error',
 		'unicorn/no-accessor-recursion': 'error',
@@ -230,6 +230,11 @@ export const oxlint_config = defineConfig({
 		files: ['**/*.{jsx,tsx}'],
 		rules: {
 			'unicorn/no-null': 'off',
+		},
+	}, {
+		files: ['lint-staged.config.ts'],
+		rules: {
+			'unicorn/filename-case': 'off',
 		},
 	}],
 });

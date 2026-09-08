@@ -1,7 +1,7 @@
 import { ConcurrencyLimitStrategy } from '@hatchet-dev/typescript-sdk';
 
 import { es } from '../elasticsearch.ts';
-import { hatchet } from '../hatchet-client.ts';
+import { hatchet } from '../hatchet_client.ts';
 
 const base_url = 'https://api.dropboxapi.com';
 

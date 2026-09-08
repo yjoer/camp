@@ -145,7 +145,7 @@ def run_benchmark(server: ServerConfig, endpoint: Endpoint, script_dir: Path) ->
 		f"VUS={K6_VUS}",
 		"--env",
 		f"DURATION={K6_DURATION}",
-		str(script_dir / "k-six.ts"),
+		str(script_dir / "k_six.ts"),
 	]
 
 	if endpoint.request_body:

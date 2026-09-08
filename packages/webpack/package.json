@@ -1,6 +1,6 @@
 {
 	"name": "@xcamp/webpack",
-	"version": "2026.9.0",
+	"version": "2026.9.1",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -11,9 +11,9 @@
 			"types": "./.build/config.d.ts",
 			"import": "./.build/config.js"
 		},
-		"./rspack-config": {
-			"types": "./.build/rspack-config.d.ts",
-			"import": "./.build/rspack-config.js"
+		"./rspack_config": {
+			"types": "./.build/rspack_config.d.ts",
+			"import": "./.build/rspack_config.js"
 		},
 		"./*": "./*"
 	},
@@ -27,10 +27,10 @@
 		"webpack-node-externals": "3.0.0"
 	},
 	"devDependencies": {
-		"@rspack/core": "2.2.1",
+		"@rspack/core": "2.2.2",
 		"@types/webpack-node-externals": "3.0.4",
 		"typescript": "6.0.3",
-		"webpack": "5.110.1"
+		"webpack": "5.110.3"
 	},
 	"peerDependencies": {
 		"@rspack/core": "^2",

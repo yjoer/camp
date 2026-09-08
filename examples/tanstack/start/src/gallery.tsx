@@ -66,6 +66,7 @@ const ui_sections = [
 		label: 'Animations',
 		children: [
 			{ to: '/ui/animations/sidebar', label: 'Sidebar' },
+			{ to: '/ui/animations/sidebar-w', label: 'Sidebar W' },
 			{ to: '/ui/animations/disclosure', label: 'Disclosure' },
 		],
 	},
