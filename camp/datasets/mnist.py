@@ -65,17 +65,17 @@ class FashionMNIST:
 
 		return None
 
-	def _load(self, path: str, storage_options: dict) -> dict[str, bytes]:
+	def _load(self, path: str, storage_options: dict) -> dict[str, bytearray]:
 		buffers = {}
 
 		for k, v in self.files.items():
 			with fsspec.open(f"{path}/{v}", **storage_options) as f:
-				buffers[k] = gzip.decompress(f.read())
+				buffers[k] = bytearray(gzip.decompress(f.read()))
 
 		return buffers
 
 
-def _parse(buffers: dict[str, bytes]) -> dict[str, np.ndarray]:
+def _parse(buffers: dict[str, bytearray]) -> dict[str, np.ndarray]:
 	arrays = {}
 
 	for subset in ["train", "test"]:
