@@ -97,6 +97,7 @@ ignore = [
 	"PLC2701",  # import-private-name
 	"PLR0914",  # too-many-locals
 	"PLR2004",  # magic-value-comparison
+	"PLR6104",  # non-augmented-assignment
 	"RUF105",  # noqa-comments
 	"RUF201",  # rule-codes-in-selectors
 ]
