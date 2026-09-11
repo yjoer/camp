@@ -5,9 +5,7 @@ import numpy as np
 # %%
 def rgb_to_cmy(pixel: list | tuple, normalize: bool = False) -> tuple:
 	pixel_np = np.array(pixel)
-
-	if normalize:
-		pixel_np = pixel_np / 255  # noqa: PLR6104
+	if normalize: pixel_np /= 255
 
 	return tuple(1 - pixel_np)
 

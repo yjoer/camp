@@ -5,7 +5,7 @@ use std::process::Command;
 
 use clap::{Parser, Subcommand};
 use git2::Repository;
-use regex::Regex;
+use regex::regex;
 
 #[cfg(target_os = "windows")]
 mod windows_imports {
@@ -219,9 +219,7 @@ fn main() {
 					return;
 				}
 
-				let pattern = r"\\\\wsl\$\\(.*?)(\\.*)";
-				let re = Regex::new(pattern).unwrap();
-
+				let re = regex!(r"\\\\wsl\$\\(.*?)(\\.*)");
 				if let Some(captures) = re.captures(&path) {
 					let distro_name = captures.get(1).unwrap().as_str();
 					let path = captures.get(2).unwrap().as_str();
@@ -501,7 +499,7 @@ fn fixup() -> Result<(), Box<dyn Error>> {
 			)?;
 
 			let commit = repo.find_commit(commit_oid)?;
-			let summary = commit.summary().unwrap_or("");
+			let summary = commit.summary()?.unwrap_or("");
 			println!("{}", summary);
 			break;
 		}

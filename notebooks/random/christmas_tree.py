@@ -14,16 +14,16 @@ from manim import VGroup
 
 # %%
 def construct_cylinder(quick: bool = False) -> Cylinder:
-	resolution = 24 if quick else [64, 96]
+	resolution = 24 if quick else (64, 96)
 
 	cylinder = Cylinder(
 		radius=0.5,
 		height=1.25,
-		direction=[0, 1, 0.15],
+		direction=(0, 1, 0.15),
 		resolution=resolution,
 	)
 
-	cylinder.rotate(angle=90 * np.pi / 180, axis=[0, 1, 0.15])
+	cylinder.rotate(angle=90 * np.pi / 180, axis=(0, 1, 0.15))
 	cylinder.set_style(stroke_color="#964B00")
 	cylinder.set_fill(color="#964B00", opacity=1)
 
@@ -52,8 +52,8 @@ def construct_cone(radius: int, height: int, n_lines: int = 128) -> VGroup:
 		line = Line(start=start_point, end=end_point, color="#1E792C")
 		lines.add(line)
 
-	lines.rotate(angle=90 * np.pi / 180, axis=[-1, 0, 0])
-	lines.rotate(angle=180 * np.pi / 180, axis=[0, 1, 0])
+	lines.rotate(angle=90 * np.pi / 180, axis=(-1, 0, 0))
+	lines.rotate(angle=180 * np.pi / 180, axis=(0, 1, 0))
 
 	return lines
 
@@ -101,7 +101,7 @@ def construct_dots(vertices: list[tuple[float, float]], n_dots: int) -> VGroup:
 		circle = Circle(radius=0.05)
 		circle.set_style(stroke_width=0)
 		circle.set_fill(color=colors[i], opacity=1)
-		circle.shift([x[i], y[i], 0])
+		circle.shift((x[i], y[i], 0))
 
 		circles.add(circle)
 
@@ -154,7 +154,7 @@ class StarScene(Scene):
 class TreeScene(ThreeDScene):
 	def construct(self) -> None:
 		trunk = construct_cylinder(quick=False)
-		trunk.shift([0, -2.5, 0])
+		trunk.shift((0, -2.5, 0))
 		self.play(Create(trunk, run_time=0.5))
 
 		leaves = construct_cone(2, 4)
@@ -165,7 +165,7 @@ class TreeScene(ThreeDScene):
 		self.play(Create(dots))
 
 		star = construct_star()
-		star.shift([0, 2.25, 0])
+		star.shift((0, 2.25, 0))
 		self.play(GrowFromCenter(star), run_time=0.5)
 		self.play(
 			Flash(

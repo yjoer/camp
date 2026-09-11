@@ -299,13 +299,8 @@ class YOLOv8PosePredictor:
 			# (x, y, visibility) tuple with a sigmoid function.
 			keypoints[:, 2::3] = keypoints[:, 2::3].sigmoid()
 
-		keypoints[:, 0::dim] = (
-			keypoints[:, 0::dim] * 2.0 + (anchor_points[0] - 0.5)
-		) * stride_tensors
-
-		keypoints[:, 1::dim] = (
-			keypoints[:, 1::dim] * 2.0 + (anchor_points[1] - 0.5)
-		) * stride_tensors
+		keypoints[:, 0::dim] = (keypoints[:, 0::dim] * 2.0 + (anchor_points[0] - 0.5)) * stride_tensors
+		keypoints[:, 1::dim] = (keypoints[:, 1::dim] * 2.0 + (anchor_points[1] - 0.5)) * stride_tensors
 
 		pred = torch.cat((x, keypoints), dim=1)
 

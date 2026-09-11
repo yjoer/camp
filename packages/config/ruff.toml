@@ -1,6 +1,8 @@
 indent-width = 2
+line-length = 65535
 
 [format]
+indent-style = "tab"
 line-ending = "lf"
 
 [lint]
@@ -95,16 +97,25 @@ ignore = [
 	"PLC2701",  # import-private-name
 	"PLR0914",  # too-many-locals
 	"PLR2004",  # magic-value-comparison
+	"RUF105",  # noqa-comments
+	"RUF201",  # rule-codes-in-selectors
 ]
 allowed-confusables = [
 	"µ",
 	"σ",
 ]
 
+[lint.flake8-boolean-trap]
+extend-allowed-calls = ["pandas.option_context"]
+
 [lint.isort]
 force-single-line = true
 
+[lint.pycodestyle]
+max-line-length = 100
+
 [lint.pylint]
+allow-dunder-method-names = ["_render_traceback_"]
 max-args = 10
 
 [lint.pydocstyle]

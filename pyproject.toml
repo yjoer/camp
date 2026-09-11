@@ -1,7 +1,7 @@
 [project]
 name = "camp"
 version = "2024.0.0"
-requires-python = ">= 3.11"
+requires-python = ">= 3.12"
 dependencies = [
 	"altair[all]==6.0.0",
 	"fsspec==2026.2.0",
@@ -86,9 +86,9 @@ dev = [
 	"notebook-intelligence==5.3.1",
 	"pytest==9.1.1",
 	"pytest-xdist==3.8.0",
-	"ruff==0.15.11",
+	"ruff==0.16.7",
 	"scalene==2.2.1",
-	"ty==0.0.31",
+	"ty==0.0.80",
 ]
 
 [build-system]
@@ -136,7 +136,7 @@ extend = "packages/config/ruff.toml"
 ]
 
 [tool.tombi.files]
-include = ["**/*.toml", "uv.lock"]
+include = ["**/*.toml", "Cargo.lock", "uv.lock"]
 
 [[tool.tombi.overrides]]
 [tool.tombi.overrides.files]
@@ -144,6 +144,13 @@ include = ["**/*.toml"]
 
 [tool.tombi.overrides.format.rules]
 indent-style = "tab"
+
+[[tool.tombi.overrides]]
+[tool.tombi.overrides.files]
+include = ["Cargo.lock"]
+
+[tool.tombi.overrides.format.rules]
+indent-width = 1
 
 [[tool.tombi.overrides]]
 [tool.tombi.overrides.files]
@@ -167,7 +174,7 @@ conflicts = [
 ]
 managed = true
 exclude-newer = "P3D"
-exclude-newer-package = { gymnasium = false }
+exclude-newer-package = { ruff = false, ty = false }
 
 [tool.uv.workspace]
 members = ["examples/grafana/*", "examples/http/fastapi"]
