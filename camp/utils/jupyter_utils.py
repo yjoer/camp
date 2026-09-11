@@ -7,7 +7,7 @@ def is_notebook() -> bool:
 
 
 class StopExecutionError(Exception):
-	def _render_traceback_(self) -> None:  # noqa: PLW3201
+	def _render_traceback_(self) -> None:
 		pass
 
 

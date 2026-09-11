@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import gzip
 import struct
+from typing import TYPE_CHECKING
 from typing import ClassVar
 from typing import Literal
 from typing import overload
@@ -7,10 +10,13 @@ from typing import overload
 import fsspec
 import numpy as np
 
+if TYPE_CHECKING:
+	import torch as torch_t
+
 try:
 	import torch
 except ImportError:
-	torch = None  # ty: ignore[invalid-assignment]
+	torch = None
 
 TensorType = Literal["np", "pt"]
 
@@ -37,7 +43,7 @@ class FashionMNIST:
 		path: str,
 		storage_options: dict | None = None,
 		return_tensors: Literal["pt"] = "pt",
-	) -> dict[str, torch.Tensor]: ...
+	) -> dict[str, torch_t.Tensor]: ...
 	@staticmethod
 	def load(
 		path: str,
@@ -59,7 +65,7 @@ class FashionMNIST:
 
 		return None
 
-	def _load(self, path: str, storage_options: dict) -> dict[str, bytes]:
+	def _load(self, path: str, storage_options: dict) -> dict[str, bytearray]:
 		buffers = {}
 
 		for k, v in self.files.items():
@@ -69,7 +75,7 @@ class FashionMNIST:
 		return buffers
 
 
-def _parse(buffers: dict[str, bytes]) -> dict[str, np.ndarray]:
+def _parse(buffers: dict[str, bytearray]) -> dict[str, np.ndarray]:
 	arrays = {}
 
 	for subset in ["train", "test"]:
@@ -90,7 +96,7 @@ def _parse(buffers: dict[str, bytes]) -> dict[str, np.ndarray]:
 	return arrays
 
 
-def _to_tensor(arrays: dict[str, np.ndarray]) -> dict[str, torch.Tensor] | None:
+def _to_tensor(arrays: dict[str, np.ndarray]) -> dict[str, torch_t.Tensor] | None:
 	if torch is None:
 		print("cannot convert to tensors because torch is not installed.")
 		return None

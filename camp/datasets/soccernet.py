@@ -131,9 +131,7 @@ class SoccerNetCalibrationDataset(Dataset):
 			self.images = [fs.unstrip_protocol(i) for i in self.images]
 			self.images = sorted(self.images)
 
-		self.annotations = [
-			fs._strip_protocol(i.replace(".jpg", ".json")) for i in self.images
-		]
+		self.annotations = [fs._strip_protocol(i.replace(".jpg", ".json")) for i in self.images]
 
 		self.subset_segments = []
 		self.subset_boxes = []
