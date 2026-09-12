@@ -26,6 +26,8 @@ from torch import optim
 
 # %%
 env = gym.make("LunarLander-v3", render_mode="rgb_array")
+observation_space = cast("gym.spaces.Box", env.observation_space)
+action_space = cast("gym.spaces.Discrete", env.action_space)
 
 
 # %%
@@ -66,7 +68,7 @@ class QNetwork(nn.Module):
 
 		self.fc1 = nn.Linear(n_states, 64)
 		self.fc2 = nn.Linear(64, 64)
-		self.fc3 = nn.Linear(64, n_actions)
+		self.fc3 = nn.Linear(64, int(n_actions))
 
 	def forward(self, state: torch.Tensor) -> torch.Tensor:
 		x = torch.relu(self.fc1(state))
@@ -149,8 +151,8 @@ def update_target_network(
 
 
 # %%
-n_states = cast("tuple[int, ...]", env.observation_space.shape)[0]
-n_actions = cast("gym.spaces.Discrete", env.action_space).n
+n_states = observation_space.shape[0]
+n_actions = action_space.n
 n_episodes = 1500
 
 gamma = 0.99

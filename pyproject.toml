@@ -39,7 +39,7 @@ text = [
 	"en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
 	"gensim==4.4.0",
 	"nltk==3.9.3",
-	"spacy==3.8.11",
+	"spacy==3.8.16",
 ]
 torch = [
 	"torch==2.10.0",
@@ -83,7 +83,7 @@ dev = [
 	"jupyverse[jupyterlab,auth]==0.14.16",
 	"marimo==0.24.0",
 	"maturin==1.13.1",
-	"notebook-intelligence==5.3.1",
+	"notebook-intelligence==5.4.0",
 	"pytest==9.1.1",
 	"pytest-xdist==3.8.0",
 	"ruff==0.16.7",
@@ -181,7 +181,7 @@ members = ["examples/grafana/*", "examples/http/fastapi"]
 
 [[tool.uv.dependency-metadata]]
 name = "notebook-intelligence"
-version = "5.3.1"
+version = "5.4.0"
 requires-dist = ["python-multipart>=0.0.20"]
 
 [tool.uv.sources]

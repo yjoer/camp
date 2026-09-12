@@ -8,6 +8,7 @@ from typing import Any
 from typing import Literal
 
 import fsspec
+import fsspec.utils
 import numpy as np
 import torch
 from IPython.display import clear_output

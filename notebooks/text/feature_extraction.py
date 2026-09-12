@@ -1,6 +1,7 @@
 # %%
 import nltk
 import spacy
+import spacy.displacy
 from IPython.display import HTML
 from IPython.display import SVG
 from sklearn.datasets import fetch_20newsgroups

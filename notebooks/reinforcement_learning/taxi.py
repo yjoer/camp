@@ -6,11 +6,12 @@ from typing import cast
 import gymnasium as gym
 import imageio
 import numpy as np
-from gymnasium.core import ObsType
 from IPython.display import Image
 
 # %%
 env = gym.make("Taxi-v3", render_mode="rgb_array")
+observation_space = cast("gym.spaces.Discrete", env.observation_space)
+action_space = cast("gym.spaces.Discrete", env.action_space)
 
 
 # %%
@@ -34,7 +35,7 @@ def update_q_table_v2(
 	state: int,
 	action: np.int64,
 	reward: SupportsFloat,
-	next_state: ObsType,
+	next_state: np.int64,
 	alpha: float,
 	gamma: float,
 ) -> None:
@@ -46,7 +47,7 @@ def update_q_table_v2(
 
 # %%
 def get_policy(Q: np.ndarray) -> dict:
-	n_states = env.observation_space.n
+	n_states = observation_space.n
 	return {state: np.argmax(Q[state]) for state in range(n_states)}
 
 
@@ -71,8 +72,8 @@ def simulate_policy(policy: dict) -> list[np.ndarray]:
 
 # %%
 def epsilon_greedy_decayed(n_episodes: int, max_actions: int) -> np.ndarray:
-	n_states = env.observation_space.n
-	n_actions = env.action_space.n
+	n_states = observation_space.n
+	n_actions = action_space.n
 
 	Q = np.zeros((n_states, n_actions))
 

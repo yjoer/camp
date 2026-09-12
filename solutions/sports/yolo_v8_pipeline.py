@@ -2,6 +2,7 @@ from multiprocessing import Pool
 from typing import TYPE_CHECKING
 
 import fsspec
+import fsspec.utils
 import motmetrics as mm
 import numpy as np
 import pandas as pd
