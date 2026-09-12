@@ -1,3 +1,5 @@
+from typing import cast
+
 import torch
 import torchvision.transforms.v2.functional as tvf
 from PIL import Image
@@ -8,10 +10,10 @@ def resize_image_and_boxes(
 	boxes: torch.Tensor,
 	max_size: int,
 	output_size: list[int],
-) -> tuple[torch.Tensor, torch.Tensor]:
+) -> tuple[Image.Image, torch.Tensor]:
 	# Match the longest edge of the image to the maximum size.
 	width, height = image.size
-	image = tvf.resize(image, size=None, max_size=max_size)
+	image = cast("Image.Image", tvf.resize(image, size=None, max_size=max_size))
 
 	# Scale the bounding boxes accordingly.
 	scale_factor = max_size / width if width > height else max_size / height
@@ -25,7 +27,7 @@ def resize_image_and_boxes(
 	if width == output_width and height == output_height:
 		return image, boxes
 
-	image = tvf.center_crop(image, output_size)
+	image = cast("Image.Image", tvf.center_crop(image, output_size))
 
 	left, top = (width - output_width) // 2, (height - output_height) // 2
 	boxes[:, [0, 2]] -= left
