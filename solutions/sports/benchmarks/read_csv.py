@@ -6,6 +6,7 @@ from concurrent.futures import as_completed
 from typing import IO
 
 import fsspec
+import fsspec.utils
 import numpy as np
 import pandas as pd
 import polars as pl

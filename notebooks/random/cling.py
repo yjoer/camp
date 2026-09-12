@@ -56,7 +56,7 @@ code = """
 """
 
 res = cling.cling_eval(interpreter, ctypes.c_char_p(code.encode("utf-8")))
-ctypes.cast(res, ctypes.c_char_p).value.decode("utf-8")
+ctypes.string_at(res).decode("utf-8")
 
 # %%
 code = """
@@ -67,7 +67,7 @@ a + b
 """
 
 res = cling.cling_eval(interpreter, ctypes.c_char_p(code.encode("utf-8")))
-ctypes.cast(res, ctypes.c_char_p).value.decode("utf-8")
+ctypes.string_at(res).decode("utf-8")
 
 # %%
 code = """
@@ -77,7 +77,7 @@ std::cout << (a + b) << std::endl;
 """
 
 res = cling.cling_eval(interpreter, ctypes.c_char_p(code.encode("utf-8")))
-ctypes.cast(res, ctypes.c_char_p).value.decode("utf-8")
+ctypes.string_at(res).decode("utf-8")
 
 # %% [markdown]
 # ## Pipes
@@ -93,6 +93,7 @@ fd.close()
 
 # %%
 if sys.platform == "win32":
+	import ctypes.wintypes
 	import msvcrt
 
 	peek_named_pipe = ctypes.windll.kernel32.PeekNamedPipe

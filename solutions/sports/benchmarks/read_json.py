@@ -8,6 +8,7 @@ from typing import IO
 from typing import cast
 
 import fsspec
+import fsspec.utils
 from minio import Minio
 from s3fs import S3FileSystem
 
@@ -114,7 +115,7 @@ def target_fn() -> None:
 		skip_instance_cache=True,
 	)
 
-	async def gather() -> tuple:
+	async def gather() -> list:
 		async def read_json(f: str) -> dict:
 			f = await fs.open_async(f, "rb")
 			data = await f.read()

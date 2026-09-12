@@ -11,7 +11,7 @@ def resize_image_and_boxes(
 ) -> tuple[torch.Tensor, torch.Tensor]:
 	# Match the longest edge of the image to the maximum size.
 	width, height = image.size
-	image: torch.Tensor = tvf.resize(image, size=None, max_size=max_size)
+	image = tvf.resize(image, size=None, max_size=max_size)
 
 	# Scale the bounding boxes accordingly.
 	scale_factor = max_size / width if width > height else max_size / height

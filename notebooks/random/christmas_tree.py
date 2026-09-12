@@ -1,4 +1,6 @@
 # %%
+from collections.abc import Sequence
+
 import numpy as np
 from manim import Circle
 from manim import Create
@@ -70,9 +72,9 @@ class ConeScene(ThreeDScene):
 
 # %%
 def sample_points_from_triangles(
-	vertices: list[tuple[float, float]],
+	vertices: Sequence[tuple[float, float]],
 	n_samples: int,
-) -> tuple[float, float]:
+) -> tuple[np.ndarray, np.ndarray]:
 	rng = np.random.default_rng(seed=26)
 	t1 = rng.random(size=n_samples)
 	t2 = rng.random(size=n_samples)
@@ -88,7 +90,7 @@ def sample_points_from_triangles(
 	return x, y
 
 
-def construct_dots(vertices: list[tuple[float, float]], n_dots: int) -> VGroup:
+def construct_dots(vertices: Sequence[tuple[float, float]], n_dots: int) -> VGroup:
 	x, y = sample_points_from_triangles(vertices, n_samples=n_dots)
 
 	palette = ["#FA4032", "#FF8383", "#FFC145", "#A294F9", "#B1F0F7"]

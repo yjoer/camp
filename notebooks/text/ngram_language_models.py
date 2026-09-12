@@ -6,6 +6,7 @@ import random
 import re
 
 import fsspec
+import fsspec.utils
 import numpy as np
 import pandas as pd
 import spacy

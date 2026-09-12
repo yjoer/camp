@@ -5,6 +5,7 @@ from typing import IO
 from typing import Any
 
 import fsspec
+import fsspec.utils
 import numpy as np
 import torch
 from PIL import Image

@@ -4,6 +4,7 @@ from argparse import Namespace
 
 import cv2
 import fsspec
+import fsspec.utils
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

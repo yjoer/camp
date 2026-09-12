@@ -7,7 +7,6 @@ from typing import cast
 import gymnasium as gym
 import matplotlib.pyplot as plt
 import numpy as np
-from gymnasium.core import ObsType
 
 # %matplotlib inline
 # %config InlineBackend.figure_formats = ['retina']
@@ -17,6 +16,8 @@ from gymnasium.core import ObsType
 
 # %%
 env = gym.make("FrozenLake-v1", is_slippery=False, render_mode="rgb_array")
+observation_space = cast("gym.spaces.Discrete", env.observation_space)
+action_space = cast("gym.spaces.Discrete", env.action_space)
 state, info = env.reset(seed=26)
 
 # %%
@@ -155,8 +156,8 @@ def improve_policy(
 
 # %%
 def iterate_policy() -> tuple:
-	n_states = env.observation_space.n
-	n_actions = env.action_space.n
+	n_states = observation_space.n
+	n_actions = action_space.n
 	rng = np.random.default_rng()
 	policy = {state: rng.integers(n_actions) for state in range(n_states)}
 	gamma = 0.99
@@ -191,8 +192,6 @@ def simulate_policy(policy: dict) -> list:
 	state, _info = env.reset(seed=26)
 
 	images = [cast("np.ndarray", env.render())]
-	terminated = False
-
 	for _ in range(8):
 		action = policy[state]
 		state, _reward, terminated, _, _ = env.step(action)
@@ -226,8 +225,8 @@ def generate_episode(i: int) -> list:
 	terminated = False
 
 	while not terminated:
-		env.action_space.seed(int(str(i) + str(j)))
-		action = env.action_space.sample()
+		action_space.seed(int(str(i) + str(j)))
+		action = action_space.sample()
 		next_state, reward, terminated, _truncated, _info = env.step(action)
 		episode.append((state, action, reward))
 
@@ -239,8 +238,8 @@ def generate_episode(i: int) -> list:
 
 # %%
 def first_visit_mc(n_episodes: int) -> np.ndarray:
-	n_states = env.observation_space.n
-	n_actions = env.action_space.n
+	n_states = observation_space.n
+	n_actions = action_space.n
 
 	returns_sum = np.zeros((n_states, n_actions))
 	returns_count = np.zeros((n_states, n_actions))
@@ -267,8 +266,8 @@ def first_visit_mc(n_episodes: int) -> np.ndarray:
 
 # %%
 def every_visit_mc(n_episodes: int) -> np.ndarray:
-	n_states = env.observation_space.n
-	n_actions = env.action_space.n
+	n_states = observation_space.n
+	n_actions = action_space.n
 
 	returns_sum = np.zeros((n_states, n_actions))
 	returns_count = np.zeros((n_states, n_actions))
@@ -290,7 +289,7 @@ def every_visit_mc(n_episodes: int) -> np.ndarray:
 
 # %%
 def get_policy(Q: np.ndarray) -> dict:
-	n_states = env.observation_space.n
+	n_states = observation_space.n
 	return {state: np.argmax(Q[state]) for state in range(n_states)}
 
 
@@ -322,7 +321,7 @@ def update_q_table(
 	state: int,
 	action: np.int64,
 	reward: SupportsFloat,
-	next_state: ObsType,
+	next_state: np.int64,
 	next_action: np.int64,
 	alpha: float,
 	gamma: float,
@@ -335,8 +334,8 @@ def update_q_table(
 
 # %%
 def sarsa(n_episodes: int) -> np.ndarray:
-	n_states = env.observation_space.n
-	n_actions = env.action_space.n
+	n_states = observation_space.n
+	n_actions = action_space.n
 
 	Q = np.zeros((n_states, n_actions))
 
@@ -346,8 +345,8 @@ def sarsa(n_episodes: int) -> np.ndarray:
 	for i in range(n_episodes):
 		state, _info = env.reset(seed=i)
 
-		env.action_space.seed(i)
-		action = env.action_space.sample()
+		action_space.seed(i)
+		action = action_space.sample()
 
 		j = 0
 		terminated = False
@@ -355,8 +354,8 @@ def sarsa(n_episodes: int) -> np.ndarray:
 		while not terminated:
 			next_state, reward, terminated, _truncated, _info = env.step(action)
 
-			env.action_space.seed(int(str(i) + str(j)))
-			next_action = env.action_space.sample()
+			action_space.seed(int(str(i) + str(j)))
+			next_action = action_space.sample()
 
 			update_q_table(
 				Q,
@@ -393,7 +392,7 @@ def update_q_table_v2(
 	state: int,
 	action: np.int64,
 	reward: SupportsFloat,
-	next_state: ObsType,
+	next_state: np.int64,
 	alpha: float,
 	gamma: float,
 ) -> None:
@@ -405,8 +404,8 @@ def update_q_table_v2(
 
 # %%
 def q_learning(n_episodes: int) -> np.ndarray:
-	n_states = env.observation_space.n
-	n_actions = env.action_space.n
+	n_states = observation_space.n
+	n_actions = action_space.n
 
 	Q = np.zeros((n_states, n_actions))
 
@@ -420,8 +419,8 @@ def q_learning(n_episodes: int) -> np.ndarray:
 		terminated = False
 
 		while not terminated:
-			env.action_space.seed(int(str(i) + str(j)))
-			action = env.action_space.sample()
+			action_space.seed(int(str(i) + str(j)))
+			action = action_space.sample()
 			next_state, reward, terminated, _truncated, _info = env.step(action)
 
 			update_q_table_v2(Q, state, action, reward, next_state, alpha, gamma)

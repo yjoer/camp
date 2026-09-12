@@ -78,7 +78,7 @@ if not os.getenv("S3_ENDPOINT"):
 # %%
 train_dataset: IKCESTDetectionDataset | Subset = IKCESTDetectionDataset(
 	path=TRAIN_DATASET_PATH,
-	subset="train",
+	_subset="train",
 	storage_options=storage_options,
 	transforms=transforms,
 )
