@@ -21,21 +21,21 @@ export async function chunked(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export function stream(request: FastifyRequest, reply: FastifyReply) {
-	async function* generate() {
-		yield '<div>First</div>';
-		await sleep(1000);
-
-		yield '<div>Second</div>';
-		await sleep(1000);
-
-		yield '<div>Third</div>';
-		yield '<div>.</div>';
-	}
-
-	reply.send(Readable.from(generate()));
+	reply.send(Readable.from(_generate()));
 }
 
-export async function missingPackages(request: FastifyRequest, reply: FastifyReply) {
+async function* _generate() {
+	yield '<div>First</div>';
+	await sleep(1000);
+
+	yield '<div>Second</div>';
+	await sleep(1000);
+
+	yield '<div>Third</div>';
+	yield '<div>.</div>';
+}
+
+export async function missing_packages(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		// @ts-expect-error missing package
 		await import('missing-package');
@@ -53,7 +53,7 @@ const BcryptHashInput = z.object({
 	}),
 });
 
-export async function bcryptHash(request: FastifyRequest, reply: FastifyReply) {
+export async function bcrypt_hash(request: FastifyRequest, reply: FastifyReply) {
 	const result = BcryptHashInput.safeParse(request);
 	if (!result.success) return reply.code(400).send(result.error.issues);
 
