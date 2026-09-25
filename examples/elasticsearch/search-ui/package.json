@@ -11,12 +11,12 @@
 		"@elastic/react-search-ui-views": "1.24.2",
 		"@elastic/search-ui": "1.24.2",
 		"@elastic/search-ui-elasticsearch-connector": "1.24.2",
-		"react": "19.2.8",
-		"react-dom": "19.2.8"
+		"react": "19.3.0",
+		"react-dom": "19.3.0"
 	},
 	"devDependencies": {
-		"@types/react": "19.2.18",
-		"@types/react-dom": "19.2.7",
+		"@types/react": "19.3.0",
+		"@types/react-dom": "19.3.0",
 		"@vitejs/plugin-react": "6.1.1"
 	}
 }

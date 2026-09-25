@@ -107,12 +107,10 @@ export const getServerConfig = ({
 			path: path.join(projectPath, '.camp', 'build'),
 			filename: '[name].js',
 			clean: true,
+			module: true,
 		},
 		optimization: {
 			minimize,
-		},
-		experiments: {
-			outputModule: true,
 		},
 	} satisfies Configuration;
 
