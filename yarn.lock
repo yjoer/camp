@@ -340,8 +340,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@camp/examples-http-orpc@workspace:examples/http/orpc"
   dependencies:
-    "@orpc/openapi": "npm:1.15.3"
-    "@orpc/server": "npm:1.15.3"
+    "@orpc/openapi": "npm:1.15.4"
+    "@orpc/server": "npm:1.15.4"
     "@types/node": "npm:26.6.2"
     fastify: "npm:5.12.5"
     h3: "npm:2.0.1-rc.20"
@@ -383,8 +383,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@camp/examples-react-server-tanstack-start@workspace:examples/react-server/tanstack-start"
   dependencies:
-    "@tanstack/react-router": "npm:1.170.38"
-    "@tanstack/react-start": "npm:1.168.57"
+    "@tanstack/react-router": "npm:1.170.39"
+    "@tanstack/react-start": "npm:1.168.58"
     "@tanstack/virtual-file-routes": "npm:1.162.0"
     "@types/react": "npm:19.3.0"
     "@types/react-dom": "npm:19.3.0"
@@ -436,9 +436,9 @@ __metadata:
     "@fastify/cors": "npm:11.3.0"
     "@tailwindcss/vite": "npm:4.3.3"
     "@tanstack/react-query": "npm:5.103.2"
-    "@tanstack/react-router": "npm:1.170.38"
+    "@tanstack/react-router": "npm:1.170.39"
     "@tanstack/react-router-ssr-query": "npm:1.167.3"
-    "@tanstack/react-start": "npm:1.168.57"
+    "@tanstack/react-start": "npm:1.168.58"
     "@tanstack/virtual-file-routes": "npm:1.162.0"
     "@trpc/client": "npm:11.19.0"
     "@trpc/server": "npm:11.19.0"
@@ -463,16 +463,16 @@ __metadata:
   dependencies:
     "@faker-js/faker": "npm:10.6.0"
     "@fontsource-variable/roboto": "npm:5.3.0"
-    "@orpc/client": "npm:1.15.3"
-    "@orpc/server": "npm:1.15.3"
-    "@orpc/standard-server-peer": "npm:1.15.3"
+    "@orpc/client": "npm:1.15.4"
+    "@orpc/server": "npm:1.15.4"
+    "@orpc/standard-server-peer": "npm:1.15.4"
     "@reduxjs/toolkit": "npm:2.12.0"
     "@rolldown/plugin-babel": "npm:0.2.4"
     "@stylexjs/babel-plugin": "npm:0.19.1"
     "@stylexjs/postcss-plugin": "npm:0.19.1"
     "@stylexjs/stylex": "npm:0.19.1"
-    "@tanstack/react-router": "npm:1.170.38"
-    "@tanstack/react-start": "npm:1.168.57"
+    "@tanstack/react-router": "npm:1.170.39"
+    "@tanstack/react-start": "npm:1.168.58"
     "@tanstack/react-virtual": "npm:3.14.13"
     "@tanstack/virtual-file-routes": "npm:1.162.0"
     "@types/react": "npm:19.3.0"
@@ -511,8 +511,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@camp/examples-webpack-typescript-fastify@workspace:examples/webpack/typescript-fastify"
   dependencies:
-    "@rspack/cli": "npm:2.2.6"
-    "@rspack/core": "npm:2.2.6"
+    "@rspack/cli": "npm:2.2.7"
+    "@rspack/core": "npm:2.2.7"
     "@types/bcrypt": "npm:6.0.0"
     "@xcamp/webpack": "workspace:*"
     bcrypt: "npm:6.0.0"
@@ -2693,80 +2693,80 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@orpc/client@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/client@npm:1.15.3"
+"@orpc/client@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/client@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-    "@orpc/standard-server-fetch": "npm:1.15.3"
-    "@orpc/standard-server-peer": "npm:1.15.3"
-  checksum: 10c0/82948bf577784e9f4123c0c1e0b85f4d70ef9f2b5f5572fcc3f9c5d8e2878755b83c07c94aca87e8345e24295da1619afac5ed66eb765371dc96120a3aafc059
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+    "@orpc/standard-server-fetch": "npm:1.15.4"
+    "@orpc/standard-server-peer": "npm:1.15.4"
+  checksum: 10c0/612d733f2123ccb93091fc997cbb62d33231e369edd02be8e1055080d84fd21b7f5b5bce7d0f15e577047a5213d8091a4a9ff30d8dd11ab044f9d4d2e64720f1
   languageName: node
   linkType: hard
 
-"@orpc/contract@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/contract@npm:1.15.3"
+"@orpc/contract@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/contract@npm:1.15.4"
   dependencies:
-    "@orpc/client": "npm:1.15.3"
-    "@orpc/shared": "npm:1.15.3"
+    "@orpc/client": "npm:1.15.4"
+    "@orpc/shared": "npm:1.15.4"
     "@standard-schema/spec": "npm:^1.1.0"
     openapi-types: "npm:^12.1.3"
-  checksum: 10c0/b6d0bb114992697954610ecd79b08df3efc925a67c522c5c17846ae66687c8bcd19273b10f7b6c8a56ac564de68b2331a5604158de7f0ad67ed7c7195defdf07
+  checksum: 10c0/83d591a91023cd16744ff8a3adee273fb91d24baf13766501ebd30ea6b343e00954ec52c7fcaab9badda14f2069954c60223cc702c9cd9ec5732add0ae8aae58
   languageName: node
   linkType: hard
 
-"@orpc/interop@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/interop@npm:1.15.3"
-  checksum: 10c0/df098503acd9e171d87e0edafb0c16599beb9d3cb18e1f3b7913a31f690892f303e1c021959587bf723bc837565571445b391dc9aff25cee669f0e2f761e0f4b
+"@orpc/interop@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/interop@npm:1.15.4"
+  checksum: 10c0/2e3897f3b788858211edaf7f5d4f74ba596bfb301df357d3793655fe77f89b157a839841f1eb4f5fc0d75bfba3a6e138e8805d60da46683e90478aba36633af1
   languageName: node
   linkType: hard
 
-"@orpc/openapi-client@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/openapi-client@npm:1.15.3"
+"@orpc/openapi-client@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/openapi-client@npm:1.15.4"
   dependencies:
-    "@orpc/client": "npm:1.15.3"
-    "@orpc/contract": "npm:1.15.3"
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-  checksum: 10c0/acaca4d87f6913dfce3d7523d27239600a6b90d97c874dab77b6b451c7416182bf1218f6a281ebc55301c7c1faa6b71e3e27fc863ddacf218f613ba8857f6444
+    "@orpc/client": "npm:1.15.4"
+    "@orpc/contract": "npm:1.15.4"
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+  checksum: 10c0/75dadba0dd0b9700a78a77f3c8c2f9efc665d24743077a554a325d767cd58b67fd6f65bfb72e851a6c60c2ad39996f765c09ed0f19a7cf97521758da6334ff95
   languageName: node
   linkType: hard
 
-"@orpc/openapi@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/openapi@npm:1.15.3"
+"@orpc/openapi@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/openapi@npm:1.15.4"
   dependencies:
-    "@orpc/client": "npm:1.15.3"
-    "@orpc/contract": "npm:1.15.3"
-    "@orpc/interop": "npm:1.15.3"
-    "@orpc/openapi-client": "npm:1.15.3"
-    "@orpc/server": "npm:1.15.3"
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
+    "@orpc/client": "npm:1.15.4"
+    "@orpc/contract": "npm:1.15.4"
+    "@orpc/interop": "npm:1.15.4"
+    "@orpc/openapi-client": "npm:1.15.4"
+    "@orpc/server": "npm:1.15.4"
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
     json-schema-typed: "npm:^8.0.2"
     rou3: "npm:^0.7.12"
-  checksum: 10c0/5cc166b7082364d38c3553bde0a5a9942c1577eadba91a24baa9df50281715e588140d5f54395c890a8c80b7b3d1fb2e9648776964214762eebb90f417ac7d62
+  checksum: 10c0/af5e9bbe2f1a89a3ca3a22c42f5efb27795919832d60a990cda62e1ec11ea394bc98bb9002fe24cb309dc16c7e53d34c377e10bf14ab803b67f2fd57e28077b1
   languageName: node
   linkType: hard
 
-"@orpc/server@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/server@npm:1.15.3"
+"@orpc/server@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/server@npm:1.15.4"
   dependencies:
-    "@orpc/client": "npm:1.15.3"
-    "@orpc/contract": "npm:1.15.3"
-    "@orpc/interop": "npm:1.15.3"
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-    "@orpc/standard-server-aws-lambda": "npm:1.15.3"
-    "@orpc/standard-server-fastify": "npm:1.15.3"
-    "@orpc/standard-server-fetch": "npm:1.15.3"
-    "@orpc/standard-server-node": "npm:1.15.3"
-    "@orpc/standard-server-peer": "npm:1.15.3"
+    "@orpc/client": "npm:1.15.4"
+    "@orpc/contract": "npm:1.15.4"
+    "@orpc/interop": "npm:1.15.4"
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+    "@orpc/standard-server-aws-lambda": "npm:1.15.4"
+    "@orpc/standard-server-fastify": "npm:1.15.4"
+    "@orpc/standard-server-fetch": "npm:1.15.4"
+    "@orpc/standard-server-node": "npm:1.15.4"
+    "@orpc/standard-server-peer": "npm:1.15.4"
     cookie: "npm:^1.1.1"
   peerDependencies:
     crossws: ">=0.3.4"
@@ -2776,13 +2776,13 @@ __metadata:
       optional: true
     ws:
       optional: true
-  checksum: 10c0/ea565cddaba67eaaedfd9921a9bb9c84dc489fcc0739944d3eabcce2978be2390d829c052e8f219b84c00b82503d29aefce58ef7252dcfa666d530ba6f5938c8
+  checksum: 10c0/191c0b043f4b03caf28f770a7377a6571e776e0495b237cd8ce1f332b52e5254451e64ee37e8bf1d8202ba814fff86ae786851e1b2fd5cb3e2526ba0a63c18fa
   languageName: node
   linkType: hard
 
-"@orpc/shared@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/shared@npm:1.15.3"
+"@orpc/shared@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/shared@npm:1.15.4"
   dependencies:
     radash: "npm:^12.1.1"
     type-fest: "npm:^5.4.4"
@@ -2791,75 +2791,75 @@ __metadata:
   peerDependenciesMeta:
     "@opentelemetry/api":
       optional: true
-  checksum: 10c0/2668054b7ed278026557ef6d38b7ea371ebef36d453c7366fbb4cb4ccae50c9ba1cb713e6837f8c38fd93aeb6bf3ce5badf3570877382d8af4922031e1450151
+  checksum: 10c0/6f091b101ed22ff1b198700acebcb54619f156633ee7f03fdfa5dc013f1775897d9311b2cf124262b79873a71e07ec45e753e6a770f0fb95ed9f552889c986bf
   languageName: node
   linkType: hard
 
-"@orpc/standard-server-aws-lambda@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/standard-server-aws-lambda@npm:1.15.3"
+"@orpc/standard-server-aws-lambda@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/standard-server-aws-lambda@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-    "@orpc/standard-server-fetch": "npm:1.15.3"
-    "@orpc/standard-server-node": "npm:1.15.3"
-  checksum: 10c0/9a210c4840ddd27ba9edd3616b961772b05196560d225f05a4306619d1de5b8db687cbc04bc9c756b7f5ccc390944f800e2daea8d9c5eb9bafcf001e1fa1d204
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+    "@orpc/standard-server-fetch": "npm:1.15.4"
+    "@orpc/standard-server-node": "npm:1.15.4"
+  checksum: 10c0/53571e8453fa528a6c5627ba15ad2ee3d7f4d8c21fa00a57da37e29254776145667ddc5644cf75b6be99dab5c03102af5a9e4d1575fefff628aebfd4a19e1f51
   languageName: node
   linkType: hard
 
-"@orpc/standard-server-fastify@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/standard-server-fastify@npm:1.15.3"
+"@orpc/standard-server-fastify@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/standard-server-fastify@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-    "@orpc/standard-server-node": "npm:1.15.3"
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+    "@orpc/standard-server-node": "npm:1.15.4"
   peerDependencies:
     fastify: ">=5.6.1"
   peerDependenciesMeta:
     fastify:
       optional: true
-  checksum: 10c0/685197887bbee14cc243dc8099a242c1d02beb0cff5ba478a4bcff68a6bbce5c6e760b19f061f747decaca239652e3ffbc8d448c177ddaed3e0d77771ba778aa
+  checksum: 10c0/4b5c6520c18b5b6a0b9a87e096ebf009b7b341ef6df4ce9eec10dae213652bf4d3435a18a28e1c122f3cc476169acf604e074ca8b58b98cdd75d5646efa4e956
   languageName: node
   linkType: hard
 
-"@orpc/standard-server-fetch@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/standard-server-fetch@npm:1.15.3"
+"@orpc/standard-server-fetch@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/standard-server-fetch@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-  checksum: 10c0/c9144450221c1a11879abc7c3bd48c0047a9a506fa8dc088096eb451754ee2e513e8fea9193122967b55987f2d8c770e0a0fb320aaaae986684880cfa05e3b3e
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+  checksum: 10c0/35bb37df5444da36ee3cb86c322323acc422dc858b7a16921e480a55b69e17f1586f4fd3e9d29c5db5414f793111c41d5dea19969fcbadc5d3ea557127e40173
   languageName: node
   linkType: hard
 
-"@orpc/standard-server-node@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/standard-server-node@npm:1.15.3"
+"@orpc/standard-server-node@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/standard-server-node@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-    "@orpc/standard-server-fetch": "npm:1.15.3"
-  checksum: 10c0/9910cf5da4d0cc34cba92fe2459429513fe983c360153ebb90f578583625a7eb6961829895758e115c3f039ad9eadc98cc7780ab8098ba25714f8dc82aaaf092
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+    "@orpc/standard-server-fetch": "npm:1.15.4"
+  checksum: 10c0/8354d2d4b9c6e7ba8b40f774bf38cdd5442497edcb3cfb8ceef2dca4beae70f5c5b0322fc2945b0a002831e4b766e9ef4d3d57511698eab228b37ce0fe058e35
   languageName: node
   linkType: hard
 
-"@orpc/standard-server-peer@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/standard-server-peer@npm:1.15.3"
+"@orpc/standard-server-peer@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/standard-server-peer@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-    "@orpc/standard-server": "npm:1.15.3"
-  checksum: 10c0/55c628168f4273c11d5d1ff0cb1e503f6151d178c7c5a5deeb2acbffa923a56949759f1e7ce8e3109516d0bb254d98e5efd9d2f834f3855f0b9a1a50fc396be0
+    "@orpc/shared": "npm:1.15.4"
+    "@orpc/standard-server": "npm:1.15.4"
+  checksum: 10c0/83203dd42a448716781dcc5589134e422e7d2a2b0e6d9ee4819eb73b3d5b38d2ed7efad9752c408caa2ffea0b62f60fdadbcae20355f989cdc8c438f1bea0286
   languageName: node
   linkType: hard
 
-"@orpc/standard-server@npm:1.15.3":
-  version: 1.15.3
-  resolution: "@orpc/standard-server@npm:1.15.3"
+"@orpc/standard-server@npm:1.15.4":
+  version: 1.15.4
+  resolution: "@orpc/standard-server@npm:1.15.4"
   dependencies:
-    "@orpc/shared": "npm:1.15.3"
-  checksum: 10c0/c9135af9d2669445e07bd3bb2b2c89a0a53e85bbe68f7cd1e9ba19c6222ace2cc1ee65764a74865986583efceb2c5e41f9dd6eb2c2e13ea18cc0058ada7b9727
+    "@orpc/shared": "npm:1.15.4"
+  checksum: 10c0/b25ebd150cf983174fea522f6de1238a058dca2b026aee74e284d88f47f2ce820b46da5f788c5c3a4620571be4e65b36217dd4aa768ec2074efd64789403dc2d
   languageName: node
   linkType: hard
 
@@ -3756,79 +3756,79 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rspack/binding-darwin-arm64@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-darwin-arm64@npm:2.2.6"
+"@rspack/binding-darwin-arm64@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-darwin-arm64@npm:2.2.7"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rspack/binding-darwin-x64@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-darwin-x64@npm:2.2.6"
+"@rspack/binding-darwin-x64@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-darwin-x64@npm:2.2.7"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-arm64-gnu@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-arm64-gnu@npm:2.2.6"
+"@rspack/binding-linux-arm64-gnu@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-arm64-gnu@npm:2.2.7"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-arm64-musl@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-arm64-musl@npm:2.2.6"
+"@rspack/binding-linux-arm64-musl@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-arm64-musl@npm:2.2.7"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-ppc64-gnu@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-ppc64-gnu@npm:2.2.6"
+"@rspack/binding-linux-ppc64-gnu@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-ppc64-gnu@npm:2.2.7"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-riscv64-gnu@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-riscv64-gnu@npm:2.2.6"
+"@rspack/binding-linux-riscv64-gnu@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-riscv64-gnu@npm:2.2.7"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-riscv64-musl@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-riscv64-musl@npm:2.2.6"
+"@rspack/binding-linux-riscv64-musl@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-riscv64-musl@npm:2.2.7"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-s390x-gnu@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-s390x-gnu@npm:2.2.6"
+"@rspack/binding-linux-s390x-gnu@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-s390x-gnu@npm:2.2.7"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-x64-gnu@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-x64-gnu@npm:2.2.6"
+"@rspack/binding-linux-x64-gnu@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-x64-gnu@npm:2.2.7"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-x64-musl@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-linux-x64-musl@npm:2.2.6"
+"@rspack/binding-linux-x64-musl@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-linux-x64-musl@npm:2.2.7"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-wasm32-wasi@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-wasm32-wasi@npm:2.2.6"
+"@rspack/binding-wasm32-wasi@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-wasm32-wasi@npm:2.2.7"
   dependencies:
     "@emnapi/core": "npm:1.11.3"
     "@emnapi/runtime": "npm:1.11.3"
@@ -3837,45 +3837,45 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-arm64-msvc@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-win32-arm64-msvc@npm:2.2.6"
+"@rspack/binding-win32-arm64-msvc@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-win32-arm64-msvc@npm:2.2.7"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-ia32-msvc@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-win32-ia32-msvc@npm:2.2.6"
+"@rspack/binding-win32-ia32-msvc@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-win32-ia32-msvc@npm:2.2.7"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-x64-msvc@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding-win32-x64-msvc@npm:2.2.6"
+"@rspack/binding-win32-x64-msvc@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding-win32-x64-msvc@npm:2.2.7"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@rspack/binding@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/binding@npm:2.2.6"
+"@rspack/binding@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/binding@npm:2.2.7"
   dependencies:
-    "@rspack/binding-darwin-arm64": "npm:2.2.6"
-    "@rspack/binding-darwin-x64": "npm:2.2.6"
-    "@rspack/binding-linux-arm64-gnu": "npm:2.2.6"
-    "@rspack/binding-linux-arm64-musl": "npm:2.2.6"
-    "@rspack/binding-linux-ppc64-gnu": "npm:2.2.6"
-    "@rspack/binding-linux-riscv64-gnu": "npm:2.2.6"
-    "@rspack/binding-linux-riscv64-musl": "npm:2.2.6"
-    "@rspack/binding-linux-s390x-gnu": "npm:2.2.6"
-    "@rspack/binding-linux-x64-gnu": "npm:2.2.6"
-    "@rspack/binding-linux-x64-musl": "npm:2.2.6"
-    "@rspack/binding-wasm32-wasi": "npm:2.2.6"
-    "@rspack/binding-win32-arm64-msvc": "npm:2.2.6"
-    "@rspack/binding-win32-ia32-msvc": "npm:2.2.6"
-    "@rspack/binding-win32-x64-msvc": "npm:2.2.6"
+    "@rspack/binding-darwin-arm64": "npm:2.2.7"
+    "@rspack/binding-darwin-x64": "npm:2.2.7"
+    "@rspack/binding-linux-arm64-gnu": "npm:2.2.7"
+    "@rspack/binding-linux-arm64-musl": "npm:2.2.7"
+    "@rspack/binding-linux-ppc64-gnu": "npm:2.2.7"
+    "@rspack/binding-linux-riscv64-gnu": "npm:2.2.7"
+    "@rspack/binding-linux-riscv64-musl": "npm:2.2.7"
+    "@rspack/binding-linux-s390x-gnu": "npm:2.2.7"
+    "@rspack/binding-linux-x64-gnu": "npm:2.2.7"
+    "@rspack/binding-linux-x64-musl": "npm:2.2.7"
+    "@rspack/binding-wasm32-wasi": "npm:2.2.7"
+    "@rspack/binding-win32-arm64-msvc": "npm:2.2.7"
+    "@rspack/binding-win32-ia32-msvc": "npm:2.2.7"
+    "@rspack/binding-win32-x64-msvc": "npm:2.2.7"
   dependenciesMeta:
     "@rspack/binding-darwin-arm64":
       optional: true
@@ -3905,13 +3905,13 @@ __metadata:
       optional: true
     "@rspack/binding-win32-x64-msvc":
       optional: true
-  checksum: 10c0/acc53e04f22362585c6a0d2696ba173207f626aed025e0d8f2cebb866010b80ef7dcaaa2c02aa0c12d1be36f4e0417e3ab26a497cefad7ede289ff8bd2ac34ca
+  checksum: 10c0/4b524c593a09135b987474a42e391d1d3b6aaf69e1a44dc5bf6c75cf724935186b524eab9a26d0098005a596c869267ebab663f0185bdc0e7f5fdcee9f7e2064
   languageName: node
   linkType: hard
 
-"@rspack/cli@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/cli@npm:2.2.6"
+"@rspack/cli@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/cli@npm:2.2.7"
   peerDependencies:
     "@rspack/core": ^2.0.0-0
     "@rspack/dev-server": ^2.0.0-0
@@ -3920,15 +3920,15 @@ __metadata:
       optional: true
   bin:
     rspack: ./bin/rspack.js
-  checksum: 10c0/718125e16e10d1b269e761054e2cb01dd249b595969cdc7bbe123db75587defa4d1a20185f4a2fbdd7e97a2622b16f29dab5822ae5e2b6d87dcf2de982836f76
+  checksum: 10c0/4c4d0684cd1b98b878ae211b864413a3a6fffca7882a8b2f65e6eca247ffda55ab0ae00d7252363d78c0b66d93507364062021046b2ba6a6560540a61236cf59
   languageName: node
   linkType: hard
 
-"@rspack/core@npm:2.2.6":
-  version: 2.2.6
-  resolution: "@rspack/core@npm:2.2.6"
+"@rspack/core@npm:2.2.7":
+  version: 2.2.7
+  resolution: "@rspack/core@npm:2.2.7"
   dependencies:
-    "@rspack/binding": "npm:2.2.6"
+    "@rspack/binding": "npm:2.2.7"
   peerDependencies:
     "@module-federation/runtime-tools": ^0.24.1 || ^2.0.0
     "@swc/helpers": ^0.5.23
@@ -3937,7 +3937,7 @@ __metadata:
       optional: true
     "@swc/helpers":
       optional: true
-  checksum: 10c0/c67fbb210afe78a8ed0a0abf67888ae33544eab6c3161e687bdc187f8ef47b04e902c0e005a1423b8c2e0f458ca88daa01b75da351553c93e4d0260e249697bd
+  checksum: 10c0/bb0db3becf848f084882563c49cebad70e2926c7aed9b8212f2939cc0a583777abaa2b3a1747fc30895df246974c70b0560ba63f3db708b72afd00c11e90beae
   languageName: node
   linkType: hard
 
@@ -4618,9 +4618,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-router@npm:1.170.38":
-  version: 1.170.38
-  resolution: "@tanstack/react-router@npm:1.170.38"
+"@tanstack/react-router@npm:1.170.39":
+  version: 1.170.39
+  resolution: "@tanstack/react-router@npm:1.170.39"
   dependencies:
     "@tanstack/history": "npm:1.162.4"
     "@tanstack/react-store": "npm:^0.11.0"
@@ -4629,29 +4629,29 @@ __metadata:
   peerDependencies:
     react: ">=18.0.0 || >=19.0.0"
     react-dom: ">=18.0.0 || >=19.0.0"
-  checksum: 10c0/0b6078b291e9d26a7f3a5dd895f40736e3f914115d90a1e62707e66af32f430a86d17d3c59d59f8209705c2b1522817f2a71bafb56c9c935f9575be18bf46ec1
+  checksum: 10c0/424edc28f624af5ab9b7531cc2cc1c6e1513338faafe95f5ba1e5e576375270d539f18feff95b396ce637c00280595a26db36f5c0bc56fde07c292a45b15504b
   languageName: node
   linkType: hard
 
-"@tanstack/react-start-client@npm:1.168.36":
-  version: 1.168.36
-  resolution: "@tanstack/react-start-client@npm:1.168.36"
+"@tanstack/react-start-client@npm:1.168.37":
+  version: 1.168.37
+  resolution: "@tanstack/react-start-client@npm:1.168.37"
   dependencies:
-    "@tanstack/react-router": "npm:1.170.38"
+    "@tanstack/react-router": "npm:1.170.39"
     "@tanstack/router-core": "npm:1.171.32"
     "@tanstack/start-client-core": "npm:1.170.32"
   peerDependencies:
     react: ">=18.0.0 || >=19.0.0"
     react-dom: ">=18.0.0 || >=19.0.0"
-  checksum: 10c0/634b7ec054ed54640234e4e476bcc5ee60588f593fe081520063a6127a362b3f0b4a235e4f1b067af670ef98cee6bc6ec384367e8a76d6e5c60cf7acacbbc575
+  checksum: 10c0/b89b147648572f1df204b3d72048857dfc7e5ab8f054601fa792e1e1f866a8302eed51b0157f67b24382f6d36939e3b772a9ed44cc766cdb2ecd9cc1287d56ff
   languageName: node
   linkType: hard
 
-"@tanstack/react-start-rsc@npm:0.1.56":
-  version: 0.1.56
-  resolution: "@tanstack/react-start-rsc@npm:0.1.56"
+"@tanstack/react-start-rsc@npm:0.1.57":
+  version: 0.1.57
+  resolution: "@tanstack/react-start-rsc@npm:0.1.57"
   dependencies:
-    "@tanstack/react-router": "npm:1.170.38"
+    "@tanstack/react-router": "npm:1.170.39"
     "@tanstack/router-core": "npm:1.171.32"
     "@tanstack/router-utils": "npm:1.162.3"
     "@tanstack/start-client-core": "npm:1.170.32"
@@ -4672,32 +4672,32 @@ __metadata:
       optional: true
     react-server-dom-rspack:
       optional: true
-  checksum: 10c0/a1859f68c8bde9654c9cef232d5ea98bf41bdca9ad5576e8d9abb554afcceeb44ee27809d6956aba23883d76493988d3899e65d55f9f4214e73edaa70455469b
+  checksum: 10c0/6c93661a7df476410547fc50452711c01e26824b4f2f223f0d91c0cc58ea06a737e0f70506fc5853fb4b9db076803917482bff4b2f4e028a764874a31dfd2436
   languageName: node
   linkType: hard
 
-"@tanstack/react-start-server@npm:1.167.43":
-  version: 1.167.43
-  resolution: "@tanstack/react-start-server@npm:1.167.43"
+"@tanstack/react-start-server@npm:1.167.44":
+  version: 1.167.44
+  resolution: "@tanstack/react-start-server@npm:1.167.44"
   dependencies:
-    "@tanstack/react-router": "npm:1.170.38"
+    "@tanstack/react-router": "npm:1.170.39"
     "@tanstack/router-core": "npm:1.171.32"
     "@tanstack/start-server-core": "npm:1.169.37"
   peerDependencies:
     react: ">=18.0.0 || >=19.0.0"
     react-dom: ">=18.0.0 || >=19.0.0"
-  checksum: 10c0/bdf224f2c18b10295cd0bbb07d64d92383c1056eb7e7a2f8faab1c91d50fa58db22802062e498c16596c6d1f4546c7cd6a1972ae0c5bc7f9152b02a5f627b3e9
+  checksum: 10c0/556635a3010796f62ea93c40a6ee57bba984da6baedf2f677e03e9dfe09c622b1c3fb27f42022006a1bf622014c917960068788808439637ce1b8b541e82c58d
   languageName: node
   linkType: hard
 
-"@tanstack/react-start@npm:1.168.57":
-  version: 1.168.57
-  resolution: "@tanstack/react-start@npm:1.168.57"
+"@tanstack/react-start@npm:1.168.58":
+  version: 1.168.58
+  resolution: "@tanstack/react-start@npm:1.168.58"
   dependencies:
-    "@tanstack/react-router": "npm:1.170.38"
-    "@tanstack/react-start-client": "npm:1.168.36"
-    "@tanstack/react-start-rsc": "npm:0.1.56"
-    "@tanstack/react-start-server": "npm:1.167.43"
+    "@tanstack/react-router": "npm:1.170.39"
+    "@tanstack/react-start-client": "npm:1.168.37"
+    "@tanstack/react-start-rsc": "npm:0.1.57"
+    "@tanstack/react-start-server": "npm:1.167.44"
     "@tanstack/router-utils": "npm:1.162.3"
     "@tanstack/start-client-core": "npm:1.170.32"
     "@tanstack/start-plugin-core": "npm:1.171.47"
@@ -4715,7 +4715,7 @@ __metadata:
       optional: true
     vite:
       optional: true
-  checksum: 10c0/628136059de9f8ff969f2913f6eeb057e8196a4301ad015245e310c7a3e5f1a2fcf4c6d5b2960fe3c39183eb06230f13d8139330b21e6e4e174d323b183423da
+  checksum: 10c0/02014afcf21682d2e43f9ff55d5884a7af4959133308ec200816d915bcd3b2a0fcb969bdb5f97e725495dc4b825c4bc91cf3db0f28ccb6da801b04acb4c83560
   languageName: node
   linkType: hard
 
@@ -6250,7 +6250,7 @@ __metadata:
     eslint-plugin-better-tailwindcss: "npm:4.7.0"
     eslint-plugin-compat: "npm:7.0.2"
     eslint-plugin-import-x: "npm:4.17.1"
-    eslint-plugin-perfectionist: "npm:5.12.0"
+    eslint-plugin-perfectionist: "npm:5.12.1"
     eslint-plugin-react: "npm:7.37.5"
     eslint-plugin-react-hooks: "npm:7.1.1"
     eslint-plugin-react-you-might-not-need-an-effect: "npm:1.0.2"
@@ -6260,7 +6260,7 @@ __metadata:
     oxlint: "npm:^1"
     postcss-scss: "npm:4.0.9"
     postcss-styled-syntax: "npm:0.7.2"
-    prettier: "npm:3.9.8"
+    prettier: "npm:3.9.9"
     prettier-plugin-java: "npm:2.10.4"
     prettier-plugin-packagejson: "npm:3.0.2"
     stylelint: "npm:17.15.0"
@@ -6292,7 +6292,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@xcamp/webpack@workspace:packages/webpack"
   dependencies:
-    "@rspack/core": "npm:2.2.6"
+    "@rspack/core": "npm:2.2.7"
     "@types/webpack-node-externals": "npm:3.0.4"
     "@vercel/webpack-asset-relocator-loader": "npm:1.11.0"
     ts-loader: "npm:9.6.2"
@@ -8522,16 +8522,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-perfectionist@npm:5.12.0":
-  version: 5.12.0
-  resolution: "eslint-plugin-perfectionist@npm:5.12.0"
+"eslint-plugin-perfectionist@npm:5.12.1":
+  version: 5.12.1
+  resolution: "eslint-plugin-perfectionist@npm:5.12.1"
   dependencies:
     "@typescript-eslint/types": "npm:^8.70.0"
     "@typescript-eslint/utils": "npm:^8.70.0"
     natural-orderby: "npm:^5.0.0"
   peerDependencies:
     eslint: ^8.45.0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/a0123f372deebe0e3ef18e1b8279fe9bd1991d7e0ebe4bea4a34fda9cbb3485b0c7a860e89f125a5a857aa3c70442cb7a2b519a116591cbd875267800b291cd6
+  peerDependenciesMeta:
+    eslint:
+      optional: true
+  checksum: 10c0/66812bf7f7998bfdc83f8e2cf818ecc848daf629f60f26f4994a0ec48d798a7bd6a9d52d2ded66fbad10c50456bd2413cd0ec82dc5e983f2d96b43b4e39d08ea
   languageName: node
   linkType: hard
 
@@ -12309,12 +12312,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.9.8, prettier@npm:^3.9.6":
-  version: 3.9.8
-  resolution: "prettier@npm:3.9.8"
+"prettier@npm:3.9.9, prettier@npm:^3.9.6":
+  version: 3.9.9
+  resolution: "prettier@npm:3.9.9"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/257e5ef11ba5006d0b0712271705701c065c8003e07763f996ce185d39633902f3fe1f814839eed76f75c97b6d5376d6157bd9f44db18cacb1dbdcb263cc66ae
+  checksum: 10c0/d50ea2537b2ff7dbd5088a214f4d936484e55c665cea2185b477a55b0770be55f3b156a71f63a9a639def6b334667bb327139dc85f2a1041c0a34752cdc74647
   languageName: node
   linkType: hard
 

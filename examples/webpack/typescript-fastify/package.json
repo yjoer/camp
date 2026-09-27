@@ -15,8 +15,8 @@
 		"zod": "4.6.5"
 	},
 	"devDependencies": {
-		"@rspack/cli": "2.2.6",
-		"@rspack/core": "2.2.6",
+		"@rspack/cli": "2.2.7",
+		"@rspack/core": "2.2.7",
 		"@types/bcrypt": "6.0.0",
 		"@xcamp/webpack": "workspace:*",
 		"cross-env": "10.1.0",

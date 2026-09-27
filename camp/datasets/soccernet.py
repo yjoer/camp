@@ -92,8 +92,8 @@ class SoccerNetLegibilityDataset(Dataset):
 	def __len__(self) -> int:
 		return len(self.images)
 
-	def __getitem__(self, idx: int) -> tuple[Image.Image, np.int64]:
-		image_path = self.images[idx]
+	def __getitem__(self, index: int) -> tuple[Image.Image, np.int64]:
+		image_path = self.images[index]
 		image_filename = image_path.split("/")[-1]
 
 		with fsspec.open(image_path, **self.storage_options) as f:
@@ -116,7 +116,7 @@ class SoccerNetCalibrationDataset(Dataset):
 		path: str,
 		subset: CalibrationSubsetType,
 		storage_options: dict | None = None,
-		transforms: Callable | None = None,
+		transforms: Callable[[Image.Image, dict], tuple[torch.Tensor, dict]] | None = None,
 	) -> None:
 		if storage_options is None:
 			storage_options = {}
@@ -184,13 +184,13 @@ class SoccerNetCalibrationDataset(Dataset):
 	def __len__(self) -> int:
 		return len(self.images)
 
-	def __getitem__(self, idx: int) -> tuple[torch.Tensor, dict[str, Any]]:
-		image_path = self.images[idx]
+	def __getitem__(self, index: int) -> tuple[torch.Tensor, dict[str, Any]]:
+		image_path = self.images[index]
 
 		with fsspec.open(image_path, **self.storage_options) as f:
 			image = Image.open(f).convert("RGB")
 
-		boxes = self.subset_boxes[idx]
+		boxes = self.subset_boxes[index]
 
 		boxes = torch.tensor(boxes, dtype=torch.float32)
 		boxes[:, [0, 2]] *= 960
@@ -199,7 +199,7 @@ class SoccerNetCalibrationDataset(Dataset):
 		target = {
 			"boxes": boxes,
 			"labels": torch.zeros(len(boxes), dtype=torch.int64),
-			"keypoints": self.subset_keypoints[idx],
+			"keypoints": self.subset_keypoints[index],
 		}
 
 		if self.transforms is not None:

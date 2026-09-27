@@ -10,7 +10,7 @@ dependencies = [
 	"matplotlib==3.10.8",
 	"minio==7.2.20",
 	"numpy==2.4.2",
-	"pandas==2.3.3",
+	"pandas==3.0.6",
 	"polars==1.38.1",
 	"psutil==7.2.2",
 	"pyarrow==23.0.1",
@@ -20,7 +20,7 @@ dependencies = [
 	"scipy==1.17.1",
 	"seaborn==0.13.2",
 	"statsmodels==0.14.6",
-	"streamlit==1.54.0",
+	"streamlit==1.64.0",
 	"sympy==1.14.0",
 	"tabulate==0.9.0",
 ]
@@ -74,21 +74,21 @@ dev = [
 	# "jedi-language-server==0.46.0",
 	# "jupyterlab-lsp==5.2.0",
 	"jjava==1.0a7",
-	"jupyter-collaboration==5.0.1",
+	"jupyter-collaboration==5.0.4",
 	"jupyter-ruff @ git+https://github.com/leotaku/jupyter-ruff@991d3a5",
-	"jupyterlab==4.6.3",
+	"jupyterlab==4.6.4",
 	"jupyterlab-git==0.54.1",
 	"jupyterlab-quickopen @ https://github.com/yjoer/camp/releases/download/v2025.6.0/jupyterlab_quickopen-2.0.1-py3-none-any.whl",
 	"jupytext==1.19.5",
 	"jupyverse[jupyterlab,auth]==0.14.16",
 	"marimo==0.24.0",
 	"maturin==1.13.1",
-	"notebook-intelligence==5.4.0",
+	"notebook-intelligence==6.0.0",
 	"pytest==9.1.1",
 	"pytest-xdist==3.8.0",
-	"ruff==0.16.7",
+	"ruff==0.16.9",
 	"scalene==2.2.1",
-	"ty==0.0.80",
+	"ty==0.0.84",
 ]
 
 [build-system]
@@ -175,14 +175,17 @@ conflicts = [
 managed = true
 exclude-newer = "P3D"
 exclude-newer-package = { ruff = false, ty = false }
+override-dependencies = [
+	{ package = { name = "notebook-intelligence", version = "6.0.0" }, dependencies = ["python-multipart>=0.0.20"] },
+]
 
 [tool.uv.workspace]
 members = ["examples/grafana/*", "examples/http/fastapi"]
 
-[[tool.uv.dependency-metadata]]
-name = "notebook-intelligence"
-version = "5.4.0"
-requires-dist = ["python-multipart>=0.0.20"]
+# [[tool.uv.dependency-metadata]]
+# name = "notebook-intelligence"
+# version = "6.0.0"
+# requires-dist = ["python-multipart>=0.0.20"]
 
 [tool.uv.sources]
 torch = [
