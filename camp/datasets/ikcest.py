@@ -170,18 +170,18 @@ class IKCESTDetectionDataset(Dataset):
 	def __len__(self) -> int:
 		return len(self.frames)
 
-	def __getitem__(self, idx: int) -> tuple[Image.Image, dict[str, Any]]:
-		frame_path = self.frames[idx]
+	def __getitem__(self, index: int) -> tuple[Image.Image, dict[str, Any]]:
+		frame_path = self.frames[index]
 		video_name = frame_path.split("/")[-3]
 
 		with fsspec.open(frame_path, **self.storage_options) as f:
 			frame = Image.open(f).convert("RGB")
 
 		annotations = self.annotations_dict[video_name]
-		annotation = annotations[annotations[:, 0] == (idx % 750) + 1]
+		annotation = annotations[annotations[:, 0] == (index % 750) + 1]
 
 		tracklets = annotation[:, 1].astype(np.int32)
-		labels = self.tracklet_labels[idx // 750][tracklets - 1]
+		labels = self.tracklet_labels[index // 750][tracklets - 1]
 		labels = torch.from_numpy(labels)
 
 		boxes = torch.from_numpy(annotation[:, 2:6])
@@ -214,8 +214,8 @@ class IKCESTDetectionTestDataset(Dataset):
 	def __len__(self) -> int:
 		return len(self.frames)
 
-	def __getitem__(self, idx: int) -> tuple[Image.Image, dict[str, Any]]:
-		frame_path = self.frames[idx]
+	def __getitem__(self, index: int) -> tuple[Image.Image, dict[str, Any]]:
+		frame_path = self.frames[index]
 
 		with fsspec.open(frame_path, **self.storage_options) as f:
 			frame = Image.open(f).convert("RGB")
@@ -224,6 +224,6 @@ class IKCESTDetectionTestDataset(Dataset):
 			frame = self.transforms(frame)
 
 		metadata = {}
-		metadata["seq"] = self.seq_metadata[idx // 750]
+		metadata["seq"] = self.seq_metadata[index // 750]
 
 		return frame, metadata

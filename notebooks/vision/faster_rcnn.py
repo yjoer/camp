@@ -56,17 +56,17 @@ class CustomDataset(Dataset):
 	def __len__(self) -> int:
 		return len(self.images)
 
-	def __getitem__(self, idx: int) -> tuple:
+	def __getitem__(self, index: int) -> tuple:
 		max_size = 224
 		output_size = (224, 224)
 
-		image = self.images[idx]
+		image = self.images[index]
 		width, height = image.size
 
-		labels = self.labels[idx]
+		labels = self.labels[index]
 		labels = torch.tensor(labels, dtype=torch.int64)
 
-		boxes = torch.tensor(self.boxes[idx])
+		boxes = torch.tensor(self.boxes[index])
 		boxes = box_convert(boxes, "cxcywh", "xyxy")
 
 		if width > 224 or height > 224:
