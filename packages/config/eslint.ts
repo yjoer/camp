@@ -239,6 +239,8 @@ function stylistic() {
 }
 
 function perfectionist() {
+	const ascii = Array.from({ length: 95 }, (_, i) => String.fromCodePoint(32 + i));
+
 	return {
 		name: 'perfectionist',
 		plugins: { perfectionist: perfectionist_plugin },
@@ -248,8 +250,7 @@ function perfectionist() {
 			'perfectionist/sort-heritage-clauses': 'warn',
 			'perfectionist/sort-imports': ['error', {
 				type: 'custom',
-				alphabet: Alphabet.generateRecommendedAlphabet()
-				.sortByNaturalSort()
+				alphabet: Alphabet.generateFrom(ascii)
 				.placeCharacterBefore({ characterBefore: '/', characterAfter: '-' })
 				.placeCharacterBefore({ characterBefore: '.', characterAfter: '/' })
 				.getCharacters(),

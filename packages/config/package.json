@@ -1,6 +1,6 @@
 {
 	"name": "@xcamp/config",
-	"version": "2026.9.4",
+	"version": "2026.9.5",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -22,7 +22,7 @@
 		"@prettier/plugin-xml": "3.4.2",
 		"@stylexjs/eslint-plugin": "0.19.1",
 		"@stylistic/eslint-plugin": "5.10.0",
-		"@tanstack/eslint-plugin-query": "5.103.2",
+		"@tanstack/eslint-plugin-query": "5.104.0",
 		"@tanstack/eslint-plugin-router": "1.162.0",
 		"eslint": "10.11.0",
 		"eslint-config-flat-gitignore": "2.4.0",
@@ -36,7 +36,7 @@
 		"eslint-plugin-react-you-might-not-need-an-effect": "1.0.2",
 		"eslint-plugin-unicorn": "64.0.0",
 		"globals": "17.12.0",
-		"lint-staged": "17.5.1",
+		"lint-staged": "17.6.0",
 		"postcss-scss": "4.0.9",
 		"postcss-styled-syntax": "0.7.2",
 		"prettier": "3.9.9",
@@ -51,7 +51,7 @@
 	"devDependencies": {
 		"@tanstack/router-generator": "1.167.38",
 		"@tanstack/virtual-file-routes": "1.162.0",
-		"@types/node": "26.6.2",
+		"@types/node": "26.6.3",
 		"oxlint": "^1",
 		"typescript": "6.0.3"
 	},

@@ -7,6 +7,8 @@ export const commitlint_config = {
 	rules: {
 		'header-max-length': [2, 'always', 100],
 		'subject-case': [2, 'always', 'lower-case'],
+		// build, ci, docs, test -> chore
+		// style -> refactor
 		'type-enum': [2, 'always', ['chore', 'feat', 'fix', 'perf', 'refactor', 'revert']],
 	},
 } satisfies UserConfig;
