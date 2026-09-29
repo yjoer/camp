@@ -342,7 +342,7 @@ __metadata:
   dependencies:
     "@orpc/openapi": "npm:1.15.4"
     "@orpc/server": "npm:1.15.4"
-    "@types/node": "npm:26.6.2"
+    "@types/node": "npm:26.6.3"
     fastify: "npm:5.12.5"
     h3: "npm:2.0.1-rc.20"
   languageName: unknown
@@ -362,7 +362,7 @@ __metadata:
   resolution: "@camp/examples-node-basics@workspace:examples/node/basics"
   dependencies:
     "@types/asciichart": "npm:1.5.8"
-    "@types/node": "npm:26.6.2"
+    "@types/node": "npm:26.6.3"
     asciichart: "npm:1.5.25"
   languageName: unknown
   linkType: soft
@@ -435,7 +435,7 @@ __metadata:
     "@fastify/cookie": "npm:11.1.2"
     "@fastify/cors": "npm:11.3.0"
     "@tailwindcss/vite": "npm:4.3.3"
-    "@tanstack/react-query": "npm:5.103.2"
+    "@tanstack/react-query": "npm:5.104.0"
     "@tanstack/react-router": "npm:1.170.39"
     "@tanstack/react-router-ssr-query": "npm:1.167.3"
     "@tanstack/react-start": "npm:1.168.58"
@@ -503,7 +503,7 @@ __metadata:
     "@temporalio/client": "npm:1.11.8"
     "@temporalio/worker": "npm:1.11.8"
     "@temporalio/workflow": "npm:1.11.8"
-    "@types/node": "npm:26.6.2"
+    "@types/node": "npm:26.6.3"
   languageName: unknown
   linkType: soft
 
@@ -3305,44 +3305,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@oxlint-tsgolint/darwin-arm64@npm:7.0.2002":
-  version: 7.0.2002
-  resolution: "@oxlint-tsgolint/darwin-arm64@npm:7.0.2002"
+"@oxlint-tsgolint/darwin-arm64@npm:7.0.2003":
+  version: 7.0.2003
+  resolution: "@oxlint-tsgolint/darwin-arm64@npm:7.0.2003"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint-tsgolint/darwin-x64@npm:7.0.2002":
-  version: 7.0.2002
-  resolution: "@oxlint-tsgolint/darwin-x64@npm:7.0.2002"
+"@oxlint-tsgolint/darwin-x64@npm:7.0.2003":
+  version: 7.0.2003
+  resolution: "@oxlint-tsgolint/darwin-x64@npm:7.0.2003"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint-tsgolint/linux-arm64@npm:7.0.2002":
-  version: 7.0.2002
-  resolution: "@oxlint-tsgolint/linux-arm64@npm:7.0.2002"
+"@oxlint-tsgolint/linux-arm64@npm:7.0.2003":
+  version: 7.0.2003
+  resolution: "@oxlint-tsgolint/linux-arm64@npm:7.0.2003"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint-tsgolint/linux-x64@npm:7.0.2002":
-  version: 7.0.2002
-  resolution: "@oxlint-tsgolint/linux-x64@npm:7.0.2002"
+"@oxlint-tsgolint/linux-x64@npm:7.0.2003":
+  version: 7.0.2003
+  resolution: "@oxlint-tsgolint/linux-x64@npm:7.0.2003"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"@oxlint-tsgolint/win32-arm64@npm:7.0.2002":
-  version: 7.0.2002
-  resolution: "@oxlint-tsgolint/win32-arm64@npm:7.0.2002"
+"@oxlint-tsgolint/win32-arm64@npm:7.0.2003":
+  version: 7.0.2003
+  resolution: "@oxlint-tsgolint/win32-arm64@npm:7.0.2003"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@oxlint-tsgolint/win32-x64@npm:7.0.2002":
-  version: 7.0.2002
-  resolution: "@oxlint-tsgolint/win32-x64@npm:7.0.2002"
+"@oxlint-tsgolint/win32-x64@npm:7.0.2003":
+  version: 7.0.2003
+  resolution: "@oxlint-tsgolint/win32-x64@npm:7.0.2003"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4552,18 +4552,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/eslint-plugin-query@npm:5.103.2":
-  version: 5.103.2
-  resolution: "@tanstack/eslint-plugin-query@npm:5.103.2"
+"@tanstack/eslint-plugin-query@npm:5.104.0":
+  version: 5.104.0
+  resolution: "@tanstack/eslint-plugin-query@npm:5.104.0"
   dependencies:
-    "@typescript-eslint/utils": "npm:^8.58.1"
+    "@typescript-eslint/utils": "npm:^8.70.1"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
     typescript: ^5.6.0 || ^6.0.0 || ^7.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/df07fac8dbb4ff4925682ae228af45167d2ec3d14ecee2104ce2fb5bb2571c5341c4bf66fc075ca4e55e2e67bc5e6b326ae20260f32465b415f56f3621e4935f
+  checksum: 10c0/df1bcaa7654b628887ac6fff42cc9ea3507027f281173b9b0d06cb29c0fea24729ac91f1a134882ee89d151443b20ce3665af3a18666dd3dce6704e88737b1dc
   languageName: node
   linkType: hard
 
@@ -4585,21 +4585,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.103.2":
-  version: 5.103.2
-  resolution: "@tanstack/query-core@npm:5.103.2"
-  checksum: 10c0/52362dd214a487b2194728a79c7fd1bd7af1831f21928030866a8ad28877eaec050e7215a6f3b3a0c4fdf601644ae8edb652e4cef7270f6f82d7371d2bbe9f41
+"@tanstack/query-core@npm:5.104.0":
+  version: 5.104.0
+  resolution: "@tanstack/query-core@npm:5.104.0"
+  checksum: 10c0/e080454f308dc41bf0e52e46aac455af3112f454519d369740aacaec4d260a3bfddde569204908ff7a6e1b1b84f8e065e0ac1375555e2bc1b023d398c0b44f96
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:5.103.2":
-  version: 5.103.2
-  resolution: "@tanstack/react-query@npm:5.103.2"
+"@tanstack/react-query@npm:5.104.0":
+  version: 5.104.0
+  resolution: "@tanstack/react-query@npm:5.104.0"
   dependencies:
-    "@tanstack/query-core": "npm:5.103.2"
+    "@tanstack/query-core": "npm:5.104.0"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10c0/7845c13af6761c00141ef6025c4ee385bff8f16e053f8583ba1b95db47a2c1df9764a751080981226658f45487881933517d24813f47c98238b8dbdd6acee80a
+  checksum: 10c0/efcf6328c95847c99e4b41c6e68f74d303b8e9eef673473648643dd2fcc8d9d3368223f27a4e510526f3fa3fd5508554e804141a67a9cf37c90842f8639cb430
   languageName: node
   linkType: hard
 
@@ -5356,12 +5356,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:26.6.2, @types/node@npm:>=13.7.0":
-  version: 26.6.2
-  resolution: "@types/node@npm:26.6.2"
+"@types/node@npm:*, @types/node@npm:26.6.3, @types/node@npm:>=13.7.0":
+  version: 26.6.3
+  resolution: "@types/node@npm:26.6.3"
   dependencies:
     undici-types: "npm:~8.9.0"
-  checksum: 10c0/bb411ff5863a79a28ffa4ebadf2499d44046aa114d25a7a6c78f57def118123a0a7dea99e8fe38849099e9dba2b41b8853a7a282037618559f58653c35e7c5c5
+  checksum: 10c0/51070287167d157d246a5ad83e6ead93aa310bbd9cc880ecd1f244a00c2a31491620f997fbbb6ba4ce164388694827999ec68c1d16c3fb64c1037056e64613c7
   languageName: node
   linkType: hard
 
@@ -5575,7 +5575,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.70.1, @typescript-eslint/utils@npm:^8.23.0, @typescript-eslint/utils@npm:^8.58.1, @typescript-eslint/utils@npm:^8.70.0":
+"@typescript-eslint/utils@npm:8.70.1, @typescript-eslint/utils@npm:^8.23.0, @typescript-eslint/utils@npm:^8.70.0, @typescript-eslint/utils@npm:^8.70.1":
   version: 8.70.1
   resolution: "@typescript-eslint/utils@npm:8.70.1"
   dependencies:
@@ -6016,58 +6016,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-darwin-arm64@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-darwin-arm64@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-darwin-arm64@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-darwin-arm64@npm:1.0.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-darwin-x64@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-darwin-x64@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-darwin-x64@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-darwin-x64@npm:1.0.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-linux-arm64-gnu@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-linux-arm64-gnu@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-linux-arm64-gnu@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-linux-arm64-gnu@npm:1.0.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-linux-arm64-musl@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-linux-arm64-musl@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-linux-arm64-musl@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-linux-arm64-musl@npm:1.0.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-linux-x64-gnu@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-linux-x64-gnu@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-linux-x64-gnu@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-linux-x64-gnu@npm:1.0.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-linux-x64-musl@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-linux-x64-musl@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-linux-x64-musl@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-linux-x64-musl@npm:1.0.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-win32-arm64-msvc@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-win32-arm64-msvc@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-win32-arm64-msvc@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-win32-arm64-msvc@npm:1.0.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@voidzero-dev/vite-plus-win32-x64-msvc@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-win32-x64-msvc@npm:1.0.0-rc.0"
+"@voidzero-dev/vite-plus-win32-x64-msvc@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-win32-x64-msvc@npm:1.0.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -6239,11 +6239,11 @@ __metadata:
     "@prettier/plugin-xml": "npm:3.4.2"
     "@stylexjs/eslint-plugin": "npm:0.19.1"
     "@stylistic/eslint-plugin": "npm:5.10.0"
-    "@tanstack/eslint-plugin-query": "npm:5.103.2"
+    "@tanstack/eslint-plugin-query": "npm:5.104.0"
     "@tanstack/eslint-plugin-router": "npm:1.162.0"
     "@tanstack/router-generator": "npm:1.167.38"
     "@tanstack/virtual-file-routes": "npm:1.162.0"
-    "@types/node": "npm:26.6.2"
+    "@types/node": "npm:26.6.3"
     eslint: "npm:10.11.0"
     eslint-config-flat-gitignore: "npm:2.4.0"
     eslint-import-resolver-typescript: "npm:4.4.5"
@@ -6256,7 +6256,7 @@ __metadata:
     eslint-plugin-react-you-might-not-need-an-effect: "npm:1.0.2"
     eslint-plugin-unicorn: "npm:64.0.0"
     globals: "npm:17.12.0"
-    lint-staged: "npm:17.5.1"
+    lint-staged: "npm:17.6.0"
     oxlint: "npm:^1"
     postcss-scss: "npm:4.0.9"
     postcss-styled-syntax: "npm:0.7.2"
@@ -7258,7 +7258,7 @@ __metadata:
   dependencies:
     "@xcamp/config": "workspace:*"
     cross-env: "npm:10.1.0"
-    vite-plus: "npm:1.0.0-rc.0"
+    vite-plus: "npm:1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -10769,20 +10769,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:17.5.1":
-  version: 17.5.1
-  resolution: "lint-staged@npm:17.5.1"
+"lint-staged@npm:17.6.0":
+  version: 17.6.0
+  resolution: "lint-staged@npm:17.6.0"
   dependencies:
     picomatch: "npm:^4.0.7"
     string-argv: "npm:^0.3.2"
     tinyexec: "npm:^1.3.1"
-    yaml: "npm:^2.9.0"
+    yaml: "npm:^2.9.1"
   dependenciesMeta:
     yaml:
       optional: true
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/8063dab2c1d44b126432bd08a74ed98fcd90976dc5ed94172c3e70f2466b1268aa98c4b646f810c22e9b56923be7772f549f70e5b985d59b4bd0c68e36fe6524
+  checksum: 10c0/016905cebb46de70ff8de63db8527592d595709b31982f274677f252ac2037f2e446c92e0662ef6ba6a0dbf42e36324ae30df4d8b4cbc5032d219343cc306512
   languageName: node
   linkType: hard
 
@@ -11821,16 +11821,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oxlint-tsgolint@npm:=7.0.2002":
-  version: 7.0.2002
-  resolution: "oxlint-tsgolint@npm:7.0.2002"
+"oxlint-tsgolint@npm:=7.0.2003":
+  version: 7.0.2003
+  resolution: "oxlint-tsgolint@npm:7.0.2003"
   dependencies:
-    "@oxlint-tsgolint/darwin-arm64": "npm:7.0.2002"
-    "@oxlint-tsgolint/darwin-x64": "npm:7.0.2002"
-    "@oxlint-tsgolint/linux-arm64": "npm:7.0.2002"
-    "@oxlint-tsgolint/linux-x64": "npm:7.0.2002"
-    "@oxlint-tsgolint/win32-arm64": "npm:7.0.2002"
-    "@oxlint-tsgolint/win32-x64": "npm:7.0.2002"
+    "@oxlint-tsgolint/darwin-arm64": "npm:7.0.2003"
+    "@oxlint-tsgolint/darwin-x64": "npm:7.0.2003"
+    "@oxlint-tsgolint/linux-arm64": "npm:7.0.2003"
+    "@oxlint-tsgolint/linux-x64": "npm:7.0.2003"
+    "@oxlint-tsgolint/win32-arm64": "npm:7.0.2003"
+    "@oxlint-tsgolint/win32-x64": "npm:7.0.2003"
   dependenciesMeta:
     "@oxlint-tsgolint/darwin-arm64":
       optional: true
@@ -11846,7 +11846,7 @@ __metadata:
       optional: true
   bin:
     tsgolint: ./bin/tsgolint.js
-  checksum: 10c0/3bc2fa23ae383aec90e0b191a916a63622c14127a10619e902bb7413180004ac48417bbb1a9bf86a5e88857140349a57db8006d8a608bca5fb9ed6b852f38a3d
+  checksum: 10c0/f7be5deb91f140635c7cc2cd4f14f9f89fd4ac54aff3191ea76a081d59841d0fba000ac9cc06cb50769ccc79783a43b50161efeab4083cf5ed63327590671dca
   languageName: node
   linkType: hard
 
@@ -14825,9 +14825,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plus@npm:1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "vite-plus@npm:1.0.0-rc.0"
+"vite-plus@npm:1.0.0":
+  version: 1.0.0
+  resolution: "vite-plus@npm:1.0.0"
   dependencies:
     "@oxc-project/types": "npm:=0.151.0"
     "@oxlint/plugins": "npm:=1.79.0"
@@ -14838,18 +14838,18 @@ __metadata:
     "@vitest/snapshot": "npm:5.0.1"
     "@vitest/spy": "npm:5.0.1"
     "@vitest/utils": "npm:5.0.1"
-    "@voidzero-dev/vite-plus-darwin-arm64": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-darwin-x64": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-arm64-gnu": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-arm64-musl": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-x64-gnu": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-x64-musl": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-win32-arm64-msvc": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-win32-x64-msvc": "npm:1.0.0-rc.0"
+    "@voidzero-dev/vite-plus-darwin-arm64": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-darwin-x64": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-arm64-gnu": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-arm64-musl": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-x64-gnu": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-x64-musl": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-win32-arm64-msvc": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-win32-x64-msvc": "npm:1.0.0"
     oxfmt: "npm:=0.70.0"
     oxlint: "npm:=1.85.0"
-    oxlint-tsgolint: "npm:=7.0.2002"
-    vite: "npm:@voidzero-dev/vite-plus-core@1.0.0-rc.0"
+    oxlint-tsgolint: "npm:=7.0.2003"
+    vite: "npm:@voidzero-dev/vite-plus-core@1.0.0"
     vitest: "npm:5.0.1"
   peerDependencies:
     "@vitest/browser-playwright": 5.0.1
@@ -14879,24 +14879,24 @@ __metadata:
   bin:
     vp: ./bin/vp
     vpr: ./bin/vpr
-  checksum: 10c0/eedf270d7ffa9ff7909363fa74e507cc1a038028ac6577cd8ad6fb5143130b3f009f8f0c40e9f2f6ad367c91bb4cccaa7987c745880dc9b010110c7084b4d053
+  checksum: 10c0/a753ba8b3c23227756cb2b8d86ac7490bc679a45e62bbfa9857053eed246b031961a384085de3be50fd2622334c19a85d46c86d5c109ffc60d8edfc4aa8f93f7
   languageName: node
   linkType: hard
 
-"vite@npm:@voidzero-dev/vite-plus-core@1.0.0-rc.0":
-  version: 1.0.0-rc.0
-  resolution: "@voidzero-dev/vite-plus-core@npm:1.0.0-rc.0"
+"vite@npm:@voidzero-dev/vite-plus-core@1.0.0":
+  version: 1.0.0
+  resolution: "@voidzero-dev/vite-plus-core@npm:1.0.0"
   dependencies:
     "@oxc-project/runtime": "npm:=0.151.0"
     "@oxc-project/types": "npm:=0.151.0"
-    "@voidzero-dev/vite-plus-darwin-arm64": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-darwin-x64": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-arm64-gnu": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-arm64-musl": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-x64-gnu": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-linux-x64-musl": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-win32-arm64-msvc": "npm:1.0.0-rc.0"
-    "@voidzero-dev/vite-plus-win32-x64-msvc": "npm:1.0.0-rc.0"
+    "@voidzero-dev/vite-plus-darwin-arm64": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-darwin-x64": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-arm64-gnu": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-arm64-musl": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-x64-gnu": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-linux-x64-musl": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-win32-arm64-msvc": "npm:1.0.0"
+    "@voidzero-dev/vite-plus-win32-x64-msvc": "npm:1.0.0"
     fsevents: "npm:~2.3.3"
     lightningcss: "npm:^1.33.0"
     postcss: "npm:^8.5.6"
@@ -14974,7 +14974,7 @@ __metadata:
       optional: true
     yaml:
       optional: true
-  checksum: 10c0/551f05a2b7c706c1d123d23d4fa74911a22ade4622d1922bd644c035b7e756ec26bcc962d13d9020d3ce014ffb895e3a619b87d2db7b0b27556da14bf9c485aa
+  checksum: 10c0/015280690a5f63e2e1e806a2ab1aec35a5dd9d3f297f99d1d610425b33003e47f95ea7f6a88c07b917b894c124552c337127969ce790741a1d8f207247140a53
   languageName: node
   linkType: hard
 
@@ -15415,7 +15415,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.8.2, yaml@npm:^2.9.0":
+"yaml@npm:^2.8.2, yaml@npm:^2.9.1":
   version: 2.9.1
   resolution: "yaml@npm:2.9.1"
   bin:
