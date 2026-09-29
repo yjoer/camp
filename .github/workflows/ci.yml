@@ -49,9 +49,10 @@ jobs:
       - name: Setup Rust
         run: rustup install 1.81.0
       - name: Setup uv
-        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: true
+          cache-dependency-glob: '**/uv.lock'
       - name: Setup Environment Variables
         run: cp .env.example .env
       - name: Install Pango
