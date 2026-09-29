@@ -160,9 +160,7 @@ include = ["uv.lock"]
 enabled = false
 
 [tool.tombi.overrides.format.rules]
-indent-style = "space"
 indent-width = 4
-line-width = 200
 
 [tool.uv]
 build-constraint-dependencies = []
