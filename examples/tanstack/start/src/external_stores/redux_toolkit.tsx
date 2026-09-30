@@ -132,7 +132,7 @@ const increment_async_a = createAsyncThunk('counter/increment_async_a', async (_
 
 const increment_async_b = createAsyncThunk('counter/increment_async_b', async (_, thunk) => {
 	thunk.dispatch(increment_by_amount(1));
-	await new Promise((_, reject) => setTimeout(() => reject(new Error('failed')), 500));
+	await new Promise((_resolve, reject) => setTimeout(() => reject(new Error('failed')), 500));
 });
 
 function create_store() {

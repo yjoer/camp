@@ -132,7 +132,7 @@ function increment_async_b() {
 		dispatch(increment_by_amount(1));
 
 		try {
-			await new Promise((_, reject) => setTimeout(() => reject(new Error('failed')), 500));
+			await new Promise((_resolve, reject) => setTimeout(() => reject(new Error('failed')), 500));
 			dispatch({ type: INCREMENT_FULFILLED, payload: 1 });
 		} catch {
 			dispatch({ type: INCREMENT_REJECTED });
