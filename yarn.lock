@@ -264,6 +264,88 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@camp-org/config@workspace:*, @camp-org/config@workspace:packages/config":
+  version: 0.0.0-use.local
+  resolution: "@camp-org/config@workspace:packages/config"
+  dependencies:
+    "@commitlint/cli": "npm:21.2.3"
+    "@commitlint/config-conventional": "npm:21.2.3"
+    "@prettier/plugin-xml": "npm:3.4.2"
+    "@stylexjs/eslint-plugin": "npm:0.19.1"
+    "@stylistic/eslint-plugin": "npm:5.10.0"
+    "@tanstack/eslint-plugin-query": "npm:5.104.0"
+    "@tanstack/eslint-plugin-router": "npm:1.162.0"
+    "@tanstack/router-generator": "npm:1.167.39"
+    "@tanstack/virtual-file-routes": "npm:1.162.0"
+    "@types/node": "npm:26.6.3"
+    eslint: "npm:10.11.0"
+    eslint-config-flat-gitignore: "npm:2.4.0"
+    eslint-import-resolver-typescript: "npm:4.4.5"
+    eslint-plugin-better-tailwindcss: "npm:4.7.0"
+    eslint-plugin-compat: "npm:7.0.2"
+    eslint-plugin-import-x: "npm:4.17.1"
+    eslint-plugin-perfectionist: "npm:5.12.1"
+    eslint-plugin-react: "npm:7.37.5"
+    eslint-plugin-react-hooks: "npm:7.1.1"
+    eslint-plugin-react-you-might-not-need-an-effect: "npm:1.0.2"
+    eslint-plugin-unicorn: "npm:64.0.0"
+    globals: "npm:17.12.0"
+    lint-staged: "npm:17.6.0"
+    oxlint: "npm:^1"
+    postcss-scss: "npm:4.0.9"
+    postcss-styled-syntax: "npm:0.7.3"
+    prettier: "npm:3.9.9"
+    prettier-plugin-java: "npm:2.11.0"
+    prettier-plugin-packagejson: "npm:3.0.2"
+    stylelint: "npm:17.15.0"
+    stylelint-config-recess-order: "npm:7.8.0"
+    stylelint-config-standard: "npm:40.0.0"
+    stylelint-order: "npm:8.1.1"
+    typescript: "npm:6.0.3"
+    typescript-eslint: "npm:8.70.1"
+  peerDependencies:
+    oxlint: ^1
+    postcss: ^8
+    tailwindcss: ^4
+    typescript: ^6
+  peerDependenciesMeta:
+    oxlint:
+      optional: true
+    postcss:
+      optional: true
+    tailwindcss:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    generate-routes: ./bin/generate_routes.ts
+  languageName: unknown
+  linkType: soft
+
+"@camp-org/webpack@workspace:*, @camp-org/webpack@workspace:packages/webpack":
+  version: 0.0.0-use.local
+  resolution: "@camp-org/webpack@workspace:packages/webpack"
+  dependencies:
+    "@rspack/core": "npm:2.2.7"
+    "@types/webpack-node-externals": "npm:3.0.4"
+    "@vercel/webpack-asset-relocator-loader": "npm:1.11.0"
+    ts-loader: "npm:9.6.2"
+    typescript: "npm:6.0.3"
+    webpack: "npm:5.111.1"
+    webpack-merge: "npm:^6"
+    webpack-node-externals: "npm:3.0.0"
+  peerDependencies:
+    "@rspack/core": ^2
+    webpack: ^5
+    webpack-merge: ^6
+  peerDependenciesMeta:
+    "@rspack/core":
+      optional: true
+    webpack:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@camp/examples-elasticsearch-search-ui@workspace:examples/elasticsearch/search-ui":
   version: 0.0.0-use.local
   resolution: "@camp/examples-elasticsearch-search-ui@workspace:examples/elasticsearch/search-ui"
@@ -511,10 +593,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@camp/examples-webpack-typescript-fastify@workspace:examples/webpack/typescript-fastify"
   dependencies:
+    "@camp-org/webpack": "workspace:*"
     "@rspack/cli": "npm:2.2.7"
     "@rspack/core": "npm:2.2.7"
     "@types/bcrypt": "npm:6.0.0"
-    "@xcamp/webpack": "workspace:*"
     bcrypt: "npm:6.0.0"
     cross-env: "npm:10.1.0"
     fastify: "npm:5.12.5"
@@ -533,7 +615,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@camp/examples-webpack-typescript-http@workspace:examples/webpack/typescript-http"
   dependencies:
-    "@xcamp/webpack": "workspace:*"
+    "@camp-org/webpack": "workspace:*"
     cross-env: "npm:10.1.0"
     tsx: "npm:4.23.15"
     typescript: "npm:6.0.3"
@@ -6230,88 +6312,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xcamp/config@workspace:*, @xcamp/config@workspace:packages/config":
-  version: 0.0.0-use.local
-  resolution: "@xcamp/config@workspace:packages/config"
-  dependencies:
-    "@commitlint/cli": "npm:21.2.3"
-    "@commitlint/config-conventional": "npm:21.2.3"
-    "@prettier/plugin-xml": "npm:3.4.2"
-    "@stylexjs/eslint-plugin": "npm:0.19.1"
-    "@stylistic/eslint-plugin": "npm:5.10.0"
-    "@tanstack/eslint-plugin-query": "npm:5.104.0"
-    "@tanstack/eslint-plugin-router": "npm:1.162.0"
-    "@tanstack/router-generator": "npm:1.167.39"
-    "@tanstack/virtual-file-routes": "npm:1.162.0"
-    "@types/node": "npm:26.6.3"
-    eslint: "npm:10.11.0"
-    eslint-config-flat-gitignore: "npm:2.4.0"
-    eslint-import-resolver-typescript: "npm:4.4.5"
-    eslint-plugin-better-tailwindcss: "npm:4.7.0"
-    eslint-plugin-compat: "npm:7.0.2"
-    eslint-plugin-import-x: "npm:4.17.1"
-    eslint-plugin-perfectionist: "npm:5.12.1"
-    eslint-plugin-react: "npm:7.37.5"
-    eslint-plugin-react-hooks: "npm:7.1.1"
-    eslint-plugin-react-you-might-not-need-an-effect: "npm:1.0.2"
-    eslint-plugin-unicorn: "npm:64.0.0"
-    globals: "npm:17.12.0"
-    lint-staged: "npm:17.6.0"
-    oxlint: "npm:^1"
-    postcss-scss: "npm:4.0.9"
-    postcss-styled-syntax: "npm:0.7.3"
-    prettier: "npm:3.9.9"
-    prettier-plugin-java: "npm:2.11.0"
-    prettier-plugin-packagejson: "npm:3.0.2"
-    stylelint: "npm:17.15.0"
-    stylelint-config-recess-order: "npm:7.8.0"
-    stylelint-config-standard: "npm:40.0.0"
-    stylelint-order: "npm:8.1.1"
-    typescript: "npm:6.0.3"
-    typescript-eslint: "npm:8.70.1"
-  peerDependencies:
-    oxlint: ^1
-    postcss: ^8
-    tailwindcss: ^4
-    typescript: ^6
-  peerDependenciesMeta:
-    oxlint:
-      optional: true
-    postcss:
-      optional: true
-    tailwindcss:
-      optional: true
-    typescript:
-      optional: true
-  bin:
-    generate-routes: ./bin/generate_routes.ts
-  languageName: unknown
-  linkType: soft
-
-"@xcamp/webpack@workspace:*, @xcamp/webpack@workspace:packages/webpack":
-  version: 0.0.0-use.local
-  resolution: "@xcamp/webpack@workspace:packages/webpack"
-  dependencies:
-    "@rspack/core": "npm:2.2.7"
-    "@types/webpack-node-externals": "npm:3.0.4"
-    "@vercel/webpack-asset-relocator-loader": "npm:1.11.0"
-    ts-loader: "npm:9.6.2"
-    typescript: "npm:6.0.3"
-    webpack: "npm:5.111.1"
-    webpack-merge: "npm:^6"
-    webpack-node-externals: "npm:3.0.0"
-  peerDependencies:
-    "@rspack/core": ^2
-    webpack: ^5
-    webpack-merge: ^6
-  peerDependenciesMeta:
-    "@rspack/core":
-      optional: true
-    webpack:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@xml-tools/parser@npm:^1.0.11":
   version: 1.0.11
   resolution: "@xml-tools/parser@npm:1.0.11"
@@ -7256,7 +7256,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "camp@workspace:."
   dependencies:
-    "@xcamp/config": "workspace:*"
+    "@camp-org/config": "workspace:*"
     cross-env: "npm:10.1.0"
     vite-plus: "npm:1.0.0"
   languageName: unknown

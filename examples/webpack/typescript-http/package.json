@@ -6,7 +6,7 @@
 		"dev": "cross-env NODE_OPTIONS='--import=tsx' webpack --watch"
 	},
 	"devDependencies": {
-		"@xcamp/webpack": "workspace:*",
+		"@camp-org/webpack": "workspace:*",
 		"cross-env": "10.1.0",
 		"tsx": "4.23.15",
 		"typescript": "6.0.3",
@@ -14,6 +14,6 @@
 		"webpack-cli": "7.2.3"
 	},
 	"dependenciesMeta": {
-		"@xcamp/webpack": {}
+		"@camp-org/webpack": {}
 	}
 }
