@@ -10,8 +10,8 @@
 	"dependencies": {
 		"@fontsource-variable/roboto": "5.3.0",
 		"@stylexjs/stylex": "0.19.1",
-		"@tanstack/solid-router": "1.170.36",
-		"@tanstack/solid-start": "1.168.55",
+		"@tanstack/solid-router": "1.170.37",
+		"@tanstack/solid-start": "1.168.56",
 		"@tanstack/virtual-file-routes": "1.162.0",
 		"solid-js": "1.9.15"
 	},

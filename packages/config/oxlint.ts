@@ -159,7 +159,10 @@ export const oxlint_config = defineConfig({
 		'preserve-caught-error': 'error',
 		//
 		'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+		'import/no-absolute-path': 'error',
 		'import/no-default-export': 'error',
+		'import/no-mutable-exports': 'error',
+		'import/no-self-import': 'error',
 		'import/no-unassigned-import': ['error', { allow: ['**/*.css'] }],
 		'react/exhaustive-deps': 'off',
 		'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
