@@ -1,23 +1,22 @@
 #[cfg(target_os = "windows")]
 mod windows_imports {
-	pub use std::ffi::{c_void, OsString};
+	pub use std::ffi::{OsString, c_void};
 	pub use std::fs::File;
 	pub use std::io::Write;
 	pub use std::os::windows::ffi::{OsStrExt, OsStringExt};
 	pub use std::path::Path;
-	pub use std::sync::{mpsc, LazyLock};
+	pub use std::sync::{LazyLock, mpsc};
 	pub use std::thread::sleep;
 	pub use std::time::{Duration, SystemTime, UNIX_EPOCH};
 	pub use std::{ptr, slice};
 
 	pub use indexmap::IndexSet;
-	pub use windows::core::{BSTR, PWSTR};
 	pub use windows::Win32::Devices::Display::{
 		DestroyPhysicalMonitors,
 		GetNumberOfPhysicalMonitorsFromHMONITOR,
 		GetPhysicalMonitorsFromHMONITOR,
-		SetMonitorBrightness,
 		PHYSICAL_MONITOR,
+		SetMonitorBrightness,
 	};
 	pub use windows::Win32::Foundation::{
 		CloseHandle,
@@ -26,14 +25,14 @@ mod windows_imports {
 		HMODULE,
 		HWND,
 	};
-	pub use windows::Win32::Graphics::Gdi::{MonitorFromWindow, MONITOR_DEFAULTTOPRIMARY};
+	pub use windows::Win32::Graphics::Gdi::{MONITOR_DEFAULTTOPRIMARY, MonitorFromWindow};
 	pub use windows::Win32::System::Com::{
+		CLSCTX_INPROC_SERVER,
+		COINIT_MULTITHREADED,
 		CoCreateInstance,
 		CoInitializeEx,
 		CoSetProxyBlanket,
 		CoUninitialize,
-		CLSCTX_INPROC_SERVER,
-		COINIT_MULTITHREADED,
 		EOAC_NONE,
 		RPC_C_AUTHN_LEVEL_PKT,
 		RPC_C_IMP_LEVEL_IMPERSONATE,
@@ -41,11 +40,11 @@ mod windows_imports {
 	pub use windows::Win32::System::Environment::{CreateEnvironmentBlock, DestroyEnvironmentBlock};
 	pub use windows::Win32::System::ProcessStatus::GetModuleFileNameExW;
 	pub use windows::Win32::System::RemoteDesktop::{
+		WTS_SESSION_INFOW,
 		WTSActive,
 		WTSEnumerateSessionsW,
 		WTSFreeMemory,
 		WTSQueryUserToken,
-		WTS_SESSION_INFOW,
 	};
 	pub use windows::Win32::System::Rpc::{RPC_C_AUTHN_NONE, RPC_C_AUTHN_WINNT};
 	pub use windows::Win32::System::Services::{
@@ -55,36 +54,37 @@ mod windows_imports {
 		SERVICE_DELAYED_AUTO_START_INFO,
 	};
 	pub use windows::Win32::System::Threading::{
-		CreateProcessAsUserW,
-		OpenProcess,
-		TerminateProcess,
 		CREATE_NO_WINDOW,
 		CREATE_UNICODE_ENVIRONMENT,
+		CreateProcessAsUserW,
+		OpenProcess,
 		PROCESS_INFORMATION,
 		PROCESS_QUERY_LIMITED_INFORMATION,
 		STARTUPINFOW,
+		TerminateProcess,
 	};
 	pub use windows::Win32::System::Variant::VARIANT;
 	pub use windows::Win32::System::Wmi::{
 		IWbemClassObject,
 		IWbemLocator,
-		WbemLocator,
 		WBEM_FLAG_FORWARD_ONLY,
 		WBEM_FLAG_RETURN_IMMEDIATELY,
 		WBEM_FLAG_RETURN_WBEM_COMPLETE,
 		WBEM_INFINITE,
+		WbemLocator,
 	};
-	pub use windows::Win32::UI::Accessibility::{SetWinEventHook, UnhookWinEvent, HWINEVENTHOOK};
+	pub use windows::Win32::UI::Accessibility::{HWINEVENTHOOK, SetWinEventHook, UnhookWinEvent};
 	pub use windows::Win32::UI::WindowsAndMessaging::{
 		DispatchMessageW,
-		GetMessageW,
-		GetWindowThreadProcessId,
-		TranslateMessage,
 		EVENT_SYSTEM_FOREGROUND,
 		EVENT_SYSTEM_MINIMIZEEND,
+		GetMessageW,
+		GetWindowThreadProcessId,
 		MSG,
+		TranslateMessage,
 		WINEVENT_OUTOFCONTEXT,
 	};
+	pub use windows::core::{BSTR, PWSTR};
 	pub use windows_service::service::{
 		ServiceAccess,
 		ServiceControl,

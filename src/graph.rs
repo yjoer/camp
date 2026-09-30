@@ -86,7 +86,7 @@ fn dijkstra<T: Clone + PartialEq>(graph: &Graph<T>, start: T, end: T) -> Option<
 }
 
 macro_rules! create_graph_interface {
-	($name: ident, $type: ident) => {
+	($name:ident, $type:ident) => {
 		#[pyclass]
 		pub struct $name {
 			inner: Graph<$type>,

@@ -157,7 +157,7 @@ export const oxlint_config = defineConfig({
 		'no-console': 'warn',
 	},
 	overrides: [{
-		files: ['**/*.{ts,tsx,mts,cts}'],
+		files: ['**/*.{ts,tsx,cts,mts}'],
 		plugins: ['typescript'],
 		rules: {
 			// recommended
