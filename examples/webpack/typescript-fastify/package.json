@@ -15,10 +15,10 @@
 		"zod": "4.6.5"
 	},
 	"devDependencies": {
+		"@camp-org/webpack": "workspace:*",
 		"@rspack/cli": "2.2.7",
 		"@rspack/core": "2.2.7",
 		"@types/bcrypt": "6.0.0",
-		"@xcamp/webpack": "workspace:*",
 		"cross-env": "10.1.0",
 		"jiti": "2.7.0",
 		"tsx": "4.23.15",
@@ -28,6 +28,6 @@
 		"webpack-merge": "6.0.1"
 	},
 	"dependenciesMeta": {
-		"@xcamp/webpack": {}
+		"@camp-org/webpack": {}
 	}
 }

@@ -1,20 +1,12 @@
 {
-	"name": "@xcamp/webpack",
-	"version": "2026.9.2",
+	"name": "@camp-org/webpack",
+	"version": "0.0.1",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
 	},
 	"type": "module",
 	"exports": {
-		"./config": {
-			"types": "./.build/config.d.ts",
-			"import": "./.build/config.js"
-		},
-		"./rspack_config": {
-			"types": "./.build/rspack_config.d.ts",
-			"import": "./.build/rspack_config.js"
-		},
 		"./*": "./*"
 	},
 	"scripts": {
@@ -43,6 +35,11 @@
 		},
 		"webpack": {
 			"optional": true
+		}
+	},
+	"publishConfig": {
+		"exports": {
+			"./*": "./.build/*"
 		}
 	}
 }

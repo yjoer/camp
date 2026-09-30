@@ -1,5 +1,5 @@
 // oxlint-disable import/no-default-export
-import { getServerConfig } from '@xcamp/webpack/config.ts';
+import { getServerConfig } from '@camp-org/webpack/config.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 

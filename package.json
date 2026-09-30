@@ -25,12 +25,12 @@
 		"vite-plugin-solid": "patch:vite-plugin-solid@2.11.11#./patches/vite-plugin-solid@2.11.11.patch"
 	},
 	"devDependencies": {
-		"@xcamp/config": "workspace:*",
+		"@camp-org/config": "workspace:*",
 		"cross-env": "10.1.0",
 		"vite-plus": "1.0.0"
 	},
 	"dependenciesMeta": {
-		"@xcamp/config": {}
+		"@camp-org/config": {}
 	},
 	"packageManager": "yarn@4.18.1"
 }
