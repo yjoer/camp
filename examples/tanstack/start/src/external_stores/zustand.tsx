@@ -113,7 +113,7 @@ const counter_slice: StateCreator<CounterSlice> = (set, get) => ({
 		get().increment_by_amount(1);
 
 		try {
-			await new Promise((_, reject) => setTimeout(() => reject(new Error('failed')), 500));
+			await new Promise((_resolve, reject) => setTimeout(() => reject(new Error('failed')), 500));
 		} catch {
 			set({ loading: false, value: -1 });
 		}

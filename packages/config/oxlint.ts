@@ -1,18 +1,28 @@
 import { defineConfig } from 'oxlint';
 
 export const oxlint_config = defineConfig({
-	plugins: ['import', 'jsx-a11y', 'react', 'unicorn'],
+	plugins: ['import', 'jsx-a11y', 'promise', 'react', 'unicorn', 'vitest'],
 	categories: {
 		correctness: 'error',
 	},
 	rules: {
 		'import/default': 'off',
 		'import/export': 'error', // nursery
-		'import/named': 'error',
+		'import/named': 'error', // nursery
 		'import/no-duplicates': 'warn',
 		'import/no-named-as-default': 'warn',
 		'import/no-named-as-default-member': 'warn',
 		'import/no-named-default': 'error', // unicorn recommended
+		'promise/always-return': ['off', { ignoreLastCallback: true }], // ts(2345)
+		'promise/catch-or-return': 'off', // typescript/no-floating-promises
+		'promise/no-callback-in-promise': 'error',
+		'promise/no-nesting': 'error',
+		'promise/no-new-statics': 'off', // ts(7009)
+		'promise/no-promise-in-callback': 'error',
+		'promise/no-return-in-finally': 'error', // nursery
+		'promise/no-return-wrap': 'off', // unicorn/no-useless-promise-resolve-reject
+		'promise/param-names': 'error',
+		'promise/valid-params': 'off', // ts(2554)
 		'react/display-name': 'error',
 		'react/jsx-no-comment-textnodes': 'error',
 		'react/jsx-no-target-blank': 'error',
@@ -68,7 +78,7 @@ export const oxlint_config = defineConfig({
 		'unicorn/no-useless-collection-argument': 'error',
 		'unicorn/no-useless-error-capture-stack-trace': 'error',
 		'unicorn/no-useless-fallback-in-spread': 'error',
-		'unicorn/no-useless-iterator-to-array': 'error',
+		'unicorn/no-useless-iterator-to-array': 'error', // nursery
 		'unicorn/no-useless-length-check': 'error',
 		'unicorn/no-useless-promise-resolve-reject': 'error',
 		'unicorn/no-useless-switch-case': 'error',
@@ -144,13 +154,15 @@ export const oxlint_config = defineConfig({
 		'no-unassigned-vars': 'off',
 		'no-undef': 'off', // nursery
 		'no-unexpected-multiline': 'error',
-		'no-unreachable': 'error', // nursery
 		'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }], // handles react/jsx-uses-vars
 		'no-useless-constructor': 'off', // ts strict, not type-aware
 		'preserve-caught-error': 'error',
 		//
 		'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+		'import/no-absolute-path': 'error',
 		'import/no-default-export': 'error',
+		'import/no-mutable-exports': 'error',
+		'import/no-self-import': 'error',
 		'import/no-unassigned-import': ['error', { allow: ['**/*.css'] }],
 		'react/exhaustive-deps': 'off',
 		'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
@@ -193,9 +205,8 @@ export const oxlint_config = defineConfig({
 			'typescript/no-unnecessary-condition': 'error', // nursery
 			'typescript/no-unnecessary-template-expression': 'error',
 			'typescript/no-unnecessary-type-arguments': 'error',
-			'typescript/no-unnecessary-type-conversion': 'off', // nursery, conflicts with react/jsx-no-leaked-render
-			'typescript/no-unnecessary-type-parameters': 'error', // nursery
-			'typescript/no-useless-default-assignment': 'error', // nursery
+			'typescript/no-unnecessary-type-conversion': 'off', // conflicts with react/jsx-no-leaked-render
+			'typescript/no-unnecessary-type-parameters': 'error',
 			'typescript/prefer-literal-enum-member': 'error',
 			'typescript/prefer-reduce-type-parameter': 'error',
 			'typescript/prefer-return-this-type': 'error',
@@ -218,7 +229,7 @@ export const oxlint_config = defineConfig({
 			'no-setter-return': 'off',
 			'no-this-before-super': 'off',
 			'no-undef': 'off',
-			'no-unreachable': 'off',
+			'no-unreachable': 'off', // ts(7027)
 			'no-unsafe-negation': 'off',
 			'no-var': 'error',
 			'no-with': 'off',

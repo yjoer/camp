@@ -1,7 +1,8 @@
 // oxlint-disable no-process-exit
-import { app, dispose } from './_app/fastify.ts';
+import { createApp } from './_app/fastify.ts';
 import { router } from './_app/router.ts';
 
+let app = createApp();
 app.register(router);
 
 try {
@@ -15,7 +16,9 @@ try {
 // oxlint-disable-next-line typescript/no-unnecessary-condition
 if (import.meta.webpackHot) {
 	import.meta.webpackHot.accept();
-	import.meta.webpackHot.dispose(() => void dispose());
+	import.meta.webpackHot.dispose(() => {
+		void app.close().then(() => app = createApp());
+	});
 
 	import.meta.webpackHot.addStatusHandler((status) => {
 		if (status === 'fail' as webpack.HotUpdateStatus.fail) process.exit(1);
