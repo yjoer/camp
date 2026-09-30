@@ -18,7 +18,7 @@ mod windows_imports {
 	pub use which::which;
 	pub use windows::Win32::Foundation::HWND;
 	pub use windows::Win32::System::Console::GetConsoleWindow;
-	pub use windows::Win32::UI::WindowsAndMessaging::{ShowWindow, SW_HIDE};
+	pub use windows::Win32::UI::WindowsAndMessaging::{SW_HIDE, ShowWindow};
 	pub use windows_registry::{CLASSES_ROOT, CURRENT_USER};
 }
 

@@ -198,6 +198,7 @@ function stylistic() {
 				'@stylistic/no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 				// line breaks
 				'@stylistic/array-bracket-newline': ['error', 'consistent'],
+				'@stylistic/function-paren-newline': ['error', 'multiline-arguments'],
 				'@stylistic/implicit-arrow-linebreak': ['error', 'beside'],
 				'@stylistic/multiline-ternary': ['error', 'never'],
 				'@stylistic/object-curly-newline': ['error', { consistent: true }],
