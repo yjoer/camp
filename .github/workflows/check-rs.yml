@@ -10,9 +10,9 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Install Nightly Rustfmt
         run: rustup component add rustfmt --toolchain nightly
-      - name: Check Versions
-        run: |
-          cargo --version
-          cargo +nightly fmt --version
+      - name: List Versions
+        run: cargo --version && cargo +nightly fmt --version
+      - name: Check Lockfile
+        run: cargo fetch --locked
       - name: Format
         run: cargo +nightly fmt --all --check
