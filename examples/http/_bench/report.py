@@ -3,12 +3,11 @@ import altair as alt
 import pandas as pd
 
 # %%
-SERVER_PREFIX = ""
+GROUP = ""
 
 # %%
 df = pd.read_json(".build/results.jsonl", lines=True)
-df = df[df["server_name"].str.startswith(SERVER_PREFIX)]
-df["server_name"] = df["server_name"].str.removeprefix(SERVER_PREFIX)
+df = df[df["group"] == GROUP]
 df_expanded = df.explode("measurements")
 
 # %%
@@ -25,7 +24,7 @@ rps_chart = (
 			axis=alt.Axis(grid=True, gridOpacity=0.25, labelAngle=-45),
 			sort=server_order,
 		),
-		y=alt.Y("measurements:Q", scale=alt.Scale(padding=15, zero=False)),
+		y=alt.Y("measurements:Q", scale=alt.Scale(padding=5, zero=False)),
 		xOffset="jitter:Q",
 		color=alt.Color("language:N", sort=language_order),
 	)
@@ -43,7 +42,7 @@ latency_chart = (
 			axis=alt.Axis(grid=True, gridOpacity=0.25, labelAngle=-45),
 			sort=server_order,
 		),
-		y=alt.Y("latency_us:Q", scale=alt.Scale(padding=15, zero=False)),
+		y=alt.Y("latency_us:Q", scale=alt.Scale(padding=5, zero=False)),
 		xOffset="jitter:Q",
 		color=alt.Color("language:N", sort=language_order),
 	)

@@ -93,7 +93,7 @@ async function main() {
 				mkdirSync(path.join(script_dir, '.build'), { recursive: true });
 				appendFileSync(results_file, `${JSON.stringify({
 					group: server.group,
-					server_name: `${server.group}/${server.name}`,
+					server_name: server.name,
 					endpoint_name: endpoint.path,
 					language: server.language,
 					timestamp: new Date().toISOString(),
