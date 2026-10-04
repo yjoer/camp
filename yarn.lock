@@ -384,6 +384,8 @@ __metadata:
   resolution: "@camp/examples-http-bench@workspace:examples/http/_bench"
   dependencies:
     "@types/k6": "npm:2.2.1"
+    commander: "npm:15.0.0"
+    pidtree: "npm:1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7470,6 +7472,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:15.0.0":
+  version: 15.0.0
+  resolution: "commander@npm:15.0.0"
+  checksum: 10c0/539229c171914ea1ccd45ee5f10d924289a12a684ea3a7a44147abe54003c35ed6de9ae4ad198d88c29fdf403dca0428451a388234e6dc01b6faa978fb207206
+  languageName: node
+  linkType: hard
+
 "commander@npm:^14.0.3":
   version: 14.0.3
   resolution: "commander@npm:14.0.3"
@@ -12090,6 +12099,15 @@ __metadata:
   version: 4.0.7
   resolution: "picomatch@npm:4.0.7"
   checksum: 10c0/beb6ae02c43ae44e84883b90830196d9046b1726ead292adcf7f57945e0bb0d992d68563d87e03b484b6f3c9a5c6defda7523477f047d7f0e663f126cc01787f
+  languageName: node
+  linkType: hard
+
+"pidtree@npm:1.0.0":
+  version: 1.0.0
+  resolution: "pidtree@npm:1.0.0"
+  bin:
+    pidtree: bin/pidtree.js
+  checksum: 10c0/0cd0bd222ffba553ad4807c6795988bd18b587e9c063149139fb8db78c3b747f43d3b1511372eeda6b29a1c96670d2ee17d65a33f3c54e15d98f800512e613cd
   languageName: node
   linkType: hard
 
