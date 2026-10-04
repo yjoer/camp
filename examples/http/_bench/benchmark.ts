@@ -4,22 +4,29 @@ import type { ChildProcess, SpawnOptions } from 'node:child_process';
 import { program } from 'commander';
 import { deepStrictEqual } from 'node:assert';
 import { spawn, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { pidtree } from 'pidtree';
+
+const TARGET_MEASUREMENTS = 10;
+const MAX_STD_RATIO = 0.05;
+const IQR_MULTIPLIER = 1.5;
 
 const script_dir = import.meta.dirname;
 const http_dir = path.resolve(script_dir, '..');
 const react_server_dir = path.resolve(http_dir, '..', 'react-server');
+
 const base_url = 'http://127.0.0.1:3000';
+const results_file = path.join(script_dir, '.build', 'results.jsonl');
 
 async function main() {
 	program
 	.option('--server <prefix...>', 'filter servers by name prefixes')
+	.option('--warmup <count>', 'warmup rounds per endpoint', w => Number.parseInt(w, 10), 1)
 	.option('--verify-only', 'verify servers without benchmarking');
 
 	program.parse();
-	const opts = program.opts<{ server?: string[]; verifyOnly?: boolean }>();
+	const opts = program.opts<{ server?: string[]; warmup: number; verifyOnly?: boolean }>();
 
 	for (const server of servers) {
 		if (opts.server?.some(prefix => server.name.startsWith(prefix)) === false) continue;
@@ -54,8 +61,47 @@ async function main() {
 
 		try {
 			for (const endpoint of server.endpoints) {
-				process.stdout.write(`measuring ${endpoint.path} of ${server.group}/${server.name}\n`);
-				await server.measure(endpoint);
+				for (let i = 0; i < opts.warmup; i += 1) {
+					process.stdout.write(`warming up ${endpoint.path} of ${server.group}/${server.name}\n`);
+					await server.measure(endpoint);
+				}
+
+				let measurements: number[] = [];
+				for (;;) {
+					process.stdout.write(`measuring ${endpoint.path} of ${server.group}/${server.name}`);
+					measurements.push(await server.measure(endpoint));
+
+					const { n, outliers, max, mean, std, ratio } = _stats(measurements);
+					process.stdout.write(`n: ${n}, outliers: ${outliers.join(',')}, mean: ${mean}, std: ${std}, std_ratio: ${ratio}\n`);
+
+					if (measurements.length >= TARGET_MEASUREMENTS && outliers.includes(max)) {
+						process.stdout.write(`excluding peak ${max} from the distribution underestimates the mean, recollecting ${endpoint.path} of ${server.group}/${server.name}\n`);
+						measurements = [max];
+						continue;
+					}
+
+					if (measurements.length >= TARGET_MEASUREMENTS && ratio > MAX_STD_RATIO) {
+						process.stdout.write(`std ratio ${ratio} exceeds ${MAX_STD_RATIO}, recollecting ${endpoint.path} of ${server.group}/${server.name}\n`);
+						measurements = [];
+						continue;
+					}
+
+					if (n >= TARGET_MEASUREMENTS) break;
+				}
+
+				const { mean, std } = _stats(measurements);
+				mkdirSync(path.join(script_dir, '.build'), { recursive: true });
+				appendFileSync(results_file, `${JSON.stringify({
+					group: server.group,
+					server_name: `${server.group}/${server.name}`,
+					endpoint_name: endpoint.path,
+					language: server.language,
+					timestamp: new Date().toISOString(),
+					measurements,
+					mean_rps: mean,
+					std_rps: std,
+					mean_latency_us: 1_000_000 / mean,
+				})}\n`);
 			}
 		} finally {
 			process.stdout.write(`stopping ${server.group}/${server.name}\n`);
@@ -105,6 +151,44 @@ async function _verify_endpoint(endpoint: Endpoint) {
 	}
 }
 
+function _stats(measurements: number[]) {
+	const sorted = measurements.toSorted((a, b) => a - b);
+	const lower = _percentile(sorted, 25);
+	const upper = _percentile(sorted, 75);
+
+	const range = upper - lower;
+	const lower_fence = lower - IQR_MULTIPLIER * range;
+	const upper_fence = upper + IQR_MULTIPLIER * range;
+
+	let n = 0, mean = 0, m2 = 0;
+	let max = -Infinity;
+	const outliers: number[] = [];
+	for (const x of measurements) {
+		if (x > max) max = x;
+		if (x < lower_fence || x > upper_fence) {
+			outliers.push(x);
+			continue;
+		}
+
+		// welford's algorithm
+		n += 1;
+		const delta = x - mean;
+		mean += delta / n;
+		const delta2 = x - mean;
+		m2 += delta * delta2;
+	}
+
+	const std = Math.sqrt(m2 / n);
+	return { n, outliers, max, mean, std, ratio: std / mean };
+}
+
+const _percentile = (array: number[], p: number) => {
+	const pos = (array.length - 1) * p / 100;
+	const lo = Math.floor(pos);
+	const hi = Math.ceil(pos);
+	return array[lo] + (pos - lo) * (array[hi] - array[lo]);
+};
+
 interface Server {
 	group: string;
 	name: string;
@@ -112,7 +196,7 @@ interface Server {
 	endpoints: Endpoint[];
 	build(): Promise<void>;
 	setup(): Promise<ChildProcess>;
-	measure(endpoint: Endpoint): Promise<void>;
+	measure(endpoint: Endpoint): Promise<number>;
 	teardown(child: ChildProcess): Promise<void>;
 }
 
@@ -136,7 +220,7 @@ const node: Server = {
 		return _spawn('node', ['server.ts'], { cwd: path.join(http_dir, 'node'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -155,7 +239,7 @@ const express: Server = {
 		return _spawn('node', ['server.ts'], { cwd: path.join(http_dir, 'express'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -174,7 +258,7 @@ const fastify: Server = {
 		return _spawn('node', ['server.ts'], { cwd: path.join(http_dir, 'fastify'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -193,7 +277,7 @@ const h_three: Server = {
 		return _spawn('node', ['server.ts'], { cwd: path.join(http_dir, 'h-three'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -212,7 +296,7 @@ const trpc: Server = {
 		return _spawn('node', ['node.ts'], { cwd: path.join(http_dir, 'trpc'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -231,7 +315,7 @@ const trpc_fastify: Server = {
 		return _spawn('node', ['fastify.ts'], { cwd: path.join(http_dir, 'trpc'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -250,7 +334,7 @@ const orpc: Server = {
 		return _spawn('node', ['node.ts'], { cwd: path.join(http_dir, 'orpc'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -269,7 +353,7 @@ const orpc_fastify: Server = {
 		return _spawn('node', ['fastify.ts'], { cwd: path.join(http_dir, 'orpc'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -288,7 +372,7 @@ const orpc_h_three: Server = {
 		return _spawn('node', ['h_three.ts'], { cwd: path.join(http_dir, 'orpc'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -307,7 +391,7 @@ const orpc_openapi_node: Server = {
 		return _spawn('node', ['openapi_node.ts'], { cwd: path.join(http_dir, 'orpc'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -326,7 +410,7 @@ const fastapi: Server = {
 		return _spawn('uv', ['run', 'server.py'], { cwd: path.join(http_dir, 'fastapi'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -347,7 +431,7 @@ const spring_boot: Server = {
 		return _spawn('java', ['-XX:ActiveProcessorCount=1', '-jar', '.build/libs/spring-boot.jar'], { cwd: path.join(http_dir, 'spring-boot'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -368,7 +452,7 @@ const axum: Server = {
 		return _spawn('cargo', ['run', '--release'], { cwd: path.join(http_dir, 'axum'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -389,7 +473,7 @@ const axum_connect: Server = {
 		return _spawn('cargo', ['run', '--release'], { cwd: path.join(http_dir, 'axum-connect'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -410,7 +494,7 @@ const react_server_vite: Server = {
 		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -431,7 +515,7 @@ const react_server_vite_stream: Server = {
 		return _spawn('yarn', ['start:stream'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -452,7 +536,7 @@ const react_server_next_pages: Server = {
 		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -473,7 +557,7 @@ const react_server_next_app: Server = {
 		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
@@ -494,7 +578,7 @@ const react_server_tanstack_start: Server = {
 		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'tanstack-start'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
-		_measure_k6(endpoint);
+		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
 	},
 	async teardown(child: ChildProcess) {
 		await _kill_tree_wait(child);
