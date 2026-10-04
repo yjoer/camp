@@ -259,7 +259,7 @@ wheels = [
 
 [[package]]
 name = "altair"
-version = "6.0.0"
+version = "6.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
@@ -268,9 +268,9 @@ dependencies = [
     { name = "packaging" },
     { name = "typing-extensions", marker = "python_full_version < '3.15' or (extra == 'extra-4-camp-torch' and extra == 'extra-4-camp-torch-cu129')" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f7/c0/184a89bd5feba14ff3c41cfaf1dd8a82c05f5ceedbc92145e17042eb08a4/altair-6.0.0.tar.gz", hash = "sha256:614bf5ecbe2337347b590afb111929aa9c16c9527c4887d96c9bc7f6640756b4", size = 763834, upload-time = "2025-11-12T08:59:11.519Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e8/de/9731304fae332b5783fdc3ed18531dfaf4a3cc62a66aaaa74c047355b70f/altair-6.3.0.tar.gz", hash = "sha256:fa632121aca6d0fcb198a3d8a9f7d937fa5b7518ec947951cfffb44e736d97c8", size = 766362, upload-time = "2026-09-15T06:38:03.623Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/33/ef2f2409450ef6daa61459d5de5c08128e7d3edb773fefd0a324d1310238/altair-6.0.0-py3-none-any.whl", hash = "sha256:09ae95b53d5fe5b16987dccc785a7af8588f2dca50de1e7a156efa8a461515f8", size = 795410, upload-time = "2025-11-12T08:59:09.804Z" },
+    { url = "https://files.pythonhosted.org/packages/ca/b9/10a8bb13a0462e0bc4e02c0b7b8237dc24ab590f5bb4be94bec5e8f1d532/altair-6.3.0-py3-none-any.whl", hash = "sha256:7defb6ca730676dfc99a299768e2769f51585fcb3dc960ea71aacc368929d65e", size = 797192, upload-time = "2026-09-15T06:38:01.791Z" },
 ]
 
 [package.optional-dependencies]
@@ -877,7 +877,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "altair", extras = ["all"], specifier = "==6.0.0" },
+    { name = "altair", extras = ["all"], specifier = "==6.3.0" },
     { name = "catboost", marker = "extra == 'tree'", specifier = "==1.2.10" },
     { name = "deepspeed", marker = "extra == 'torch-extras'", url = "https://github.com/yjoer/camp/releases/download/v2025.6.0/deepspeed-0.15.0+55b4cae8-py3-none-any.whl" },
     { name = "en-core-web-sm", marker = "extra == 'text'", url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" },
