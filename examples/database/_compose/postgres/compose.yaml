@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:15.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - $HOME/_docker/postgres-15:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  pgbouncer:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 6432:6432
+    volumes:
+      - ./pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./users.txt:/etc/pgbouncer/users.txt:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
