@@ -4,7 +4,7 @@ from pathlib import Path
 
 from grafana_foundation_sdk.cog.encoder import JSONEncoder
 
-from examples.grafana.smartctl.smartctl import manifest
+from examples.grafana.prometheus.smartctl import manifest
 
 json = JSONEncoder(sort_keys=True, indent=2).encode(manifest())
 

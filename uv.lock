@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32' and extra != 'extra-4-camp-torch' and extra == 'extra-4-camp-torch-cu129'",
@@ -40,7 +40,7 @@ ty = false
 [manifest]
 members = [
     "camp",
-    "examples-grafana-smartctl",
+    "examples-grafana-prometheus",
     "examples-http-fastapi",
 ]
 overrides = [{ package = { name = "notebook-intelligence", version = "6.0.0" }, dependencies = [{ name = "python-multipart", specifier = ">=0.0.20" }] }]
@@ -1687,9 +1687,9 @@ epath = [
 ]
 
 [[package]]
-name = "examples-grafana-smartctl"
+name = "examples-grafana-prometheus"
 version = "2025.4.0"
-source = { virtual = "examples/grafana/smartctl" }
+source = { virtual = "examples/grafana/prometheus" }
 dependencies = [
     { name = "grafana-foundation-sdk" },
 ]

@@ -1,5 +1,5 @@
 {
-	"name": "@camp/examples-grafana-smartctl",
+	"name": "@camp/examples-grafana-prometheus",
 	"scripts": {
 		"apply": "uv run python apply.py",
 		"dev": "grafanactl resources serve --script \"uv run python smartctl.py\" --watch ."
