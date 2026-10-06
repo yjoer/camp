@@ -1,5 +1,5 @@
 [project]
-name = "examples-grafana-smartctl"
+name = "examples-grafana-prometheus"
 version = "2025.4.0"
 dependencies = [
 	"grafana-foundation-sdk==1759917919!11.6.0",
