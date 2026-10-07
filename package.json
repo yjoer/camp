@@ -4,6 +4,7 @@
 	"workspaces": {
 		"packages": [
 			"examples/elasticsearch/*",
+			"examples/grafana/*",
 			"examples/hatchet/*",
 			"examples/http/*",
 			"examples/node/*",

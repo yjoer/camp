@@ -1,7 +1,13 @@
 {
 	"name": "@camp/examples-grafana-prometheus",
+	"type": "module",
 	"scripts": {
 		"apply": "uv run python apply.py",
-		"dev": "grafanactl resources serve --script \"uv run python smartctl.py\" --watch ."
+		"apply:pgbouncer": "node apply.ts",
+		"dev": "gcx dev serve --script \"uv run python smartctl.py\" --watch .",
+		"dev:pgbouncer": "gcx dev serve --script \"node pgbouncer.ts\" --watch ."
+	},
+	"dependencies": {
+		"@grafana/grafana-foundation-sdk": "0.0.20"
 	}
 }
