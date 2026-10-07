@@ -172,8 +172,6 @@ function variables(builder: DashboardBuilder): DashboardBuilder {
 			.datasource({ name: '$datasource' })
 			.query('label_values(pgbouncer_version_info, instance)'),
 		)
-		.current({ selected: true, text: 'All', value: '$__all' })
-		.includeAll(true)
 		.multi(false),
 	);
 }
@@ -486,7 +484,10 @@ function client_active_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -511,7 +512,10 @@ function client_waiting_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -561,7 +565,10 @@ function client_active_cancel_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -586,7 +593,10 @@ function client_waiting_cancel_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -611,7 +621,10 @@ function server_active_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -636,7 +649,10 @@ function server_idle_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -661,7 +677,10 @@ function server_active_cancel_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -686,7 +705,10 @@ function server_being_canceled_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -711,7 +733,10 @@ function server_used_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -736,7 +761,10 @@ function server_testing_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
@@ -761,7 +789,10 @@ function server_login_connections(): PanelBuilder {
 		),
 	)
 	.visualization(
-		new TimeseriesBuilder().legend(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
