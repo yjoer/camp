@@ -362,6 +362,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@camp/examples-grafana-prometheus@workspace:examples/grafana/prometheus":
+  version: 0.0.0-use.local
+  resolution: "@camp/examples-grafana-prometheus@workspace:examples/grafana/prometheus"
+  dependencies:
+    "@grafana/grafana-foundation-sdk": "npm:0.0.20"
+  languageName: unknown
+  linkType: soft
+
 "@camp/examples-hatchet-typescript-connectors@workspace:examples/hatchet/typescript-connectors":
   version: 0.0.0-use.local
   resolution: "@camp/examples-hatchet-typescript-connectors@workspace:examples/hatchet/typescript-connectors"
@@ -1676,6 +1684,15 @@ __metadata:
   version: 5.3.0
   resolution: "@fontsource-variable/roboto@npm:5.3.0"
   checksum: 10c0/22c7b705afc0acd44c4d80ceac3151d2005b90a7c61709ad61cf07446bdcb7fd2b1ce91b634c4bbfca590eea68e2b33ad931bd51007d175e2fe38bb3ce8ab101
+  languageName: node
+  linkType: hard
+
+"@grafana/grafana-foundation-sdk@npm:0.0.20":
+  version: 0.0.20
+  resolution: "@grafana/grafana-foundation-sdk@npm:0.0.20"
+  dependencies:
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/86e3b35f1029e51494063633a79b1dc97395a345f9b45890e60f100aca1d7c0e2eab44ab1d69e3a57c7ec9e2c63817ed531bb8083401a1590da1ab2c90361c5c
   languageName: node
   linkType: hard
 
