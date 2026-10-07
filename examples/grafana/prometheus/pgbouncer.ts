@@ -12,10 +12,12 @@ import {
 	tab,
 	tabs,
 	TargetBuilder,
+	ThresholdsConfigBuilder,
 	TimeSettingsBuilder,
 	TransformationBuilder,
 } from '@grafana/grafana-foundation-sdk/dashboardv2';
 import { QueryV2Builder as PrometheusQueryBuilder, PromQueryFormat } from '@grafana/grafana-foundation-sdk/prometheus';
+import { VisualizationV2Builder as StatBuilder } from '@grafana/grafana-foundation-sdk/stat';
 import { VisualizationV2Builder as TableBuilder } from '@grafana/grafana-foundation-sdk/table';
 import { VisualizationV2Builder as TimeseriesBuilder } from '@grafana/grafana-foundation-sdk/timeseries';
 import path from 'node:path';
@@ -35,6 +37,18 @@ function dashboard(): DashboardBuilder {
 	builder = variables(builder);
 
 	return builder
+	.element('stat-up', stat_up())
+	.element('stat-max-client-connections', stat_max_client_connections())
+	.element('stat-max-user-connections', stat_max_user_connections())
+	.element('stat-databases', stat_databases())
+	.element('stat-users', stat_users())
+	.element('stat-pools', stat_pools())
+	.element('stat-cached-dns-names', stat_cached_dns_names())
+	.element('stat-cached-dns-zones', stat_cached_dns_zones())
+	.element('used-clients', used_clients())
+	.element('used-servers', used_servers())
+	.element('client-connections', client_connections())
+	.element('server-connections', server_connections())
 	.element('client-active-connections', client_active_connections())
 	.element('client-waiting-connections', client_waiting_connections())
 	.element('client-maxwait-seconds', client_maxwait_seconds())
@@ -49,7 +63,58 @@ function dashboard(): DashboardBuilder {
 	.element('server-login-connections', server_login_connections())
 	.element('settings', settings())
 	.layout(
-		rows().row(
+		rows()
+		.row(
+			row('Summary')
+			.collapse(false)
+			.layout(
+				rows()
+				.row(
+					row('')
+					.collapse(false)
+					.hideHeader(true)
+					.layout(
+						autoGrid()
+						.maxColumnCount(3)
+						.columnWidthMode('narrow')
+						.rowHeightMode('short')
+						.withItem('stat-up')
+						.withItem('stat-max-client-connections')
+						.withItem('stat-max-user-connections'),
+					),
+				)
+				.row(
+					row('')
+					.collapse(false)
+					.hideHeader(true)
+					.layout(
+						autoGrid()
+						.maxColumnCount(5)
+						.columnWidthMode('narrow')
+						.rowHeightMode('short')
+						.withItem('stat-databases')
+						.withItem('stat-users')
+						.withItem('stat-pools')
+						.withItem('stat-cached-dns-names')
+						.withItem('stat-cached-dns-zones'),
+					),
+				)
+				.row(
+					row('')
+					.collapse(false)
+					.hideHeader(true)
+					.layout(
+						autoGrid()
+						.maxColumnCount(2)
+						.withItem('used-clients')
+						.withItem('used-servers')
+						.withItem('client-connections')
+						.withItem('server-connections'),
+					),
+				),
+			),
+		)
+		.row(
 			row('Pools')
 			.collapse(false)
 			.layout(
@@ -110,6 +175,299 @@ function variables(builder: DashboardBuilder): DashboardBuilder {
 		.current({ selected: true, text: 'All', value: '$__all' })
 		.includeAll(true)
 		.multi(false),
+	);
+}
+
+function stat_up(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Status')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_up{instance=~'$instance'}"),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder()
+		.colorMode(common.BigValueColorMode.Background)
+		.graphMode(common.BigValueGraphMode.None)
+		.thresholds(
+			new ThresholdsConfigBuilder().steps([
+				{ value: 0, color: 'red' },
+				{ value: 1, color: 'green' },
+			]),
+		),
+	);
+}
+
+function stat_max_client_connections(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Max Client Connections')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_config_max_client_connections{instance=~'$instance'}"),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder().graphMode(common.BigValueGraphMode.None),
+	);
+}
+
+function stat_max_user_connections(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Max User Connections')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_config_max_user_connections{instance=~'$instance'}"),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder().graphMode(common.BigValueGraphMode.None),
+	);
+}
+
+function stat_databases(): PanelBuilder {
+	return new PanelBuilder()
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_databases{instance=~'$instance'}")
+				.legendFormat('Databases'),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder()
+		.graphMode(common.BigValueGraphMode.Area)
+		.textMode(common.BigValueTextMode.ValueAndName)
+		.text(new common.VizTextDisplayOptionsBuilder().titleSize(14).valueSize(64)),
+	);
+}
+
+function stat_users(): PanelBuilder {
+	return new PanelBuilder()
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_users{instance=~'$instance'}")
+				.legendFormat('Users'),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder()
+		.graphMode(common.BigValueGraphMode.Area)
+		.textMode(common.BigValueTextMode.ValueAndName)
+		.text(new common.VizTextDisplayOptionsBuilder().titleSize(14).valueSize(64)),
+	);
+}
+
+function stat_pools(): PanelBuilder {
+	return new PanelBuilder()
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_pools{instance=~'$instance'}")
+				.legendFormat('Pools'),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder()
+		.graphMode(common.BigValueGraphMode.Area)
+		.textMode(common.BigValueTextMode.ValueAndName)
+		.text(new common.VizTextDisplayOptionsBuilder().titleSize(14).valueSize(64)),
+	);
+}
+
+function stat_cached_dns_names(): PanelBuilder {
+	return new PanelBuilder()
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_cached_dns_names{instance=~'$instance'}")
+				.legendFormat('Cached DNS Names'),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder()
+		.graphMode(common.BigValueGraphMode.Area)
+		.textMode(common.BigValueTextMode.ValueAndName)
+		.text(new common.VizTextDisplayOptionsBuilder().titleSize(14).valueSize(64)),
+	);
+}
+
+function stat_cached_dns_zones(): PanelBuilder {
+	return new PanelBuilder()
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_cached_dns_zones{instance=~'$instance'}")
+				.legendFormat('Cached DNS Zones'),
+			),
+		),
+	)
+	.visualization(
+		new StatBuilder()
+		.graphMode(common.BigValueGraphMode.Area)
+		.textMode(common.BigValueTextMode.ValueAndName)
+		.text(new common.VizTextDisplayOptionsBuilder().titleSize(14).valueSize(64)),
+	);
+}
+
+function used_clients(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Used/Free Clients')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_used_clients{instance=~'$instance'}")
+				.legendFormat('Used'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_free_clients{instance=~'$instance'}")
+				.legendFormat('Free'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.List)
+			.placement(common.LegendPlacement.Bottom)
+			.showLegend(true),
+		),
+	);
+}
+
+function used_servers(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Used/Free Servers')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_used_servers{instance=~'$instance'}")
+				.legendFormat('Used'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_free_servers{instance=~'$instance'}")
+				.legendFormat('Free'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.List)
+			.placement(common.LegendPlacement.Bottom)
+			.showLegend(true),
+		),
+	);
+}
+
+function client_connections(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Client Connections')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance, database, user) (pgbouncer_client_connections{instance=~'$instance'})")
+				.legendFormat('{{ database }} / {{ user }}'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal)).legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function server_connections(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Server Connections')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("pgbouncer_databases_current_connections{instance=~'$instance'}")
+				.legendFormat('{{ database }}'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal)).legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
 	);
 }
 
