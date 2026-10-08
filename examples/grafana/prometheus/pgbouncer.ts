@@ -106,21 +106,20 @@ function dashboard(): DashboardBuilder {
 						.withItem('stat-cached-dns-names')
 						.withItem('stat-cached-dns-zones'),
 					),
-				)
-				.row(
-					row('')
-					.collapse(false)
-					.hideHeader(true)
-					.layout(
-						autoGrid()
-						.maxColumnCount(2)
-						.withItem('used-clients')
-						.withItem('used-servers')
-						.withItem('client-connections')
-						.withItem('server-connections')
-						.withItem('network-traffic'),
-					),
 				),
+			),
+		)
+		.row(
+			row('Connections')
+			.collapse(false)
+			.layout(
+				autoGrid()
+				.maxColumnCount(2)
+				.withItem('used-clients')
+				.withItem('used-servers')
+				.withItem('client-connections')
+				.withItem('server-connections')
+				.withItem('network-traffic'),
 			),
 		)
 		.row(
