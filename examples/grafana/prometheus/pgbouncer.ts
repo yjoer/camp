@@ -578,11 +578,11 @@ function query_transaction_rates(): PanelBuilder {
 function avg_query_duration(): PanelBuilder {
 	const x1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance'}[$__rate_interval]))";
 	const y1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}[$__rate_interval]))";
-	const query1 = `(${x1} / ${y1} unless ${y1} == 0) or on (instance) ${y1} * 0`;
+	const query_q = `(${x1} / ${y1} unless ${y1} == 0) or on (instance) ${y1} * 0`;
 
 	const x2 = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance'}[$__rate_interval]))";
 	const y2 = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))";
-	const query2 = `(${x2} / ${y2} unless ${y2} == 0) or on (instance) ${y2} * 0`;
+	const query_t = `(${x2} / ${y2} unless ${y2} == 0) or on (instance) ${y2} * 0`;
 
 	return new PanelBuilder()
 	.title('Average Query / Transaction Duration')
@@ -593,7 +593,7 @@ function avg_query_duration(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr(query1)
+				.expr(query_q)
 				.legendFormat('Queries'),
 			),
 		)
@@ -601,7 +601,7 @@ function avg_query_duration(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr(query2)
+				.expr(query_t)
 				.legendFormat('Transactions'),
 			),
 		),
@@ -624,6 +624,7 @@ function execution_share(): PanelBuilder {
 	const x = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance'}[$__rate_interval]))";
 	const y = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance'}[$__rate_interval]))";
 	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
+	const query_idle = `((${y} - ${x}) / ${y} unless ${y} == 0)`;
 
 	return new PanelBuilder()
 	.title('Execution Share')
@@ -642,7 +643,7 @@ function execution_share(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr(`1 - (${query})`)
+				.expr(query_idle)
 				.legendFormat('Idle'),
 			),
 		),
