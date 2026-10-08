@@ -29,7 +29,7 @@ function dashboard(): DashboardBuilder {
 	.timeSettings(
 		new TimeSettingsBuilder()
 		.timezone('browser')
-		.from('now-6h')
+		.from('now-15m')
 		.to('now')
 		.autoRefresh('5s'),
 	);
@@ -49,6 +49,14 @@ function dashboard(): DashboardBuilder {
 	.element('used-servers', used_servers())
 	.element('client-connections', client_connections())
 	.element('server-connections', server_connections())
+	.element('network-traffic', network_traffic())
+	.element('query-transaction-rates', query_transaction_rates())
+	.element('avg-query-duration', avg_query_duration())
+	.element('execution-share', execution_share())
+	.element('parse-bind-rates', parse_bind_rates())
+	.element('parse-forwarding-ratio', parse_forwarding_ratio())
+	.element('parses-per-transaction', parses_per_transaction())
+	.element('binds-per-parse', binds_per_parse())
 	.element('client-active-connections', client_active_connections())
 	.element('client-waiting-connections', client_waiting_connections())
 	.element('client-maxwait-seconds', client_maxwait_seconds())
@@ -98,20 +106,43 @@ function dashboard(): DashboardBuilder {
 						.withItem('stat-cached-dns-names')
 						.withItem('stat-cached-dns-zones'),
 					),
-				)
-				.row(
-					row('')
-					.collapse(false)
-					.hideHeader(true)
-					.layout(
-						autoGrid()
-						.maxColumnCount(2)
-						.withItem('used-clients')
-						.withItem('used-servers')
-						.withItem('client-connections')
-						.withItem('server-connections'),
-					),
 				),
+			),
+		)
+		.row(
+			row('Connections')
+			.collapse(false)
+			.layout(
+				autoGrid()
+				.maxColumnCount(2)
+				.withItem('used-clients')
+				.withItem('used-servers')
+				.withItem('client-connections')
+				.withItem('server-connections')
+				.withItem('network-traffic'),
+			),
+		)
+		.row(
+			row('Queries')
+			.collapse(false)
+			.layout(
+				autoGrid()
+				.maxColumnCount(2)
+				.withItem('query-transaction-rates')
+				.withItem('avg-query-duration')
+				.withItem('execution-share'),
+			),
+		)
+		.row(
+			row('Prepared Statements')
+			.collapse(false)
+			.layout(
+				autoGrid()
+				.maxColumnCount(2)
+				.withItem('parse-bind-rates')
+				.withItem('parse-forwarding-ratio')
+				.withItem('parses-per-transaction')
+				.withItem('binds-per-parse'),
 			),
 		)
 		.row(
@@ -345,7 +376,7 @@ function stat_cached_dns_zones(): PanelBuilder {
 
 function used_clients(): PanelBuilder {
 	return new PanelBuilder()
-	.title('Used/Free Clients')
+	.title('Used / Free Clients')
 	.id(id++)
 	.data(
 		new QueryGroupBuilder()
@@ -381,7 +412,7 @@ function used_clients(): PanelBuilder {
 
 function used_servers(): PanelBuilder {
 	return new PanelBuilder()
-	.title('Used/Free Servers')
+	.title('Used / Free Servers')
 	.id(id++)
 	.data(
 		new QueryGroupBuilder()
@@ -460,6 +491,308 @@ function server_connections(): PanelBuilder {
 		new TimeseriesBuilder()
 		.fillOpacity(50)
 		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal)).legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function network_traffic(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Network Traffic')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_received_bytes_total{instance=~'$instance'}[$__rate_interval]))")
+				.legendFormat('Received'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_sent_bytes_total{instance=~'$instance'}[$__rate_interval])) * -1")
+				.legendFormat('Sent'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('Bps')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function query_transaction_rates(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Query / Transaction Rates')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}[$__rate_interval]))")
+				.legendFormat('Queries'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))")
+				.legendFormat('Transactions'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('ops')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function avg_query_duration(): PanelBuilder {
+	const x1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance'}[$__rate_interval]))";
+	const y1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}[$__rate_interval]))";
+	const query_q = `(${x1} / ${y1} unless ${y1} == 0) or on (instance) ${y1} * 0`;
+
+	const x2 = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance'}[$__rate_interval]))";
+	const y2 = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))";
+	const query_t = `(${x2} / ${y2} unless ${y2} == 0) or on (instance) ${y2} * 0`;
+
+	return new PanelBuilder()
+	.title('Average Query / Transaction Duration')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query_q)
+				.legendFormat('Queries'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query_t)
+				.legendFormat('Transactions'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('s')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function execution_share(): PanelBuilder {
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance'}[$__rate_interval]))";
+	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
+	const query_idle = `((${y} - ${x}) / ${y} unless ${y} == 0)`;
+
+	return new PanelBuilder()
+	.title('Execution Share')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query)
+				.legendFormat('Execution'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query_idle)
+				.legendFormat('Idle'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.stacking(new common.StackingConfigBuilder().mode(common.StackingMode.Normal))
+		.unit('percentunit')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function parse_bind_rates(): PanelBuilder {
+	return new PanelBuilder()
+	.title('Parse / Bind Rates')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder()
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))")
+				.legendFormat('Client Parses'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_server_parses_total{instance=~'$instance'}[$__rate_interval]))")
+				.legendFormat('Server Parses'),
+			),
+		)
+		.target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_binds_total{instance=~'$instance'}[$__rate_interval]))")
+				.legendFormat('Binds'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('ops')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function parse_forwarding_ratio(): PanelBuilder {
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_server_parses_total{instance=~'$instance'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))";
+	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
+
+	return new PanelBuilder()
+	.title('Parse Forwarding Ratio')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query).legendFormat('Forwarding'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('percentunit')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function parses_per_transaction(): PanelBuilder {
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))";
+	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
+
+	return new PanelBuilder()
+	.title('Parses per Transaction')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query)
+				.legendFormat('Parses / Transaction'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('short')
+		.legend(
+			new common.VizLegendOptionsBuilder()
+			.displayMode(common.LegendDisplayMode.Table)
+			.placement(common.LegendPlacement.Bottom)
+			.calcs(['mean', 'lastNotNull', 'max', 'min'])
+			.showLegend(true),
+		),
+	);
+}
+
+function binds_per_parse(): PanelBuilder {
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_binds_total{instance=~'$instance'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))";
+	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
+
+	return new PanelBuilder()
+	.title('Binds per Parse')
+	.id(id++)
+	.data(
+		new QueryGroupBuilder().target(
+			new TargetBuilder().query(
+				new PrometheusQueryBuilder()
+				.datasource({ name: '$datasource' })
+				.expr(query)
+				.legendFormat('Binds / Parse'),
+			),
+		),
+	)
+	.visualization(
+		new TimeseriesBuilder()
+		.fillOpacity(50)
+		.unit('short')
+		.legend(
 			new common.VizLegendOptionsBuilder()
 			.displayMode(common.LegendDisplayMode.Table)
 			.placement(common.LegendPlacement.Bottom)
