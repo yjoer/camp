@@ -1,4 +1,4 @@
-name: CI
+name: ci
 
 on:
   pull_request:
@@ -33,6 +33,11 @@ jobs:
 
   check-rs:
     uses: ./.github/workflows/check-rs.yml
+
+  sonarqube:
+    uses: ./.github/workflows/sonarqube.yml
+    secrets:
+      sonar_token: ${{ secrets.sonar_token }}
 
   pytest:
     name: pytest
