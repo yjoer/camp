@@ -15,6 +15,7 @@ import {
 	ThresholdsConfigBuilder,
 	TimeSettingsBuilder,
 	TransformationBuilder,
+	VariableRefresh,
 } from '@grafana/grafana-foundation-sdk/dashboardv2';
 import { QueryV2Builder as PrometheusQueryBuilder, PromQueryFormat } from '@grafana/grafana-foundation-sdk/prometheus';
 import { VisualizationV2Builder as StatBuilder } from '@grafana/grafana-foundation-sdk/stat';
@@ -125,6 +126,7 @@ function dashboard(): DashboardBuilder {
 		.row(
 			row('Queries')
 			.collapse(false)
+			.variables([q_database_variable()])
 			.layout(
 				autoGrid()
 				.maxColumnCount(2)
@@ -136,6 +138,7 @@ function dashboard(): DashboardBuilder {
 		.row(
 			row('Prepared Statements')
 			.collapse(false)
+			.variables([ps_database_variable()])
 			.layout(
 				autoGrid()
 				.maxColumnCount(2)
@@ -537,6 +540,19 @@ function network_traffic(): PanelBuilder {
 	);
 }
 
+function q_database_variable(): QueryVariableBuilder {
+	return new QueryVariableBuilder('database')
+	.label('database')
+	.query(
+		new PrometheusQueryVariableBuilder()
+		.datasource({ name: '$datasource' })
+		.query("label_values(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}, database)"),
+	)
+	.refresh(VariableRefresh.OnTimeRangeChanged)
+	.multi(false)
+	.includeAll(true);
+}
+
 function query_transaction_rates(): PanelBuilder {
 	return new PanelBuilder()
 	.title('Query / Transaction Rates')
@@ -547,7 +563,7 @@ function query_transaction_rates(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr("sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}[$__rate_interval]))")
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))")
 				.legendFormat('Queries'),
 			),
 		)
@@ -555,7 +571,7 @@ function query_transaction_rates(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr("sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))")
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))")
 				.legendFormat('Transactions'),
 			),
 		),
@@ -575,12 +591,12 @@ function query_transaction_rates(): PanelBuilder {
 }
 
 function avg_query_duration(): PanelBuilder {
-	const x1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance'}[$__rate_interval]))";
-	const y1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}[$__rate_interval]))";
+	const x1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
+	const y1 = "sum by (instance) (rate(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
 	const query_q = `(${x1} / ${y1} unless ${y1} == 0) or on (instance) ${y1} * 0`;
 
-	const x2 = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance'}[$__rate_interval]))";
-	const y2 = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))";
+	const x2 = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
+	const y2 = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
 	const query_t = `(${x2} / ${y2} unless ${y2} == 0) or on (instance) ${y2} * 0`;
 
 	return new PanelBuilder()
@@ -620,8 +636,8 @@ function avg_query_duration(): PanelBuilder {
 }
 
 function execution_share(): PanelBuilder {
-	const x = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance'}[$__rate_interval]))";
-	const y = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance'}[$__rate_interval]))";
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_queries_duration_seconds_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_server_in_transaction_seconds_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
 	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
 	const query_idle = `((${y} - ${x}) / ${y} unless ${y} == 0)`;
 
@@ -662,6 +678,19 @@ function execution_share(): PanelBuilder {
 	);
 }
 
+function ps_database_variable(): QueryVariableBuilder {
+	return new QueryVariableBuilder('database')
+	.label('database')
+	.query(
+		new PrometheusQueryVariableBuilder()
+		.datasource({ name: '$datasource' })
+		.query("label_values(pgbouncer_stats_totals_queries_pooled_total{instance=~'$instance'}, database)"),
+	)
+	.refresh(VariableRefresh.OnTimeRangeChanged)
+	.multi(false)
+	.includeAll(true);
+}
+
 function parse_bind_rates(): PanelBuilder {
 	return new PanelBuilder()
 	.title('Parse / Bind Rates')
@@ -672,7 +701,7 @@ function parse_bind_rates(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr("sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))")
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))")
 				.legendFormat('Client Parses'),
 			),
 		)
@@ -680,7 +709,7 @@ function parse_bind_rates(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr("sum by (instance) (rate(pgbouncer_stats_totals_server_parses_total{instance=~'$instance'}[$__rate_interval]))")
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_server_parses_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))")
 				.legendFormat('Server Parses'),
 			),
 		)
@@ -688,7 +717,7 @@ function parse_bind_rates(): PanelBuilder {
 			new TargetBuilder().query(
 				new PrometheusQueryBuilder()
 				.datasource({ name: '$datasource' })
-				.expr("sum by (instance) (rate(pgbouncer_stats_totals_binds_total{instance=~'$instance'}[$__rate_interval]))")
+				.expr("sum by (instance) (rate(pgbouncer_stats_totals_binds_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))")
 				.legendFormat('Binds'),
 			),
 		),
@@ -708,8 +737,8 @@ function parse_bind_rates(): PanelBuilder {
 }
 
 function parse_forwarding_ratio(): PanelBuilder {
-	const x = "sum by (instance) (rate(pgbouncer_stats_totals_server_parses_total{instance=~'$instance'}[$__rate_interval]))";
-	const y = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))";
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_server_parses_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
 	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
 
 	return new PanelBuilder()
@@ -739,8 +768,8 @@ function parse_forwarding_ratio(): PanelBuilder {
 }
 
 function parses_per_transaction(): PanelBuilder {
-	const x = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))";
-	const y = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance'}[$__rate_interval]))";
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_sql_transactions_pooled_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
 	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
 
 	return new PanelBuilder()
@@ -771,8 +800,8 @@ function parses_per_transaction(): PanelBuilder {
 }
 
 function binds_per_parse(): PanelBuilder {
-	const x = "sum by (instance) (rate(pgbouncer_stats_totals_binds_total{instance=~'$instance'}[$__rate_interval]))";
-	const y = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance'}[$__rate_interval]))";
+	const x = "sum by (instance) (rate(pgbouncer_stats_totals_binds_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
+	const y = "sum by (instance) (rate(pgbouncer_stats_totals_client_parses_total{instance=~'$instance',database=~'$database'}[$__rate_interval]))";
 	const query = `(${x} / ${y} unless ${y} == 0) or on (instance) ${y} * 0`;
 
 	return new PanelBuilder()
