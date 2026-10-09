@@ -26,10 +26,12 @@ export const prettier_config = {
 			printWidth: 120,
 		},
 	}, {
-		files: 'yarn.lock',
+		files: 'pnpm-lock.yaml',
 		options: {
+			printWidth: 200,
 			useTabs: false,
-			singleQuote: false,
+			singleQuote: true,
+			bracketSpacing: false,
 			parser: 'yaml',
 		},
 	}],

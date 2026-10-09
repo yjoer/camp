@@ -1,2 +1,2 @@
 [tasks."build:vercel"]
-run = "yarn storybook build --output-dir .vercel/output/static"
+run = "pnpm storybook build --output-dir .vercel/output/static"

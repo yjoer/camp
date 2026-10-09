@@ -26,8 +26,5 @@
 		"webpack": "5.111.1",
 		"webpack-cli": "7.2.3",
 		"webpack-merge": "6.0.1"
-	},
-	"dependenciesMeta": {
-		"@camp-org/webpack": {}
 	}
 }

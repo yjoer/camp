@@ -27,7 +27,6 @@ target/
 .classpath
 .env
 .project
-.yarn/install-state.gz
 next-env.d.ts
 pixi.lock
 pubspec.lock

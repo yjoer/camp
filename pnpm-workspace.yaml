@@ -1,6 +1,10 @@
+minimumReleaseAge: 4320
+nodeLinker: hoisted
+autoInstallPeers: false
+
 packages:
-  - packages/*
   - examples/elasticsearch/*
+  - examples/grafana/*
   - examples/hatchet/*
   - examples/http/*
   - examples/node/*
@@ -9,22 +13,21 @@ packages:
   - examples/temporal/*
   - examples/typescript/*
   - examples/webpack/*
+  - packages/*
   - stories
 
 patchedDependencies:
   vite-plugin-solid@2.11.11: patches/vite-plugin-solid@2.11.11.patch
 
-publicHoistPattern:
-  - '*commitlint*'
-  - '*eslint*'
-  - '*oxlint*'
-  - '*postcss*'
-  - '*prettier*'
-  - '*stylelint*'
-  - '*tailwind*'
-  - lint-staged
-  - sort-package-json
+minimumReleaseAgeExclude:
+  - '@voidzero-dev/vite-plus-*'
+  - vite-plus@1.1.0
 
-nodeLinker: 'hoisted'
-
-dangerouslyAllowAllBuilds: true
+allowBuilds:
+  '@hatchet-dev/typescript-sdk': false
+  '@swc/core': false
+  '@temporalio/core-bridge': false
+  bcrypt: false
+  esbuild: false
+  protobufjs: false
+  unrs-resolver: false

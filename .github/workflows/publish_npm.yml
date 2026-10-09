@@ -28,15 +28,13 @@ jobs:
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 24
-          cache: yarn
+          cache: pnpm
       - name: Install Dependencies
         run: |
           ROOT_PACKAGE_NAME=$(jq -r ".name" "${{ github.workspace }}/package.json")
           PACKAGE_NAME=$(jq -r ".name" package.json)
-          yarn workspaces focus $ROOT_PACKAGE_NAME $PACKAGE_NAME
+          pnpm install --frozen-lockfile --filter "${ROOT_PACKAGE_NAME}..." --filter "${PACKAGE_NAME}..."
       - name: Build Project Artifacts
-        run: yarn build
+        run: pnpm run build
       - name: Publish
-        run: yarn npm publish --provenance --access public --staged
-        env:
-          YARN_NPM_PUBLISH_REGISTRY: https://registry.npmjs.org
+        run: pnpm stage publish --access public --no-git-checks --provenance

@@ -3,7 +3,7 @@ FROM node:23-slim
 WORKDIR /app
 COPY . .
 
-RUN corepack enable && yarn set version stable
-RUN yarn workspaces focus --production
+RUN corepack enable
+RUN pnpm install --prod
 
-CMD ["yarn", "start:worker"]
+CMD ["pnpm", "run", "start:worker"]

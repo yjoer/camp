@@ -23,12 +23,12 @@ jobs:
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 24
-          cache: yarn
+          cache: pnpm
       - name: Install Dependencies
         run: |
-          ROOT_PACKAGE_NAME=$(jq -r ".name" "${{ github.workspace }}/package.json")
+          ROOT_PACKAGE_NAME=$(jq -r ".name" package.json)
           PACKAGE_NAME=$(jq -r ".name" ${{ github.event.inputs.package }}/package.json)
-          yarn workspaces focus $ROOT_PACKAGE_NAME $PACKAGE_NAME
+          pnpm install --frozen-lockfile --filter "${ROOT_PACKAGE_NAME}..." --filter "${PACKAGE_NAME}..."
       - name: Publish to Chromatic
         uses: chromaui/action@f191a0224b10e1a38b2091cefb7b7a2337009116
         with:
