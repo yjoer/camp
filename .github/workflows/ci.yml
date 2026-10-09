@@ -10,29 +10,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check-commit-msg:
-    uses: ./.github/workflows/check-commit-msg.yml
+  check_commit_msg:
+    uses: ./.github/workflows/check_commit_msg.yml
 
-  check-cpp:
-    uses: ./.github/workflows/check-cpp.yml
+  check_cpp:
+    uses: ./.github/workflows/check_cpp.yml
 
-  check-java:
-    uses: ./.github/workflows/check-java.yml
+  check_java:
+    uses: ./.github/workflows/check_java.yml
 
-  check-kt:
-    uses: ./.github/workflows/check-kt.yml
+  check_kt:
+    uses: ./.github/workflows/check_kt.yml
 
-  check-js:
-    uses: ./.github/workflows/check-js.yml
+  check_js:
+    uses: ./.github/workflows/check_js.yml
 
-  check-misc:
-    uses: ./.github/workflows/check-misc.yml
+  check_misc:
+    uses: ./.github/workflows/check_misc.yml
 
-  check-py:
-    uses: ./.github/workflows/check-py.yml
+  check_py:
+    uses: ./.github/workflows/check_py.yml
 
-  check-rs:
-    uses: ./.github/workflows/check-rs.yml
+  check_rs:
+    uses: ./.github/workflows/check_rs.yml
 
   sonarqube:
     uses: ./.github/workflows/sonarqube.yml
@@ -40,7 +40,6 @@ jobs:
       sonar_token: ${{ secrets.sonar_token }}
 
   pytest:
-    name: pytest
     runs-on: ubuntu-latest
     env:
       KERAS_BACKEND: torch

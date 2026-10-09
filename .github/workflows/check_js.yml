@@ -3,7 +3,6 @@ on:
 
 jobs:
   oxlint:
-    name: oxlint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

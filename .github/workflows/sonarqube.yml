@@ -5,8 +5,7 @@ on:
         required: true
 
 jobs:
-  build:
-    name: sonarqube
+  sonarqube:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

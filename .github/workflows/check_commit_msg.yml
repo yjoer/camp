@@ -2,12 +2,13 @@ on:
   workflow_call:
 
 jobs:
-  prettier:
-    name: prettier
+  commitlint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: $(( ${{ github.event.pull_request.commits }} + 1 ))
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Node.js
@@ -17,5 +18,9 @@ jobs:
           cache: yarn
       - name: Install Dependencies
         run: yarn workspaces focus
-      - name: Format
-        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.java"
+      - name: Lint Push
+        if: github.event_name == 'push'
+        run: npx --no -- commitlint --last --verbose
+      - name: Lint PR
+        if: github.event_name == 'pull_request'
+        run: npx --no -- commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
