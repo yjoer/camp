@@ -7,7 +7,7 @@
 		"pidtree": "1.0.0"
 	},
 	"devDependencies": {
-		"@types/k6": "2.2.1",
+		"@types/k6": "2.3.0",
 		"@types/pg": "8.23.1"
 	}
 }

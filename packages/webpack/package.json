@@ -1,6 +1,6 @@
 {
 	"name": "@camp-org/webpack",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -19,7 +19,7 @@
 		"webpack-node-externals": "3.0.0"
 	},
 	"devDependencies": {
-		"@rspack/core": "2.2.7",
+		"@rspack/core": "2.2.8",
 		"@types/webpack-node-externals": "3.0.4",
 		"typescript": "6.0.3",
 		"webpack": "5.111.1"
