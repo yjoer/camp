@@ -28,7 +28,7 @@
 	"devDependencies": {
 		"@camp-org/config": "workspace:*",
 		"cross-env": "10.1.0",
-		"vite-plus": "1.0.0"
+		"vite-plus": "1.1.0"
 	},
 	"dependenciesMeta": {
 		"@camp-org/config": {}
