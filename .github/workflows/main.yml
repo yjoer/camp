@@ -1,0 +1,12 @@
+name: main
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sonarqube:
+    uses: ./.github/workflows/sonarqube.yml
+    secrets:
+      sonar_token: ${{ secrets.sonar_token }}
