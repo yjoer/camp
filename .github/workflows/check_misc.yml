@@ -3,7 +3,6 @@ on:
 
 jobs:
   prettier:
-    name: prettier
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,7 +20,6 @@ jobs:
         run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,jsonc,md,mdx,xml,fxml,yml,yaml}" yarn.lock
 
   tombi:
-    name: tombi
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

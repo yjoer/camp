@@ -2,8 +2,7 @@ on:
   workflow_call:
 
 jobs:
-  cargo-fmt:
-    name: cargo fmt
+  cargo_fmt:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

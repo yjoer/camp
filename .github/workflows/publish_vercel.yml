@@ -1,4 +1,4 @@
-name: Publish Vercel
+name: publish_vercel
 
 on:
   workflow_dispatch:
@@ -19,7 +19,8 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     environment: ${{ github.event.inputs.package }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Vite Plus
@@ -31,7 +32,7 @@ jobs:
       - name: Setup Mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@63.1.0 --ignore-scripts
       - name: Install Dependencies
         working-directory: ${{ github.event.inputs.package }}
         run: |
@@ -43,4 +44,6 @@ jobs:
         run: mise run build:vercel
       - name: Deploy Project Artifacts to Vercel
         working-directory: ${{ github.event.inputs.package }}
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

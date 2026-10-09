@@ -1,4 +1,4 @@
-name: Publish Npm
+name: publish_chromatic
 
 on:
   workflow_dispatch:
@@ -7,20 +7,16 @@ on:
         description: Package to publish
         type: choice
         options:
-          - packages/config
-          - packages/webpack
+          - stories
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    defaults:
-      run:
-        working-directory: ${{ github.event.inputs.package }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
       - name: Enable Corepack
         run: corepack enable
       - name: Setup Node.js
@@ -31,11 +27,11 @@ jobs:
       - name: Install Dependencies
         run: |
           ROOT_PACKAGE_NAME=$(jq -r ".name" "${{ github.workspace }}/package.json")
-          PACKAGE_NAME=$(jq -r ".name" package.json)
+          PACKAGE_NAME=$(jq -r ".name" ${{ github.event.inputs.package }}/package.json)
           yarn workspaces focus $ROOT_PACKAGE_NAME $PACKAGE_NAME
-      - name: Build Project Artifacts
-        run: yarn build
-      - name: Publish
-        run: yarn npm publish --provenance --access public --staged
-        env:
-          YARN_NPM_PUBLISH_REGISTRY: https://registry.npmjs.org
+      - name: Publish to Chromatic
+        uses: chromaui/action@f191a0224b10e1a38b2091cefb7b7a2337009116
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: ${{ github.event.inputs.package }}
+          buildScriptName: build
