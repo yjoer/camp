@@ -12,9 +12,9 @@ ENV VITE_ELASTICSEARCH_API_KEY=$VITE_ELASTICSEARCH_API_KEY
 ENV VITE_ELASTICSEARCH_INDEX=$VITE_ELASTICSEARCH_INDEX
 
 RUN corepack enable
-RUN yarn install
+RUN pnpm install
 
-RUN yarn build
+RUN pnpm run build
 
 FROM node:24-slim
 

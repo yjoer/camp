@@ -13,11 +13,13 @@ jobs:
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: 24
-          cache: yarn
+          cache: pnpm
       - name: Install Dependencies
-        run: yarn workspaces focus
+        run: |
+          ROOT_PACKAGE_NAME=$(jq -r ".name" package.json)
+          pnpm install --frozen-lockfile --filter "${ROOT_PACKAGE_NAME}..."
       - name: Format
-        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,jsonc,md,mdx,xml,fxml,yml,yaml}" yarn.lock
+        run: npx --no -- prettier --ignore-path .gitignore --check "**/*.{css,scss,html,json,jsonc,md,mdx,xml,fxml,yml,yaml}" pnpm-lock.yaml
 
   tombi:
     runs-on: ubuntu-latest

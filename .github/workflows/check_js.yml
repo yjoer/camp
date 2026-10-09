@@ -22,7 +22,7 @@ jobs:
         #   else
         #     npm i --workspaces false --include-workspace-root true
         #   fi
-        run: yarn install --immutable
+        run: pnpm install --frozen-lockfile
       - name: Generate Types
         run: vp run -r gen-types
       - name: Oxlint

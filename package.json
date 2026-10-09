@@ -1,37 +1,15 @@
 {
 	"name": "camp",
 	"type": "module",
-	"workspaces": {
-		"packages": [
-			"examples/elasticsearch/*",
-			"examples/grafana/*",
-			"examples/hatchet/*",
-			"examples/http/*",
-			"examples/node/*",
-			"examples/react-server/*",
-			"examples/tanstack/*",
-			"examples/temporal/*",
-			"examples/typescript/*",
-			"examples/webpack/*",
-			"packages/*",
-			"stories"
-		]
-	},
 	"scripts": {
 		"jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab",
 		"jupyverse": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyverse --set frontend.collaborative=true --set kernels.require_yjs=true --set jupyterlab.server_side_execution=true"
 	},
 	"browserslist": "defaults and not op_mini all",
-	"resolutions": {
-		"vite-plugin-solid": "patch:vite-plugin-solid@2.11.11#./patches/vite-plugin-solid@2.11.11.patch"
-	},
 	"devDependencies": {
 		"@camp-org/config": "workspace:*",
 		"cross-env": "10.1.0",
 		"vite-plus": "1.1.0"
 	},
-	"dependenciesMeta": {
-		"@camp-org/config": {}
-	},
-	"packageManager": "yarn@4.18.1"
+	"packageManager": "pnpm@12.11.1"
 }

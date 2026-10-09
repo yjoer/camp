@@ -488,10 +488,10 @@ const react_server_vite: Server = {
 		{ path: '/', method: 'GET', expected_regex: /Hello, World!/ },
 	],
 	async build() {
-		spawnSync('yarn', ['build'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
+		spawnSync('pnpm', ['run', 'build'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
 	},
 	async setup() {
-		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
+		return _spawn('pnpm', ['run', 'start'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
 		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
@@ -509,10 +509,10 @@ const react_server_vite_stream: Server = {
 		{ path: '/', method: 'GET', expected_regex: /Hello, World!/ },
 	],
 	async build() {
-		spawnSync('yarn', ['build'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
+		spawnSync('pnpm', ['run', 'build'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
 	},
 	async setup() {
-		return _spawn('yarn', ['start:stream'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
+		return _spawn('pnpm', ['run', 'start:stream'], { cwd: path.join(react_server_dir, 'vite'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
 		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
@@ -530,10 +530,10 @@ const react_server_next_pages: Server = {
 		{ path: '/', method: 'GET', expected_regex: /Hello, World!/ },
 	],
 	async build() {
-		spawnSync('yarn', ['build'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
+		spawnSync('pnpm', ['run', 'build'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
 	},
 	async setup() {
-		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
+		return _spawn('pnpm', ['run', 'start'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
 		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
@@ -551,10 +551,10 @@ const react_server_next_app: Server = {
 		{ path: '/app', method: 'GET', expected_regex: /Hello, World!/ },
 	],
 	async build() {
-		spawnSync('yarn', ['build'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
+		spawnSync('pnpm', ['run', 'build'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
 	},
 	async setup() {
-		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
+		return _spawn('pnpm', ['run', 'start'], { cwd: path.join(react_server_dir, 'next'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
 		return _measure_k6(endpoint).metrics.http_reqs.values.rate;
@@ -572,10 +572,10 @@ const react_server_tanstack_start: Server = {
 		{ path: '/', method: 'GET', expected_regex: /Hello, World!/ },
 	],
 	async build() {
-		spawnSync('yarn', ['build'], { cwd: path.join(react_server_dir, 'tanstack-start'), stdio: 'inherit' });
+		spawnSync('pnpm', ['run', 'build'], { cwd: path.join(react_server_dir, 'tanstack-start'), stdio: 'inherit' });
 	},
 	async setup() {
-		return _spawn('yarn', ['start'], { cwd: path.join(react_server_dir, 'tanstack-start'), stdio: 'inherit' });
+		return _spawn('pnpm', ['run', 'start'], { cwd: path.join(react_server_dir, 'tanstack-start'), stdio: 'inherit' });
 	},
 	async measure(endpoint: Endpoint) {
 		return _measure_k6(endpoint).metrics.http_reqs.values.rate;

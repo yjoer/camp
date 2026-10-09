@@ -21,7 +21,9 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Install Dependencies
-        run: yarn workspaces focus
+        run: |
+          PACKAGE_NAME=$(jq -r ".name" package.json)
+          pnpm install --frozen-lockfile --filter "${PACKAGE_NAME}..."
         working-directory: ${{ github.event.inputs.package }}
       - run: npx jsr publish
         working-directory: ${{ github.event.inputs.package }}

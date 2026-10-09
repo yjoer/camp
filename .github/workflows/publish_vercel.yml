@@ -34,11 +34,10 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@63.1.0 --ignore-scripts
       - name: Install Dependencies
-        working-directory: ${{ github.event.inputs.package }}
         run: |
-          ROOT_PACKAGE_NAME=$(jq -r ".name" "${{ github.workspace }}/package.json")
-          PACKAGE_NAME=$(jq -r ".name" package.json)
-          yarn workspaces focus $ROOT_PACKAGE_NAME $PACKAGE_NAME
+          ROOT_PACKAGE_NAME=$(jq -r ".name" package.json)
+          PACKAGE_NAME=$(jq -r ".name" ${{ github.event.inputs.package }}/package.json)
+          pnpm install --frozen-lockfile --filter "${ROOT_PACKAGE_NAME}..." --filter "${PACKAGE_NAME}..."
       - name: Build Project Artifacts
         working-directory: ${{ github.event.inputs.package }}
         run: mise run build:vercel
