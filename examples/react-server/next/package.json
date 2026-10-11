@@ -6,12 +6,12 @@
 		"start": "next start"
 	},
 	"dependencies": {
-		"next": "16.3.8",
-		"react": "19.3.0",
-		"react-dom": "19.3.0"
+		"next": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@types/react": "19.3.0",
-		"@types/react-dom": "19.3.0"
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:"
 	}
 }

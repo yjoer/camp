@@ -9,29 +9,29 @@
 		"start": "node .output/server/index.mjs"
 	},
 	"dependencies": {
-		"@fastify/cookie": "11.1.2",
-		"@fastify/cors": "11.3.0",
-		"@tanstack/react-query": "5.104.1",
-		"@tanstack/react-router": "1.170.41",
-		"@tanstack/react-router-ssr-query": "1.167.3",
-		"@tanstack/react-start": "1.168.60",
-		"@tanstack/virtual-file-routes": "1.162.0",
-		"@trpc/client": "11.19.0",
-		"@trpc/server": "11.19.0",
-		"@trpc/tanstack-react-query": "11.19.0",
-		"fastify": "5.12.5",
-		"js-cookie": "3.0.8",
-		"react": "19.3.0",
-		"react-dom": "19.3.0",
-		"react-error-boundary": "6.1.6"
+		"@fastify/cookie": "catalog:",
+		"@fastify/cors": "catalog:",
+		"@tanstack/react-query": "catalog:",
+		"@tanstack/react-router": "catalog:",
+		"@tanstack/react-router-ssr-query": "catalog:",
+		"@tanstack/react-start": "catalog:",
+		"@tanstack/virtual-file-routes": "catalog:",
+		"@trpc/client": "catalog:",
+		"@trpc/server": "catalog:",
+		"@trpc/tanstack-react-query": "catalog:",
+		"fastify": "catalog:",
+		"js-cookie": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"react-error-boundary": "catalog:"
 	},
 	"devDependencies": {
-		"@tailwindcss/vite": "4.3.3",
-		"@types/js-cookie": "3.0.6",
-		"@types/react": "19.3.0",
-		"@types/react-dom": "19.3.0",
-		"@vitejs/plugin-react": "6.1.2",
-		"nitro": "3.0.260903-beta",
-		"tailwindcss": "4.3.3"
+		"@tailwindcss/vite": "catalog:",
+		"@types/js-cookie": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitejs/plugin-react": "catalog:",
+		"nitro": "catalog:",
+		"tailwindcss": "catalog:"
 	}
 }

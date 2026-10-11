@@ -2,12 +2,12 @@
 	"name": "@camp/examples-http-bench",
 	"type": "module",
 	"dependencies": {
-		"commander": "15.0.0",
-		"pg": "8.23.1",
-		"pidtree": "1.0.0"
+		"commander": "catalog:",
+		"pg": "catalog:",
+		"pidtree": "catalog:"
 	},
 	"devDependencies": {
-		"@types/k6": "2.3.0",
-		"@types/pg": "8.23.1"
+		"@types/k6": "catalog:",
+		"@types/pg": "catalog:"
 	}
 }

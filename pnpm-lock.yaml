@@ -159,6 +159,396 @@ settings:
   autoInstallPeers: false
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@commitlint/cli':
+      specifier: 21.2.3
+      version: 21.2.3
+    '@commitlint/config-conventional':
+      specifier: 21.2.3
+      version: 21.2.3
+    '@elastic/elasticsearch':
+      specifier: 9.5.1
+      version: 9.5.1
+    '@elastic/react-search-ui':
+      specifier: 1.24.2
+      version: 1.24.2
+    '@elastic/react-search-ui-views':
+      specifier: 1.24.2
+      version: 1.24.2
+    '@elastic/search-ui':
+      specifier: 1.24.2
+      version: 1.24.2
+    '@elastic/search-ui-elasticsearch-connector':
+      specifier: 1.24.2
+      version: 1.24.2
+    '@faker-js/faker':
+      specifier: 10.6.0
+      version: 10.6.0
+    '@fastify/cookie':
+      specifier: 11.1.2
+      version: 11.1.2
+    '@fastify/cors':
+      specifier: 11.3.0
+      version: 11.3.0
+    '@fontsource-variable/inter':
+      specifier: 5.3.0
+      version: 5.3.0
+    '@fontsource-variable/noto-sans-sc':
+      specifier: 5.3.0
+      version: 5.3.0
+    '@fontsource-variable/roboto':
+      specifier: 5.3.0
+      version: 5.3.0
+    '@grafana/grafana-foundation-sdk':
+      specifier: 0.0.20
+      version: 0.0.20
+    '@hatchet-dev/typescript-sdk':
+      specifier: 1.19.1
+      version: 1.19.1
+    '@orpc/client':
+      specifier: 1.15.4
+      version: 1.15.4
+    '@orpc/openapi':
+      specifier: 1.15.4
+      version: 1.15.4
+    '@orpc/server':
+      specifier: 1.15.4
+      version: 1.15.4
+    '@orpc/standard-server-peer':
+      specifier: 1.15.4
+      version: 1.15.4
+    '@prettier/plugin-xml':
+      specifier: 3.4.2
+      version: 3.4.2
+    '@reduxjs/toolkit':
+      specifier: 2.13.0
+      version: 2.13.0
+    '@rolldown/plugin-babel':
+      specifier: 0.2.4
+      version: 0.2.4
+    '@rspack/cli':
+      specifier: 2.2.8
+      version: 2.2.8
+    '@rspack/core':
+      specifier: 2.2.8
+      version: 2.2.8
+    '@storybook/addon-docs':
+      specifier: 10.6.1
+      version: 10.6.1
+    '@storybook/addon-vitest':
+      specifier: 10.6.1
+      version: 10.6.1
+    '@storybook/react-vite':
+      specifier: 10.6.1
+      version: 10.6.1
+    '@stylexjs/babel-plugin':
+      specifier: 0.19.1
+      version: 0.19.1
+    '@stylexjs/eslint-plugin':
+      specifier: 0.19.1
+      version: 0.19.1
+    '@stylexjs/postcss-plugin':
+      specifier: 0.19.1
+      version: 0.19.1
+    '@stylexjs/stylex':
+      specifier: 0.19.1
+      version: 0.19.1
+    '@stylistic/eslint-plugin':
+      specifier: 5.10.0
+      version: 5.10.0
+    '@tailwindcss/vite':
+      specifier: 4.3.3
+      version: 4.3.3
+    '@tanstack/eslint-plugin-query':
+      specifier: 5.104.1
+      version: 5.104.1
+    '@tanstack/eslint-plugin-router':
+      specifier: 1.162.0
+      version: 1.162.0
+    '@tanstack/react-query':
+      specifier: 5.104.1
+      version: 5.104.1
+    '@tanstack/react-router':
+      specifier: 1.170.41
+      version: 1.170.41
+    '@tanstack/react-router-ssr-query':
+      specifier: 1.167.3
+      version: 1.167.3
+    '@tanstack/react-start':
+      specifier: 1.168.60
+      version: 1.168.60
+    '@tanstack/react-virtual':
+      specifier: 3.14.13
+      version: 3.14.13
+    '@tanstack/router-generator':
+      specifier: 1.167.40
+      version: 1.167.40
+    '@tanstack/solid-router':
+      specifier: 1.170.38
+      version: 1.170.38
+    '@tanstack/solid-start':
+      specifier: 1.168.57
+      version: 1.168.57
+    '@tanstack/virtual-file-routes':
+      specifier: 1.162.0
+      version: 1.162.0
+    '@temporalio/activity':
+      specifier: 1.11.8
+      version: 1.11.8
+    '@temporalio/client':
+      specifier: 1.11.8
+      version: 1.11.8
+    '@temporalio/worker':
+      specifier: 1.11.8
+      version: 1.11.8
+    '@temporalio/workflow':
+      specifier: 1.11.8
+      version: 1.11.8
+    '@trpc/client':
+      specifier: 11.19.0
+      version: 11.19.0
+    '@trpc/server':
+      specifier: 11.19.0
+      version: 11.19.0
+    '@trpc/tanstack-react-query':
+      specifier: 11.19.0
+      version: 11.19.0
+    '@types/asciichart':
+      specifier: 1.5.8
+      version: 1.5.8
+    '@types/bcrypt':
+      specifier: 6.0.0
+      version: 6.0.0
+    '@types/express':
+      specifier: 5.0.6
+      version: 5.0.6
+    '@types/js-cookie':
+      specifier: 3.0.6
+      version: 3.0.6
+    '@types/k6':
+      specifier: 2.3.0
+      version: 2.3.0
+    '@types/node':
+      specifier: 26.6.4
+      version: 26.6.4
+    '@types/pg':
+      specifier: 8.23.1
+      version: 8.23.1
+    '@types/react':
+      specifier: 19.3.0
+      version: 19.3.0
+    '@types/react-dom':
+      specifier: 19.3.0
+      version: 19.3.0
+    '@types/webpack-node-externals':
+      specifier: 3.0.4
+      version: 3.0.4
+    '@vercel/webpack-asset-relocator-loader':
+      specifier: 1.11.0
+      version: 1.11.0
+    '@vitejs/plugin-react':
+      specifier: 6.1.2
+      version: 6.1.2
+    '@vitest/browser-playwright':
+      specifier: 5.0.3
+      version: 5.0.3
+    '@vitest/coverage-v8':
+      specifier: 5.0.3
+      version: 5.0.3
+    asciichart:
+      specifier: 1.5.25
+      version: 1.5.25
+    autoprefixer:
+      specifier: 10.6.1
+      version: 10.6.1
+    bcrypt:
+      specifier: 6.0.0
+      version: 6.0.0
+    canvas-hypertxt:
+      specifier: 1.0.3
+      version: 1.0.3
+    commander:
+      specifier: 15.0.0
+      version: 15.0.0
+    cross-env:
+      specifier: 10.1.0
+      version: 10.1.0
+    eslint:
+      specifier: 10.12.0
+      version: 10.12.0
+    eslint-config-flat-gitignore:
+      specifier: 2.4.0
+      version: 2.4.0
+    eslint-import-resolver-typescript:
+      specifier: 4.4.5
+      version: 4.4.5
+    eslint-plugin-better-tailwindcss:
+      specifier: 4.9.0
+      version: 4.9.0
+    eslint-plugin-compat:
+      specifier: 7.0.2
+      version: 7.0.2
+    eslint-plugin-import-x:
+      specifier: 4.17.1
+      version: 4.17.1
+    eslint-plugin-perfectionist:
+      specifier: 5.12.1
+      version: 5.12.1
+    eslint-plugin-react:
+      specifier: 7.37.5
+      version: 7.37.5
+    eslint-plugin-react-hooks:
+      specifier: 7.1.1
+      version: 7.1.1
+    eslint-plugin-react-you-might-not-need-an-effect:
+      specifier: 1.0.2
+      version: 1.0.2
+    eslint-plugin-unicorn:
+      specifier: 64.0.0
+      version: 64.0.0
+    express:
+      specifier: 5.2.1
+      version: 5.2.1
+    fastify:
+      specifier: 5.12.5
+      version: 5.12.5
+    fastify-type-provider-zod:
+      specifier: 7.0.0
+      version: 7.0.0
+    globals:
+      specifier: 17.13.0
+      version: 17.13.0
+    h3:
+      specifier: 2.0.1-rc.20
+      version: 2.0.1-rc.20
+    jiti:
+      specifier: 2.7.0
+      version: 2.7.0
+    js-cookie:
+      specifier: 3.0.8
+      version: 3.0.8
+    lint-staged:
+      specifier: 17.6.0
+      version: 17.6.0
+    next:
+      specifier: 16.3.8
+      version: 16.3.8
+    nitro:
+      specifier: 3.0.260903-beta
+      version: 3.0.260903-beta
+    pg:
+      specifier: 8.23.1
+      version: 8.23.1
+    pidtree:
+      specifier: 1.0.0
+      version: 1.0.0
+    playwright:
+      specifier: 1.63.0
+      version: 1.63.0
+    postcss-load-config:
+      specifier: 6.0.1
+      version: 6.0.1
+    postcss-scss:
+      specifier: 4.0.9
+      version: 4.0.9
+    postcss-styled-syntax:
+      specifier: 0.7.3
+      version: 0.7.3
+    prettier:
+      specifier: 3.9.9
+      version: 3.9.9
+    prettier-plugin-java:
+      specifier: 2.11.0
+      version: 2.11.0
+    prettier-plugin-packagejson:
+      specifier: 3.0.2
+      version: 3.0.2
+    react:
+      specifier: 19.3.0
+      version: 19.3.0
+    react-dom:
+      specifier: 19.3.0
+      version: 19.3.0
+    react-error-boundary:
+      specifier: 6.1.6
+      version: 6.1.6
+    react-redux:
+      specifier: 9.3.0
+      version: 9.3.0
+    redux:
+      specifier: 5.0.1
+      version: 5.0.1
+    redux-thunk:
+      specifier: 3.1.0
+      version: 3.1.0
+    scheduler:
+      specifier: 0.28.0
+      version: 0.28.0
+    solid-js:
+      specifier: 1.9.15
+      version: 1.9.15
+    storybook:
+      specifier: 10.6.1
+      version: 10.6.1
+    stylelint:
+      specifier: 17.16.0
+      version: 17.16.0
+    stylelint-config-recess-order:
+      specifier: 7.8.0
+      version: 7.8.0
+    stylelint-config-standard:
+      specifier: 40.0.0
+      version: 40.0.0
+    stylelint-order:
+      specifier: 8.1.1
+      version: 8.1.1
+    tailwindcss:
+      specifier: 4.3.3
+      version: 4.3.3
+    ts-loader:
+      specifier: 9.6.2
+      version: 9.6.2
+    tsx:
+      specifier: 4.23.15
+      version: 4.23.15
+    typescript:
+      specifier: 6.0.3
+      version: 6.0.3
+    typescript-eslint:
+      specifier: 8.71.1
+      version: 8.71.1
+    use-context-selector:
+      specifier: 2.0.0
+      version: 2.0.0
+    uwrap:
+      specifier: 0.1.2
+      version: 0.1.2
+    vite-plugin-solid:
+      specifier: 2.11.11
+      version: 2.11.11
+    vite-plus:
+      specifier: 1.1.0
+      version: 1.1.0
+    webpack:
+      specifier: 5.111.1
+      version: 5.111.1
+    webpack-cli:
+      specifier: 7.2.3
+      version: 7.2.3
+    webpack-merge:
+      specifier: 6.0.1
+      version: 6.0.1
+    webpack-node-externals:
+      specifier: 3.0.0
+      version: 3.0.0
+    zod:
+      specifier: 4.6.5
+      version: 4.6.5
+    zustand:
+      specifier: 5.0.15
+      version: 5.0.15
+
 patchedDependencies:
   vite-plugin-solid@2.11.11: f6e447660752a67c4d2412ad1db869947f40458cbfdde640cd04c4a530d1d799
 
@@ -169,103 +559,103 @@ importers:
         specifier: workspace:*
         version: link:packages/config
       cross-env:
-        specifier: 10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
       vite-plus:
-        specifier: 1.1.0
+        specifier: 'catalog:'
         version: 1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1)
 
   examples/elasticsearch/search-ui:
     dependencies:
       '@elastic/react-search-ui':
-        specifier: 1.24.2
+        specifier: 'catalog:'
         version: 1.24.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@10.2.2)
       '@elastic/react-search-ui-views':
-        specifier: 1.24.2
+        specifier: 'catalog:'
         version: 1.24.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@10.2.2)
       '@elastic/search-ui':
-        specifier: 1.24.2
+        specifier: 'catalog:'
         version: 1.24.2
       '@elastic/search-ui-elasticsearch-connector':
-        specifier: 1.24.2
+        specifier: 'catalog:'
         version: 1.24.2(supports-color@10.2.2)
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
     devDependencies:
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
-        specifier: 6.1.2
+        specifier: 'catalog:'
         version: 6.1.2(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@7.29.7)(rolldown@1.2.9))
 
   examples/grafana/prometheus:
     dependencies:
       '@grafana/grafana-foundation-sdk':
-        specifier: 0.0.20
+        specifier: 'catalog:'
         version: 0.0.20
 
   examples/hatchet/typescript-connectors:
     dependencies:
       '@elastic/elasticsearch':
-        specifier: 9.5.1
+        specifier: 'catalog:'
         version: 9.5.1(apache-arrow@21.2.0)(supports-color@10.2.2)
       '@hatchet-dev/typescript-sdk':
-        specifier: 1.19.1
+        specifier: 'catalog:'
         version: 1.19.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
 
   examples/hatchet/typescript-simple:
     dependencies:
       '@hatchet-dev/typescript-sdk':
-        specifier: 1.19.1
+        specifier: 'catalog:'
         version: 1.19.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
 
   examples/http/_bench:
     dependencies:
       commander:
-        specifier: 15.0.0
+        specifier: 'catalog:'
         version: 15.0.0
       pg:
-        specifier: 8.23.1
+        specifier: 'catalog:'
         version: 8.23.1
       pidtree:
-        specifier: 1.0.0
+        specifier: 'catalog:'
         version: 1.0.0
     devDependencies:
       '@types/k6':
-        specifier: 2.3.0
+        specifier: 'catalog:'
         version: 2.3.0
       '@types/pg':
-        specifier: 8.23.1
+        specifier: 'catalog:'
         version: 8.23.1
 
   examples/http/express:
     dependencies:
       express:
-        specifier: 5.2.1
+        specifier: 'catalog:'
         version: 5.2.1(supports-color@10.2.2)
     devDependencies:
       '@types/express':
-        specifier: 5.0.6
+        specifier: 'catalog:'
         version: 5.0.6
 
   examples/http/fastify:
     dependencies:
       fastify:
-        specifier: 5.12.5
+        specifier: 'catalog:'
         version: 5.12.5
 
   examples/http/h-three:
     dependencies:
       h3:
-        specifier: 2.0.1-rc.20
+        specifier: 'catalog:'
         version: 2.0.1-rc.20(crossws@0.4.12(srvx@1.0.5))
 
   examples/http/node: {}
@@ -273,392 +663,392 @@ importers:
   examples/http/orpc:
     dependencies:
       '@orpc/openapi':
-        specifier: 1.15.4
+        specifier: 'catalog:'
         version: 1.15.4(@opentelemetry/api@1.9.1)(crossws@0.4.12(srvx@1.0.5))(fastify@5.12.5)(ws@8.21.3)
       '@orpc/server':
-        specifier: 1.15.4
+        specifier: 'catalog:'
         version: 1.15.4(@opentelemetry/api@1.9.1)(crossws@0.4.12(srvx@1.0.5))(fastify@5.12.5)(ws@8.21.3)
       fastify:
-        specifier: 5.12.5
+        specifier: 'catalog:'
         version: 5.12.5
       h3:
-        specifier: 2.0.1-rc.20
+        specifier: 'catalog:'
         version: 2.0.1-rc.20(crossws@0.4.12(srvx@1.0.5))
     devDependencies:
       '@types/node':
-        specifier: 26.6.4
+        specifier: 'catalog:'
         version: 26.6.4
 
   examples/http/trpc:
     dependencies:
       '@trpc/server':
-        specifier: 11.19.0
+        specifier: 'catalog:'
         version: 11.19.0(typescript@6.0.3)
       fastify:
-        specifier: 5.12.5
+        specifier: 'catalog:'
         version: 5.12.5
 
   examples/node/basics:
     dependencies:
       asciichart:
-        specifier: 1.5.25
+        specifier: 'catalog:'
         version: 1.5.25
     devDependencies:
       '@types/asciichart':
-        specifier: 1.5.8
+        specifier: 'catalog:'
         version: 1.5.8
       '@types/node':
-        specifier: 26.6.4
+        specifier: 'catalog:'
         version: 26.6.4
 
   examples/react-server/next:
     dependencies:
       next:
-        specifier: 16.3.8
+        specifier: 'catalog:'
         version: 16.3.8(@babel/core@7.29.7(supports-color@10.2.2))(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
     devDependencies:
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
 
   examples/react-server/tanstack-start:
     dependencies:
       '@tanstack/react-router':
-        specifier: 1.170.41
+        specifier: 'catalog:'
         version: 1.170.41(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/react-start':
-        specifier: 1.168.60
+        specifier: 'catalog:'
         version: 1.168.60(@rspack/core@2.2.8(@swc/helpers@0.5.23))(crossws@0.4.12(srvx@1.0.5))(esbuild@0.28.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rolldown@1.2.9)(supports-color@10.2.2)(vite-plugin-solid@2.11.11(patch_hash=f6e447660752a67c4d2412ad1db869947f40458cbfdde640cd04c4a530d1d799)(@testing-library/jest-dom@6.9.1)(solid-js@1.9.15)(supports-color@10.2.2))(webpack@5.111.1)
       '@tanstack/virtual-file-routes':
-        specifier: 1.162.0
+        specifier: 'catalog:'
         version: 1.162.0
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
     devDependencies:
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
-        specifier: 6.1.2
+        specifier: 'catalog:'
         version: 6.1.2(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@7.29.7)(rolldown@1.2.9))
       cross-env:
-        specifier: 10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
       nitro:
-        specifier: 3.0.260903-beta
+        specifier: 'catalog:'
         version: 3.0.260903-beta
 
   examples/react-server/vite:
     dependencies:
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
     devDependencies:
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
-        specifier: 6.1.2
+        specifier: 'catalog:'
         version: 6.1.2(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@7.29.7)(rolldown@1.2.9))
       cross-env:
-        specifier: 10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
 
   examples/tanstack/start:
     dependencies:
       '@faker-js/faker':
-        specifier: 10.6.0
+        specifier: 'catalog:'
         version: 10.6.0
       '@fontsource-variable/roboto':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@orpc/client':
-        specifier: 1.15.4
+        specifier: 'catalog:'
         version: 1.15.4(@opentelemetry/api@1.9.1)
       '@orpc/server':
-        specifier: 1.15.4
+        specifier: 'catalog:'
         version: 1.15.4(@opentelemetry/api@1.9.1)(crossws@0.4.12(srvx@1.0.5))(fastify@5.12.5)(ws@8.21.3)
       '@orpc/standard-server-peer':
-        specifier: 1.15.4
+        specifier: 'catalog:'
         version: 1.15.4(@opentelemetry/api@1.9.1)
       '@reduxjs/toolkit':
-        specifier: 2.13.0
+        specifier: 'catalog:'
         version: 2.13.0(react-redux@9.3.0(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)
       '@stylexjs/stylex':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1
       '@tanstack/react-router':
-        specifier: 1.170.41
+        specifier: 'catalog:'
         version: 1.170.41(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/react-start':
-        specifier: 1.168.60
+        specifier: 'catalog:'
         version: 1.168.60(@rspack/core@2.2.8(@swc/helpers@0.5.23))(crossws@0.4.12(srvx@1.0.5))(esbuild@0.28.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rolldown@1.2.9)(supports-color@10.2.2)(vite-plugin-solid@2.11.11(patch_hash=f6e447660752a67c4d2412ad1db869947f40458cbfdde640cd04c4a530d1d799)(@testing-library/jest-dom@6.9.1)(solid-js@1.9.15)(supports-color@10.2.2))(webpack@5.111.1)
       '@tanstack/react-virtual':
-        specifier: 3.14.13
+        specifier: 'catalog:'
         version: 3.14.13(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/virtual-file-routes':
-        specifier: 1.162.0
+        specifier: 'catalog:'
         version: 1.162.0
       canvas-hypertxt:
-        specifier: 1.0.3
+        specifier: 'catalog:'
         version: 1.0.3
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
       react-redux:
-        specifier: 9.3.0
+        specifier: 'catalog:'
         version: 9.3.0(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1)
       redux:
-        specifier: 5.0.1
+        specifier: 'catalog:'
         version: 5.0.1
       redux-thunk:
-        specifier: 3.1.0
+        specifier: 'catalog:'
         version: 3.1.0(redux@5.0.1)
       scheduler:
-        specifier: 0.28.0
+        specifier: 'catalog:'
         version: 0.28.0
       use-context-selector:
-        specifier: 2.0.0
+        specifier: 'catalog:'
         version: 2.0.0(react@19.3.0)(scheduler@0.28.0)
       uwrap:
-        specifier: 0.1.2
+        specifier: 'catalog:'
         version: 0.1.2
       zustand:
-        specifier: 5.0.15
+        specifier: 'catalog:'
         version: 5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
     devDependencies:
       '@rolldown/plugin-babel':
-        specifier: 0.2.4
+        specifier: 'catalog:'
         version: 0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@7.29.7)(rolldown@1.2.9)
       '@stylexjs/babel-plugin':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1(supports-color@10.2.2)
       '@stylexjs/postcss-plugin':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1(supports-color@10.2.2)
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
-        specifier: 6.1.2
+        specifier: 'catalog:'
         version: 6.1.2(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@7.29.7)(rolldown@1.2.9))
       autoprefixer:
-        specifier: 10.6.1
+        specifier: 'catalog:'
         version: 10.6.1(postcss@8.5.28)
       nitro:
-        specifier: 3.0.260903-beta
+        specifier: 'catalog:'
         version: 3.0.260903-beta
       postcss-load-config:
-        specifier: 6.0.1
+        specifier: 'catalog:'
         version: 6.0.1(jiti@2.7.0)(postcss@8.5.28)(tsx@4.23.15)(yaml@2.9.1)
       tailwindcss:
-        specifier: 4.3.3
+        specifier: 'catalog:'
         version: 4.3.3
 
   examples/tanstack/start-solid:
     dependencies:
       '@fontsource-variable/roboto':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@stylexjs/stylex':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1
       '@tanstack/solid-router':
-        specifier: 1.170.38
+        specifier: 'catalog:'
         version: 1.170.38(solid-js@1.9.15)
       '@tanstack/solid-start':
-        specifier: 1.168.57
+        specifier: 'catalog:'
         version: 1.168.57(crossws@0.4.12(srvx@1.0.5))(esbuild@0.28.2)(solid-js@1.9.15)(supports-color@10.2.2)(vite-plugin-solid@2.11.11(patch_hash=f6e447660752a67c4d2412ad1db869947f40458cbfdde640cd04c4a530d1d799)(@testing-library/jest-dom@6.9.1)(solid-js@1.9.15)(supports-color@10.2.2))(webpack@5.111.1)
       '@tanstack/virtual-file-routes':
-        specifier: 1.162.0
+        specifier: 'catalog:'
         version: 1.162.0
       solid-js:
-        specifier: 1.9.15
+        specifier: 'catalog:'
         version: 1.9.15
     devDependencies:
       '@stylexjs/babel-plugin':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1(supports-color@10.2.2)
       '@stylexjs/postcss-plugin':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1(supports-color@10.2.2)
       autoprefixer:
-        specifier: 10.6.1
+        specifier: 'catalog:'
         version: 10.6.1(postcss@8.5.28)
       nitro:
-        specifier: 3.0.260903-beta
+        specifier: 'catalog:'
         version: 3.0.260903-beta
       tailwindcss:
-        specifier: 4.3.3
+        specifier: 'catalog:'
         version: 4.3.3
       vite-plugin-solid:
-        specifier: 2.11.11
+        specifier: 'catalog:'
         version: 2.11.11(patch_hash=f6e447660752a67c4d2412ad1db869947f40458cbfdde640cd04c4a530d1d799)(@testing-library/jest-dom@6.9.1)(solid-js@1.9.15)(supports-color@10.2.2)
 
   examples/tanstack/start-trpc:
     dependencies:
       '@fastify/cookie':
-        specifier: 11.1.2
+        specifier: 'catalog:'
         version: 11.1.2
       '@fastify/cors':
-        specifier: 11.3.0
+        specifier: 'catalog:'
         version: 11.3.0
       '@tanstack/react-query':
-        specifier: 5.104.1
+        specifier: 'catalog:'
         version: 5.104.1(react@19.3.0)
       '@tanstack/react-router':
-        specifier: 1.170.41
+        specifier: 'catalog:'
         version: 1.170.41(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/react-router-ssr-query':
-        specifier: 1.167.3
+        specifier: 'catalog:'
         version: 1.167.3(@tanstack/query-core@5.104.1)(@tanstack/react-query@5.104.1(react@19.3.0))(@tanstack/react-router@1.170.41(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(@tanstack/router-core@1.171.34)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@tanstack/react-start':
-        specifier: 1.168.60
+        specifier: 'catalog:'
         version: 1.168.60(@rspack/core@2.2.8(@swc/helpers@0.5.23))(crossws@0.4.12(srvx@1.0.5))(esbuild@0.28.2)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rolldown@1.2.9)(supports-color@10.2.2)(vite-plugin-solid@2.11.11(patch_hash=f6e447660752a67c4d2412ad1db869947f40458cbfdde640cd04c4a530d1d799)(@testing-library/jest-dom@6.9.1)(solid-js@1.9.15)(supports-color@10.2.2))(webpack@5.111.1)
       '@tanstack/virtual-file-routes':
-        specifier: 1.162.0
+        specifier: 'catalog:'
         version: 1.162.0
       '@trpc/client':
-        specifier: 11.19.0
+        specifier: 'catalog:'
         version: 11.19.0(@trpc/server@11.19.0(typescript@6.0.3))(typescript@6.0.3)
       '@trpc/server':
-        specifier: 11.19.0
+        specifier: 'catalog:'
         version: 11.19.0(typescript@6.0.3)
       '@trpc/tanstack-react-query':
-        specifier: 11.19.0
+        specifier: 'catalog:'
         version: 11.19.0(@tanstack/react-query@5.104.1(react@19.3.0))(@trpc/client@11.19.0(@trpc/server@11.19.0(typescript@6.0.3))(typescript@6.0.3))(@trpc/server@11.19.0(typescript@6.0.3))(react@19.3.0)(typescript@6.0.3)
       fastify:
-        specifier: 5.12.5
+        specifier: 'catalog:'
         version: 5.12.5
       js-cookie:
-        specifier: 3.0.8
+        specifier: 'catalog:'
         version: 3.0.8
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       react-dom:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
       react-error-boundary:
-        specifier: 6.1.6
+        specifier: 'catalog:'
         version: 6.1.6(@types/react@19.3.0)(react@19.3.0)
     devDependencies:
       '@tailwindcss/vite':
-        specifier: 4.3.3
+        specifier: 'catalog:'
         version: 4.3.3
       '@types/js-cookie':
-        specifier: 3.0.6
+        specifier: 'catalog:'
         version: 3.0.6
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@types/react-dom':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
-        specifier: 6.1.2
+        specifier: 'catalog:'
         version: 6.1.2(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7(supports-color@10.2.2))(@babel/runtime@7.29.7)(rolldown@1.2.9))
       nitro:
-        specifier: 3.0.260903-beta
+        specifier: 'catalog:'
         version: 3.0.260903-beta
       tailwindcss:
-        specifier: 4.3.3
+        specifier: 'catalog:'
         version: 4.3.3
 
   examples/temporal/typescript-ip-geolocation:
     dependencies:
       '@temporalio/activity':
-        specifier: 1.11.8
+        specifier: 'catalog:'
         version: 1.11.8
       '@temporalio/client':
-        specifier: 1.11.8
+        specifier: 'catalog:'
         version: 1.11.8
       '@temporalio/worker':
-        specifier: 1.11.8
+        specifier: 'catalog:'
         version: 1.11.8(@swc/helpers@0.5.23)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@26.6.4))(webpack-cli@7.2.3)
       '@temporalio/workflow':
-        specifier: 1.11.8
+        specifier: 'catalog:'
         version: 1.11.8
     devDependencies:
       '@types/node':
-        specifier: 26.6.4
+        specifier: 'catalog:'
         version: 26.6.4
 
   examples/webpack/typescript-fastify:
     dependencies:
       bcrypt:
-        specifier: 6.0.0
+        specifier: 'catalog:'
         version: 6.0.0
       fastify:
-        specifier: 5.12.5
+        specifier: 'catalog:'
         version: 5.12.5
       fastify-type-provider-zod:
-        specifier: 7.0.0
+        specifier: 'catalog:'
         version: 7.0.0(fastify@5.12.5)(openapi-types@12.1.3)(zod@4.6.5)
       zod:
-        specifier: 4.6.5
+        specifier: 'catalog:'
         version: 4.6.5
     devDependencies:
       '@camp-org/webpack':
         specifier: workspace:*
         version: link:../../../packages/webpack
       '@rspack/cli':
-        specifier: 2.2.8
+        specifier: 'catalog:'
         version: 2.2.8(@rspack/core@2.2.8(@swc/helpers@0.5.23))
       '@rspack/core':
-        specifier: 2.2.8
+        specifier: 'catalog:'
         version: 2.2.8(@swc/helpers@0.5.23)
       '@types/bcrypt':
-        specifier: 6.0.0
+        specifier: 'catalog:'
         version: 6.0.0
       cross-env:
-        specifier: 10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
       jiti:
-        specifier: 2.7.0
+        specifier: 'catalog:'
         version: 2.7.0
       tsx:
-        specifier: 4.23.15
+        specifier: 'catalog:'
         version: 4.23.15
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       webpack:
-        specifier: 5.111.1
+        specifier: 'catalog:'
         version: 5.111.1(@swc/core@1.16.2(@swc/helpers@0.5.23))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@26.6.4))(webpack-cli@7.2.3)
       webpack-cli:
-        specifier: 7.2.3
+        specifier: 'catalog:'
         version: 7.2.3(js-yaml@4.3.2)(json5@2.2.3)(webpack@5.111.1)
       webpack-merge:
-        specifier: 6.0.1
+        specifier: 'catalog:'
         version: 6.0.1
 
   examples/webpack/typescript-http:
@@ -667,202 +1057,199 @@ importers:
         specifier: workspace:*
         version: link:../../../packages/webpack
       cross-env:
-        specifier: 10.1.0
+        specifier: 'catalog:'
         version: 10.1.0
       tsx:
-        specifier: 4.23.15
+        specifier: 'catalog:'
         version: 4.23.15
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       webpack:
-        specifier: 5.111.1
+        specifier: 'catalog:'
         version: 5.111.1(@swc/core@1.16.2(@swc/helpers@0.5.23))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@26.6.4))(webpack-cli@7.2.3)
       webpack-cli:
-        specifier: 7.2.3
+        specifier: 'catalog:'
         version: 7.2.3(js-yaml@4.3.2)(json5@2.2.3)(webpack@5.111.1)
 
   packages/config:
     dependencies:
       '@commitlint/cli':
-        specifier: 21.2.3
+        specifier: 'catalog:'
         version: 21.2.3(@types/node@26.6.4)(conventional-commits-parser@7.1.2)(typescript@6.0.3)
       '@commitlint/config-conventional':
-        specifier: 21.2.3
+        specifier: 'catalog:'
         version: 21.2.3
       '@prettier/plugin-xml':
-        specifier: 3.4.2
+        specifier: 'catalog:'
         version: 3.4.2(prettier@3.9.9)
       '@stylexjs/eslint-plugin':
-        specifier: 0.19.1
+        specifier: 'catalog:'
         version: 0.19.1
       '@stylistic/eslint-plugin':
-        specifier: 5.10.0
+        specifier: 'catalog:'
         version: 5.10.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
       '@tanstack/eslint-plugin-query':
-        specifier: 5.104.1
+        specifier: 'catalog:'
         version: 5.104.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)
       '@tanstack/eslint-plugin-router':
-        specifier: 1.162.0
+        specifier: 'catalog:'
         version: 1.162.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)
       eslint:
-        specifier: 10.12.0
+        specifier: 'catalog:'
         version: 10.12.0(jiti@2.7.0)(supports-color@10.2.2)
       eslint-config-flat-gitignore:
-        specifier: 2.4.0
+        specifier: 'catalog:'
         version: 2.4.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
       eslint-import-resolver-typescript:
-        specifier: 4.4.5
+        specifier: 'catalog:'
         version: 4.4.5(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.71.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-better-tailwindcss:
-        specifier: 4.9.0
+        specifier: 'catalog:'
         version: 4.9.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.87.0(oxlint-tsgolint@7.0.2003)(vite-plus@1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1)))(tailwindcss@4.3.3)(typescript@6.0.3)
       eslint-plugin-compat:
-        specifier: 7.0.2
+        specifier: 'catalog:'
         version: 7.0.2(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
       eslint-plugin-import-x:
-        specifier: 4.17.1
+        specifier: 'catalog:'
         version: 4.17.1(@typescript-eslint/utils@8.71.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-perfectionist:
-        specifier: 5.12.1
+        specifier: 'catalog:'
         version: 5.12.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)
       eslint-plugin-react:
-        specifier: 7.37.5
+        specifier: 'catalog:'
         version: 7.37.5(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
       eslint-plugin-react-hooks:
-        specifier: 7.1.1
+        specifier: 'catalog:'
         version: 7.1.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
       eslint-plugin-react-you-might-not-need-an-effect:
-        specifier: 1.0.2
+        specifier: 'catalog:'
         version: 1.0.2(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
       eslint-plugin-unicorn:
-        specifier: 64.0.0
+        specifier: 'catalog:'
         version: 64.0.0(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))
       globals:
-        specifier: 17.13.0
+        specifier: 'catalog:'
         version: 17.13.0
       lint-staged:
-        specifier: 17.6.0
+        specifier: 'catalog:'
         version: 17.6.0
       postcss-scss:
-        specifier: 4.0.9
+        specifier: 'catalog:'
         version: 4.0.9(postcss@8.5.28)
       postcss-styled-syntax:
-        specifier: 0.7.3
+        specifier: 'catalog:'
         version: 0.7.3(postcss@8.5.28)
       prettier:
-        specifier: 3.9.9
+        specifier: 'catalog:'
         version: 3.9.9
       prettier-plugin-java:
-        specifier: 2.11.0
+        specifier: 'catalog:'
         version: 2.11.0(prettier@3.9.9)
       prettier-plugin-packagejson:
-        specifier: 3.0.2
+        specifier: 'catalog:'
         version: 3.0.2(prettier@3.9.9)
       stylelint:
-        specifier: 17.16.0
+        specifier: 'catalog:'
         version: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
       stylelint-config-recess-order:
-        specifier: 7.8.0
+        specifier: 'catalog:'
         version: 7.8.0(stylelint-order@8.1.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-config-standard:
-        specifier: 40.0.0
+        specifier: 'catalog:'
         version: 40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-order:
-        specifier: 8.1.1
+        specifier: 'catalog:'
         version: 8.1.1(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       typescript-eslint:
-        specifier: 8.71.1
+        specifier: 'catalog:'
         version: 8.71.1(eslint@10.12.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)
     devDependencies:
       '@tanstack/router-generator':
-        specifier: 1.167.40
+        specifier: 'catalog:'
         version: 1.167.40(supports-color@10.2.2)
       '@tanstack/virtual-file-routes':
-        specifier: 1.162.0
+        specifier: 'catalog:'
         version: 1.162.0
       '@types/node':
-        specifier: 26.6.4
+        specifier: 'catalog:'
         version: 26.6.4
-      oxlint:
-        specifier: ^1
-        version: 1.87.0(oxlint-tsgolint@7.0.2003)(vite-plus@1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1))
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
 
   packages/webpack:
     dependencies:
       '@vercel/webpack-asset-relocator-loader':
-        specifier: 1.11.0
+        specifier: 'catalog:'
         version: 1.11.0
       ts-loader:
-        specifier: 9.6.2
+        specifier: 'catalog:'
         version: 9.6.2(loader-utils@1.4.2)(typescript@6.0.3)(webpack@5.111.1)
       webpack-merge:
-        specifier: ^6
+        specifier: 'catalog:'
         version: 6.0.1
       webpack-node-externals:
-        specifier: 3.0.0
+        specifier: 'catalog:'
         version: 3.0.0
     devDependencies:
       '@rspack/core':
-        specifier: 2.2.8
+        specifier: 'catalog:'
         version: 2.2.8(@swc/helpers@0.5.23)
       '@types/webpack-node-externals':
-        specifier: 3.0.4
+        specifier: 'catalog:'
         version: 3.0.4(@swc/core@1.16.2(@swc/helpers@0.5.23))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@26.6.4))(webpack-cli@7.2.3)
       typescript:
-        specifier: 6.0.3
+        specifier: 'catalog:'
         version: 6.0.3
       webpack:
-        specifier: 5.111.1
+        specifier: 'catalog:'
         version: 5.111.1(@swc/core@1.16.2(@swc/helpers@0.5.23))(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@26.6.4))(webpack-cli@7.2.3)
 
   stories:
     dependencies:
       '@fontsource-variable/inter':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       '@fontsource-variable/noto-sans-sc':
-        specifier: 5.3.0
+        specifier: 'catalog:'
         version: 5.3.0
       cva:
         specifier: npm:class-variance-authority@0.7.1
         version: class-variance-authority@0.7.1
       react:
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
     devDependencies:
       '@storybook/addon-docs':
-        specifier: 10.6.1
+        specifier: 'catalog:'
         version: 10.6.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.1(@types/react@19.3.0)(prettier@3.9.9)(react@19.3.0)(vite-plus@1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1)))
       '@storybook/addon-vitest':
-        specifier: 10.6.1
+        specifier: 'catalog:'
         version: 10.6.1(@vitest/browser-playwright@5.0.3)(@vitest/browser@5.0.3)(react@19.3.0)(storybook@10.6.1(@types/react@19.3.0)(prettier@3.9.9)(react@19.3.0)(vite-plus@1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1)))(vitest@5.0.3)
       '@storybook/react-vite':
-        specifier: 10.6.1
+        specifier: 'catalog:'
         version: 10.6.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(storybook@10.6.1(@types/react@19.3.0)(prettier@3.9.9)(react@19.3.0)(vite-plus@1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1)))(supports-color@10.2.2)(typescript@6.0.3)
       '@tailwindcss/vite':
-        specifier: 4.3.3
+        specifier: 'catalog:'
         version: 4.3.3
       '@types/react':
-        specifier: 19.3.0
+        specifier: 'catalog:'
         version: 19.3.0
       '@vitest/browser-playwright':
-        specifier: 5.0.3
+        specifier: 'catalog:'
         version: 5.0.3(playwright@1.63.0)(vitest@5.0.3)
       '@vitest/coverage-v8':
-        specifier: 5.0.3
+        specifier: 'catalog:'
         version: 5.0.3(@vitest/browser@5.0.3)(vitest@5.0.3)
       playwright:
-        specifier: 1.63.0
+        specifier: 'catalog:'
         version: 1.63.0
       storybook:
-        specifier: 10.6.1
+        specifier: 'catalog:'
         version: 10.6.1(@types/react@19.3.0)(prettier@3.9.9)(react@19.3.0)(vite-plus@1.1.0(@opentelemetry/api@1.9.1)(@types/node@26.6.4)(@vitest/browser-playwright@5.0.3)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.63.0)(terser@5.51.2)(tsx@4.23.15)(typescript@6.0.3)(yaml@2.9.1))
       tailwindcss:
-        specifier: 4.3.3
+        specifier: 'catalog:'
         version: 4.3.3
 
 packages:

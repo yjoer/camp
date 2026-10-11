@@ -59,7 +59,7 @@ def variables(builder: Dashboard) -> Dashboard:
 			.query("label_values(smartctl_version, instance)")
 			.current(VariableOption(selected=True, text="All", value="$__all"))
 			.include_all(include_all=True)
-			.multi(multi=True),
+			.multi(multi=False),
 		)
 		.with_variable(
 			QueryVariable("disk")
