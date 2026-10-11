@@ -7,16 +7,16 @@
 		"preview": "vp preview"
 	},
 	"dependencies": {
-		"@elastic/react-search-ui": "1.24.2",
-		"@elastic/react-search-ui-views": "1.24.2",
-		"@elastic/search-ui": "1.24.2",
-		"@elastic/search-ui-elasticsearch-connector": "1.24.2",
-		"react": "19.3.0",
-		"react-dom": "19.3.0"
+		"@elastic/react-search-ui": "catalog:",
+		"@elastic/react-search-ui-views": "catalog:",
+		"@elastic/search-ui": "catalog:",
+		"@elastic/search-ui-elasticsearch-connector": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@types/react": "19.3.0",
-		"@types/react-dom": "19.3.0",
-		"@vitejs/plugin-react": "6.1.2"
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitejs/plugin-react": "catalog:"
 	}
 }

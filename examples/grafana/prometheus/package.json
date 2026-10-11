@@ -8,6 +8,6 @@
 		"dev:pgbouncer": "gcx dev serve --script \"node pgbouncer.ts\" --watch ."
 	},
 	"dependencies": {
-		"@grafana/grafana-foundation-sdk": "0.0.20"
+		"@grafana/grafana-foundation-sdk": "catalog:"
 	}
 }

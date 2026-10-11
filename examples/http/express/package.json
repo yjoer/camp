@@ -2,9 +2,9 @@
 	"name": "@camp/examples-http-express",
 	"type": "module",
 	"dependencies": {
-		"express": "5.2.1"
+		"express": "catalog:"
 	},
 	"devDependencies": {
-		"@types/express": "5.0.6"
+		"@types/express": "catalog:"
 	}
 }

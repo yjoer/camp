@@ -1695,7 +1695,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "grafana-foundation-sdk", specifier = "==1759917919!11.6.0" }]
+requires-dist = [{ name = "grafana-foundation-sdk", specifier = "==0.0.20" }]
 
 [[package]]
 name = "examples-http-fastapi"
@@ -2379,11 +2379,11 @@ wheels = [
 
 [[package]]
 name = "grafana-foundation-sdk"
-version = "1759917919!11.6.0"
+version = "0.0.20"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b4/a0/841ade7cb26a78a5aff8701b47a92b59a4433b50a13049dbb95de5d4a87d/grafana_foundation_sdk-1759917919!11.6.0.tar.gz", hash = "sha256:ab3d4882c6cecd2a50015b83b13940b1bb5c040e21d052d63ea6d8e7f0cebac6", size = 431394, upload-time = "2025-10-08T10:45:12.577Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/3e/98e90bc557873137cd371e230052afd43c23a05ce5e6a825b06b26b9ef4c/grafana_foundation_sdk-0.0.20.tar.gz", hash = "sha256:364d7a8b9ef3d3b4a3432a02083ed8b5b1bd89d37b19439dd5a69cede65c17ce", size = 757143, upload-time = "2026-09-09T13:02:20.488Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5d/bc/1d2d77de09476b8d1e38321d22e27dc2ac68d416a212ab4df99649bc9cba/grafana_foundation_sdk-1759917919!11.6.0-py3-none-any.whl", hash = "sha256:681f8a0464b5f1a6ffc02bdb538b6190bb73f7d03cff8c3b6d71267c0ec6362b", size = 328852, upload-time = "2025-10-08T10:45:11.571Z" },
+    { url = "https://files.pythonhosted.org/packages/3f/37/858260d20afc89e4e7062b590d05cb7df15a54bf06c8021293985c3295ff/grafana_foundation_sdk-0.0.20-py3-none-any.whl", hash = "sha256:984bd6ed1da383f05d336aeee2b81ac4735137648f47ca1ea09ff6a2a53d06b8", size = 520646, upload-time = "2026-09-09T13:02:18.765Z" },
 ]
 
 [[package]]

@@ -2,10 +2,10 @@
 	"name": "@camp/examples-node-basics",
 	"type": "module",
 	"dependencies": {
-		"asciichart": "1.5.25"
+		"asciichart": "catalog:"
 	},
 	"devDependencies": {
-		"@types/asciichart": "1.5.8",
-		"@types/node": "26.6.4"
+		"@types/asciichart": "catalog:",
+		"@types/node": "catalog:"
 	}
 }

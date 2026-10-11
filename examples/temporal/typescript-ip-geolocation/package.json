@@ -6,12 +6,12 @@
 		"start:worker": "node --env-file-if-exists .env worker.ts"
 	},
 	"dependencies": {
-		"@temporalio/activity": "1.11.8",
-		"@temporalio/client": "1.11.8",
-		"@temporalio/worker": "1.11.8",
-		"@temporalio/workflow": "1.11.8"
+		"@temporalio/activity": "catalog:",
+		"@temporalio/client": "catalog:",
+		"@temporalio/worker": "catalog:",
+		"@temporalio/workflow": "catalog:"
 	},
 	"devDependencies": {
-		"@types/node": "26.6.4"
+		"@types/node": "catalog:"
 	}
 }

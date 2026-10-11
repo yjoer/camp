@@ -13,16 +13,16 @@
 		"build": "tsc"
 	},
 	"dependencies": {
-		"@vercel/webpack-asset-relocator-loader": "1.11.0",
-		"ts-loader": "9.6.2",
-		"webpack-merge": "^6",
-		"webpack-node-externals": "3.0.0"
+		"@vercel/webpack-asset-relocator-loader": "catalog:",
+		"ts-loader": "catalog:",
+		"webpack-merge": "catalog:",
+		"webpack-node-externals": "catalog:"
 	},
 	"devDependencies": {
-		"@rspack/core": "2.2.8",
-		"@types/webpack-node-externals": "3.0.4",
-		"typescript": "6.0.3",
-		"webpack": "5.111.1"
+		"@rspack/core": "catalog:",
+		"@types/webpack-node-externals": "catalog:",
+		"typescript": "catalog:",
+		"webpack": "catalog:"
 	},
 	"peerDependencies": {
 		"@rspack/core": "^2",
