@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres:15.2
     restart: unless-stopped
+    command: ['postgres', '-c', 'config_file=/etc/postgresql/postgresql.conf']
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -9,6 +10,7 @@ services:
     ports:
       - 5432:5432
     volumes:
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
       - $HOME/_docker/postgres-15:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']

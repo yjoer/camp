@@ -243,8 +243,9 @@ export const oxlint_config = defineConfig({
 			'unicorn/no-null': 'off',
 		},
 	}, {
-		files: ['lint-staged.config.ts'],
+		files: ['**/*.config.{js,ts}'],
 		rules: {
+			'import/no-default-export': 'off',
 			'unicorn/filename-case': 'off',
 		},
 	}],

@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import type { Config } from 'postcss-load-config';
 
 import stylex from '@stylexjs/postcss-plugin';

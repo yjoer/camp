@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import { getServerConfig } from '@camp-org/webpack/rspack_config';
 import { rspack } from '@rspack/core';
 import path from 'node:path';

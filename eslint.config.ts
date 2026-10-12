@@ -1,5 +1,4 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
-// oxlint-disable import/no-default-export
 import { defineImportResolver, eslint_config } from '@camp-org/config/eslint';
 import { defineConfig } from 'eslint/config';
 

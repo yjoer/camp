@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import { tanstackStart } from '@tanstack/solid-start/plugin/vite';
 import { rootRoute, route } from '@tanstack/virtual-file-routes';
 import { nitro } from 'nitro/vite';

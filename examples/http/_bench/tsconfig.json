@@ -1,6 +1,9 @@
 {
 	"compilerOptions": {
-		"types": ["node"],
+		"allowImportingTsExtensions": true,
+		"types": ["node", "vitest/importMeta"],
+
+		"noEmit": true,
 
 		"lib": ["ES2023"],
 

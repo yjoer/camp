@@ -1,6 +1,9 @@
 import type { Pool } from 'pg';
 
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import { Client } from 'pg';
+import { from as copy_from } from 'pg-copy-streams';
 
 export interface SetupPgbenchOptions {
 	scale?: number;
@@ -18,17 +21,45 @@ export async function setup_pgbench(options: SetupPgbenchOptions = {}): Promise<
 	});
 
 	await pg.connect();
+	const steps: Array<[string, number]> = [];
 
 	try {
+		process.stdout.write('dropping old tables...\n');
+		let step_start = performance.now();
 		await drop_tables(pg);
+		steps.push(['drop tables', (performance.now() - step_start) / 1000]);
+
+		process.stdout.write('creating tables...\n');
+		step_start = performance.now();
 		await create_tables(pg, options);
+		steps.push(['create tables', (performance.now() - step_start) / 1000]);
+
+		process.stdout.write('generating data (client-side)...\n');
+		step_start = performance.now();
 		await generate_data_client_side(pg, options);
+		steps.push(['client-side generate', (performance.now() - step_start) / 1000]);
+
+		process.stdout.write('vacuuming...\n');
+		step_start = performance.now();
 		await vacuum_tables(pg);
+		steps.push(['vacuum', (performance.now() - step_start) / 1000]);
+
+		process.stdout.write('creating primary keys...\n');
+		step_start = performance.now();
 		await create_primary_keys(pg);
+		steps.push(['primary keys', (performance.now() - step_start) / 1000]);
+
+		process.stdout.write('creating foreign keys...\n');
+		step_start = performance.now();
 		await create_foreign_keys(pg);
+		steps.push(['foreign keys', (performance.now() - step_start) / 1000]);
 	} finally {
 		await pg.end();
 	}
+
+	const total = steps.reduce((sum, [, seconds]) => sum + seconds, 0);
+	const breakdown = steps.map(([name, seconds]) => `${name} ${seconds.toFixed(2)}s`).join(', ');
+	process.stdout.write(`done in ${total.toFixed(2)}s (${breakdown}).\n`);
 }
 
 const SCALE_32BIT_THRESHOLD = 20_000;
@@ -93,23 +124,56 @@ async function generate_data_client_side(pg: Client | Pool, options: GenerateDat
 	try {
 		await pg.query(`truncate table pgbench_accounts, pgbench_branches, pgbench_history, pgbench_tellers`);
 
-		const values_branches: string[] = [];
-		for (let i = 0; i < NBRANCHES * scale; i += 1) values_branches.push(`(${i + 1}, 0)`);
-		await pg.query(`insert into pgbench_branches (bid, bbalance) values ${values_branches.join(',')}`);
+		const branches = pg.query(copy_from('copy pgbench_branches (bid, bbalance) from stdin'));
+		await pipeline(Readable.from(_branch_lines(scale)), branches);
 
-		const values_tellers: string[] = [];
-		for (let i = 0; i < NTELLERS * scale; i += 1) values_tellers.push(`(${i + 1}, ${Math.floor(i / NTELLERS) + 1}, 0)`);
-		await pg.query(`insert into pgbench_tellers (tid, bid, tbalance) values ${values_tellers.join(',')}`);
+		const tellers = pg.query(copy_from('copy pgbench_tellers (tid, bid, tbalance) from stdin'));
+		await pipeline(Readable.from(_teller_lines(scale)), tellers);
 
-		const values_accounts: string[] = [];
-		for (let i = 0; i < NACCOUNTS * scale; i += 1) values_accounts.push(`(${i + 1}, ${Math.floor(i / NACCOUNTS) + 1}, 0, '')`);
-		await pg.query(`insert into pgbench_accounts (aid, bid, abalance, filler) values ${values_accounts.join(',')}`);
+		const accounts = pg.query(copy_from('copy pgbench_accounts (aid, bid, abalance, filler) from stdin'));
+		await pipeline(Readable.from(_account_lines(scale)), accounts);
 
 		await pg.query('commit');
 	} catch (error) {
 		await pg.query('rollback');
 		throw error;
 	}
+}
+
+function* _branch_lines(scale: number): Generator<string> {
+	let chunk = '';
+	for (let i = 0; i < NBRANCHES * scale; i += 1) {
+		chunk += `${i + 1}\t0\n`;
+		if ((i + 1) % 10_000 === 0) {
+			yield chunk;
+			chunk = '';
+		}
+	}
+	if (chunk) yield chunk;
+}
+
+function* _teller_lines(scale: number): Generator<string> {
+	let chunk = '';
+	for (let i = 0; i < NTELLERS * scale; i += 1) {
+		chunk += `${i + 1}\t${Math.floor(i / NTELLERS) + 1}\t0\n`;
+		if ((i + 1) % 10_000 === 0) {
+			yield chunk;
+			chunk = '';
+		}
+	}
+	if (chunk) yield chunk;
+}
+
+function* _account_lines(scale: number): Generator<string> {
+	let chunk = '';
+	for (let i = 0; i < NACCOUNTS * scale; i += 1) {
+		chunk += `${i + 1}\t${Math.floor(i / NACCOUNTS) + 1}\t0\t\n`;
+		if ((i + 1) % 10_000 === 0) {
+			yield chunk;
+			chunk = '';
+		}
+	}
+	if (chunk) yield chunk;
 }
 
 async function vacuum_tables(pg: Client | Pool): Promise<void> {

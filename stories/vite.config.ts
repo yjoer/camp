@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';

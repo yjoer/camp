@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { rootRoute, route } from '@tanstack/virtual-file-routes';

@@ -7,10 +7,12 @@ import { spawn, spawnSync } from 'node:child_process';
 import { appendFileSync, mkdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { pidtree } from 'pidtree';
+import { z } from 'zod';
+
+import { stats } from './lib.ts';
 
 const TARGET_MEASUREMENTS = 10;
 const MAX_STD_RATIO = 0.05;
-const IQR_MULTIPLIER = 1.5;
 
 const script_dir = import.meta.dirname;
 const http_dir = path.resolve(script_dir, '..');
@@ -22,11 +24,11 @@ const results_file = path.join(script_dir, '.build', 'results.jsonl');
 async function main() {
 	program
 	.option('--server <prefix...>', 'filter servers by name prefixes')
-	.option('--warmup <count>', 'warmup rounds per endpoint', w => Number.parseInt(w, 10), 1)
+	.option('--warmup <count>', 'warmup rounds per endpoint')
 	.option('--verify-only', 'verify servers without benchmarking');
 
 	program.parse();
-	const opts = program.opts<{ server?: string[]; warmup: number; verifyOnly?: boolean }>();
+	const opts = CliOptions.parse(program.opts());
 
 	for (const server of servers) {
 		if (opts.server?.some(prefix => server.name.startsWith(prefix)) === false) continue;
@@ -71,7 +73,7 @@ async function main() {
 					process.stdout.write(`measuring ${endpoint.path} of ${server.group}/${server.name}`);
 					measurements.push(await server.measure(endpoint));
 
-					const { n, outliers, max, mean, std, ratio } = _stats(measurements);
+					const { n, outliers, max, mean, std, ratio } = stats(measurements);
 					process.stdout.write(`n: ${n}, outliers: ${outliers.join(',')}, mean: ${mean}, std: ${std}, std_ratio: ${ratio}\n`);
 
 					if (measurements.length >= TARGET_MEASUREMENTS && outliers.includes(max)) {
@@ -89,7 +91,7 @@ async function main() {
 					if (n >= TARGET_MEASUREMENTS) break;
 				}
 
-				const { mean, std } = _stats(measurements);
+				const { mean, std } = stats(measurements);
 				mkdirSync(path.join(script_dir, '.build'), { recursive: true });
 				appendFileSync(results_file, `${JSON.stringify({
 					group: server.group,
@@ -109,6 +111,12 @@ async function main() {
 		}
 	}
 }
+
+const CliOptions = z.object({
+	server: z.array(z.string()).optional(),
+	warmup: z.coerce.number().int().min(0).default(1),
+	verifyOnly: z.boolean().default(false),
+});
 
 async function _verify_endpoint(endpoint: Endpoint) {
 	const deadline = Date.now() + 30_000;
@@ -150,44 +158,6 @@ async function _verify_endpoint(endpoint: Endpoint) {
 		return;
 	}
 }
-
-function _stats(measurements: number[]) {
-	const sorted = measurements.toSorted((a, b) => a - b);
-	const lower = _percentile(sorted, 25);
-	const upper = _percentile(sorted, 75);
-
-	const range = upper - lower;
-	const lower_fence = lower - IQR_MULTIPLIER * range;
-	const upper_fence = upper + IQR_MULTIPLIER * range;
-
-	let n = 0, mean = 0, m2 = 0;
-	let max = -Infinity;
-	const outliers: number[] = [];
-	for (const x of measurements) {
-		if (x > max) max = x;
-		if (x < lower_fence || x > upper_fence) {
-			outliers.push(x);
-			continue;
-		}
-
-		// welford's algorithm
-		n += 1;
-		const delta = x - mean;
-		mean += delta / n;
-		const delta2 = x - mean;
-		m2 += delta * delta2;
-	}
-
-	const std = Math.sqrt(m2 / n);
-	return { n, outliers, max, mean, std, ratio: std / mean };
-}
-
-const _percentile = (array: number[], p: number) => {
-	const pos = (array.length - 1) * p / 100;
-	const lo = Math.floor(pos);
-	const hi = Math.ceil(pos);
-	return array[lo] + (pos - lo) * (array[hi] - array[lo]);
-};
 
 interface Server {
 	group: string;
