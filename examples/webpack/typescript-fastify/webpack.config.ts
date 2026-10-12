@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import { getServerConfig } from '@camp-org/webpack/config';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

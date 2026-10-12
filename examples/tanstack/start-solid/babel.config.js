@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 export default function babel(api) {
 	api.cache(true);
 

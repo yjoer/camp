@@ -4,10 +4,13 @@
 	"dependencies": {
 		"commander": "catalog:",
 		"pg": "catalog:",
-		"pidtree": "catalog:"
+		"pg-copy-streams": "catalog:",
+		"pidtree": "catalog:",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@types/k6": "catalog:",
-		"@types/pg": "catalog:"
+		"@types/pg": "catalog:",
+		"@types/pg-copy-streams": "catalog:"
 	}
 }

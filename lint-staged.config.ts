@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import { lint_staged_config } from '@camp-org/config/lint_staged';
 
 export default {

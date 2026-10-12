@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"allowImportingTsExtensions": true,
+		"types": ["node", "vitest/importMeta"],
+
+		"noEmit": true,
+
+		"lib": ["ES2023"],
+
+		"skipLibCheck": true
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "@camp/examples-database-node-postgres",
+	"type": "module",
+	"dependencies": {
+		"commander": "catalog:",
+		"pg": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@types/pg": "catalog:"
+	}
+}

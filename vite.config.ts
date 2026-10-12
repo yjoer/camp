@@ -1,4 +1,3 @@
-// oxlint-disable import/no-default-export
 import { oxlint_config } from '@camp-org/config/oxlint';
 import { defineConfig } from 'vite-plus';
 
@@ -9,5 +8,10 @@ export default defineConfig({
 			typeAware: true,
 			typeCheck: true,
 		},
+	},
+	test: {
+		projects: [
+			'examples/http/_bench',
+		],
 	},
 });
