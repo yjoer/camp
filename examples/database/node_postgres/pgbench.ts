@@ -1,4 +1,4 @@
-import type { Pool } from 'pg';
+import type { Pool, PoolClient } from 'pg';
 
 import { program } from 'commander';
 import { Pool as PgPool } from 'pg';
@@ -47,8 +47,16 @@ async function main() {
 		}
 
 		await Promise.all(Array.from({ length: opts.clients }, async () => {
-			const client = await pool.connect();
-			client.release();
+			for (let attempt = 1; ; attempt += 1) {
+				try {
+					const client = await pool.connect();
+					client.release();
+					return;
+				} catch (error) {
+					process.stderr.write(`connect attempt ${attempt} failed: ${String(error)}\n`);
+					await new Promise(resolve => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+				}
+			}
 		}));
 
 		const start = performance.now();
@@ -95,7 +103,16 @@ async function transact(pool: Pool, options: TransactOptions): Promise<number> {
 	const tid = random_int(1, NTELLERS * options.scale);
 	const delta = random_int(-5000, 5000);
 
-	const client = await pool.connect();
+	let client!: PoolClient;
+	for (let attempt = 1; ; attempt += 1) {
+		try {
+			client = await pool.connect();
+			break;
+		} catch (error) {
+			process.stderr.write(`connect attempt ${attempt} failed: ${String(error)}\n`);
+			await new Promise(resolve => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+		}
+	}
 	const start = performance.now();
 
 	try {

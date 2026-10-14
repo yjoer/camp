@@ -76,13 +76,13 @@ async function main() {
 					const { n, outliers, max, mean, std, ratio } = stats(measurements);
 					process.stdout.write(`n: ${n}, outliers: ${outliers.join(',')}, mean: ${mean}, std: ${std}, std_ratio: ${ratio}\n`);
 
-					if (measurements.length >= TARGET_MEASUREMENTS && outliers.includes(max)) {
+					if (n >= TARGET_MEASUREMENTS && outliers.includes(max)) {
 						process.stdout.write(`excluding peak ${max} from the distribution underestimates the mean, recollecting ${endpoint.path} of ${server.group}/${server.name}\n`);
 						measurements = [max];
 						continue;
 					}
 
-					if (measurements.length >= TARGET_MEASUREMENTS && ratio > MAX_STD_RATIO) {
+					if (n >= TARGET_MEASUREMENTS && ratio > MAX_STD_RATIO) {
 						process.stdout.write(`std ratio ${ratio} exceeds ${MAX_STD_RATIO}, recollecting ${endpoint.path} of ${server.group}/${server.name}\n`);
 						measurements = [];
 						continue;

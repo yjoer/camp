@@ -94,7 +94,7 @@ async function _run(experiments: Experiment[]) {
 			const { n, outliers, max, mean, std, ratio } = stats(rate_samples);
 			process.stdout.write(`n: ${n.toString().padStart(2, ' ')}, mean: ${mean.toFixed(4)}, std: ${std.toFixed(4)}, std_ratio: ${ratio.toFixed(4)}, outliers: ${outliers.join(',')}\n`);
 
-			if (rate_samples.length >= TARGET_MEASUREMENTS && outliers.includes(max)) {
+			if (n >= TARGET_MEASUREMENTS && outliers.includes(max)) {
 				process.stdout.write(`excluding peak ${max} from the distribution underestimates the mean, recollecting ${runner.name} clients=${experiment.clients} port=${experiment.port}\n`);
 				const max_index = rate_samples.indexOf(max);
 				rate_samples = [max];
@@ -102,7 +102,7 @@ async function _run(experiments: Experiment[]) {
 				continue;
 			}
 
-			if (rate_samples.length >= TARGET_MEASUREMENTS && ratio > MAX_STD_RATIO) {
+			if (n >= TARGET_MEASUREMENTS && ratio > MAX_STD_RATIO) {
 				process.stdout.write(`std ratio ${ratio} exceeds ${MAX_STD_RATIO}, recollecting ${runner.name} clients=${experiment.clients} port=${experiment.port}\n`);
 				rate_samples = [];
 				latency_samples = [];
@@ -151,9 +151,9 @@ const node: Runner = {
 			'-p', params.port.toString(),
 			'-c', params.clients.toString(),
 			'-t', params.transactions.toString(),
-		], { cwd: node_pgbench_dir });
+		], { cwd: node_pgbench_dir, stdio: ['ignore', 'pipe', 'inherit'] });
 
-		if (result.status !== 0) throw new Error(`node pgbench failed: ${result.stderr.toString()}`);
+		if (result.status !== 0) throw new Error(`node pgbench failed with status ${result.status}`);
 		const output = JSON.parse(result.stdout.toString()) as {
 			metrics: { transactions: { rate: number; avg: number } };
 		};
