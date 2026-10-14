@@ -105,10 +105,10 @@ class StatementsWhile {
 		long n_five = (long) Math.floor(total / 0.05);
 		total = total % 0.05;
 
-		System.out.printf("50: %d\n", n_fifty);
-		System.out.printf("20: %d\n", n_twenty);
-		System.out.printf("10: %d\n", n_ten);
-		System.out.printf("5: %d\n", n_five);
+		System.out.printf("50: %d%n", n_fifty);
+		System.out.printf("20: %d%n", n_twenty);
+		System.out.printf("10: %d%n", n_ten);
+		System.out.printf("5: %d%n", n_five);
 		System.out.printf("remaining: %.2f", total);
 	}
 
@@ -135,10 +135,10 @@ class StatementsWhile {
 			}
 		}
 
-		System.out.printf("50: %d\n", n_fifty);
-		System.out.printf("20: %d\n", n_twenty);
-		System.out.printf("10: %d\n", n_ten);
-		System.out.printf("5: %d\n", n_five);
+		System.out.printf("50: %d%n", n_fifty);
+		System.out.printf("20: %d%n", n_twenty);
+		System.out.printf("10: %d%n", n_ten);
+		System.out.printf("5: %d%n", n_five);
 		System.out.printf("remaining: %.2f", total);
 	}
 }
@@ -163,7 +163,7 @@ class InitializationBlocks {
 	}
 
 	static {
-		System.out.printf("static initialization block: %d\n", i);
+		System.out.printf("static initialization block: %d%n", i);
 	}
 }
 

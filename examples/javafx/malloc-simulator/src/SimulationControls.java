@@ -149,13 +149,13 @@ class SimulationControls extends VBox {
 				case SimulatorOps.Allocate p -> {
 					trace_viewer.traces_tab.allocate_partition(p.idx(), p.name(), p.size());
 
-					String log = String.format("t: %d, allocate %s\n", simulator.t() - 1, p.name());
+					String log = String.format("t: %d, allocate %s%n", simulator.t() - 1, p.name());
 					trace_viewer.insights_tab.logs_text_area.appendText(log);
 				}
 				case SimulatorOps.Free p -> {
 					trace_viewer.traces_tab.free_partition(p.idx());
 
-					String log = String.format("t: %d, free %s\n", simulator.t() - 1, p.name());
+					String log = String.format("t: %d, free %s%n", simulator.t() - 1, p.name());
 					trace_viewer.insights_tab.logs_text_area.appendText(log);
 				}
 				default -> {
