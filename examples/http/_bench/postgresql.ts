@@ -24,7 +24,6 @@ async function main() {
 	.option('-p, --port <port>', 'port to run (5432 direct, 6432 pgbouncer)')
 	.option('-c, --client <name>', 'small (5-100 Δ5), large (100-1000 Δ100)')
 	.option('-t, --transactions <count>', 'transactions per client (default 1000/clients)')
-	.option('-s, --scale <factor>', 'scaling factor')
 
 	.action(async () => {
 		const opts = RunOptions.parse(program.opts());
@@ -44,7 +43,7 @@ async function main() {
 
 					for (let clients = from; clients <= to; clients += step) {
 						const t = Math.max(1, Math.ceil(TOTAL_TRANSACTIONS / clients));
-						experiments.push({ runner, port, clients, transactions: opts.transactions ?? t, scale: opts.scale });
+						experiments.push({ runner, port, clients, transactions: opts.transactions ?? t });
 					}
 				}
 			}
@@ -78,7 +77,6 @@ const RunOptions = z.object({
 	port: z.coerce.number().int().min(1).max(65_535).optional(),
 	client: z.enum(['small', 'large']).optional(),
 	transactions: z.coerce.number().int().min(1).optional(),
-	scale: z.coerce.number().int().min(1).default(100),
 });
 
 async function _run(experiments: Experiment[]) {
@@ -122,7 +120,6 @@ async function _run(experiments: Experiment[]) {
 			port: experiment.port,
 			clients: experiment.clients,
 			transactions: experiment.transactions,
-			scale: experiment.scale,
 			timestamp: new Date().toISOString(),
 			rate_samples,
 			mean_rate: mean,
@@ -139,7 +136,6 @@ interface Experiment {
 	port: number;
 	clients: number;
 	transactions: number;
-	scale: number;
 }
 
 interface Runner {
@@ -155,7 +151,6 @@ const node: Runner = {
 			'-p', params.port.toString(),
 			'-c', params.clients.toString(),
 			'-t', params.transactions.toString(),
-			'-s', params.scale.toString(),
 		], { cwd: node_pgbench_dir });
 
 		if (result.status !== 0) throw new Error(`node pgbench failed: ${result.stderr.toString()}`);
