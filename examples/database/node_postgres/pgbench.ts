@@ -13,7 +13,7 @@ async function main() {
 	.option('-p, --port <port>', 'database port')
 	.option('-c, --clients <count>', 'number of pooled clients')
 	.option('-t, --transactions <count>', 'number of transactions each client runs')
-	.option('-s, --scale <factor>', 'scaling factor')
+	.option('-v, --vacuum-all', 'vacuum all tables before tests')
 	.option('--pipeline', 'send queries without waiting for each result');
 
 	program.parse();
@@ -31,6 +31,21 @@ async function main() {
 	});
 
 	try {
+		const { rows } = await pool.query<{ scale: number }>('select count(*)::int as scale from pgbench_branches');
+		const scale = rows[0].scale;
+
+		process.stderr.write('starting vacuum...');
+		await pool.query('vacuum pgbench_branches');
+		await pool.query('vacuum pgbench_tellers');
+		await pool.query('truncate pgbench_history');
+		process.stderr.write('end.\n');
+
+		if (opts.vacuumAll) {
+			process.stderr.write('starting vacuum pgbench_accounts...');
+			await pool.query('vacuum analyze pgbench_accounts');
+			process.stderr.write('end.\n');
+		}
+
 		await Promise.all(Array.from({ length: opts.clients }, async () => {
 			const client = await pool.connect();
 			client.release();
@@ -39,7 +54,7 @@ async function main() {
 		const start = performance.now();
 		const results = await Promise.all(Array.from({ length: opts.clients }, async () => {
 			const timings: number[] = [];
-			for (let i = 0; i < opts.transactions; i += 1) timings.push(await transact(pool, opts));
+			for (let i = 0; i < opts.transactions; i += 1) timings.push(await transact(pool, { scale }));
 			return timings;
 		}));
 		const elapsed = (performance.now() - start) / 1000;
@@ -66,7 +81,7 @@ const CliOptions = z.object({
 	port: z.coerce.number().int().min(1).max(65_535).prefault(process.env.DB_PORT ?? '6432'),
 	clients: z.coerce.number().int().min(1).default(1),
 	transactions: z.coerce.number().int().min(1).default(10),
-	scale: z.coerce.number().int().min(1).default(1),
+	vacuumAll: z.boolean().default(false),
 	pipeline: z.boolean().default(false),
 });
 
