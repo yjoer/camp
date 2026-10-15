@@ -2,7 +2,7 @@
 	"name": "camp",
 	"type": "module",
 	"scripts": {
-		"jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab",
+		"jupyter": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyter lab --SQLiteYStore.db_path=$INIT_CWD/.venv/jupyter_ystore.db --YDocExtension.session_store_path=$INIT_CWD/.venv/collaboration_sessions.json",
 		"jupyverse": "cross-env-shell PYTHONPATH=$INIT_CWD uv run --env-file .env jupyverse --set frontend.collaborative=true --set kernels.require_yjs=true --set jupyterlab.server_side_execution=true"
 	},
 	"browserslist": "defaults and not op_mini all",
