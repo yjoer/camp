@@ -204,7 +204,7 @@ function variables(builder: DashboardBuilder): DashboardBuilder {
 		.query(
 			new PrometheusQueryVariableBuilder()
 			.datasource({ name: '$datasource' })
-			.query('label_values(pgbouncer_version_info, instance)'),
+			.query('label_values(pgbouncer_up, instance)'),
 		)
 		.multi(false),
 	);

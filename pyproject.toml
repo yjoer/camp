@@ -86,9 +86,9 @@ dev = [
 	"notebook-intelligence==6.2.0",
 	"pytest==9.1.1",
 	"pytest-xdist==3.8.0",
-	"ruff==0.17.0",
+	"ruff==0.17.1",
 	"scalene==2.2.1",
-	"ty==0.0.88",
+	"ty==0.0.89",
 ]
 
 [build-system]
