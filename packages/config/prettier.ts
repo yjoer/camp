@@ -1,14 +1,14 @@
-import type { Config } from 'prettier';
+import type { Config, Plugin } from 'prettier';
+
+import xml_plugin from '@prettier/plugin-xml';
+import java_plugin from 'prettier-plugin-java';
+import packagejson_plugin from 'prettier-plugin-packagejson';
 
 export const prettier_config = {
 	plugins: [
-		// '@prettier/plugin-oxc',
-		'@prettier/plugin-xml',
-		'prettier-plugin-packagejson',
-		// 'prettier-plugin-tailwindcss',
-		// 'prettier-plugin-classnames',
-		// 'prettier-plugin-merge',
-		'prettier-plugin-java',
+		xml_plugin,
+		packagejson_plugin,
+		java_plugin as Plugin,
 	],
 	bracketSameLine: true,
 	printWidth: 100,

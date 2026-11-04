@@ -1,6 +1,6 @@
 import type { ConfigWithExtends, ConfigWithExtendsArray, Plugin } from '@eslint/config-helpers';
 
-import stylex_plugin from '@stylexjs/eslint-plugin';
+import * as stylex_plugin from '@stylexjs/eslint-plugin';
 import stylistic_plugin from '@stylistic/eslint-plugin';
 import query_plugin from '@tanstack/eslint-plugin-query';
 import router_plugin from '@tanstack/eslint-plugin-router';
@@ -27,12 +27,15 @@ function import_x() {
 			'import-x/no-extraneous-dependencies': ['error', {
 				devDependencies: [
 					'**/babel.config.*s',
+					'**/commitlint.*s',
 					'**/commitlint.config.*s',
-					'**/eslint.config.*s',
+					'**/eslint.*s',
 					'**/lint-staged.config.*s',
 					'**/postcss.config.*s',
+					'**/prettier.*s',
 					'**/prettier.config.*s',
 					'**/rspack.config.*s',
+					'**/stylelint.*s',
 					'**/stylelint.config.*s',
 					'**/vite.config.*s',
 					'**/vitest.config.*s',
