@@ -89,19 +89,14 @@ const config: Configuration = {
 				defaultVendors: false,
 				plugins: {
 					test: /[\\/]node_modules[\\/]/,
-					name: resolve_chunk_name,
+					name: (_module, chunks) => `${chunks[0]?.name ?? 'shared'}_plugins`,
+					chunks: chunk => !chunk.name?.startsWith('tailwind.async.worker'),
 					enforce: true,
 				},
 			},
 		},
 	},
 };
-
-function resolve_chunk_name(_module: unknown, chunks: { name?: string }[]) {
-	const entry = chunks[0]?.name;
-	const group = entry?.startsWith('tailwind.async.worker') ? 'eslint' : entry;
-	return `${group ?? 'shared'}_plugins`;
-}
 
 const commitlint_config: Configuration = {
 	entry: {
