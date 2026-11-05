@@ -1,4 +1,5 @@
 import type { ConfigWithExtends, ConfigWithExtendsArray, Plugin } from '@eslint/config-helpers';
+import type { ConfigObject } from 'eslint/config';
 
 import * as stylex_plugin from '@stylexjs/eslint-plugin';
 import stylistic_plugin from '@stylistic/eslint-plugin';
@@ -327,7 +328,7 @@ export const eslint_config = defineConfig([
 	},
 ]);
 
-export function defineImportResolver(pkgs: string[], options = {}) {
+export function defineImportResolver(pkgs: string[], options = {}): ConfigObject[] {
 	return pkgs.map(pkg => ({
 		files: [`./${pkg}/**/*`],
 		settings: {

@@ -5,7 +5,7 @@ import create_preset from 'conventional-changelog-conventionalcommits';
 
 const conventional_preset = create_preset() as { parser: unknown };
 
-export const commitlint_config = {
+export const commitlint_config: UserConfig = {
 	parserPreset: {
 		name: 'conventional-changelog-conventionalcommits',
 		parserOpts: conventional_preset.parser,
@@ -18,4 +18,4 @@ export const commitlint_config = {
 		// style -> refactor
 		'type-enum': [2, 'always', ['chore', 'feat', 'fix', 'perf', 'refactor', 'revert']],
 	},
-} satisfies UserConfig;
+};

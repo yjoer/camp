@@ -1,6 +1,6 @@
 {
 	"name": "@camp-org/config",
-	"version": "0.1.3",
+	"version": "0.2.0",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -26,6 +26,7 @@
 	"devDependencies": {
 		"@commitlint/cli": "catalog:",
 		"@commitlint/config-conventional": "catalog:",
+		"@microsoft/api-extractor": "catalog:",
 		"@prettier/plugin-xml": "catalog:",
 		"@rspack/cli": "catalog:",
 		"@rspack/core": "catalog:",
@@ -58,7 +59,8 @@
 		"stylelint-config-standard": "catalog:",
 		"stylelint-order": "catalog:",
 		"typescript": "catalog:",
-		"typescript-eslint": "catalog:"
+		"typescript-eslint": "catalog:",
+		"unplugin-dts": "catalog:"
 	},
 	"peerDependencies": {
 		"@tanstack/router-generator": "^1",

@@ -4,6 +4,7 @@ import { rspack } from '@rspack/core';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import dts from 'unplugin-dts/rspack';
 
 const require = createRequire(import.meta.url);
 const project_path = import.meta.dirname;
@@ -57,6 +58,14 @@ const config: Configuration = {
 	plugins: [
 		new rspack.IgnorePlugin({ resourceRegExp: /^@babel\/preset-typescript(\/|$)/ }),
 		new rspack.IgnorePlugin({ resourceRegExp: /^enhanced-resolve\/lib\/createInnerCallback$/ }),
+		dts({
+			entryRoot: project_path,
+			tsconfigPath: path.join(project_path, 'tsconfig.json'),
+			include: ['commitlint.ts', 'eslint.ts', 'prettier.ts', 'stylelint.ts', 'types/stylelint.d.ts'],
+			bundleTypes: {
+				bundledPackages: ['@commitlint/types', 'conventional-commits-parser', 'postcss-scss'],
+			},
+		}),
 	],
 	externals: [
 		/^eslint($|\/)/,

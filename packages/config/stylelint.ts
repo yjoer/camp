@@ -1,6 +1,6 @@
 import type { Config } from 'stylelint';
 
-import scss_syntax from 'postcss-scss';
+import * as scss_syntax from 'postcss-scss';
 import styled_syntax from 'postcss-styled-syntax';
 import recess_config from 'stylelint-config-recess-order';
 import recommended_config from 'stylelint-config-recommended';
