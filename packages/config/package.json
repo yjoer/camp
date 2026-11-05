@@ -14,7 +14,7 @@
 		"generate-routes": "./bin/generate_routes.ts"
 	},
 	"scripts": {
-		"build": "tsc && rspack build"
+		"build": "tsc -p tsconfig.scripts.json && rspack build"
 	},
 	"dependencies": {
 		"eslint": "catalog:",
@@ -61,12 +61,16 @@
 		"typescript-eslint": "catalog:"
 	},
 	"peerDependencies": {
+		"@tanstack/router-generator": "^1",
 		"oxlint": "^1",
 		"postcss": "^8",
 		"tailwindcss": "^4",
 		"typescript": "^6"
 	},
 	"peerDependenciesMeta": {
+		"@tanstack/router-generator": {
+			"optional": true
+		},
 		"oxlint": {
 			"optional": true
 		},

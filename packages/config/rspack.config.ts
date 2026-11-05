@@ -103,6 +103,7 @@ const commitlint_config: Configuration = {
 		'bin/commitlint': './bin/commitlint.ts',
 	},
 	mode: 'production',
+	devtool: 'nosources-source-map',
 	module: {
 		parser: {
 			javascript: {
@@ -145,6 +146,7 @@ const synckit_config: Configuration = {
 		register: fileURLToPath(new URL('../register.cjs', import.meta.resolve('synckit'))),
 	},
 	mode: 'production',
+	devtool: 'nosources-source-map',
 	target: 'node',
 	output: {
 		path: path.join(project_path, '.build'),
