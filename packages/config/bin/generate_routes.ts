@@ -2,7 +2,6 @@
 // oxlint-disable no-console
 import type { VirtualRootRoute } from '@tanstack/virtual-file-routes';
 
-/* eslint-disable-next-line import-x/no-extraneous-dependencies */
 import { Generator, getConfig } from '@tanstack/router-generator';
 import fs from 'node:fs/promises';
 import path from 'node:path';
