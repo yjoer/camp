@@ -1,4 +1,4 @@
-import { getServerConfig } from '@camp-org/webpack/rspack_config';
+import { get_server_config } from '@camp-org/webpack/rspack_config';
 import { rspack } from '@rspack/core';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,11 +20,11 @@ const custom_config = {
 	],
 };
 
-const config = getServerConfig({
+const config = get_server_config({
 	entry: ['./server.ts'],
 	mode,
-	projectPath: path.dirname(fileURLToPath(import.meta.url)),
-	configPath: fileURLToPath(import.meta.url),
+	project_path: path.dirname(fileURLToPath(import.meta.url)),
+	config_path: fileURLToPath(import.meta.url),
 });
 
 export default merge(config, custom_config);
