@@ -46,6 +46,12 @@ const config: Configuration = {
 				test: /synckit[\\/]lib[\\/]helpers\.js$/,
 				loader: path.join(project_path, 'loaders', 'synckit_loader.ts'),
 			},
+			{
+				// vendor uses __require from rolldown-runtime, which rspack cannot
+				// trace, so rewrite those calls to static imports
+				test: /@stylistic[\\/]eslint-plugin[\\/]dist[\\/]vendor\.js$/,
+				loader: path.join(project_path, 'loaders', 'stylistic_loader.ts'),
+			},
 		],
 	},
 	resolve: {
@@ -116,11 +122,11 @@ const commitlint_config: Configuration = {
 	module: {
 		parser: {
 			javascript: {
-				createRequire: true,
+				createRequire: true, // inline cli.js' package.json
 				dynamicImportMode: 'eager',
-				importDynamic: false,
+				importDynamic: false, // user formatter, plugin, and config files load at runtime
 				importMeta: {
-					url: false,
+					url: false, // keep cli.js, load-plugin.js, resolve-extends/index.js, yargs/esm.mjs on the emitted bin
 				},
 			},
 		},
