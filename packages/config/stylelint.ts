@@ -1,13 +1,19 @@
 import type { Config } from 'stylelint';
 
+import * as scss_syntax from 'postcss-scss';
+import styled_syntax from 'postcss-styled-syntax';
+import recess_config from 'stylelint-config-recess-order';
+import recommended_config from 'stylelint-config-recommended';
+import standard_config from 'stylelint-config-standard';
+import order_plugin from 'stylelint-order';
+
 export const stylelint_config = {
-	extends: [
-		'stylelint-config-standard',
-		'stylelint-config-recess-order',
+	plugins: [
+		...order_plugin, //
 	],
 	overrides: [{
 		files: '**/*.{jsx,tsx}',
-		customSyntax: 'postcss-styled-syntax',
+		customSyntax: styled_syntax,
 		rules: {
 			'function-no-unknown': [true, { ignoreFunctions: ['${', '/theme.+/'] }],
 			'value-keyword-case': undefined,
@@ -15,7 +21,7 @@ export const stylelint_config = {
 		},
 	}, {
 		files: '**/*.scss',
-		customSyntax: 'postcss-scss',
+		customSyntax: scss_syntax,
 		rules: {
 			'at-rule-no-unknown': [true, { ignoreAtRules: ['tailwind', 'use'] }],
 			'function-no-unknown': [true, { ignoreFunctions: ['darken'] }],
@@ -23,6 +29,9 @@ export const stylelint_config = {
 		},
 	}],
 	rules: {
+		...recommended_config.rules,
+		...standard_config.rules,
+		...recess_config.rules,
 		'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'source', 'utility', 'variant'] }],
 		'function-no-unknown': [true, { ignoreFunctions: ['theme'] }],
 		'import-notation': 'string',

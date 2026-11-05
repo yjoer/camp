@@ -1,6 +1,6 @@
 {
 	"name": "@camp-org/config",
-	"version": "0.1.3",
+	"version": "0.2.0",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/yjoer/camp.git"
@@ -10,20 +10,35 @@
 		"./*": "./*.ts"
 	},
 	"bin": {
+		"commitlint": "./bin/commitlint.ts",
 		"generate-routes": "./bin/generate_routes.ts"
 	},
 	"scripts": {
-		"build": "tsc"
+		"build": "tsc -p tsconfig.scripts.json && rspack build"
 	},
 	"dependencies": {
+		"eslint": "catalog:",
+		"lint-staged": "catalog:",
+		"prettier": "catalog:",
+		"stylelint": "catalog:",
+		"unrs-resolver": "catalog:"
+	},
+	"devDependencies": {
 		"@commitlint/cli": "catalog:",
 		"@commitlint/config-conventional": "catalog:",
+		"@microsoft/api-extractor": "catalog:",
 		"@prettier/plugin-xml": "catalog:",
+		"@rspack/cli": "catalog:",
+		"@rspack/core": "catalog:",
 		"@stylexjs/eslint-plugin": "catalog:",
 		"@stylistic/eslint-plugin": "catalog:",
 		"@tanstack/eslint-plugin-query": "catalog:",
 		"@tanstack/eslint-plugin-router": "catalog:",
-		"eslint": "catalog:",
+		"@tanstack/router-generator": "catalog:",
+		"@tanstack/virtual-file-routes": "catalog:",
+		"@types/node": "catalog:",
+		"conventional-changelog-conventionalcommits": "catalog:",
+		"conventional-commits-filter": "catalog:",
 		"eslint-config-flat-gitignore": "catalog:",
 		"eslint-import-resolver-typescript": "catalog:",
 		"eslint-plugin-better-tailwindcss": "catalog:",
@@ -35,31 +50,29 @@
 		"eslint-plugin-react-you-might-not-need-an-effect": "catalog:",
 		"eslint-plugin-unicorn": "catalog:",
 		"globals": "catalog:",
-		"lint-staged": "catalog:",
 		"postcss-scss": "catalog:",
 		"postcss-styled-syntax": "catalog:",
-		"prettier": "catalog:",
 		"prettier-plugin-java": "catalog:",
 		"prettier-plugin-packagejson": "catalog:",
-		"stylelint": "catalog:",
 		"stylelint-config-recess-order": "catalog:",
+		"stylelint-config-recommended": "catalog:",
 		"stylelint-config-standard": "catalog:",
 		"stylelint-order": "catalog:",
-		"typescript-eslint": "catalog:"
-	},
-	"devDependencies": {
-		"@tanstack/router-generator": "catalog:",
-		"@tanstack/virtual-file-routes": "catalog:",
-		"@types/node": "catalog:",
-		"typescript": "catalog:"
+		"typescript": "catalog:",
+		"typescript-eslint": "catalog:",
+		"unplugin-dts": "catalog:"
 	},
 	"peerDependencies": {
+		"@tanstack/router-generator": "^1",
 		"oxlint": "^1",
 		"postcss": "^8",
 		"tailwindcss": "^4",
 		"typescript": "^6"
 	},
 	"peerDependenciesMeta": {
+		"@tanstack/router-generator": {
+			"optional": true
+		},
 		"oxlint": {
 			"optional": true
 		},
@@ -75,6 +88,7 @@
 	},
 	"publishConfig": {
 		"bin": {
+			"commitlint": "./.build/bin/commitlint.js",
 			"generate-routes": "./.build/bin/generate_routes.js"
 		},
 		"exports": {
