@@ -1,20 +1,14 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
 // oxlint-disable import/no-default-export
-import type { getServerConfig as GSC } from '@camp-org/webpack/config';
-
-import * as pkg from '@camp-org/webpack/config';
-
-// @ts-expect-error jiti
-// oxlint-disable-next-line namespace
-const { getServerConfig } = pkg.default as { getServerConfig: typeof GSC };
+import { get_server_config } from '@camp-org/webpack/config';
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
-const config = getServerConfig({
+const config = get_server_config({
 	entry: ['./server.ts'],
 	mode,
-	projectPath: import.meta.dirname,
-	configPath: import.meta.filename,
+	project_path: import.meta.dirname,
+	config_path: import.meta.filename,
 });
 
 export default config;

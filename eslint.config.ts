@@ -1,12 +1,12 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
-import { defineImportResolver, eslint_config } from '@camp-org/config/eslint';
+import { eslint_config, get_import_resolver } from '@camp-org/config/eslint';
 import { defineConfig } from 'eslint/config';
 
 process.chdir(import.meta.dirname);
 
 export default defineConfig([
 	...eslint_config,
-	...defineImportResolver(['examples/tanstack/start', 'examples/tanstack/start-solid', 'examples/tanstack/start-trpc']),
+	...get_import_resolver(['examples/tanstack/start', 'examples/tanstack/start-solid', 'examples/tanstack/start-trpc']),
 	{
 		files: ['stories/**/*.tsx'],
 		settings: {

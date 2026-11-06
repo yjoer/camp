@@ -328,7 +328,7 @@ export const eslint_config = defineConfig([
 	},
 ]);
 
-export function defineImportResolver(pkgs: string[], options = {}): ConfigObject[] {
+export function get_import_resolver(pkgs: string[], options = {}): ConfigObject[] {
 	return pkgs.map(pkg => ({
 		files: [`./${pkg}/**/*`],
 		settings: {

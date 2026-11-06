@@ -12,26 +12,26 @@ import { AssetRelocatorCachePlugin, RunScriptPlugin } from './plugins.js';
 const require = createRequire(import.meta.url);
 
 interface Options {
-	configPath: string;
 	entry: Configuration['entry'];
-	minimize?: boolean;
 	mode: 'development' | 'production';
-	projectPath: string;
-	transpilePackages?: (string | RegExp)[];
+	project_path: string;
+	config_path: string;
+	transpile_packages?: (string | RegExp)[];
+	minimize?: boolean;
 }
 
-export const getServerConfig = ({
+export const get_server_config = ({
 	entry = [],
 	mode,
-	projectPath,
-	configPath,
-	transpilePackages = [],
+	project_path,
+	config_path,
+	transpile_packages = [],
 	minimize = false,
 }: Options): Configuration => {
 	// Convert strings into regular expressions for exact matches.
-	for (let i = 0; i < transpilePackages.length; i++) {
-		if (typeof transpilePackages[i] === 'string') {
-			transpilePackages[i] = new RegExp(transpilePackages[i]!);
+	for (let i = 0; i < transpile_packages.length; i++) {
+		if (typeof transpile_packages[i] === 'string') {
+			transpile_packages[i] = new RegExp(transpile_packages[i]!);
 		}
 	}
 
@@ -60,8 +60,8 @@ export const getServerConfig = ({
 					},
 					exclude: [
 						{
-							and: [path.resolve(projectPath, 'node_modules')],
-							not: transpilePackages,
+							and: [path.resolve(project_path, 'node_modules')],
+							not: transpile_packages,
 						},
 					],
 				},
@@ -69,7 +69,7 @@ export const getServerConfig = ({
 		},
 		resolve: {
 			extensions: ['.js', '.ts'],
-			tsConfig: path.resolve(projectPath, 'tsconfig.json'),
+			tsConfig: path.resolve(project_path, 'tsconfig.json'),
 		},
 		plugins: [
 			new rspack.ProgressPlugin(),
@@ -81,7 +81,7 @@ export const getServerConfig = ({
 	const dev_config = {
 		entry: ['@rspack/core/hot/poll?100'],
 		output: {
-			path: path.join(projectPath, 'node_modules', '.camp', 'build'),
+			path: path.join(project_path, 'node_modules', '.camp', 'build'),
 			filename: '[name].js',
 			clean: true,
 		},
@@ -92,21 +92,21 @@ export const getServerConfig = ({
 		cache: {
 			buildDependencies: [
 				fileURLToPath(import.meta.url),
-				configPath,
-				path.join(projectPath, 'tsconfig.json'),
+				config_path,
+				path.join(project_path, 'tsconfig.json'),
 			],
 			type: 'persistent',
 		},
 		externals: [
 			// nodeExternals({
-			//   allowlist: ['@rspack/core/hot/poll?100', ...transpilePackages],
+			//   allowlist: ['@rspack/core/hot/poll?100', ...transpile_packages],
 			// }),
 		],
 	} satisfies Configuration;
 
 	const prod_config = {
 		output: {
-			path: path.join(projectPath, '.camp', 'build'),
+			path: path.join(project_path, '.camp', 'build'),
 			filename: '[name].js',
 			clean: true,
 			module: true,
